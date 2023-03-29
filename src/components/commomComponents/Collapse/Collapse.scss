@@ -1,0 +1,31 @@
+.MyCollapse{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    outline: none;
+    padding: 2rem;
+    border-top: .1rem solid #ccc;
+    border-bottom: .1rem solid #ccc;
+    background-color: transparent;
+    cursor: pointer;
+    .labelGroup{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .label{
+            font-weight: 7  00;
+
+        }
+    }
+    .Content{
+        max-height: 0;
+        overflow: hidden;
+        position: relative;
+        transition: max-height .3s  ease;
+        // transition: max-height .5s ease;
+        &.active{
+            max-height:200vh ;
+        }
+    }
+}

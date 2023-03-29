@@ -1,0 +1,23 @@
+.itemResult
+{
+    background-color: white;
+    border-bottom: .1rem solid #ccc;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: .5rem;
+    transition: .3s ease;
+    &:hover{
+        background-color: #333;
+    }
+    .productInfo
+    {
+        display: flex;
+        img{
+            width: 5rem;
+            height: 5rem;
+            padding: .5rem;
+        }
+    }
+}

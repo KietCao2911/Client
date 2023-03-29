@@ -1,0 +1,54 @@
+.InputText{
+    position: relative;
+    width: 100%;
+    display: flex;
+
+    flex-direction: column;
+    .icon{
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        &.icon--error{
+                color:red;
+        }
+    }
+    .IconClose{
+        position: absolute;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+
+    }
+    label{
+        position: absolute;
+        display: flex;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 2rem;
+        transition: .3s ease;
+        pointer-events: none;
+        color:#999;
+        transform: 0.25s ease;    
+    }
+    input{
+        padding: 2rem;
+        border:.1rem solid #ccc;
+        border-radius: .6rem;
+        &:focus{
+            border-color: blue;
+        }
+        &.error{
+            border-color:red;
+        }
+        &:not(:placeholder-shown) + label,&:focus +label{
+            top: 0;
+            background-color: white;
+            padding: 1rem;
+            color:blue;
+        }
+
+    }
+  
+
+}

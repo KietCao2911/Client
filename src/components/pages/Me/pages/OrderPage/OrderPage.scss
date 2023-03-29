@@ -1,0 +1,25 @@
+.OrderPage
+{
+    
+    padding: 1rem;
+    .ItemMyOrder{
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; 
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        .infoProduct
+        {
+            display: flex;
+            .content{
+                align-self: center;
+            }
+            img{
+                max-width: 20rem;
+                max-height: 20rem;
+            }
+        }
+     .infoDelivery{
+        align-self: center;
+     }  
+    }
+}

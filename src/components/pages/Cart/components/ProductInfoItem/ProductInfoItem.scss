@@ -1,0 +1,51 @@
+.PrductInfoItem{
+    position: relative;
+    display: block;
+    cursor: pointer;
+    color: unset;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;    
+
+        &:hover{
+        color: unset;
+    }
+    .closeIcon{
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+    }
+    .Container{
+        .img{
+            img{
+                height: 200px;
+                object-fit: contain;
+            }
+        }
+    }
+    // .Container{
+    //     display: flex;
+    //     height: 25rem;
+    //     .img{
+    //      width: 50%;
+    //      img{
+    //         object-fit: contain;
+    //      }
+    //     }
+    //     .content{
+    //         // padding: 2rem;
+    //         .size,.color{
+    //             display: flex;
+    //             align-items: center;
+    //         }
+    //         .name{
+    //             display: flex;
+    //             justify-content: space-between;
+    //         }
+    //         .SizeSelect{
+    //             select{
+    //                 padding: 1rem 2rem;
+    //             }
+    //         }
+    //     }
+    // }
+}

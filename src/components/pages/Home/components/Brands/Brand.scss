@@ -1,0 +1,23 @@
+.Brand{
+    opacity: 0;
+    transform:translateX(-5rem);
+    transition: opacity 1s, transform .3s ease;
+    &:hover{
+        transform: scale(1.5); 
+    background-color: red;
+    }
+    .Label{
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: .6rem;
+        height: 200px;
+        
+        img{
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        }
+    }
+}

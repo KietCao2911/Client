@@ -1,0 +1,62 @@
+.InfoPage{
+    padding: 1rem;
+    background-color: #fff;
+    width: 100%;
+    .InputText{
+        margin:4rem 0;
+    }
+    > div{
+        margin:1rem 0;
+    }
+    .InfoDetail , .LoginDetail{
+        .action{
+            span{
+                text-decoration: underline;
+                cursor: pointer;
+                &:hover{
+                    padding: .1rem;
+                    background-color: black;
+                    color: white;
+                }
+            }
+            :nth-child(2)
+            {
+                padding: 0 1rem;
+            }
+        }
+    }
+    .formUpdateInfo{
+        .infoDate
+        {
+            display: flex;
+            .InputText{
+                margin:1rem 0;
+            }
+        }
+        .sexInfo{
+            display: flex;
+            :nth-child(2)
+            {
+                margin:0 1rem;
+            }
+            .RadioItem
+            {
+                label{
+                    cursor: pointer;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+                display: flex;
+                height: 2rem;
+                input[type="radio"]{
+                    display: none;
+                }
+                input[type="radio"]:checked + label{
+                    text-decoration: underline;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}

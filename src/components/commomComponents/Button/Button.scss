@@ -1,0 +1,36 @@
+.MyButton
+{
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.4rem 4rem;
+    text-align: center;
+    line-height: normal;
+    background-color: white;
+    text-align: center;
+    cursor: pointer;
+    transition: ease .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border:1px solid black;
+
+    .Icon{
+        position: absolute;
+        right: 1rem;
+    }
+    .Content{
+         
+    }
+    &:hover
+    {
+        background-color: black;
+        color: white !important;
+        a{
+            color: white;
+        }
+    }
+}

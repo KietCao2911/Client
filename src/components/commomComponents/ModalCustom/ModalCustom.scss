@@ -1,0 +1,38 @@
+.ModalCustom{
+    position: absolute;
+    width: 100vw;
+    height: 500vh !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+    .ModalContainer{
+        width: 100%;
+        height: 100%;
+        background-color: #333;
+        opacity: .8;
+        
+    }
+    .ModalCustomContent{
+            position: absolute;
+            background-color: white;
+            padding: 4rem;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            max-width: 80rem;
+            width: 100%;
+            
+        .iconClose{
+            cursor: pointer;
+            position: absolute;
+            padding: .5rem;
+            border:.1rem solid black;
+            right: calc(-3.6rem / 2);
+            top: calc(-3.6rem / 2);;
+            // transform: translateX(50%);
+            background-color: white;
+            z-index: 99;
+        }
+    }
+}

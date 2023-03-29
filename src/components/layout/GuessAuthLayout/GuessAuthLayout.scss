@@ -1,0 +1,24 @@
+
+.GuessAuthLayout
+{
+    background: url("../../../assets/LoginBg.png") center ;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+   
+    .mainAuthLayout
+    {
+
+        h1,h3{
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        width: 50rem;
+        padding: 3rem 2rem;
+        background-color: white;
+         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+         border-radius: .4rem;
+    }
+}

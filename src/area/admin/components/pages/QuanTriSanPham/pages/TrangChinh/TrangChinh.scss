@@ -1,0 +1,22 @@
+.TrangChinhQLSP
+{
+    .productsTable
+    {
+        .filterActions
+        {
+            .searchProduct
+            {
+                position: relative;
+                .actionResult
+                {
+                    position: absolute;
+                    padding: 1rem;
+                    right: 0;
+                    left: 0;
+                    background-color: red;
+                    z-index: 1;
+                }
+            }
+        }
+    }
+}

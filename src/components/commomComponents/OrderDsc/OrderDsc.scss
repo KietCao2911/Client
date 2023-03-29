@@ -1,0 +1,15 @@
+.PaymentInfo{
+    .content{
+       
+        background-color: white;
+
+        .QtyTotal{
+            display: flex;
+            justify-content: space-between;
+        }
+        .TotalPrice{
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

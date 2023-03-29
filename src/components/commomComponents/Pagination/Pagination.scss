@@ -1,0 +1,43 @@
+.Pagination
+{
+    ul{
+        
+    display:flex;
+    align-items: center;
+    list-style-type: none;
+    background: #fff;
+    // padding: 1.2rem 1.6rem;
+    border-radius: 2rem;
+    li{
+        display: flex;
+        align-items: center;
+        margin: 0 .1rem;
+        a{
+            border-radius: .6;
+            &:hover{
+                background: black;
+                color: #fff;
+                padding: 1.2rem;
+            }
+        }
+    }
+    }
+   
+     ul > li a:link , & > ul > li a :visited{
+        
+        font-size: 1.5rem;
+        font-weight: 400;
+        padding: 1rem 2rem;
+        background: #f4f4f4;
+        text-decoration: none;
+        color: #555;
+        cursor: pointer;
+        transition: all .2s;
+
+    }
+    ul > li a.active:link , & > ul > li a.active:visited{
+        padding: 1rem 2rem;
+        background-color: black;
+        color:white;
+    }
+}

@@ -1,0 +1,25 @@
+.AuthPage{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: white;
+    max-width: 100%;
+    height: 50rem;
+   .Logo{
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    margin: 0 auto;
+   }
+   
+    .LoginMethod > button
+    {
+       margin: 1rem 0;
+    }
+    small{
+        margin-top:auto;
+    }
+    small >a{
+        text-decoration: underline;
+    }
+}

@@ -1,0 +1,22 @@
+.SelectInput{
+    position: relative;
+    margin: 2rem 0;
+    // padding: 0 1rem;
+    width: 100%;
+    select{
+        border-radius: .6rem;
+        border: .1rem solid #ccc;
+        width: 100%;
+        padding:  2rem;
+        outline: none;
+        .Option{
+            padding: 1rem;
+        }
+    }
+    .loading{
+        position: absolute;
+        top: 50%;
+        right: 6rem;
+        transform: translateY(-50%);
+    }
+}

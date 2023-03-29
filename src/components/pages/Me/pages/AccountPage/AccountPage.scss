@@ -1,0 +1,24 @@
+@import "../../../../GlobalStyles/GlobalStyle.scss";
+.AccountPage{
+    display: flex;
+    @include tablet{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .AccountNav{
+        button{
+            border-radius: unset;
+            margin: unset;
+            border: unset;
+            text-align: left;
+            font-size: 1.8rem;
+            font-weight: 400;
+            transition: unset;
+            &.active{
+                font-weight: 600;
+            }
+        }
+       
+    }
+}

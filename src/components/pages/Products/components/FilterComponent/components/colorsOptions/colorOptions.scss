@@ -1,0 +1,32 @@
+.ColorOptions
+{
+    .ColorCheckboxGroup
+    {
+
+        input[type="radio"]{
+            display: none;
+        }
+        input[type="radio"]:checked  + label{
+            color:white;
+            background-color: black;
+        }
+        label
+        {
+            &.checked
+            {
+                border:.4rem solid #ccc;
+            }
+            display: inline-block;
+            // max-width: 20rem;
+            // min-width: 20rem;
+            padding:2rem 2rem;
+            border-radius: 50%;
+            // background-color: red;
+            cursor: pointer;
+            background-color: white;
+            color:black;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+        }
+    }
+}

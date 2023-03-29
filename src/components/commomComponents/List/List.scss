@@ -1,0 +1,18 @@
+
+.ItemAdd
+{
+    background-color: white;
+    border-bottom: .1rem solid #ccc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: .5rem;
+    transition: .3s ease;
+    .icon{
+            padding: .5rem;
+    }
+    &:hover{
+        background-color: #333;
+    }
+}

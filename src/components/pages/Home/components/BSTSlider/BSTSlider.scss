@@ -1,0 +1,38 @@
+.BSTSlider
+{
+    position: relative;
+    .content
+    {
+        position: absolute;
+        z-index: 990;
+        top:50%;
+        transform: translateY(-50%);
+        left: 10%;
+        display: flex;
+        flex-direction: column;
+        & > a,div{
+            margin:1rem 0;
+        }
+        .name{
+           
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        .button{
+            padding: .4rem;
+                background-color: black;
+                cursor: pointer;
+                font-weight: bold;
+                color:white;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+        }
+    }
+    .ImgContainer
+    {
+
+       
+       
+    }
+}

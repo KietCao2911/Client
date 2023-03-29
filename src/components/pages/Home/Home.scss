@@ -1,0 +1,38 @@
+.HomeDefaultLayout
+{
+    .Membership
+    {
+        padding: 1rem ;
+        background-color: black;
+        color:white;
+        .banner
+        {
+            display: flex;
+            justify-content: space-between;
+            .mainContent{
+                display: flex;
+                flex-direction: column;
+                strong{
+                    font-size: 5rem;
+                    color: white;
+                    line-height: 10rem;
+                }
+                button{
+                    display: inline-block;
+                    max-width: 10rem;
+                    height: 4rem;
+                    padding: 1rem;
+                    border-radius: 4rem;
+                    color:black;
+                    font-weight: 500;
+                    &:hover{
+                        color:white;
+                        border: 1px solid white;
+                        background-color: black;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,80 @@
+import { Select, Checkbox, Menu, Row, Col } from "antd";
+import React from "react";
+import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import MyCollapse from "~/components/commomComponents/Collapse";
+import "./sizeOptions.scss";
+const Radio = (props) => {
+  const { value, checked, onChange } = props;
+  const handleChange = (e) => {
+    onChange(e);
+  };
+  return (
+    <div className="Radio">
+      <input
+        onChange={(e) => handleChange(e.target.value)}
+        checked={value == checked}
+        type="radio"
+        name={value}
+        value={value}
+        id={value}
+      />
+      <label htmlFor={value}>{value}</label>
+    </div>
+  );
+};
+const SizeOptions = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const size = searchParams.get("size");
+  const color = searchParams.get("color") || "";
+  const sort = searchParams.get("sort") || "";
+  const category = searchParams.get("category") || "";
+  console.log([...searchParams]);
+  console.log({ category });
+  const handleChange = (e) => {
+    const params = {};
+    for (let [key, value] of searchParams.entries()) {
+      params[key] = value;
+    }
+    params.size = e;
+    setSearchParams({ ...params });
+  };
+
+  return (
+    <div className="SizeOptions">
+      <MyCollapse label="Kích cỡ">
+        <Row>
+          <Col xs={6} md={4}>
+            <Radio value={40} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={41} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={42} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={43} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={44} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={45} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={"S"} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={"M"} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={"L"} checked={size} onChange={handleChange} />
+          </Col>
+        </Row>
+      </MyCollapse>
+    </div>
+  );
+};
+
+export default SizeOptions;
