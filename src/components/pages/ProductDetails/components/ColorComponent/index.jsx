@@ -11,12 +11,12 @@ const Item = ({ value, checked = false, onChange }) => {
   const { colorSelected, productInfoByColor } = product;
   const url =
     BASE_URL +
-    "wwwroot/res/SanPhamRes/Imgs/" +
-    product?.maSanPham?.trim() +
-    "/" +
-    value?.chiTietHinhAnhs[0].idMaMau?.trim() +
-    "/" +
-    value?.chiTietHinhAnhs[0].idHinhAnhNavigation?.fileName?.trim();
+      "wwwroot/res/SanPhamRes/Imgs/" +
+      product?.maSanPham?.trim() +
+      "/" +
+      value?.chiTietHinhAnhs[0]?.idMaMau?.trim() +
+      "/" +
+      value?.chiTietHinhAnhs[0]?.idHinhAnhNavigation?.fileName?.trim() || "";
   const dispatch = useDispatch();
   return (
     <>

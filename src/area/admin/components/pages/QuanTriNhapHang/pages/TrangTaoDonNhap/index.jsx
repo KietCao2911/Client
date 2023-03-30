@@ -126,7 +126,7 @@ const TrangTaoDonNhap = (props) => {
           IDNCC: Form.values.nhaCungCapNavigation.id,
         };
         if (isCreated && !isReadOnly) {
-          // dispatch(PhieuNhapAPI.fetchPostPhieuNhaps({body}))
+          dispatch(PhieuNhapAPI.fetchPostPhieuNhaps({ body }));
           console.log({ CreatedBody: body });
         } else {
           console.log({ UpdateBody: body });

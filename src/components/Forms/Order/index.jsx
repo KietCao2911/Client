@@ -130,9 +130,7 @@ const OrderForm = (props) => {
       diaChiNavigation,
     };
     if (Object.keys(orderForm.errors).length <= 0) {
-      console.log({ error: orderForm.errors });
-      console.log({ params });
-      // dispatch(ThanhToanApi.fetchPostWithGuess(params));
+      dispatch(ThanhToanApi.fetchPostWithGuess(params));
     } else {
       alert("sai thong tin");
     }
@@ -142,8 +140,8 @@ const OrderForm = (props) => {
     cart.phuongThucThanhToan = value;
     let cartString = JSON.stringify(cart);
     window.localStorage.setItem("cart", cartString);
-    orderForm.setFieldValue("phuongThucThanhToan", value);
   };
+  console.log({ values: orderForm.values });
   const fetch = async () => {
     dispatch(GiaoHangNhanhApi.fetchGetProvinces());
     orderForm.values?.ProvinceID &&

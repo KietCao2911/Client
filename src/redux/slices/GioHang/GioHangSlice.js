@@ -13,7 +13,7 @@ const initialState = {
   diaChiNavigation: cart?.diaChiNavigation || {},
   couponNavigation: cart?.couponNavigation || {},
   couponCode: cart?.couponCode || null,
-  phuongThucThanhToan: cart?.phuongThucThanhToan || "",
+  phuongThucThanhToan: cart?.phuongThucThanhToan || "COD",
   loaiPhieu: "PHIEUXUAT",
   infoGuess: {},
   ghnAPI: {
@@ -210,7 +210,8 @@ const GioHangSlice = createSlice({
     builder.addCase(fetchPostCalFee.fulfilled, (state, action) => {
       const phiShip = action.payload.data.total;
       state.ghnAPI.FeeInfo = action.payload;
-      state.phiShip = phiShip;
+      state.phiShip = phiShip || 0;
+      state.thanhTien += phiShip;
       const CartString = JSON.stringify(state);
       window.localStorage.setItem("cart", CartString);
     });
