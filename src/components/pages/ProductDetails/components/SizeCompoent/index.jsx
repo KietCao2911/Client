@@ -18,11 +18,11 @@ const SizeRadio = ({ label, value, onChange, disable }) => {
   const dispatch = useDispatch();
   const handleSelected = async () => {
     dispatch(sizeSelected({ size: value }));
-    try {
-      // const res = await fetchGetQTY(product.maSanPham,product.colorSelected,value)
-    } catch (error) {}
   };
-  useEffect(() => {}, [product?.productCurrent]);
+  console.log({
+    SizeRadio:
+      product?.productCurrent?.idSize?.trim() == value.trim() ? true : false,
+  });
   return (
     <>
       <div className={`SizeRadio ${disable ? "disable" : ""}`}>
@@ -34,11 +34,11 @@ const SizeRadio = ({ label, value, onChange, disable }) => {
           name={"checkboxGroup"}
           value={value}
           onChange={() => handleSelected()}
-          checked={
+          className={`${
             product?.productCurrent?.idSize?.trim() == value.trim()
-              ? true
-              : false
-          }
+              ? "checked"
+              : ""
+          }`}
         />
         <label htmlFor={value}>{label || 35}</label>
       </div>

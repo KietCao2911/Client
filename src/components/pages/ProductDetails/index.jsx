@@ -64,10 +64,10 @@ const TrangChiTietSanPham = () => {
       const productChild = product.productCurrent;
       let CartItem = {};
       CartItem.soLuong = 1;
-      CartItem.maSanPham = productChild.maSanPham;
+      CartItem.maSanPham = productChild?.maSanPham;
       CartItem.sanPhamNavigation = productChild;
-      CartItem.donGia = productChild.giaBanLe;
-      CartItem.thanhTien = productChild.giaBanLe;
+      CartItem.donGia = productChild?.giaBanLe || 0;
+      CartItem.thanhTien = productChild?.giaBanLe || 0;
       CartItem.maChiNhanh = window.localStorage.getItem("location") || "";
       dispatch(AddToCart(CartItem));
     } else {
@@ -118,7 +118,7 @@ const TrangChiTietSanPham = () => {
               <Breadcrumb style={{ width: "100%" }} />
             </Col>
             <Col xs={24} md={0}>
-              <Row justify={"space-between"} style={{ width: "100%" }}>
+              <Space style={{ width: "100%" }}>
                 <Breadcrumb />
                 <Rate
                   character={<Star />}
@@ -127,7 +127,7 @@ const TrangChiTietSanPham = () => {
                   disabled
                   value={5}
                 />{" "}
-              </Row>
+              </Space>
               <h1 className="InfoTitle">
                 {product?.tenSanPham || "GIÀY SUPERSTAR TAEGEUKDANG"}
               </h1>
@@ -249,17 +249,21 @@ const TrangChiTietSanPham = () => {
                 truy cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết
                 chi tiết
               </a>
-              <MyCollapse defaultOpen={true} label="Mô tả">
-                <div style={{ textAlign: "start" }}>
-                  {ReactHtmlParser(product?.mota)}
-                </div>
-              </MyCollapse>
-              <MyCollapse defaultOpen={false} label="Chi tiết">
-                <div style={{ textAlign: "start" }}>
-                  {ReactHtmlParser(product?.mota)}
-                </div>
-                {/* {ReactHtmlParser(product?.motaChiTiet)} */}
-              </MyCollapse>
+              {product?.mota && (
+                <MyCollapse defaultOpen={false} label="Mô tả">
+                  <div style={{ textAlign: "start" }}>
+                    {ReactHtmlParser(product?.mota)}
+                  </div>
+                </MyCollapse>
+              )}
+              {product?.motaChiTiet && (
+                <MyCollapse defaultOpen={false} label="Chi tiết">
+                  <div style={{ textAlign: "start" }}>
+                    {ReactHtmlParser(product?.motaChiTiet)}
+                  </div>
+                  {/* {ReactHtmlParser(product?.motaChiTiet)} */}
+                </MyCollapse>
+              )}
             </Space>
           </Col>
         </Row>
@@ -303,7 +307,10 @@ const TrangChiTietSanPham = () => {
           <span>
             <h3>Kích cỡ</h3>
             {product?.productInfoByColor?.length > 0 ? (
-              <SizeSelect items={product?.productInfoByColor || []} />
+              <SizeSelect
+                checkedValue={product.productCurrent?.idSize}
+                items={product?.productInfoByColor || []}
+              />
             ) : (
               <strong
                 style={{ color: "	#df4759" }}
@@ -330,11 +337,21 @@ const TrangChiTietSanPham = () => {
             <RollbackOutlined /> Không đúng kích cỡ hoặc màu sắc? Vui lòng truy
             cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết chi tiết
           </a>
-          <MyCollapse defaultOpen={true} label="Mô tả">
-            <div style={{ textAlign: "start" }}>
-              {ReactHtmlParser(product?.mota)}
-            </div>
-          </MyCollapse>
+          {product?.mota && (
+            <MyCollapse defaultOpen={false} label="Mô tả">
+              <div style={{ textAlign: "start" }}>
+                {ReactHtmlParser(product?.mota)}
+              </div>
+            </MyCollapse>
+          )}
+          {product?.motaChiTiet && (
+            <MyCollapse defaultOpen={false} label="Chi tiết">
+              <div style={{ textAlign: "start" }}>
+                {ReactHtmlParser(product?.motaChiTiet)}
+              </div>
+              {/* {ReactHtmlParser(product?.motaChiTiet)} */}
+            </MyCollapse>
+          )}
         </Space>
       </Col>
     </Row>

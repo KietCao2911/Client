@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-import { message, notification } from "antd";
 import { X } from "react-feather";
 import * as GiaoHangNhanhApi from "~/redux/slices/GHNAPI/GhnApi";
 let cart = JSON.parse(localStorage.getItem("cart"));
@@ -89,10 +88,6 @@ const GioHangSlice = createSlice({
             // state.phiShip = 0;
             state.tongSoLuong++;
             localStorage.setItem("cart", JSON.stringify(state));
-            message.open({
-              type: "success",
-              content: "Đã thêm sản phẩm vào giỏ hàng",
-            });
           }
         } else {
           state.chiTietNhapXuats.push(action.payload);
@@ -100,20 +95,12 @@ const GioHangSlice = createSlice({
           state.thanhTien += sanPhamNavigation.giaBanLe;
           // state.phiShip = 0;
           localStorage.setItem("cart", JSON.stringify(state));
-          message.open({
-            type: "success",
-            content: "Đã thêm sản phẩm vào giỏ hàng",
-          });
         }
       } else {
         state.chiTietNhapXuats.push(action.payload);
         state.thanhTien = sanPhamNavigation.giaBanLe;
         state.tongSoLuong += 1;
         localStorage.setItem("cart", JSON.stringify(state));
-        message.open({
-          type: "success",
-          content: "Đã thêm sản phẩm đầu tiên vào giỏ hàng",
-        });
       }
     },
     RemoveItem: (state, action) => {
@@ -130,14 +117,10 @@ const GioHangSlice = createSlice({
           chiTietNhapXuats.splice(index, 1);
           if (chiTietNhapXuats.length <= 0) {
             window.localStorage.removeItem("cart");
+          } else {
+            state.chiTietNhapXuats = [...chiTietNhapXuats];
+            localStorage.setItem("cart", JSON.stringify(state));
           }
-          state.chiTietNhapXuats = [...chiTietNhapXuats];
-          localStorage.setItem("cart", JSON.stringify(state));
-          message.open({
-            type: "success",
-            content: "Đã xóa sản phẩm khỏi giỏ hàng",
-            icon: <X />,
-          });
         }
       } else {
       }
@@ -157,10 +140,6 @@ const GioHangSlice = createSlice({
         state.totalPrice = state.cartItems[index].giaBan * qty;
         state.finalPrice = state.totalPrice;
         localStorage.setItem("cart", JSON.stringify(state));
-        message.open({
-          content: "Cập nhật thành công",
-          type: "success",
-        });
       }
     },
   },

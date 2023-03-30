@@ -43,6 +43,7 @@ import toSlug from "~/components/utils/ToSlug";
 import * as DanhMucAPI from "~/redux/slices/DanhMuc";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import MyCollapse from "~/components/commomComponents/Collapse";
 const VersionDetailPage = lazy(() => import("./pages/VersionDetailPage"));
 const FooterTable = () => {
   return (
@@ -379,20 +380,32 @@ const WithChild = (props) => {
                     ></Cascader>
                   </Space>
                 </Space>
-                <Space>
-                  <Card>
-                    <CKEditor
-                      data={product?.mota}
-                      onChange={(e, editor) =>
-                        form.setFieldValue("mota", editor.getData())
-                      }
-                      editor={ClassicEditor}
-                    ></CKEditor>
-                  </Card>
-                </Space>
+                <Space></Space>
               </Space>
             </Space>
           </Card>
+        </Col>
+        <Col span={24}>
+          <MyCollapse label="Mô tả">
+            <CKEditor
+              data={product?.mota}
+              onChange={(e, editor) =>
+                form.setFieldValue("mota", editor.getData())
+              }
+              editor={ClassicEditor}
+            ></CKEditor>
+          </MyCollapse>
+        </Col>
+        <Col span={24}>
+          <MyCollapse label="Mô tả chi tiết">
+            <CKEditor
+              data={product?.motaChiTiet || ""}
+              onChange={(e, editor) =>
+                form.setFieldValue("motaChiTiet", editor.getData())
+              }
+              editor={ClassicEditor}
+            ></CKEditor>
+          </MyCollapse>
         </Col>
         <Col span={24}>
           <Row gutter={[20, 20]}>

@@ -211,20 +211,22 @@ const SanPhamSlice = createSlice({
       let giaBanDisplay = 0;
       let recentlyView =
         JSON.parse(window.localStorage.getItem("recentlyView")) || [];
-      if (Prices[0].giaBanLe != Prices[Prices.length - 1].giaBanLe) {
-        giaBanDisplay = `${convertVND(Prices[0].giaBanLe)} - ${convertVND(
-          Prices[Prices.length - 1].giaBanLe
+      if (Prices[0]?.giaBanLe != (Prices[Prices.length - 1]?.giaBanLe || 0)) {
+        giaBanDisplay = `${convertVND(Prices[0]?.giaBanLe)} - ${convertVND(
+          Prices[Prices.length - 1]?.giaBanLe
         )}`;
       } else {
-        giaBanDisplay = convertVND(Prices[0].giaBanLe);
+        giaBanDisplay = convertVND(Prices[0]?.giaBanLe || 0);
       }
       const groupedArray = Object.values(
         GroupBy(state.product.sanPhams, "idColor")
       );
       state.product.related = [...productsTemp];
-      state.product.productInfoByColor = [...groupedArray[0]];
-      state.product.colorGrouped = [...groupedArray];
-      state.product.imgsDisplay = [
+      state.product.productInfoByColor = groupedArray.length > 0 && [
+        ...groupedArray[0],
+      ];
+      state.product.colorGrouped = groupedArray.length > 0 && [...groupedArray];
+      state.product.imgsDisplay = groupedArray.length > 0 && [
         ...(groupedArray[0][0].chiTietHinhAnhs || []),
       ];
       state.product.giaBanDisplay = giaBanDisplay;

@@ -51,7 +51,7 @@ const ColorComponent = ({ items }) => {
         {items &&
           items?.map((item) => {
             return (
-              <Col key={v4()} span={3}>
+              <Col key={v4()} xs={6} xxl={4}>
                 {" "}
                 <Item value={item[0]} />
               </Col>
