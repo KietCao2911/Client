@@ -132,13 +132,12 @@ const OrderForm = (props) => {
     if (Object.keys(orderForm.errors).length <= 0) {
       console.log({ error: orderForm.errors });
       console.log({ params });
-      dispatch(ThanhToanApi.fetchPostWithGuess(params));
+      // dispatch(ThanhToanApi.fetchPostWithGuess(params));
     } else {
       alert("sai thong tin");
     }
   };
   const handlePaymentMethod = (value) => {
-    console.log({ value });
     let cart = JSON.parse(window.localStorage.getItem("cart"));
     cart.phuongThucThanhToan = value;
     let cartString = JSON.stringify(cart);
