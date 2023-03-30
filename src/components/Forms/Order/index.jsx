@@ -58,7 +58,7 @@ const OrderForm = (props) => {
       WardId: infoLocalStorage.WardId || null,
       AddressDsc: infoLocalStorage.AddressDsc || "",
       Email: infoLocalStorage.Email || "",
-      PaymendMethod: infoLocalStorage.PaymendMethod || "COD",
+      phuongThucThanhToan: infoLocalStorage.phuongThucThanhToan || "COD",
     },
     validationSchema: Yup.object({
       Name: Yup.string().required("Phải nhập trường này"),
@@ -73,7 +73,7 @@ const OrderForm = (props) => {
       ProvinceID: Yup.number().nullable(true).required("Phải chọn trường này"),
       DistrictID: Yup.number().nullable(true).required("Phải chọn trường này"),
       WardId: Yup.number().nullable(true).required("Phải chọn trường này"),
-      PaymendMethod: Yup.string().required("Phải chọn trường này"),
+      phuongThucThanhToan: Yup.string().required("Phải chọn trường này"),
       AddressDsc: Yup.string().required("Phải nhập trường này"),
     }),
     onSubmit: (values) => {
@@ -143,6 +143,7 @@ const OrderForm = (props) => {
     cart.phuongThucThanhToan = value;
     let cartString = JSON.stringify(cart);
     window.localStorage.setItem("cart", cartString);
+    orderForm.setFieldValue("phuongThucThanhToan", value);
   };
   const fetch = async () => {
     dispatch(GiaoHangNhanhApi.fetchGetProvinces());
@@ -162,126 +163,131 @@ const OrderForm = (props) => {
   return (
     <form onSubmit={orderForm.handleSubmit} className="OrderForm" ref={formRef}>
       <Row gutter={[20, 20]}>
-        <Card title="Địa chỉ giao hàng">
-          <Row gutter={[20, 20]}>
-            <Col span={24}>
-              <InputText
-                className={`${orderForm.errors.Name && "error"} `}
-                name={"Name"}
-                label="Tên"
-                value={orderForm.values.Name}
-                onChange={orderForm.handleChange}
-              />
-              {orderForm.touched.Name && orderForm.errors.Name && (
-                <span className="error">{orderForm.errors.Name}</span>
-              )}
-            </Col>
-            <Col span={24}>
-              <InputText
-                className={`${orderForm.errors.Phone && "error"} `}
-                name={"Phone"}
-                label="Số điện thoại"
-                value={orderForm.values.Phone}
-                onChange={orderForm.handleChange}
-              />
-              {orderForm.errors.Phone && (
-                <span className="error">{orderForm.errors.Phone}</span>
-              )}
-            </Col>
-            <Col span={24}>
-              <InputText
-                className={`${orderForm.errors.Email && "error"} `}
-                name={"Email"}
-                label="Email"
-                value={orderForm.values.Email}
-                onChange={orderForm.handleChange}
-              />
-              {orderForm.errors.Email && (
-                <span className="error">{orderForm.errors.Email}</span>
-              )}
-            </Col>
-            <Col span={24}>
-              <InputText
-                name={"AddressDsc"}
-                label="Chi tiết địa chỉ"
-                value={orderForm.values.AddressDsc}
-                onChange={orderForm.handleChange}
-              />
-              {orderForm.errors.AddressDsc && (
-                <span className="error">{orderForm.errors.AddressDsc}</span>
-              )}
-            </Col>
-            <Col span={24}>
-              <SelectInput
-                value={orderForm.values.ProvinceID || null}
-                onChange={handleChangeProvince}
-                name={"ProvinceID"}
-              >
-                <option value={""}>Vui lòng chọn Tỉnh/Thành phố</option>
-                {Provinces.data &&
-                  Provinces.data.map((item) => {
-                    return (
-                      <option key={item.ProvinceID} value={item.ProvinceID}>
-                        {item.ProvinceName}
-                      </option>
-                    );
-                  })}
-              </SelectInput>
-              {orderForm.errors.ProvinceID && (
-                <span className="error">{orderForm.errors.ProvinceID}</span>
-              )}
-            </Col>
-            <Col span={24}>
-              <SelectInput
-                value={orderForm.values.DistrictID || null}
-                onChange={handleChangeDistrict}
-                loading={Loading.Districts}
-                name="DistrictID"
-                defaultLabel="Quận/Huyện"
-              >
-                <option value={""}>Vui lòng chọn Quận/Huyện</option>
-                {Districts.data &&
-                  Districts?.data?.map((item) => {
-                    return (
-                      <option key={item.DistrictID} value={item.DistrictID}>
-                        {item.DistrictName}
-                      </option>
-                    );
-                  })}
-              </SelectInput>
-              {orderForm.errors.DistrictID && (
-                <span className="error">{orderForm.errors.DistrictID}</span>
-              )}
-            </Col>
-            <Col span={24}>
-              <SelectInput
-                value={orderForm.values.WardId || null}
-                onChange={(e) => CalFee(e)}
-                loading={Loading.Wards}
-                defaultLabel="Xã/Phường"
-                name="WardId"
-              >
-                <option value={""}>Vui lòng chọn Xã/Phường</option>
-                {Wards.data &&
-                  Wards?.data?.map((item) => {
-                    return (
-                      <option value={item.WardCode}>{item.WardName}</option>
-                    );
-                  })}
-              </SelectInput>
-              {orderForm.errors.WardId && (
-                <span className="error">{orderForm.errors.WardId}</span>
-              )}
-            </Col>
-          </Row>
-        </Card>
+        <Col span={24}>
+          <Card title="Địa chỉ giao hàng">
+            <Row gutter={[20, 20]}>
+              <Col span={24}>
+                <InputText
+                  className={`${orderForm.errors.Name && "error"} `}
+                  name={"Name"}
+                  label="Tên"
+                  value={orderForm.values.Name}
+                  onChange={orderForm.handleChange}
+                />
+                {orderForm.touched.Name && orderForm.errors.Name && (
+                  <span className="error">{orderForm.errors.Name}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <InputText
+                  className={`${orderForm.errors.Phone && "error"} `}
+                  name={"Phone"}
+                  label="Số điện thoại"
+                  value={orderForm.values.Phone}
+                  onChange={orderForm.handleChange}
+                />
+                {orderForm.errors.Phone && (
+                  <span className="error">{orderForm.errors.Phone}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <InputText
+                  className={`${orderForm.errors.Email && "error"} `}
+                  name={"Email"}
+                  label="Email"
+                  value={orderForm.values.Email}
+                  onChange={orderForm.handleChange}
+                />
+                {orderForm.errors.Email && (
+                  <span className="error">{orderForm.errors.Email}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <InputText
+                  name={"AddressDsc"}
+                  label="Chi tiết địa chỉ"
+                  value={orderForm.values.AddressDsc}
+                  onChange={orderForm.handleChange}
+                />
+                {orderForm.errors.AddressDsc && (
+                  <span className="error">{orderForm.errors.AddressDsc}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <SelectInput
+                  value={orderForm.values.ProvinceID || null}
+                  onChange={handleChangeProvince}
+                  name={"ProvinceID"}
+                >
+                  <option value={""}>Vui lòng chọn Tỉnh/Thành phố</option>
+                  {Provinces.data &&
+                    Provinces.data.map((item) => {
+                      return (
+                        <option key={item.ProvinceID} value={item.ProvinceID}>
+                          {item.ProvinceName}
+                        </option>
+                      );
+                    })}
+                </SelectInput>
+                {orderForm.errors.ProvinceID && (
+                  <span className="error">{orderForm.errors.ProvinceID}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <SelectInput
+                  value={orderForm.values.DistrictID || null}
+                  onChange={handleChangeDistrict}
+                  loading={Loading.Districts}
+                  name="DistrictID"
+                  defaultLabel="Quận/Huyện"
+                >
+                  <option value={""}>Vui lòng chọn Quận/Huyện</option>
+                  {Districts.data &&
+                    Districts?.data?.map((item) => {
+                      return (
+                        <option key={item.DistrictID} value={item.DistrictID}>
+                          {item.DistrictName}
+                        </option>
+                      );
+                    })}
+                </SelectInput>
+                {orderForm.errors.DistrictID && (
+                  <span className="error">{orderForm.errors.DistrictID}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <SelectInput
+                  value={orderForm.values.WardId || null}
+                  onChange={(e) => CalFee(e)}
+                  loading={Loading.Wards}
+                  defaultLabel="Xã/Phường"
+                  name="WardId"
+                >
+                  <option value={""}>Vui lòng chọn Xã/Phường</option>
+                  {Wards.data &&
+                    Wards?.data?.map((item) => {
+                      return (
+                        <option value={item.WardCode}>{item.WardName}</option>
+                      );
+                    })}
+                </SelectInput>
+                {orderForm.errors.WardId && (
+                  <span className="error">{orderForm.errors.WardId}</span>
+                )}
+              </Col>
+            </Row>
+          </Card>
+        </Col>
         <Col span={24}>
           <Card
             title="Phương thức thanh toán"
             className="PaymentMethod"
             extra={<CreditCard />}
           >
-            <Radio.Group onChange={(e) => handlePaymentMethod(e.target.value)}>
+            <Radio.Group
+              value={orderForm.values?.phuongThucThanhToan}
+              onChange={(e) => handlePaymentMethod(e.target.value)}
+            >
               <Space direction="vertical">
                 <Radio value="COD">Thanh toán khi nhận hàng</Radio>
                 <Radio value={"VNPAY"}>
@@ -340,16 +346,18 @@ const OrderForm = (props) => {
             )}
           </div>
         </Col>
+        <Col span={24}>
+          {" "}
+          <OrderDsc
+            ship={FeeInfo?.data?.total}
+            disableBtnPayment={true}
+          ></OrderDsc>
+        </Col>
       </Row>
 
       <div className="actionsOrder">
         <Space direction="vertical" style={{ width: "100%" }}>
-          <div className="OrderDsc">
-            <OrderDsc
-              ship={FeeInfo?.data?.total}
-              disableBtnPayment={true}
-            ></OrderDsc>
-          </div>
+          <div className="OrderDsc"></div>
           <button type="submit" className="btnAcceptOrder">
             THANH TOÁN
           </button>
