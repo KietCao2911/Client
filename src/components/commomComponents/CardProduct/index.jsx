@@ -15,13 +15,13 @@ const { Paragraph, Text } = Typography;
 const ImgVersion = (props) => {
   const { src, key } = props;
   return (
-    <div className="item" key={key}>
+    <div className="item">
       <img src={src} alt="" />
     </div>
   );
 };
 const CardProduct = (props, ref) => {
-  const { value } = props;
+  const { value, key } = props;
   const [img, setImg] = useState(() => {
     let pic = "";
     if (value && value?.colorGrouped?.length > 0) {
@@ -91,11 +91,13 @@ const CardProduct = (props, ref) => {
                         img[0]?.chiTietHinhAnhs[0]?.idHinhAnhNavigation?.fileName?.trim();
                       const URL = img[0].chiTietHinhAnhs[0].url;
                       return (
-                        <ImgVersion
-                          onMouseEnter={() => handleChangeImg(url)}
-                          src={url}
-                          onMouseLeave={() => setImg(url)}
-                        />
+                        <div key={v4()}>
+                          <ImgVersion
+                            onMouseEnter={() => handleChangeImg(url)}
+                            src={url}
+                            onMouseLeave={() => setImg(url)}
+                          />
+                        </div>
                       );
                     }
                   })}

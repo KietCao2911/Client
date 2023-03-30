@@ -60,7 +60,7 @@ const TrangChiTietSanPham = () => {
   );
   document.title = product?.tenSanPham;
   const handleAddToCart = async () => {
-    if (product.productCurrent) {
+    if (product.productCurrent && product.productCurrent.maSanPham) {
       const productChild = product.productCurrent;
       let CartItem = {};
       CartItem.soLuong = 1;

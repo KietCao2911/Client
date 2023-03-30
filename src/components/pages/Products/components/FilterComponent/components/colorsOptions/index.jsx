@@ -71,14 +71,12 @@ const ColorOptions = () => {
           {colors &&
             colors.map((color) => {
               return (
-                <>
-                  <Col md={6} key={v4()}>
-                    <Item
-                      value={color?.maMau?.trim()}
-                      label={color?.maMau?.trim()}
-                    />
-                  </Col>
-                </>
+                <Col md={6} key={v4()}>
+                  <Item
+                    value={color?.maMau?.trim()}
+                    label={color?.maMau?.trim()}
+                  />
+                </Col>
               );
             })}
         </Row>

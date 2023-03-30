@@ -140,11 +140,6 @@ const SanPhamSlice = createSlice({
           const colorID = x[0].idColor;
           return colorID.trim() == colorPayload;
         });
-      let KichThuoc =
-        state.product?.sanPhams &&
-        state.product?.sanPhams.filter(
-          (x) => x?.idColor?.trim() == colorPayload
-        );
       state.product.productInfoByColor = [...sanPham];
       state.product.imgsDisplay = [...sanPham[0].chiTietHinhAnhs];
       state.loading = false;
