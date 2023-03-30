@@ -85,7 +85,7 @@ const TrangSanPham = () => {
               <Pagination
                 responsive={true}
                 onChange={(e) => setSearchParams({ ...params, page: e })}
-                // pageSize={10}
+                pageSize={10}
                 total={totalRow || 0}
                 current={parseInt(params?.page || 1)}
               />
