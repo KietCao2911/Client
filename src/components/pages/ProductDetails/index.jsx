@@ -250,10 +250,14 @@ const TrangChiTietSanPham = () => {
                 chi tiết
               </a>
               <MyCollapse defaultOpen={true} label="Mô tả">
-                {ReactHtmlParser(product?.mota)}
+                <div style={{ textAlign: "start" }}>
+                  {ReactHtmlParser(product?.mota)}
+                </div>
               </MyCollapse>
               <MyCollapse defaultOpen={false} label="Chi tiết">
-                {ReactHtmlParser(product?.mota)}
+                <div style={{ textAlign: "start" }}>
+                  {ReactHtmlParser(product?.mota)}
+                </div>
                 {/* {ReactHtmlParser(product?.motaChiTiet)} */}
               </MyCollapse>
             </Space>
@@ -327,7 +331,9 @@ const TrangChiTietSanPham = () => {
             cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết chi tiết
           </a>
           <MyCollapse defaultOpen={true} label="Mô tả">
-            {ReactHtmlParser(product?.mota)}
+            <div style={{ textAlign: "start" }}>
+              {ReactHtmlParser(product?.mota)}
+            </div>
           </MyCollapse>
         </Space>
       </Col>
