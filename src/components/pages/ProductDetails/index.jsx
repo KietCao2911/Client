@@ -3,19 +3,7 @@ import "./ProductDetail.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useSelector, useDispatch } from "react-redux";
 import "swiper/css/pagination";
-import {
-  Col,
-  Row,
-  Image,
-  Collapse,
-  Space,
-  Rate,
-  Button,
-  notification,
-  Tooltip,
-  Avatar,
-  message,
-} from "antd";
+import { Col, Row, Space, Rate, notification } from "antd";
 import { FreeMode, Pagination } from "swiper";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -30,10 +18,7 @@ import {
   RollbackOutlined,
 } from "@ant-design/icons";
 import { fetchGetQTY } from "~/redux/slices/ChiTietSoLuong/CtslAPI";
-import GioHangSlice, {
-  ViewCart,
-  AddToCart,
-} from "~/redux/slices/GioHang/GioHangSlice";
+import GioHangSlice, { AddToCart } from "~/redux/slices/GioHang/GioHangSlice";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import ReactHtmlParser from "react-html-parser";
 import CardProduct from "~/components/commomComponents/CardProduct";
@@ -41,7 +26,6 @@ import CustomSpin from "~/components/CustomSpin";
 import { Plus, PlusSquare, Star } from "react-feather";
 import { BASE_URL } from "~/const";
 import MyButton from "~/components/commomComponents/Button";
-import { Link } from "react-router-dom";
 import Breadcrumb from "~/components/commomComponents/Breadcrumb";
 import ListProducts from "~/components/commomComponents/ListProducts";
 import ShowMore from "~/components/commomComponents/ShowMore";
@@ -112,13 +96,20 @@ const TrangChiTietSanPham = () => {
                   );
                 })}
             </Swiper>
-          </Col> */}
-          <Col className="ProductDsc" md={24} xs={24}>
+        </Col> */}
+          <Col className="ProductInfo" md={24} xs={24}>
             <Col xs={0} md={24}>
               <Breadcrumb style={{ width: "100%" }} />
             </Col>
             <Col xs={24} md={0}>
-              <Space style={{ width: "100%" }}>
+              <Row
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
                 <Breadcrumb />
                 <Rate
                   character={<Star />}
@@ -127,19 +118,19 @@ const TrangChiTietSanPham = () => {
                   disabled
                   value={5}
                 />{" "}
-              </Space>
+              </Row>
               <h1 className="InfoTitle">
                 {product?.tenSanPham || "GIÀY SUPERSTAR TAEGEUKDANG"}
               </h1>
-              <h3 className="InfoPrice">
+              <p className="InfoPrice">
                 {convertVND(
                   product?.productCurrent?.giaBanLe || product?.giaBanLe || 0
                 )}
-              </h3>
-              <h3>
+              </p>
+              <p>
                 Mã SKU:{" "}
                 {product?.productCurrent?.maSanPham || product?.maSanPham}
-              </h3>
+              </p>
             </Col>
             <ShowMore>
               <Row>
@@ -221,9 +212,9 @@ const TrangChiTietSanPham = () => {
           </Col>
           {/* Product Checkout forMB*/}
           <Col md={0}>
-            <Space size={8} className="ProductInfo" direction="vertical">
-              <span>
-                <h3>Kích cỡ</h3>
+            <Space size={8} direction="vertical">
+              <Space style={{ width: "100%" }} direction="vertical">
+                <strong>Kích cỡ</strong>
                 {product?.productInfoByColor?.length > 0 ? (
                   <SizeSelect items={product?.productInfoByColor || []} />
                 ) : (
@@ -231,11 +222,11 @@ const TrangChiTietSanPham = () => {
                     style={{ color: "	#df4759" }}
                   >{`Sản phẩm đã hết hàng :(`}</strong>
                 )}
-              </span>
-              <span>
-                <h3>Màu sắc</h3>
+              </Space>
+              <Space style={{ width: "100%" }} direction="vertical">
+                <strong>Màu sắc</strong>
                 <ColorComponent items={product?.colorGrouped}></ColorComponent>
-              </span>
+              </Space>
 
               <button className="AddToCart" onClick={handleAddToCart}>
                 <strong>THÊM VÀO GIỎ HÀNG</strong>
@@ -292,20 +283,20 @@ const TrangChiTietSanPham = () => {
               <h1 className="InfoTitle">
                 {product?.tenSanPham || "GIÀY SUPERSTAR TAEGEUKDANG"}
               </h1>
-              <h3 className="InfoPrice">
+              <p className="InfoPrice">
                 {convertVND(
                   product?.productCurrent?.giaBanLe || product?.giaBanLe || 0
                 )}
-              </h3>
-              <h3>
+              </p>
+              <p>
                 Mã SKU:{" "}
                 {product?.productCurrent?.maSanPham || product?.maSanPham}
-              </h3>
+              </p>
             </div>
           </Space>
 
-          <span>
-            <h3>Kích cỡ</h3>
+          <Space style={{ width: "100%" }} direction="vertical">
+            <strong>Kích cỡ</strong>
             {product?.productInfoByColor?.length > 0 ? (
               <SizeSelect
                 checkedValue={product.productCurrent?.idSize}
@@ -316,11 +307,11 @@ const TrangChiTietSanPham = () => {
                 style={{ color: "	#df4759" }}
               >{`Sản phẩm đã hết hàng :(`}</strong>
             )}
-          </span>
-          <span>
-            <h3>Màu sắc</h3>
+          </Space>
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <strong>Màu sắc</strong>
             <ColorComponent items={product?.colorGrouped}></ColorComponent>
-          </span>
+          </Space>
 
           <button className="AddToCart" onClick={handleAddToCart}>
             <strong>THÊM VÀO GIỎ HÀNG</strong>

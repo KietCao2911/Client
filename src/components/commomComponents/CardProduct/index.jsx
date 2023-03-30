@@ -75,7 +75,7 @@ const CardProduct = (props, ref) => {
                 }
                 alt=""
               />
-              <div className="priceDetails">{price || " 400.000₫"}</div>
+
               <div className="versions">
                 {value?.colorGrouped &&
                   value?.colorGrouped.length > 1 &&
@@ -115,6 +115,7 @@ const CardProduct = (props, ref) => {
                   {value?.tenSanPham}
                 </p>{" "}
               </div>
+              <div className="priceDetails">{price || " 400.000₫"}</div>
               <div className="category">
                 {" "}
                 <small>{value?.nhanHieu?.name}</small>{" "}

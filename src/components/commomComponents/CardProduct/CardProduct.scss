@@ -59,22 +59,18 @@
             }
         }
 
-        .priceDetails
-        {
-            position: absolute;
-            bottom: 0;
-            color:black;
-        }
-        .priceDetails{
-            padding: .5rem;
-            background-color: white;
-        }
+      
     }
     .ContentBox
     {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        .priceDetails{
+            padding: .5rem;
+            background-color: white;
+        }
 
             color:black;
             &:hover{

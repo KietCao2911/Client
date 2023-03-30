@@ -4,7 +4,7 @@
     flex-direction: column;
     text-align: center;
     outline: none;
-    padding: 2rem;
+    padding: 2rem 0;
     border-top: .1rem solid #ccc;
     border-bottom: .1rem solid #ccc;
     background-color: transparent;
@@ -23,6 +23,7 @@
         overflow: hidden;
         position: relative;
         transition: max-height .2s  ease;
+        text-align: left;
         // transition: max-height .5s ease;
         &.active{
             max-height:1000vh ;

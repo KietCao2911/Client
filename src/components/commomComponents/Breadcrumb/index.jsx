@@ -12,7 +12,7 @@ const Breadcrumb = (props) => {
       .split("/")
       .filter((x) => x !== "")
       .map((re) => {
-        currentLink = +`/${re}`;
+        currentLink = +`/${re?.trim()}`;
         return (
           <Link key={uuidv4()} to={currentLink}>
             {re}

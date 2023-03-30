@@ -46,9 +46,7 @@ function HeaderMainHome() {
       arr &&
       arr.map((item) => {
         return getItem(
-          <Link to={`/products?category=${item.slug.trim()}`}>
-            {item?.tenDanhMuc}
-          </Link>,
+          <Link to={`/category/${item.slug.trim()}`}>{item?.tenDanhMuc}</Link>,
           item.id,
           null,
           handleRenderItems(item.children || []),

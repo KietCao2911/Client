@@ -5,10 +5,9 @@
                 a{
                     &::after{
                         content: "/";
-                        margin: 0 .5rem;
+                        margin: 0 .2rem;
                     }
                     font-weight: bold;
-                    color:#000;
                     text-transform: uppercase;
                     text-decoration: underline;
                     &:hover{

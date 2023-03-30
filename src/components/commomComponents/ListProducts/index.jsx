@@ -34,7 +34,7 @@ const ListProducts = ({ items, loading, type }) => {
               {products.length > 0 ? (
                 products?.map((item, index) => {
                   return (
-                    <Col xs={24} md={12} xl={8} xxl={6} key={v4()}>
+                    <Col sm={12} xs={24} md={12} xl={8} xxl={6} key={v4()}>
                       <CardProduct value={item}></CardProduct>
                     </Col>
                   );
