@@ -1,6 +1,7 @@
 import {
   Card,
   Col,
+  Descriptions,
   FloatButton,
   Input,
   Popover,
@@ -254,14 +255,45 @@ const OrderDetailForm = (props) => {
           </Row>
         </Col>
         <Col span={24}>
-          <MyCollapse defaultOpen={true} label="Địa chỉ giao hàng">
-            <AddressForm
-              isCreated={isCreated}
-              isReadOnly={isReadOnly}
-              isUpdated={isUpdated}
-              orderForm={OrderForm}
-            />
-          </MyCollapse>
+          {(isUpdated || isCreated) && (
+            <MyCollapse defaultOpen={true} label="Địa chỉ giao hàng">
+              <AddressForm
+                isCreated={isCreated}
+                isReadOnly={isReadOnly}
+                isUpdated={isUpdated}
+                orderForm={OrderForm}
+              />
+            </MyCollapse>
+          )}
+          {isReadOnly && (
+            <Card>
+              <Descriptions layout="vertical">
+                <Descriptions.Item label="Tên nhà cung cấp">
+                  {OrderForm.values.diaChiNavigation?.name || "--"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Số điện nhà cung cấp">
+                  {OrderForm.values.diaChiNavigation?.phone || "--"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Email nhà cung cấp">
+                  {OrderForm.values.diaChiNavigation?.email || "--"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Địa chỉ giao hàng">
+                  {`${OrderForm.values?.diaChiNavigation?.wardName || "--"} - ${
+                    OrderForm.values?.diaChiNavigation?.districtName || "--"
+                  } - ${
+                    OrderForm.values?.diaChiNavigation?.provinceName || "--"
+                  }`}
+                </Descriptions.Item>
+                <Descriptions.Item label="Địa chỉ xuất hóa đơn">
+                  {`${OrderForm.values?.diaChiNavigation?.wardName} - ${
+                    OrderForm.values?.diaChiNavigation?.districtName
+                  } - ${
+                    OrderForm.values?.diaChiNavigation?.provinceName || "--"
+                  }`}
+                </Descriptions.Item>
+              </Descriptions>
+            </Card>
+          )}
         </Col>
         <Col span={24}>
           <Card></Card>
