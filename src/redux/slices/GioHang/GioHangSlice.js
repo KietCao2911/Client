@@ -117,6 +117,7 @@ const GioHangSlice = createSlice({
           chiTietNhapXuats.splice(index, 1);
           if (chiTietNhapXuats.length <= 0) {
             window.localStorage.removeItem("cart");
+            window.location.replace("/");
           } else {
             state.chiTietNhapXuats = [...chiTietNhapXuats];
             localStorage.setItem("cart", JSON.stringify(state));

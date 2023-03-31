@@ -48,6 +48,15 @@ const TrangChiTietSanPham = () => {
       const productChild = product.productCurrent;
       let CartItem = {};
       CartItem.soLuong = 1;
+      CartItem.img =
+        BASE_URL +
+          "wwwroot/res/SanPhamRes/Imgs/" +
+          productChild?.parentID?.trim() +
+          "/" +
+          productChild?.idColor?.trim() +
+          "/" +
+          productChild?.chiTietHinhAnhs[0]?.idHinhAnhNavigation?.fileName?.trim() ||
+        "https://images.pexels.com/photos/1240892/pexels-photo-1240892.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
       CartItem.maSanPham = productChild?.maSanPham;
       CartItem.sanPhamNavigation = productChild;
       CartItem.donGia = productChild?.giaBanLe || 0;
@@ -211,7 +220,7 @@ const TrangChiTietSanPham = () => {
             )}
           </Col>
           {/* Product Checkout forMB*/}
-          <Col md={0}>
+          <Col md={0} className="ProductInfo">
             <Space size={8} direction="vertical">
               <Space style={{ width: "100%" }} direction="vertical">
                 <strong>Kích cỡ</strong>
