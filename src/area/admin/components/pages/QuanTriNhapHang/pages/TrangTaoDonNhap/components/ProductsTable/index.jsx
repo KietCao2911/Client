@@ -4,7 +4,7 @@ import { DeleteOutlined, FileAddOutlined } from "@ant-design/icons";
 import convertVND from "~/components/utils/ConvertVND";
 
 const ProductsTable = (props) => {
-  const { Form, isEdit } = props;
+  const { Form, isEdit,isOrder=true } = props;
   useEffect(() => {}, [Form.values]);
   const columns = [
     {
@@ -35,10 +35,12 @@ const ProductsTable = (props) => {
     {
       title: "Số lượng ",
       render: (_, record) => {
+        console.log({SL:record})
         return isEdit ? (
           <Input
             type="number"
             min={1}
+            max={isOrder?record?.sanPhamNavigation?.soLuongCoTheban&&record?.sanPhamNavigation?.soLuongTon:null}
             onChange={(e) => onChangeSoLuong(record.maSanPham, e.target.value)}
             value={record?.soLuong}
           />
@@ -122,10 +124,10 @@ const ProductsTable = (props) => {
     if (index > -1) {
       temp.splice(index, 1);
       if (temp.length <= 0) {
-        Form.setFieldValue("phiship", 0);
         Form.setFieldValue("thanhTien", 0);
         Form.setFieldValue("chietKhau", 0);
         Form.setFieldValue("tongSoLuong", 0);
+        Form.setFieldValue("diaChiNavigation.wardID", null);
       } else {
         Form.setFieldValue(
           "tongSoLuong",

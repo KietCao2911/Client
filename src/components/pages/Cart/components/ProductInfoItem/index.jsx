@@ -85,7 +85,7 @@ const dispatch =useDispatch();
                     <span>{sanPhamNavigation?.idSize}</span>
                 </Form.Item>
                 <Form.Item label="Màu sắc">
-                <span>{sanPhamNavigation?.idColor}</span>
+                <span class="color" style={{backgroundColor:sanPhamNavigation?.idColor}}></span>
                 </Form.Item>
                 <Form.Item label="Số lượng" name={"qty"}>
                     <MyOptions number={9} qty={soLuong} onChange={handleUpdateQty} data={props} ></MyOptions>

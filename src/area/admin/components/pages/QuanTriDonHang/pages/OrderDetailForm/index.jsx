@@ -32,7 +32,8 @@ import ItemResult from "~/components/commomComponents/List/compoenents/ItemResul
 import ProductsTable from "../../../QuanTriNhapHang/pages/TrangTaoDonNhap/components/ProductsTable";
 import convertVND from "~/components/utils/ConvertVND";
 import { File, Plus } from "react-feather";
-import CustomSpin from "~/components/CustomSpin";
+import { message, Select } from "antd/es";
+import * as BranchAPI from "~/redux/slices/Branch/BranchSlice";
 const OrderDetailForm = (props) => {
   const { isUpdated, isEdit, isCreated, isReadOnly } = props;
   const { id } = useParams();
@@ -40,6 +41,7 @@ const OrderDetailForm = (props) => {
   const [isPending, startTransition] = useTransition();
   const { hoadons, hoadon } = useSelector((state) => state.HoaDon);
   const { sanPhamTrongKho } = useSelector((state) => state.KhoHang);
+  const {branchs} = useSelector(state=>state.Branch)
   const [productSearchText, setproductSearchText] = useState("");
   document.title = isUpdated
     ? "Quản lý đơn hàng - Chỉnh sửa"
@@ -62,7 +64,7 @@ const OrderDetailForm = (props) => {
         wardName: "",
         provinceID: null,
         districtID: null,
-        wardId: null,
+        wardID: null,
         addressDsc: "",
         email: "",
       },
@@ -106,7 +108,6 @@ const OrderDetailForm = (props) => {
       alert("SUBMIT");
     },
   });
-  console.log({ PROPS: props });
   const handleApplyCoupon = (value) => {
     OrderForm.setFieldValue("chietKhau", Number(value));
     const totalPrices = OrderForm.values.chiTietNhapXuats.reduce((x, y) => {
@@ -124,24 +125,36 @@ const OrderDetailForm = (props) => {
     OrderForm.setValues({ ...hoadon });
   }, [hoadon]);
   const onClickProduct = (p) => {
-    const params = {
-      sanPhamNavigation: { ...p },
-      soLuong: 1,
-      donGia: p.giaBanLe || 0,
-      thanhTien: parseFloat(p.giaBanLe) * 1,
-      maSanPham: p?.maSanPham || "",
-    };
-
-    let temp = OrderForm.values.chiTietNhapXuats
-      ? [...OrderForm.values.chiTietNhapXuats]
-      : [];
-    temp.push({ ...params });
-    OrderForm.setFieldValue(
-      "thanhTien",
-      OrderForm.values?.thanhTien + parseFloat(params.thanhTien)
-    );
-    OrderForm.setFieldValue("tongSoLuong", 1);
-    OrderForm.setFieldValue("chiTietNhapXuats", temp);
+    console.log({p})
+    if(p?.soLuongCoTheban<=0)
+    {
+      message.open({
+        content:"Sản phẩm này hiện đã hết hàng, vui lòng nhập thêm sản phẩm",
+        type:"error"
+      })
+    }
+    else
+    {
+      const params = {
+        sanPhamNavigation: { ...p },
+        soLuong: 1,
+        donGia: p.giaBanLe || 0,
+        thanhTien: parseFloat(p.giaBanLe) *1,
+        maSanPham: p?.maSanPham || "",
+      };
+  
+      let temp = OrderForm.values.chiTietNhapXuats
+        ? [...OrderForm.values.chiTietNhapXuats]
+        : [];
+      temp.push({ ...params });
+      OrderForm.setFieldValue(
+        "thanhTien",
+        OrderForm.values?.thanhTien + parseFloat(params.thanhTien)+(OrderForm.values?.phiship||0)
+      );
+      OrderForm.setFieldValue("tongSoLuong", OrderForm.values.tongSoLuong+1);
+      OrderForm.setFieldValue("chiTietNhapXuats", temp);
+    }
+    
   };
   const handleChangeProductSearchText = (e) => {
     startTransition(() => {
@@ -155,6 +168,7 @@ const OrderDetailForm = (props) => {
     });
   };
   useEffect(() => {
+    dispatch(BranchAPI.fetchGetBranch())
     if (isUpdated || isReadOnly) {
       dispatch(HoaDonApi.fetchGetOrderDetails({ id }));
     } else {
@@ -211,10 +225,14 @@ const OrderDetailForm = (props) => {
     if (Object.keys(OrderForm.errors).length <= 0) {
       const params = { ...OrderForm.values };
       if (isCreated) {
-        alert("created");
-      } else if (isUpdated) {
+          console.log({params})
+          alert("created");
+          
+        } else if (isUpdated) {
+        console.log({params})
         alert("updated");
       } else {
+        console.log({params})
         alert("READONLY");
       }
     } else {
@@ -222,13 +240,42 @@ const OrderDetailForm = (props) => {
       console.log({ errors: OrderForm.errors, values: OrderForm.values });
     }
   };
-
+  const handleOnChangeBranch=(e)=>
+  {
+    const guess = OrderForm.values.diaChiNavigation;
+    const phiship = OrderForm.values.phiship;
+    OrderForm.setValues({
+      diaChiNavigation:guess|| {
+        name: "",
+        phone: "",
+        provinceName: "",
+        districtName: "",
+        wardName: "",
+        provinceID: null,
+        districtID: null,
+        wardID: null,
+        addressDsc: "",
+        email: "",
+      },
+      chiTietNhapXuats: [],
+      thanhTien: 0,
+      loaiPhieu: "PHIEUXUAT",
+      tongSoLuong: 0,
+      phiship: phiship||0,
+      chietKhau: 0,
+      maChiNhanh: e,
+      phuongThucThanhToan: "COD",
+      daThanhToan: false || hoadon?.daThanhToan,
+      steps: 0 || hoadon?.steps,
+    });
+    setproductSearchText("");
+  }
   return (
     <form ref={FormRef}>
       <Row gutter={[, 20]}>
         <Col span={24}>
           <Row justify={"space-between"}>
-            <Space>1</Space>
+            <Space>{hoadon?.id||""}</Space>
             <Space>
               <Steps
                 current={
@@ -255,52 +302,10 @@ const OrderDetailForm = (props) => {
           </Row>
         </Col>
         <Col span={24}>
-          {(isUpdated || isCreated) && (
-            <MyCollapse defaultOpen={true} label="Địa chỉ giao hàng">
-              <AddressForm
-                isCreated={isCreated}
-                isReadOnly={isReadOnly}
-                isUpdated={isUpdated}
-                orderForm={OrderForm}
-              />
-            </MyCollapse>
-          )}
-          {isReadOnly && (
-            <Card>
-              <Descriptions layout="vertical">
-                <Descriptions.Item label="Tên nhà cung cấp">
-                  {OrderForm.values.diaChiNavigation?.name || "--"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Số điện nhà cung cấp">
-                  {OrderForm.values.diaChiNavigation?.phone || "--"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Email nhà cung cấp">
-                  {OrderForm.values.diaChiNavigation?.email || "--"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Địa chỉ giao hàng">
-                  {`${OrderForm.values?.diaChiNavigation?.wardName || "--"} - ${
-                    OrderForm.values?.diaChiNavigation?.districtName || "--"
-                  } - ${
-                    OrderForm.values?.diaChiNavigation?.provinceName || "--"
-                  }`}
-                </Descriptions.Item>
-                <Descriptions.Item label="Địa chỉ xuất hóa đơn">
-                  {`${OrderForm.values?.diaChiNavigation?.wardName} - ${
-                    OrderForm.values?.diaChiNavigation?.districtName
-                  } - ${
-                    OrderForm.values?.diaChiNavigation?.provinceName || "--"
-                  }`}
-                </Descriptions.Item>
-              </Descriptions>
-            </Card>
-          )}
-        </Col>
-        <Col span={24}>
-          <Card></Card>
-        </Col>
-        <Col span={24}>
-          <Card>
-            <InputText
+                  <Row gutter={[20,20]}>
+                  <Col span={18}>
+        <Card>
+                {isCreated&&  <InputText
               label="Tìm kiếm sản phẩm"
               className={`${
                 OrderForm.touched?.chiTietNhapXuats &&
@@ -308,7 +313,7 @@ const OrderDetailForm = (props) => {
                 "error"
               }`}
               onChange={(e) => handleChangeProductSearchText(e)}
-            />
+            />}
             <List onItemClick={(e) => console.log(e)}>
               {productSearchText &&
                 sanPhamTrongKho.length > 0 &&
@@ -340,7 +345,7 @@ const OrderDetailForm = (props) => {
             </List>
             <List></List>
             <ProductsTable
-              isEdit={isCreated || isUpdated ? true : false}
+              isEdit={isCreated?true:false}
               Form={OrderForm}
             />
             <span
@@ -383,10 +388,79 @@ const OrderDetailForm = (props) => {
             </Space>
           </Card>
         </Col>
+        <Col span={6}>
+                    <Card title="Mã chi nhánh">
+                    <Select
+                        value={OrderForm.values.maChiNhanh}
+                        onChange={(e) => handleOnChangeBranch(e)}
+                        style={{ width: "100%" }}
+                      >
+                        {branchs &&
+                          branchs.map((branch) => {
+                            return (
+                              <Select.Option value={branch?.maChiNhanh.trim()}>
+                                {branch?.tenChiNhanh}
+                              </Select.Option>
+                            );
+                          })}
+                      </Select>
+                    </Card>
+                  </Col>
+                  </Row>
+    
+        </Col>
+        <Col span={24}>
+               
+                  {(isCreated) && (
+            <MyCollapse defaultOpen={true} label="Địa chỉ giao hàng">
+              <AddressForm
+                isCreated={isCreated}
+                isReadOnly={isReadOnly}
+                isUpdated={isUpdated}
+                orderForm={OrderForm}
+              />
+            </MyCollapse>
+          )}
+          {(isReadOnly||isUpdated ) && (
+            <Card>
+              <Descriptions layout="vertical">
+                <Descriptions.Item label="Tên khách hàng">
+                  {OrderForm.values.diaChiNavigation?.name || "--"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Số điện thoại">
+                  {OrderForm.values.diaChiNavigation?.phone || "--"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Email ">
+                  {OrderForm.values.diaChiNavigation?.email || "--"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Địa chỉ giao hàng">
+                  {`${OrderForm.values?.diaChiNavigation?.wardName || "--"} - ${
+                    OrderForm.values?.diaChiNavigation?.districtName || "--"
+                  } - ${
+                    OrderForm.values?.diaChiNavigation?.provinceName || "--"
+                  }`}
+                </Descriptions.Item>
+                <Descriptions.Item label="Địa chỉ xuất hóa đơn">
+                  {`${OrderForm.values?.diaChiNavigation?.wardName} - ${
+                    OrderForm.values?.diaChiNavigation?.districtName
+                  } - ${
+                    OrderForm.values?.diaChiNavigation?.provinceName || "--"
+                  }`}
+                </Descriptions.Item>
+              </Descriptions>
+            </Card>
+          )}
+               
+        </Col>
+      
         <Col md={24}>
           <Card title="Giao hàng">
             <strong>
               Phí giao hàng: {convertVND(OrderForm.values.phiship || 0)}
+            </strong>
+            <div></div>
+            <strong>
+            Tổng tiền cần thanh toán: {convertVND(OrderForm.values.thanhTien || 0)}
             </strong>
           </Card>
         </Col>

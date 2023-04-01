@@ -62,6 +62,7 @@ const TrangChiTietSanPham = () => {
       CartItem.donGia = productChild?.giaBanLe || 0;
       CartItem.thanhTien = productChild?.giaBanLe || 0;
       CartItem.maChiNhanh = window.localStorage.getItem("location") || "";
+      console.log({location: window.localStorage.getItem("location")})
       dispatch(AddToCart(CartItem));
     } else {
       notification.open({

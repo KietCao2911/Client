@@ -21,7 +21,7 @@ const ImgVersion = (props) => {
   );
 };
 const CardProduct = (props, ref) => {
-  const { value, key } = props;
+  const { value, key,Height14 } = props;
   const [img, setImg] = useState(() => {
     let pic = "";
     if (value && value?.colorGrouped?.length > 0) {
@@ -67,6 +67,7 @@ const CardProduct = (props, ref) => {
             <div className="ImgBox">
               <img
                 draggable={false}
+                className={`${Height14&&"Height14"}`}
                 src={
                   inView
                     ? img ||

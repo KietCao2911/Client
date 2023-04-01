@@ -15,6 +15,7 @@ const OrderDsc = (props) => {
   const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip } = useSelector(
     (state) => state.GioHang
   );
+  console.log({chiTietNhapXuats})
   const { FeeInfo } = useSelector((state) => state.GiaoHangNhanh);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -29,7 +30,7 @@ const OrderDsc = (props) => {
             <div className="price">
               {convertVND(
                 chiTietNhapXuats?.reduce(
-                  (x, y) => x?.donGia || 0 + y?.donGia || 0,
+                  (x, y) => (x) + (y?.donGia || 0),
                   0
                 )
               ) || convertVND(0)}

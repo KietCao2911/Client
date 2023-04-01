@@ -19,7 +19,6 @@ const AddressForm = (props) => {
   const [Districts, setDistricts] = useState([]);
   const [Wards, setWards] = useState([]);
   const { setLoading, orderForm, isUpdated, isReadOnly, isCreated } = props;
-  console.log({ props });
   const handleChangeProvince = async (e) => {
     orderForm.setFieldValue(
       "diaChiNavigation.provinceName",
@@ -61,34 +60,16 @@ const AddressForm = (props) => {
         coupon: null,
       });
       orderForm.setFieldValue("phiship", fee?.data?.total || 0);
+      orderForm.setFieldValue("thanhTien", (orderForm.values?.thanhTien||0) + fee?.data?.total || 0);
     }
   };
   useEffect(() => {
     const fetch = async () => {
       const provinces = await fetchGetProvince();
-      const districts = await fetchGetDistrict(
-        orderForm.values.diaChiNavigation.provinceID
-      );
-      const wards = await fetchGetWard(
-        orderForm.values.diaChiNavigation.districtID
-      );
-      setProvinces(provinces);
-      setDistricts(districts);
-      setWards(wards);
+      setProvinces(provinces)
     };
-    const con = async () => {
-      if (isUpdated || isReadOnly) {
-        fetch();
-      } else {
-        const provinces = await fetchGetProvince();
-        setProvinces(provinces);
-      }
-    };
-    con();
+    fetch();
   }, [
-    orderForm.values.diaChiNavigation?.districtID,
-    orderForm.values.diaChiNavigation?.provinceID,
-    orderForm.values.diaChiNavigation?.wardID,
   ]);
   return (
     <div title="Địa chỉ giao hàng">
@@ -241,12 +222,12 @@ const AddressForm = (props) => {
             value={orderForm.values.diaChiNavigation?.wardID || null}
             onChange={(e) => CalFee(e)}
             defaultLabel="Xã/Phường"
-            name="diaChiNavigation.wardId"
+            name="diaChiNavigation.wardID"
           >
             <option value={""}>Vui lòng chọn Xã/Phường</option>
             {Wards.data &&
               Wards?.data?.map((item) => {
-                return <option value={item.WardCode}>{item.WardName}</option>;
+                return <option key={item?.WardCode} value={item.WardCode}>{item.WardName}</option>;
               })}
           </SelectInput>
           {orderForm.touched.diaChiNavigation?.wardID &&

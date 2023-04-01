@@ -130,7 +130,6 @@ const OrderForm = (props) => {
       diaChiNavigation,
     };
     if (Object.keys(orderForm.errors).length <= 0) {
-      console.log({ params });
       dispatch(ThanhToanApi.fetchPostWithGuess(params));
     } else {
       alert("sai thong tin");

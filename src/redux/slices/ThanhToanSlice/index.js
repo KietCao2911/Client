@@ -65,8 +65,8 @@ const ThanhToanSlice =createSlice({
                     message:"Đặt hàng thành công.",
                     type:"success",
                 })
-                localStorage.removeItem("cart");
-                window.location.replace("/")
+                // localStorage.removeItem("cart");
+                // window.location.replace("/")
             }
 
         })

@@ -13,7 +13,7 @@ import { InView } from "react-intersection-observer";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const ListProducts = ({ items, loading, type }) => {
+const ListProducts = ({ items, loading, type,miniProducts }) => {
   const [products, setProducts] = useState(items || []);
   const cardRefs = useRef([]);
   const [visible, setVisible] = useState([]);
@@ -59,9 +59,12 @@ const ListProducts = ({ items, loading, type }) => {
                 // when window width is >= 640px
 
                 // when window width is >= 768px
+                0:{
+                  slidesPerView:2,
+                },
                 499: {
                   width: 499,
-                  slidesPerView: 1,
+                  slidesPerView: 2,
                 },
                 768: {
                   width: 768,
@@ -77,7 +80,6 @@ const ListProducts = ({ items, loading, type }) => {
                 clickable: true,
                 bulletClass: "my-custom-pagination-item",
               }}
-              freeMode={true}
               spaceBetween={30}
               modules={[Pagination, FreeMode, Navigation]}
               className="mySwiper"
@@ -86,7 +88,7 @@ const ListProducts = ({ items, loading, type }) => {
                 products?.map((item, index) => {
                   return (
                     <SwiperSlide key={v4()}>
-                      <CardProduct value={item}></CardProduct>
+                      <CardProduct Height14={miniProducts?true:false} value={item}></CardProduct>
                     </SwiperSlide>
                     //  <Col xl={8}>
                     //   <CardProduct value={item}></CardProduct>

@@ -57,6 +57,7 @@ const Home = () => {
             type={"slider"}
             items={productsLatest || []}
             loading={loading}
+            miniProducts={true}
           />
         </Card>
 

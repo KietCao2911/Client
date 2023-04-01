@@ -14,6 +14,7 @@ const initialState = {
   couponCode: cart?.couponCode || null,
   phuongThucThanhToan: cart?.phuongThucThanhToan || "COD",
   loaiPhieu: "PHIEUXUAT",
+  maChiNhanh:window.localStorage.getItem("location"),
   infoGuess: {},
   ghnAPI: {
     Provinces: address?.Provinces || {},
