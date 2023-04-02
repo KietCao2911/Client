@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ShowMore.scss";
 
-const ShowMore = ({ children }) => {
+const ShowMore = ({ children, height }) => {
   const [show, setShow] = useState(false);
 
   return (

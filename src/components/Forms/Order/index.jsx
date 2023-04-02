@@ -141,7 +141,6 @@ const OrderForm = (props) => {
     let cartString = JSON.stringify(cart);
     window.localStorage.setItem("cart", cartString);
   };
-  console.log({ values: orderForm.values });
   const fetch = async () => {
     dispatch(GiaoHangNhanhApi.fetchGetProvinces());
     orderForm.values?.ProvinceID &&

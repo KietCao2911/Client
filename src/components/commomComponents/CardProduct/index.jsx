@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, memo } from "react";
 import { Card } from "antd";
 import "./CardProduct.scss";
 import { Link } from "react-router-dom";
@@ -15,13 +15,13 @@ const { Paragraph, Text } = Typography;
 const ImgVersion = (props) => {
   const { src, key } = props;
   return (
-    <div className="item">
+    <div className="item" {...props}>
       <img src={src} alt="" />
     </div>
   );
 };
 const CardProduct = (props, ref) => {
-  const { value, key,Height14 } = props;
+  const { value, key, Height14 } = props;
   const [img, setImg] = useState(() => {
     let pic = "";
     if (value && value?.colorGrouped?.length > 0) {
@@ -67,7 +67,7 @@ const CardProduct = (props, ref) => {
             <div className="ImgBox">
               <img
                 draggable={false}
-                className={`${Height14&&"Height14"}`}
+                className={`${Height14 && "Height14"}`}
                 src={
                   inView
                     ? img ||
@@ -90,7 +90,6 @@ const CardProduct = (props, ref) => {
                         img[0]?.idColor?.trim() +
                         "/" +
                         img[0]?.chiTietHinhAnhs[0]?.idHinhAnhNavigation?.fileName?.trim();
-                      const URL = img[0].chiTietHinhAnhs[0].url;
                       return (
                         <div key={v4()}>
                           <ImgVersion
@@ -129,4 +128,4 @@ const CardProduct = (props, ref) => {
   );
 };
 
-export default CardProduct;
+export default memo(CardProduct);

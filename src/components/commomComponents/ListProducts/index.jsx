@@ -13,7 +13,7 @@ import { InView } from "react-intersection-observer";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const ListProducts = ({ items, loading, type,miniProducts }) => {
+const ListProducts = ({ items, loading, type, miniProducts }) => {
   const [products, setProducts] = useState(items || []);
   const cardRefs = useRef([]);
   const [visible, setVisible] = useState([]);
@@ -35,7 +35,9 @@ const ListProducts = ({ items, loading, type,miniProducts }) => {
                 products?.map((item, index) => {
                   return (
                     <Col xs={12} xl={8} xxl={6} key={v4()}>
-                      <CardProduct value={item}></CardProduct>
+                      <CardProduct
+                        value={item?.sanPhamNavigation}
+                      ></CardProduct>
                     </Col>
                   );
                 })
@@ -59,8 +61,8 @@ const ListProducts = ({ items, loading, type,miniProducts }) => {
                 // when window width is >= 640px
 
                 // when window width is >= 768px
-                0:{
-                  slidesPerView:2,
+                0: {
+                  slidesPerView: 2,
                 },
                 499: {
                   width: 499,
@@ -68,7 +70,7 @@ const ListProducts = ({ items, loading, type,miniProducts }) => {
                 },
                 768: {
                   width: 768,
-                  slidesPerView: 2,
+                  slidesPerView: 3,
                 },
                 1600: {
                   width: 1600,
@@ -88,7 +90,10 @@ const ListProducts = ({ items, loading, type,miniProducts }) => {
                 products?.map((item, index) => {
                   return (
                     <SwiperSlide key={v4()}>
-                      <CardProduct Height14={miniProducts?true:false} value={item}></CardProduct>
+                      <CardProduct
+                        Height14={miniProducts ? true : false}
+                        value={item?.sanPhamNavigation}
+                      ></CardProduct>
                     </SwiperSlide>
                     //  <Col xl={8}>
                     //   <CardProduct value={item}></CardProduct>

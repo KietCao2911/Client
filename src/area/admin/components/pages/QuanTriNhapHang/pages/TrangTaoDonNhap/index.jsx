@@ -129,11 +129,15 @@ const TrangTaoDonNhap = (props) => {
           dispatch(PhieuNhapAPI.fetchPostPhieuNhaps({ body }));
           console.log({ CreatedBody: body });
         } else {
-          console.log({ UpdateBody: body });
-          // dispatch(PhieuNhapAPI.fetchPutPhieuNhaps({body}));
+          console.log({ CreatedBody: body });
+          dispatch(PhieuNhapAPI.fetchPutPhieuNhaps({ body }));
         }
       }
     }
+  };
+  const handleSubmitThanhToan = () => {
+    const body = { ...Form.values };
+    dispatch(PhieuNhapAPI.fetchPutThanhToan({ body }));
   };
   const handleSubmitNhapKho = () => {
     const body = { ...Form.values };
@@ -451,7 +455,7 @@ const TrangTaoDonNhap = (props) => {
                     <Card title="Thông tin sản phẩm">
                       <ProductsTable
                         Form={Form}
-                        isEdit={isUpdated || isCreated ? true : false}
+                        isEdit={isCreated ? true : false}
                       />
                     </Card>
                     <div className="summary">
@@ -569,8 +573,10 @@ const TrangTaoDonNhap = (props) => {
                                       >
                                         Thanh toán với nhà cung cấp
                                       </Checkbox>
-                                    ) : (
-                                      <Button>Thanh toán</Button>
+                                    ) : Form.values.daThanhToan ? null : (
+                                      <Button onClick={handleSubmitThanhToan}>
+                                        Thanh toán
+                                      </Button>
                                     )}
                                   </>
                                 }
@@ -622,8 +628,8 @@ const TrangTaoDonNhap = (props) => {
                   <Card title="Thông tin đơn nhập">
                     <Card title="Chi nhánh">
                       <Select
-                        disabled={isCreated == "create" ? false : true}
-                        value={Form.values.maChiNhanh}
+                        disabled={isReadOnly || isUpdated ? true : false}
+                        value={Form.values?.maChiNhanh?.trim()}
                         onChange={(e) => handleOnChangeBranch(e)}
                         style={{ width: "100%" }}
                       >

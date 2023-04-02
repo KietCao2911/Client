@@ -16,17 +16,25 @@ export const fetchGetOrderDetails = async (id) => {
     throw error;
   }
 };
-export const fetchPutOrderDetails = async (body) => {
+export const fetchPutXuatKho = async (body) => {
   try {
-    const res = await Method.Put("/api/admin/DonHang", body);
+    const res = await Method.Put("/api/admin/DonHang/XuatKho", body);
     return res;
   } catch (error) {
     throw error;
   }
 };
-export const fetchCancelOrder = async (id) => {
+export const fetchPutDaGiaoHang = async (body) => {
   try {
-    const res = await Method.Delete("/api/admin/DonHang/" + id);
+    const res = await Method.Put("/api/admin/DonHang/DaGiaoHang", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+export const fetchCancelOrder = async (body) => {
+  try {
+    const res = await Method.Delete("/api/admin/DonHang/HuyDon", body);
     return res;
   } catch (error) {
     throw error;

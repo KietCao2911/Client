@@ -2,7 +2,7 @@ import * as Method from "~/axiosRequest/request";
 const location = window.localStorage.getItem("location") || "CN01";
 export const GetAllProducts = async (params) => {
   try {
-    const res = await Method.Get(`/api/SanPham/GetAll`, { params });
+    const res = await Method.Get(`/api/SanPham/GetAll/` + location, { params });
     return res;
   } catch (err) {
     throw err;
@@ -10,7 +10,7 @@ export const GetAllProducts = async (params) => {
 };
 export const GetProduct = async (slug) => {
   try {
-    const res = await Method.Get(`/api/SanPham/Get/${slug}`);
+    const res = await Method.Get(`/api/SanPham/Get/${slug}/` + location);
     return res;
   } catch (error) {
     throw error;

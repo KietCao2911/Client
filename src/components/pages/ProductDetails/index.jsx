@@ -33,16 +33,12 @@ const TrangChiTietSanPham = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const dispatch = useDispatch();
   const { product, loading } = useSelector((state) => state.SanPham);
-  const { imgsDisplay, sizesDisplay } = product;
   const { Messages } = useSelector((state) => state.Message);
   const { slug } = useParams();
-  const [imgs, setImgs] = useState(
-    (product.hinhAnhs && product?.hinhAnhs[0]) || []
-  );
   const [productsRecentlyView, setProductsRecentlyView] = useState(
     JSON.parse(window.localStorage.getItem("recentlyView")) || []
   );
-  document.title = product?.tenSanPham;
+  document.title = "Sản phẩm - " + product?.sanPhamNavigation?.tenSanPham;
   const handleAddToCart = async () => {
     if (product.productCurrent && product.productCurrent.maSanPham) {
       const productChild = product.productCurrent;
@@ -62,7 +58,6 @@ const TrangChiTietSanPham = () => {
       CartItem.donGia = productChild?.giaBanLe || 0;
       CartItem.thanhTien = productChild?.giaBanLe || 0;
       CartItem.maChiNhanh = window.localStorage.getItem("location") || "";
-      console.log({location: window.localStorage.getItem("location")})
       dispatch(AddToCart(CartItem));
     } else {
       notification.open({
@@ -81,32 +76,6 @@ const TrangChiTietSanPham = () => {
     <Row gutter={{ md: 20 }} className="ProductDetail">
       <Col md={16}>
         <Row>
-          {/* Slide Images Products */}
-          {/* <Col className="ProductDsc" md={0}>
-            <Breadcrumb />
-            <Swiper
-              pagination={true}
-              modules={[Pagination]}
-              className="mySwiper"
-            >
-              {imgsDisplay &&
-                imgsDisplay.map((img) => {
-                  const url =
-                    BASE_URL +
-                    "wwwroot/res/SanPhamRes/Imgs/" +
-                    product?.maSanPham?.trim() +
-                    "/" +
-                    img?.idMaMau?.trim() +
-                    "/" +
-                    img?.idHinhAnhNavigation?.fileName?.trim();
-                  return (
-                    <SwiperSlide key={uuidv4()}>
-                      <img style={{ objectFit: "contain" }} src={url || ""} />
-                    </SwiperSlide>
-                  );
-                })}
-            </Swiper>
-        </Col> */}
           <Col className="ProductInfo" md={24} xs={24}>
             <Col xs={0} md={24}>
               <Breadcrumb style={{ width: "100%" }} />
@@ -134,18 +103,21 @@ const TrangChiTietSanPham = () => {
               </h1>
               <p className="InfoPrice">
                 {convertVND(
-                  product?.productCurrent?.giaBanLe || product?.giaBanLe || 0
+                  product?.sanPhamNavigation?.productCurrent?.giaBanLe ||
+                    product?.sanPhamNavigation?.giaBanLe ||
+                    0
                 )}
               </p>
               <p>
                 Mã SKU:{" "}
-                {product?.productCurrent?.maSanPham || product?.maSanPham}
+                {product?.sanPhamNavigation?.productCurrent?.maSanPham ||
+                  product?.sanPhamNavigation?.maSanPham}
               </p>
             </Col>
             <ShowMore>
               <Row>
-                {imgsDisplay &&
-                  imgsDisplay.map((img) => {
+                {product?.sanPhamNavigation?.imgsDisplay &&
+                  product?.sanPhamNavigation?.imgsDisplay.map((img) => {
                     const url =
                       BASE_URL +
                       "wwwroot/res/SanPhamRes/Imgs/" +
@@ -184,38 +156,10 @@ const TrangChiTietSanPham = () => {
                   <h1 style={{ textTransform: "uppercase" }}>
                     Sản phẩm bạn vừa xem
                   </h1>
-                  <Swiper
-                    breakpoints={{
-                      320: {
-                        slidesPerView: 1,
-                      },
-                      // when window width is >= 480px
-                      480: {
-                        slidesPerView: 2,
-                        spaceBetween: 30,
-                      },
-                      // when window width is >= 640px
-                      640: {
-                        slidesPerView: 3,
-                        spaceBetween: 30,
-                      },
-                    }}
-                    slidesPerView={3}
-                    spaceBetween={30}
-                    freeMode={true}
-                    pagination={{
-                      clickable: true,
-                    }}
-                    modules={[FreeMode, Pagination]}
-                    className="mySwiper"
-                  >
-                    {productsRecentlyView &&
-                      productsRecentlyView.map((product) => (
-                        <SwiperSlide key={uuidv4()}>
-                          <CardProduct value={product} />
-                        </SwiperSlide>
-                      ))}
-                  </Swiper>
+                  <ListProducts
+                    type={"slider"}
+                    items={productsRecentlyView}
+                  ></ListProducts>
                 </Space>
               </Col>
             )}
@@ -235,7 +179,9 @@ const TrangChiTietSanPham = () => {
               </Space>
               <Space style={{ width: "100%" }} direction="vertical">
                 <strong>Màu sắc</strong>
-                <ColorComponent items={product?.colorGrouped}></ColorComponent>
+                <ColorComponent
+                  items={product?.sanPhamNavigation?.colorGrouped}
+                ></ColorComponent>
               </Space>
 
               <button className="AddToCart" onClick={handleAddToCart}>
@@ -250,17 +196,17 @@ const TrangChiTietSanPham = () => {
                 truy cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết
                 chi tiết
               </a>
-              {product?.mota && (
+              {product?.sanPhamNavigation?.mota && (
                 <MyCollapse defaultOpen={false} label="Mô tả">
                   <div style={{ textAlign: "start" }}>
-                    {ReactHtmlParser(product?.mota)}
+                    {ReactHtmlParser(product?.sanPhamNavigation?.mota)}
                   </div>
                 </MyCollapse>
               )}
-              {product?.motaChiTiet && (
+              {product?.sanPhamNavigation?.motaChiTiet && (
                 <MyCollapse defaultOpen={false} label="Chi tiết">
                   <div style={{ textAlign: "start" }}>
-                    {ReactHtmlParser(product?.motaChiTiet)}
+                    {ReactHtmlParser(product?.sanPhamNavigation?.motaChiTiet)}
                   </div>
                   {/* {ReactHtmlParser(product?.motaChiTiet)} */}
                 </MyCollapse>
@@ -291,12 +237,11 @@ const TrangChiTietSanPham = () => {
             <div>
               {" "}
               <h1 className="InfoTitle">
-                {product?.tenSanPham || "GIÀY SUPERSTAR TAEGEUKDANG"}
+                {product?.sanPhamNavigation?.tenSanPham ||
+                  "GIÀY SUPERSTAR TAEGEUKDANG"}
               </h1>
               <p className="InfoPrice">
-                {convertVND(
-                  product?.productCurrent?.giaBanLe || product?.giaBanLe || 0
-                )}
+                {convertVND(product?.productCurrent?.giaBanLe || 0)}
               </p>
               <p>
                 Mã SKU:{" "}
@@ -320,7 +265,9 @@ const TrangChiTietSanPham = () => {
           </Space>
           <Space direction="vertical" style={{ width: "100%" }}>
             <strong>Màu sắc</strong>
-            <ColorComponent items={product?.colorGrouped}></ColorComponent>
+            <ColorComponent
+              items={product?.sanPhamNavigation?.colorGrouped}
+            ></ColorComponent>
           </Space>
 
           <button className="AddToCart" onClick={handleAddToCart}>
@@ -338,17 +285,17 @@ const TrangChiTietSanPham = () => {
             <RollbackOutlined /> Không đúng kích cỡ hoặc màu sắc? Vui lòng truy
             cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết chi tiết
           </a>
-          {product?.mota && (
-            <MyCollapse defaultOpen={false} label="Mô tả">
+          {product?.sanPhamNavigation?.mota && (
+            <MyCollapse defaultOpen={true} label="Mô tả">
               <div style={{ textAlign: "start" }}>
-                {ReactHtmlParser(product?.mota)}
+                {ReactHtmlParser(product?.sanPhamNavigation?.mota)}
               </div>
             </MyCollapse>
           )}
-          {product?.motaChiTiet && (
-            <MyCollapse defaultOpen={false} label="Chi tiết">
+          {product?.sanPhamNavigation?.motaChiTiet && (
+            <MyCollapse defaultOpen={true} label="Chi tiết">
               <div style={{ textAlign: "start" }}>
-                {ReactHtmlParser(product?.motaChiTiet)}
+                {ReactHtmlParser(product?.sanPhamNavigation?.motaChiTiet)}
               </div>
               {/* {ReactHtmlParser(product?.motaChiTiet)} */}
             </MyCollapse>

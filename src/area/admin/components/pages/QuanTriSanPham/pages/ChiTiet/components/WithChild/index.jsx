@@ -44,6 +44,7 @@ import * as DanhMucAPI from "~/redux/slices/DanhMuc";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import MyCollapse from "~/components/commomComponents/Collapse";
+import ShowMore from "~/components/commomComponents/ShowMore";
 const VersionDetailPage = lazy(() => import("./pages/VersionDetailPage"));
 const FooterTable = () => {
   return (
@@ -365,22 +366,37 @@ const WithChild = (props) => {
                     </Space>
                   )}
                 </Space>
-                <Space>
-                  <Space>Danh mục:</Space>
+                {isEdit ? (
                   <Space>
+                    <Space>Danh mục:</Space>
+                    <Space>
+                      <Cascader
+                        defaultValue={
+                          form.values.danhMucDetails &&
+                          form.values.danhMucDetails.map((item) => {
+                            return item.danhMucId;
+                          })
+                        }
+                        onChange={(e) => handleChangeCascader(e)}
+                        options={handleCascader([...items] || [])}
+                      ></Cascader>
+                    </Space>
+                  </Space>
+                ) : (
+                  <Space>
+                    <Space>Danh mục:</Space>
                     <Cascader
-                      defaultValue={
+                      value={
                         form.values.danhMucDetails &&
                         form.values.danhMucDetails.map((item) => {
                           return item.danhMucId;
                         })
                       }
-                      onChange={(e) => handleChangeCascader(e)}
                       options={handleCascader([...items] || [])}
+                      disabled={true}
                     ></Cascader>
                   </Space>
-                </Space>
-                <Space></Space>
+                )}
               </Space>
             </Space>
           </Card>
@@ -388,6 +404,7 @@ const WithChild = (props) => {
         <Col span={24}>
           <MyCollapse label="Mô tả">
             <CKEditor
+              disabled={isEdit ? false : true}
               data={product?.mota}
               onChange={(e, editor) =>
                 form.setFieldValue("mota", editor.getData())
@@ -399,6 +416,7 @@ const WithChild = (props) => {
         <Col span={24}>
           <MyCollapse label="Mô tả chi tiết">
             <CKEditor
+              disabled={isEdit ? false : true}
               data={product?.motaChiTiet || ""}
               onChange={(e, editor) =>
                 form.setFieldValue("motaChiTiet", editor.getData())
@@ -420,18 +438,20 @@ const WithChild = (props) => {
                   </Select>
                 }
               >
-                <Table
-                  pagination={false}
-                  rowSelection={rowSelection}
-                  style={{ width: "100%" }}
-                  columns={columns}
-                  dataSource={data}
-                  footer={() => (
-                    <>
-                      <FooterTable />
-                    </>
-                  )}
-                ></Table>
+                <ShowMore height={"50rem"}>
+                  <Table
+                    pagination={false}
+                    rowSelection={rowSelection}
+                    style={{ width: "100%" }}
+                    columns={columns}
+                    dataSource={data}
+                    footer={() => (
+                      <>
+                        <FooterTable />
+                      </>
+                    )}
+                  ></Table>
+                </ShowMore>
               </Card>
             </Col>
             {catchingRoute}

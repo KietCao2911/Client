@@ -6,6 +6,7 @@ import { Card, Col, Row, Space, Statistic, Tabs } from "antd";
 import HotProducts from "./components/HotProducts";
 import "./Home.scss";
 import * as SanPhamAPI from "~/redux/slices/SanPham";
+import * as SanPhamUserAPI from "~/redux/slices/SanPham/Users/index";
 import { useDispatch, useSelector } from "react-redux";
 import CategoryHome from "./components/Category";
 import { Link } from "react-router-dom";
@@ -23,13 +24,13 @@ const Home = () => {
   const { user } = useSelector((state) => state.XacThuc);
   const { boSuuTaps } = useSelector((state) => state.BoSuuTap);
   const { productsLatest, loading } = useSelector((state) => state.SanPham);
-  const { productsHot } = useSelector((state) => state.SanPham);
+  const { productsHot, products } = useSelector((state) => state.SanPham);
   const { brands } = useSelector((state) => state.Brand);
   const profile = user?.info?.find((x) => user.addressDefault == x.id) || null;
   console.log("HOME ");
   useEffect(() => {
     dispatch(SanPhamAPI.GetHotProducts());
-    dispatch(SanPhamAPI.fetchGetLatestProducts());
+    dispatch(SanPhamUserAPI.fetchGetAllProductsUser({ sort: "date-newest" }));
     dispatch(Api.fetchAllBST({}));
     dispatch(BrandAPI.fetchGetBrand());
   }, []);
@@ -55,7 +56,7 @@ const Home = () => {
         <Card title="Vừa cập nhật" bordered={false}>
           <ListProducts
             type={"slider"}
-            items={productsLatest || []}
+            items={products || []}
             loading={loading}
             miniProducts={true}
           />

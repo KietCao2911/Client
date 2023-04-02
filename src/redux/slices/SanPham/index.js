@@ -135,13 +135,15 @@ const SanPhamSlice = createSlice({
       const colorPayload = action.payload.colorID.trim();
       let product = current(state.product);
       let sanPham =
-        product.colorGrouped &&
-        product.colorGrouped.find((x) => {
+        product.sanPhamNavigation.colorGrouped &&
+        product.sanPhamNavigation.colorGrouped.find((x) => {
           const colorID = x[0].idColor;
           return colorID.trim() == colorPayload;
         });
       state.product.productInfoByColor = [...sanPham];
-      state.product.imgsDisplay = [...sanPham[0].chiTietHinhAnhs];
+      state.product.sanPhamNavigation.imgsDisplay = [
+        ...sanPham[0].chiTietHinhAnhs,
+      ];
       state.loading = false;
       state.product.productCurrent = {};
     },
@@ -149,6 +151,7 @@ const SanPhamSlice = createSlice({
       const sizePayload = action.payload.size;
       let sizes = current(state.product.productInfoByColor);
       let size = sizes?.find((x) => x.idSize.trim() == sizePayload.trim());
+      console.log({ size });
       state.product.productCurrent = { ...size };
     },
   },
@@ -165,19 +168,21 @@ const SanPhamSlice = createSlice({
       const { products, totalRow } = action.payload;
       const productsTemp = [...products];
       productsTemp.forEach((product) => {
-        product.colorGrouped = Object.values(
-          GroupBy(product.sanPhams, "idColor")
+        product.sanPhamNavigation.colorGrouped = Object.values(
+          GroupBy(product?.sanPhamNavigation?.sanPhams, "idColor")
         );
         const sanPhamConvert =
-          Object.values(GroupBy(product.sanPhams, "idColor")) || [];
+          Object.values(
+            GroupBy(product?.sanPhamNavigation?.sanPhams, "idColor")
+          ) || [];
         const URL =
           sanPhamConvert &&
           sanPhamConvert.length > 0 &&
           URLConvert(
-            sanPhamConvert[0][0]?.chiTietHinhAnhs || [],
+            sanPhamConvert[0][0]?.sanPhamNavigation?.chiTietHinhAnhs || [],
             product.maSanPham
           );
-        product.imgsDisplay = URL || [];
+        product.sanPhamNavigation.imgsDisplay = URL || [];
       });
       state.products = [...productsTemp];
       state.totalRow = totalRow;
@@ -191,9 +196,10 @@ const SanPhamSlice = createSlice({
 
       let productsTemp = [...action.payload.related];
       productsTemp.forEach((product) => {
-        product.colorGrouped = Object.values(
-          GroupBy(product.sanPhams, "idColor")
-        );
+        product.colorGrouped =
+          product?.sanPhams && product?.sanPhams.length > 0
+            ? Object.values(GroupBy(product?.sanPhams || [], "idColor"))
+            : [];
         const sanPhamConvert =
           Object.values(GroupBy(product.sanPhams, "idColor")) || [];
         const URL =
@@ -205,34 +211,36 @@ const SanPhamSlice = createSlice({
           );
         product.imgsDisplay = URL || [];
       });
-      let Prices = state.product?.sanPhams.sort(
+      let Prices = state.product.sanPhamNavigation?.sanPhams.sort(
         (a, b) => a.giaBanLe - b.giaBanLe
       );
       let giaBanDisplay = 0;
       let recentlyView =
         JSON.parse(window.localStorage.getItem("recentlyView")) || [];
       if (Prices[0]?.giaBanLe != (Prices[Prices.length - 1]?.giaBanLe || 0)) {
-        giaBanDisplay = `${convertVND(Prices[0]?.giaBanLe)} - ${convertVND(
-          Prices[Prices.length - 1]?.giaBanLe
-        )}`;
+        giaBanDisplay =
+          Prices[Prices.length - 1]?.giaBanLe - Prices[0]?.giaBanLe;
       } else {
-        giaBanDisplay = convertVND(Prices[0]?.giaBanLe || 0);
+        giaBanDisplay = Prices[0]?.giaBanLe || 0;
       }
       const groupedArray = Object.values(
-        GroupBy(state.product.sanPhams, "idColor")
+        GroupBy(state.product.sanPhamNavigation.sanPhams, "idColor")
       );
       state.product.related = [...productsTemp];
       state.product.productInfoByColor = groupedArray.length > 0 && [
         ...groupedArray[0],
       ];
-      state.product.colorGrouped = groupedArray.length > 0 && [...groupedArray];
-      state.product.imgsDisplay = groupedArray.length > 0 && [
+      state.product.sanPhamNavigation.colorGrouped = groupedArray.length >
+        0 && [...groupedArray];
+      state.product.sanPhamNavigation.imgsDisplay = groupedArray.length > 0 && [
         ...(groupedArray[0][0].chiTietHinhAnhs || []),
       ];
-      state.product.giaBanDisplay = giaBanDisplay;
+      state.product.sanPhamNavigation.giaBanDisplay = giaBanDisplay;
       if (recentlyView && recentlyView.length > 0) {
         var obj = recentlyView.find(
-          (x) => x.maSanPham == state.product.maSanPham
+          (x) =>
+            x.sanPhamNavigation.maSanPham ==
+            state.product.sanPhamNavigation.maSanPham
         );
         if (!obj) {
           recentlyView.push(state.product);

@@ -10,7 +10,7 @@ import {
   Table,
   Upload,
 } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Delete, UploadCloud, X } from "react-feather";
 import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
@@ -72,12 +72,13 @@ const columns = [
   },
 ];
 const BSTForm = (props) => {
-  const { init, isEdit, isUpdate } = props;
+  const { init, isEdit, isUpdated, isCreated, isReadOnly } = props;
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.SanPham);
   const { boSuuTap } = useSelector((state) => state.BoSuuTap);
   const { id } = useParams();
   const url = BASE_URL + "wwwroot/res/BstImgs/" + boSuuTap?.img || "";
+
   const FormBst = useFormik({
     initialValues: {
       tenBoSuuTap: boSuuTap?.tenBoSuuTap || "",
@@ -87,13 +88,16 @@ const BSTForm = (props) => {
       img: url || "",
     },
   });
+
   console.log({ values: FormBst.values });
-  const g = useMemo(() => {
+  const reSetBST = useMemo(() => {
     FormBst.setValues({ ...boSuuTap });
   }, [boSuuTap]);
   useEffect(() => {
-    if (isUpdate) {
+    if (isUpdated || isReadOnly) {
       dispatch(BstAPI.fetchByIdBST({ id }));
+    } else {
+      FormBst.setValues({});
     }
   }, []);
   const handleChangeSearchProducts = (e) => {
@@ -122,7 +126,7 @@ const BSTForm = (props) => {
     const params = {
       ...FormBst.values,
     };
-    if (!isUpdate) {
+    if (!isCreated) {
       if (
         FormBst.values.chiTietBSTs &&
         FormBst.values.chiTietBSTs.length > 0 &&
@@ -168,7 +172,7 @@ const BSTForm = (props) => {
           >
             Mô tả sản phẩm
           </CKEditor>
-          {isEdit && isUpdate && (
+          {isEdit && isCreated && (
             <UploadCustom
               fileList={boSuuTap?.fileList || []}
               onUpload={onUpload}
@@ -223,13 +227,13 @@ const BSTForm = (props) => {
           </Space>
           <Space>
             {<Button onClick={() => handleSubmit()}>Xác nhận</Button>}
-            {isUpdate && !isEdit && (
+            {isCreated && !isEdit && (
               <Link to="chinh-sua">
                 {" "}
                 <Button>Sửa</Button>
               </Link>
             )}
-            {isUpdate && isEdit && (
+            {isCreated && isEdit && (
               <Link to={"../" + id}>
                 {" "}
                 <Button>Hủy</Button>

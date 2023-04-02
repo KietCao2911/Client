@@ -144,6 +144,7 @@ const BSTSlice = createSlice({
     });
     builder.addCase(fetchByIdBST.rejected, (state, action) => {
       state.loading = false;
+      state.boSuuTap = {};
     });
     //fetchPostBST
     builder.addCase(fetchPostBST.pending, (state) => {

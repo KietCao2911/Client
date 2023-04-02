@@ -12,23 +12,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 import { fetchGetQTY } from "~/redux/slices/ChiTietSoLuong/CtslAPI";
-const SizeRadio = ({ label, value, onChange, disable }) => {
+const SizeRadio = ({ label, value, onChange, obj, disable }) => {
   const { product } = useSelector((state) => state.SanPham);
+  const [disabled, setDisabled] = useState(() => {
+    const state =
+      obj && obj.length > 0 && obj[0].soLuongCoTheban > 0 ? false : true;
+
+    return state;
+  });
   const { QtyRemain } = product;
   const dispatch = useDispatch();
   const handleSelected = async () => {
     dispatch(sizeSelected({ size: value }));
   };
   console.log({
-    SizeRadio:
-      product?.productCurrent?.idSize?.trim() == value.trim() ? true : false,
+    obj,
   });
   return (
     <>
-      <div className={`SizeRadio ${disable ? "disable" : ""}`}>
-        {disable && <span className="disableMess">Tạm hết hàng</span>}
+      <div className={`SizeRadio ${disabled ? "disable" : ""}`}>
+        {disabled && <span className="disableMess">Tạm hết hàng</span>}
         <input
-          disabled={disable}
+          disabled={disabled}
           id={value}
           type={"radio"}
           name={"checkboxGroup"}
@@ -58,8 +63,8 @@ const SizeSelect = ({ items, setSize }) => {
       } else {
         return 1;
       }
-      return 0;
     });
+    console.log({ temp });
     return temp;
   };
   useEffect(() => {});
@@ -71,9 +76,9 @@ const SizeSelect = ({ items, setSize }) => {
             {" "}
             <SizeRadio
               key={uuidv4()}
+              obj={item?.khoHangs}
               label={item?.idSize}
               value={item?.idSize}
-              disable={item?.soLuongCoTheban > 0 ? false : true}
             />
           </Col>
         );

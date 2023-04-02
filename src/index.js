@@ -9,8 +9,8 @@ import "swiper/css";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import connection, { start } from "./components/utils/SignalR";
+import Location from "./components/commomComponents/LocationSelect";
 const root = ReactDOM.createRoot(document.getElementById("root"));
-window.localStorage.setItem("location", "CN01");
 root.render(
   <GlobalStyle>
     <Provider store={store}>

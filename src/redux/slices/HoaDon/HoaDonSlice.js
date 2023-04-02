@@ -22,11 +22,11 @@ export const fetchGetOrderDetails = createAsyncThunk(
     return res;
   }
 );
-export const fetchPutCTHD = createAsyncThunk(
-  "HoaDon/fetchPutCTHD",
+export const fetchPutDaGiaoHang = createAsyncThunk(
+  "HoaDon/fetchPutDaGiaoHang",
   async (params) => {
     const { body } = params;
-    const res = await HoaDonApi.fetchPutOrderDetails(body);
+    const res = await HoaDonApi.fetchPutDaGiaoHang(body);
     return res;
   }
 );
@@ -38,10 +38,22 @@ export const fetchCancelOrder = createAsyncThunk(
     return res;
   }
 );
+export const fetchPutXuatKho = createAsyncThunk(
+  "HoaDon/fetchPutXuatKho",
+  async (params) => {
+    const { body } = params;
+    const res = await HoaDonApi.fetchPutXuatKho(body);
+    return res;
+  }
+);
 const HoaDonSlice = createSlice({
   initialState,
   name: "HoaDon",
   extraReducers: (builder) => {
+    //fetchPutXuatKho
+    builder.addCase(fetchPutXuatKho.fulfilled, (state, action) => {
+      state.hoadon = action.payload;
+    });
     //fetchCancelOrder
     builder.addCase(fetchCancelOrder.fulfilled, (state, action) => {
       const id = action.payload;
@@ -58,10 +70,9 @@ const HoaDonSlice = createSlice({
         });
       }
     });
-    builder.addCase(fetchPutCTHD.fulfilled, (state, action) => {
+    builder.addCase(fetchPutDaGiaoHang.fulfilled, (state, action) => {
       const { hd } = action.payload;
       const { thanhtien } = hd;
-
       state.hoadon.thanhtien = thanhtien;
       notification.open({
         message: "Thành công",

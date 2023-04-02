@@ -14,6 +14,7 @@ import { H1 } from "glamorous";
 import EmptyCart from "./components/EmtyCart";
 import { Card, Col, Row } from "antd";
 function CartPage() {
+  document.title = "Giỏ hàng";
   const props = useSelector((state) => state.GioHang);
   const { chiTietNhapXuats } = props;
   const dispatch = useDispatch();
