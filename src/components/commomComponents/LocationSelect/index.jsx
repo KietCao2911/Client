@@ -4,18 +4,23 @@ import { useDispatch, useSelector } from "react-redux";
 import * as BranchsAPI from "~/redux/slices/Branch/BranchSlice";
 import { SelectInput } from "../SelectInput";
 import { v4 } from "uuid";
+import SelectCustom, { Option } from "../SelectCustom";
 const Location = () => {
   const { branchs } = useSelector((state) => state.Branch);
   const dispatch = useDispatch();
+  const [Loc, setLoc] = useState(() => {
+    return window.localStorage.getItem("location");
+  });
   const [visiabe, setVisiable] = useState(() => {
     const location = window.localStorage.getItem("location");
 
     return location ? false : true;
   });
-  console.log({ branchs });
+  console.log({ Loc });
 
   const handleChangeLocation = (e) => {
-    window.localStorage.setItem("location", e.target.value);
+    setLoc(e);
+    window.localStorage.setItem("location", e);
     window.location.replace("/");
   };
   useEffect(() => {
@@ -36,20 +41,19 @@ const Location = () => {
       title="Vui lòng chọn cửa hàng gần bạn"
       open={visiabe}
     >
-      <SelectInput
-        defaultValue={null}
-        onChange={(e) => handleChangeLocation(e)}
-      >
-        <option value={null}>Vui lòng chọn chi nhánh</option>
+      <SelectCustom value={Loc} setValue={setLoc}>
         {branchs &&
-          branchs.map((opt) => {
+          branchs.map((branch) => {
             return (
-              <option key={v4()} value={opt?.maChiNhanh?.trim()}>
-                {opt?.tenChiNhanh}
-              </option>
+              <Option
+                onClick={() => handleChangeLocation(branch?.maChiNhanh)}
+                value={branch?.maChiNhanh}
+              >
+                {branch?.tenChiNhanh}{" "}
+              </Option>
             );
           })}
-      </SelectInput>
+      </SelectCustom>
     </Modal>
   );
 };

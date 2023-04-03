@@ -29,7 +29,7 @@ const Home = () => {
   const profile = user?.info?.find((x) => user.addressDefault == x.id) || null;
   console.log("HOME ");
   useEffect(() => {
-    dispatch(SanPhamAPI.GetHotProducts());
+    dispatch(SanPhamUserAPI.fetchGetAllProductsUser({ sort: "popular" }));
     dispatch(SanPhamUserAPI.fetchGetAllProductsUser({ sort: "date-newest" }));
     dispatch(Api.fetchAllBST({}));
     dispatch(BrandAPI.fetchGetBrand());
@@ -63,7 +63,12 @@ const Home = () => {
         </Card>
 
         <Card title="Sản phẩm nổi bật" bordered={false}>
-          <HotProducts />
+          <ListProducts
+            type={"slider"}
+            items={productsHot.products || []}
+            loading={loading}
+            miniProducts={true}
+          />
         </Card>
       </Space>
     </div>

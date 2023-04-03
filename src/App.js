@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 } from "uuid";
 import NotFound from "./components/commomComponents/NotFound";
 import Location from "./components/commomComponents/LocationSelect";
+import SelectCustom from "./components/commomComponents/SelectCustom";
 function App() {
   SwiperCore.use([Autoplay]);
   const dispatch = useDispatch();

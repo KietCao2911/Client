@@ -79,6 +79,7 @@ const OrderDetailForm = (props) => {
       chietKhau: hoadon?.chiKhau || 0,
       tongSoLuong: hoadon?.tongSoLuong || 0,
       daThanhToan: false || hoadon?.daThanhToan,
+      daXuatKho: false || hoadon?.daXuatKho,
       steps: 0 || hoadon?.steps,
     },
     validationSchema: Yup.object().shape({
@@ -127,7 +128,7 @@ const OrderDetailForm = (props) => {
   }, [hoadon]);
   const onClickProduct = (p) => {
     console.log({ p });
-    if (p?.soLuongCoTheban <= 0) {
+    if (p?.soLuongCoTheban <= 0 && p?.soLuongTon) {
       message.open({
         content: "Sản phẩm này hiện đã hết hàng, vui lòng nhập thêm sản phẩm",
         type: "error",
@@ -262,6 +263,7 @@ const OrderDetailForm = (props) => {
       chietKhau: 0,
       maChiNhanh: e,
       phuongThucThanhToan: "COD",
+
       daThanhToan: false || hoadon?.daThanhToan,
       steps: 0 || hoadon?.steps,
     });
@@ -270,7 +272,10 @@ const OrderDetailForm = (props) => {
   const handleXuatHangKhoiKho = () => {
     console.log({ body: OrderDetailForm.values });
     alert("Xuat hang khoi kho");
-    dispatch(HoaDonApi.fetchPutDaGiaoHang({ body: OrderForm.values }));
+    dispatch(HoaDonApi.fetchPutXuatKho({ body: OrderForm.values }));
+  };
+  const handleThanhToan = () => {
+    dispatch(HoaDonApi.fetchThanhToan({ body: OrderForm.values }));
   };
   return (
     <form ref={FormRef}>
@@ -309,6 +314,7 @@ const OrderDetailForm = (props) => {
               <Card>
                 {isCreated && (
                   <InputText
+                    value={productSearchText}
                     label="Tìm kiếm sản phẩm"
                     className={`${
                       OrderForm.touched?.chiTietNhapXuats &&
@@ -472,12 +478,22 @@ const OrderDetailForm = (props) => {
             </strong>
           </Card>
         </Col>
-        <Col md={24}>
-          <Card
-            title="Xuất hàng khỏi kho"
-            extra={<Button>Xuất kho</Button>}
-          ></Card>
-        </Col>
+        {OrderForm.values?.daThanhToan ? null : (
+          <Col md={24}>
+            <Card
+              title="Thanh toán"
+              extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}
+            ></Card>
+          </Col>
+        )}
+        {OrderForm.values?.daXuatKho ? null : (
+          <Col md={24}>
+            <Card
+              title="Xuất hàng khỏi kho"
+              extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}
+            ></Card>
+          </Col>
+        )}
         <FloatButton.Group icon={<File />} trigger="click">
           <FloatButton
             onClick={() => handleSubmit()}

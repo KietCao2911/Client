@@ -46,6 +46,14 @@ export const fetchPutXuatKho = createAsyncThunk(
     return res;
   }
 );
+export const fetchThanhToan = createAsyncThunk(
+  "HoaDon/fetchThanhToan",
+  async (params) => {
+    const { body } = params;
+    const res = await HoaDonApi.fetchThanhToan(body);
+    return res;
+  }
+);
 const HoaDonSlice = createSlice({
   initialState,
   name: "HoaDon",
@@ -79,6 +87,15 @@ const HoaDonSlice = createSlice({
         type: "success",
       });
     });
+    //Thanh Toán
+    builder.addCase(fetchThanhToan.fulfilled, (state, action) => {
+      state.hoadon = action.payload;
+      notification.open({
+        message: "Thanh toán thành công",
+        type: "success",
+      });
+    });
+    //Lấy tất cả
     builder.addCase(fetchGetAllOrder.fulfilled, (state, action) => {
       state.hoadons = action.payload;
     });

@@ -51,6 +51,7 @@ import {
 import { SaveTwoTone } from "@ant-design/icons";
 import CustomSpin from "~/components/CustomSpin";
 import { BASE_URL } from "~/const";
+import ShowMore from "~/components/commomComponents/ShowMore";
 const TrangTaoDonNhap = (props) => {
   const [step, setStep] = useState(0);
   const [description, setDesciption] = useState("");
@@ -422,7 +423,8 @@ const TrangTaoDonNhap = (props) => {
                     {isCreated ||
                     (isUpdated && productSearchText.length > 0) ? (
                       <List onItemClick={(e) => console.log(e)}>
-                        {sanPhamTrongKho.length > 0 &&
+                        {productSearchText &&
+                          sanPhamTrongKho.length > 0 &&
                           sanPhamTrongKho.map((item) => {
                             const productInfo = item.sanPhamNavigation;
                             const url =

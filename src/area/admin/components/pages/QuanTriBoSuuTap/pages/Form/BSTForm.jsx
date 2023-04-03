@@ -10,7 +10,13 @@ import {
   Table,
   Upload,
 } from "antd";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Delete, UploadCloud, X } from "react-feather";
 import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
@@ -74,6 +80,7 @@ const columns = [
 const BSTForm = (props) => {
   const { init, isEdit, isUpdated, isCreated, isReadOnly } = props;
   const dispatch = useDispatch();
+  const formRef = useRef();
   const { products } = useSelector((state) => state.SanPham);
   const { boSuuTap } = useSelector((state) => state.BoSuuTap);
   const { id } = useParams();
@@ -151,99 +158,101 @@ const BSTForm = (props) => {
   };
   document.title = "Quản lý bộ sưu tập - Tạo mới";
   return (
-    <Row>
-      <Col span={24}>
-        <Space style={{ width: "100%" }} direction="vertical">
-          <InputText
-            disabled={!isEdit}
-            label="Nhập tên bộ sưu tập"
-            name="tenBoSuuTap"
-            value={FormBst.values.tenBoSuuTap}
-            onChange={FormBst.handleChange}
-          />
-          <CKEditor
-            disabled={!isEdit}
-            data={FormBst?.values?.mota || ""}
-            placeHolder="Mô tả"
-            onChange={(e, editor) => {
-              FormBst.setFieldValue("moTa", editor.getData());
-            }}
-            editor={ClassicEditor}
-          >
-            Mô tả sản phẩm
-          </CKEditor>
-          {isEdit && isCreated && (
-            <UploadCustom
-              fileList={boSuuTap?.fileList || []}
-              onUpload={onUpload}
-              onRemove={onRemove}
-            ></UploadCustom>
-          )}
-          {/* <UploadCustom /> */}
-          <Space direction="vertical" style={{ width: "100%" }}>
-            {isEdit ? (
-              <>
-                <InputText
-                  onChange={(e) => handleChangeSearchProducts(e.target.value)}
-                  label="Tìm kiếm sản phẩm"
-                />
-                <List>
-                  {products &&
-                    products.map((product) => {
-                      const productInfo = product?.sanPhams[0] || {};
-                      const url =
-                        BASE_URL +
-                          "wwwroot/res/SanPhamRes/Imgs/" +
-                          productInfo?.parentID?.trim() +
-                          "/" +
-                          productInfo?.idColor?.trim() +
-                          "/" +
-                          productInfo?.chiTietHinhAnhs[0]?.idHinhAnhNavigation?.fileName?.trim() ||
-                        "";
-                      const productTemp = { ...product, img: url };
-                      return (
-                        <ItemResult
-                          value={productTemp}
-                          onItemClick={(productTemp) =>
-                            handleOnItemClick(productTemp)
-                          }
-                          labelProps={{
-                            img: productTemp?.img,
-                            name: productTemp?.tenSanPham,
-                            code: productTemp?.maSanPham,
-                            price: productTemp?.giaNhap,
-                            qty: productTemp?.soLuongTon,
-                          }}
-                        />
-                      );
-                    })}
-                </List>
-              </>
-            ) : null}
-            <Table
-              dataSource={FormBst.values?.chiTietBSTs || []}
-              columns={columns || []}
+    <form ref={formRef}>
+      <Row>
+        <Col span={24}>
+          <Space style={{ width: "100%" }} direction="vertical">
+            <InputText
+              disabled={!isEdit}
+              label="Nhập tên bộ sưu tập"
+              name="tenBoSuuTap"
+              value={FormBst.values.tenBoSuuTap}
+              onChange={FormBst.handleChange}
             />
-          </Space>
-          <Space>
-            {<Button onClick={() => handleSubmit()}>Xác nhận</Button>}
-            {isCreated && !isEdit && (
-              <Link to="chinh-sua">
-                {" "}
-                <Button>Sửa</Button>
-              </Link>
+            <CKEditor
+              disabled={!isEdit}
+              data={FormBst?.values?.mota || ""}
+              placeHolder="Mô tả"
+              onChange={(e, editor) => {
+                FormBst.setFieldValue("moTa", editor.getData());
+              }}
+              editor={ClassicEditor}
+            >
+              Mô tả sản phẩm
+            </CKEditor>
+            {isEdit && isCreated && (
+              <UploadCustom
+                fileList={boSuuTap?.fileList || []}
+                onUpload={onUpload}
+                onRemove={onRemove}
+              ></UploadCustom>
             )}
-            {isCreated && isEdit && (
-              <Link to={"../" + id}>
-                {" "}
-                <Button>Hủy</Button>
-              </Link>
-            )}
+            {/* <UploadCustom /> */}
+            <Space direction="vertical" style={{ width: "100%" }}>
+              {isEdit ? (
+                <>
+                  <InputText
+                    onChange={(e) => handleChangeSearchProducts(e.target.value)}
+                    label="Tìm kiếm sản phẩm"
+                  />
+                  <List>
+                    {products &&
+                      products.map((product) => {
+                        const productInfo = product?.sanPhams[0] || {};
+                        const url =
+                          BASE_URL +
+                            "wwwroot/res/SanPhamRes/Imgs/" +
+                            productInfo?.parentID?.trim() +
+                            "/" +
+                            productInfo?.idColor?.trim() +
+                            "/" +
+                            productInfo?.chiTietHinhAnhs[0]?.idHinhAnhNavigation?.fileName?.trim() ||
+                          "";
+                        const productTemp = { ...product, img: url };
+                        return (
+                          <ItemResult
+                            value={productTemp}
+                            onItemClick={(productTemp) =>
+                              handleOnItemClick(productTemp)
+                            }
+                            labelProps={{
+                              img: productTemp?.img,
+                              name: productTemp?.tenSanPham,
+                              code: productTemp?.maSanPham,
+                              price: productTemp?.giaNhap,
+                              qty: productTemp?.soLuongTon,
+                            }}
+                          />
+                        );
+                      })}
+                  </List>
+                </>
+              ) : null}
+              <Table
+                dataSource={FormBst.values?.chiTietBSTs || []}
+                columns={columns || []}
+              />
+            </Space>
+            <Space>
+              {<Button onClick={() => handleSubmit()}>Xác nhận</Button>}
+              {isCreated && !isEdit && (
+                <Link to="chinh-sua">
+                  {" "}
+                  <Button>Sửa</Button>
+                </Link>
+              )}
+              {isCreated && isEdit && (
+                <Link to={"../" + id}>
+                  {" "}
+                  <Button>Hủy</Button>
+                </Link>
+              )}
+            </Space>
           </Space>
-        </Space>
-      </Col>
-      <Col></Col>
-    </Row>
+        </Col>
+        <Col></Col>
+      </Row>
+    </form>
   );
 };
 

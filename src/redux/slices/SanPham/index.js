@@ -164,6 +164,10 @@ const SanPhamSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchGetAllProductsUser.fulfilled, (state, action) => {
+      const props = action.meta.arg;
+      if (props.sort && props.sort == "popular") {
+        state.productsHot = action.payload;
+      }
       state.loading = false;
       const { products, totalRow } = action.payload;
       const productsTemp = [...products];

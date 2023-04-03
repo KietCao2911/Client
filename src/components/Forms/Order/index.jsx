@@ -26,8 +26,12 @@ import CustomSpin from "~/components/CustomSpin";
 import OrderDsc from "~/components/commomComponents/OrderDsc/OrderDsc";
 import ProductInfoItem from "~/components/pages/Cart/components/ProductInfoItem";
 import { CreditCard, Gift, List, Truck } from "react-feather";
+import SelectCustom, {
+  Option,
+} from "~/components/commomComponents/SelectCustom";
 
 const OrderForm = (props) => {
+  document.title = "Trang thông tin giao hàng";
   const { user } = useSelector((state) => state.XacThuc);
   const { setGuessInfo } = props;
   const { ghnAPI, chiTietNhapXuats, thanhTien, tongSoLuong, phiShip } =
@@ -55,7 +59,7 @@ const OrderForm = (props) => {
       WardName: infoLocalStorage.wardName || "",
       ProvinceID: infoLocalStorage.ProvinceID || null,
       DistrictID: infoLocalStorage.DistrictID || null,
-      WardId: infoLocalStorage.WardId || null,
+      WardID: infoLocalStorage.WardID || null,
       AddressDsc: infoLocalStorage.AddressDsc || "",
       Email: infoLocalStorage.Email || "",
       phuongThucThanhToan: infoLocalStorage.phuongThucThanhToan || "COD",
@@ -72,7 +76,7 @@ const OrderForm = (props) => {
         .matches(emailRegex, "Định dạng email không đúng"),
       ProvinceID: Yup.number().nullable(true).required("Phải chọn trường này"),
       DistrictID: Yup.number().nullable(true).required("Phải chọn trường này"),
-      WardId: Yup.number().nullable(true).required("Phải chọn trường này"),
+      WardID: Yup.number().nullable(true).required("Phải chọn trường này"),
       phuongThucThanhToan: Yup.string().required("Phải chọn trường này"),
       AddressDsc: Yup.string().required("Phải nhập trường này"),
     }),
@@ -81,37 +85,34 @@ const OrderForm = (props) => {
     },
   });
 
-  const handleChangeProvince = (e) => {
-    orderForm.setFieldValue(
-      "ProvinceName",
-      e.target.options[e.target.selectedIndex].text
-    );
-    orderForm.setFieldValue("ProvinceID", e.target.value);
-    dispatch(GiaoHangNhanhApi.fetchGetDistrict(e.target.value));
+  const handleChangeProvince = (id, name) => {
+    orderForm.setFieldValue("ProvinceName", name);
+    orderForm.setFieldValue("ProvinceID", id);
+    orderForm.setFieldValue("DistrictName", "");
+    orderForm.setFieldValue("DistrictID", null);
+    orderForm.setFieldValue("WardName", "");
+    orderForm.setFieldValue("WardID", null);
+    dispatch(GiaoHangNhanhApi.fetchGetDistrict(id));
   };
-  const handleChangeDistrict = (e) => {
-    orderForm.setFieldValue(
-      "DistrictName",
-      e.target.options[e.target.selectedIndex].text
-    );
-    orderForm.setFieldValue("DistrictID", e.target.value);
-    dispatch(GiaoHangNhanhApi.fetchGetWard(e.target.value));
+  const handleChangeDistrict = (id, name) => {
+    orderForm.setFieldValue("DistrictName", name);
+    orderForm.setFieldValue("DistrictID", id);
+    orderForm.setFieldValue("WardName", "");
+    orderForm.setFieldValue("WardID", null);
+    dispatch(GiaoHangNhanhApi.fetchGetWard(id));
   };
-  const CalFee = (e) => {
-    if (e.target.value == null) {
+  const CalFee = (id, name) => {
+    if (id == null) {
       return;
     } else {
-      orderForm.setFieldValue(
-        "WardName",
-        e.target.options[e.target.selectedIndex].text
-      );
-      orderForm.setFieldValue("WardId", e.target.value);
+      orderForm.setFieldValue("WardName", name);
+      orderForm.setFieldValue("WardID", id);
       dispatch(
         GiaoHangNhanhApi.fetchPostCalFee({
           from_district_id: 1572,
           service_type_id: 2,
           to_district_id: Wards.data[0].DistrictID,
-          to_ward_code: e.target.value,
+          to_ward_code: id,
           height: 50,
           length: 20,
           weight: 200,
@@ -130,7 +131,8 @@ const OrderForm = (props) => {
       diaChiNavigation,
     };
     if (Object.keys(orderForm.errors).length <= 0) {
-      dispatch(ThanhToanApi.fetchPostWithGuess(params));
+      console.log({ order: params });
+      // dispatch(ThanhToanApi.fetchPostWithGuess(params));
     } else {
       alert("sai thong tin");
     }
@@ -145,7 +147,7 @@ const OrderForm = (props) => {
     dispatch(GiaoHangNhanhApi.fetchGetProvinces());
     orderForm.values?.ProvinceID &&
       dispatch(GiaoHangNhanhApi.fetchGetDistrict(orderForm.values?.ProvinceID));
-    orderForm.values?.WardId &&
+    orderForm.values?.WardID &&
       dispatch(GiaoHangNhanhApi.fetchGetWard(orderForm.values?.DistrictID));
   };
   const test = useMemo(() => {
@@ -210,65 +212,88 @@ const OrderForm = (props) => {
                 )}
               </Col>
               <Col span={24}>
-                <SelectInput
-                  value={orderForm.values.ProvinceID || null}
+                <SelectCustom
+                  value={orderForm.values.ProvinceID || ""}
                   onChange={handleChangeProvince}
                   name={"ProvinceID"}
                 >
-                  <option value={""}>Vui lòng chọn Tỉnh/Thành phố</option>
+                  <Option value={null}>Vui lòng chọn Tỉnh/Thành phố</Option>
                   {Provinces.data &&
                     Provinces.data.map((item) => {
                       return (
-                        <option key={item.ProvinceID} value={item.ProvinceID}>
+                        <Option
+                          onClick={() =>
+                            handleChangeProvince(
+                              item.ProvinceID,
+                              item.ProvinceName
+                            )
+                          }
+                          key={item.ProvinceID}
+                          value={item.ProvinceID}
+                        >
                           {item.ProvinceName}
-                        </option>
+                        </Option>
                       );
                     })}
-                </SelectInput>
+                </SelectCustom>
                 {orderForm.errors.ProvinceID && (
                   <span className="error">{orderForm.errors.ProvinceID}</span>
                 )}
               </Col>
               <Col span={24}>
-                <SelectInput
-                  value={orderForm.values.DistrictID || null}
+                <SelectCustom
+                  value={orderForm.values.DistrictID || ""}
                   onChange={handleChangeDistrict}
                   loading={Loading.Districts}
                   name="DistrictID"
                   defaultLabel="Quận/Huyện"
                 >
-                  <option value={""}>Vui lòng chọn Quận/Huyện</option>
+                  <Option value={""}>Vui lòng chọn Quận/Huyện</Option>
                   {Districts.data &&
                     Districts?.data?.map((item) => {
                       return (
-                        <option key={item.DistrictID} value={item.DistrictID}>
+                        <Option
+                          onClick={() =>
+                            handleChangeDistrict(
+                              item.DistrictID,
+                              item.DistrictName
+                            )
+                          }
+                          key={item.DistrictID}
+                          value={item.DistrictID}
+                        >
                           {item.DistrictName}
-                        </option>
+                        </Option>
                       );
                     })}
-                </SelectInput>
+                </SelectCustom>
                 {orderForm.errors.DistrictID && (
                   <span className="error">{orderForm.errors.DistrictID}</span>
                 )}
               </Col>
               <Col span={24}>
-                <SelectInput
-                  value={orderForm.values.WardId || null}
+                <SelectCustom
+                  value={orderForm.values.WardID || ""}
                   onChange={(e) => CalFee(e)}
                   loading={Loading.Wards}
                   defaultLabel="Xã/Phường"
-                  name="WardId"
+                  name="WardID"
                 >
-                  <option value={""}>Vui lòng chọn Xã/Phường</option>
+                  <Option value={""}>Vui lòng chọn Xã/Phường</Option>
                   {Wards.data &&
                     Wards?.data?.map((item) => {
                       return (
-                        <option value={item.WardCode}>{item.WardName}</option>
+                        <Option
+                          onClick={() => CalFee(item.WardCode, item.WardName)}
+                          value={item.WardCode}
+                        >
+                          {item.WardName}
+                        </Option>
                       );
                     })}
-                </SelectInput>
-                {orderForm.errors.WardId && (
-                  <span className="error">{orderForm.errors.WardId}</span>
+                </SelectCustom>
+                {orderForm.errors.WardID && (
+                  <span className="error">{orderForm.errors.WardID}</span>
                 )}
               </Col>
             </Row>
