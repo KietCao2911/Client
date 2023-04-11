@@ -61,7 +61,7 @@ function ActionSideBar() {
       ),
     ]),
     getItem("Khuyến mãi", v4(), [
-      getItem("Chương trình khuyến mãi", v4(), null, null),
+      getItem( <Link to={"/admin/quan-tri-khuyen_mai"}>Chương trình khuyến mãi</Link>, v4(), null, null),
       getItem("Mã giảm giá", v4(), null, null),
     ]),
 

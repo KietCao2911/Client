@@ -25,10 +25,13 @@ const OrderDsc = (props) => {
       <div className="content">
         <Space style={{ width: "100%" }} direction="vertical">
           <div className="QtyTotal">
-            <p>{tongSoLuong} Sản phẩm</p>
+            <p>x{tongSoLuong} Sản phẩm</p>
             <div className="price">
               {convertVND(
-                chiTietNhapXuats?.reduce((x, y) => x + (y?.donGia || 0), 0)
+                chiTietNhapXuats?.reduce(
+                  (x, y) => x + (y?.donGia * y?.soLuong || 0),
+                  0
+                )
               ) || convertVND(0)}
             </div>
           </div>

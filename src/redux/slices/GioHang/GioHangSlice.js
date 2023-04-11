@@ -1,8 +1,11 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
+import { message } from "antd";
 import { X } from "react-feather";
 import * as GiaoHangNhanhApi from "~/redux/slices/GHNAPI/GhnApi";
 let cart = JSON.parse(localStorage.getItem("cart"));
 let address = JSON.parse(localStorage.getItem("address"));
+let location =
+  JSON.parse(window.localStorage.getItem("location"))?.maChiNhanh || null;
 const initialState = {
   item: {},
   tongSoLuong: cart?.tongSoLuong || 0,
@@ -14,7 +17,7 @@ const initialState = {
   couponCode: cart?.couponCode || null,
   phuongThucThanhToan: cart?.phuongThucThanhToan || "COD",
   loaiPhieu: "PHIEUXUAT",
-  maChiNhanh:window.localStorage.getItem("location"),
+  maChiNhanh: location,
   infoGuess: {},
   ghnAPI: {
     Provinces: address?.Provinces || {},
@@ -128,19 +131,18 @@ const GioHangSlice = createSlice({
       }
     },
     UpdateQtyItem: (state, action) => {
-      const { maSP, colorId, sizeId, qty } = action.payload;
-      let items = [...state.cartItems];
-      const obj = items.find(
-        (x) =>
-          x.maSanPham == maSP &&
-          x.color == colorId.colorId.trim() &&
-          x.size == sizeId.idSize
-      );
+      const { maSP, qty } = action.payload;
+      let items = current(state.chiTietNhapXuats);
+      const obj = items.find((x) => x.maSanPham.trim() == maSP.trim());
       const index = items.indexOf(obj);
+      console.log({ obj, index ,maSP});
       if (index > -1) {
-        state.cartItems[index].qty = qty;
-        state.totalPrice = state.cartItems[index].giaBan * qty;
-        state.finalPrice = state.totalPrice;
+        state.chiTietNhapXuats[index].soLuong = qty;
+        state.thanhTien = state.chiTietNhapXuats[index].donGia * qty;
+        state.tongSoLuong = state.chiTietNhapXuats.reduce(
+          (x, y) => x + y.soLuong,
+          0
+        );
         localStorage.setItem("cart", JSON.stringify(state));
       }
     },
@@ -151,11 +153,11 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Wards = {};
       state.ghnAPI.Districts = {};
       state.ghnAPI.Provinces = {};
+      state.thanhTien -= state.phiShip;
+      state.phiShip = 0;
     });
     builder.addCase(fetchGetProvinces.fulfilled, (state, action) => {
       state.ghnAPI.Provinces = action.payload;
-      // state.ghnAPI.Districts = {};
-      // state.ghnAPI.Wards = {};
       state.finalPrice = state.totalPrice;
       state.ghnAPI.Loading.Provinces = false;
       const addressString = JSON.stringify(state.ghnAPI);
@@ -167,6 +169,10 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Districts = {};
       state.finalPrice = state.totalPrice;
       state.ghnAPI.Loading.Districts = true;
+      state.thanhTien -= state.phiShip;
+      state.phiShip = 0;
+      const addressString = JSON.stringify(state.ghnAPI);
+      window.localStorage.setItem("address", addressString);
     });
     builder.addCase(fetchGetDistrict.fulfilled, (state, action) => {
       state.ghnAPI.Districts = action.payload;
@@ -179,7 +185,10 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Wards = {};
       state.ghnAPI.FeeInfo = {};
       state.ghnAPI.Loading.Wards = true;
-      state.finalPrice = state.totalPrice;
+      state.thanhTien -= state.phiShip;
+      state.phiShip = 0;
+      const addressString = JSON.stringify(state.ghnAPI);
+      window.localStorage.setItem("address", addressString);
     });
     builder.addCase(fetchGetWard.fulfilled, (state, action) => {
       // state.ghnAPI.DistrictID = action.payload.data.DistrictID
@@ -193,11 +202,14 @@ const GioHangSlice = createSlice({
       state.ghnAPI.FeeInfo = action.payload;
       state.phiShip = phiShip || 0;
       state.thanhTien += phiShip;
-      const CartString = JSON.stringify(state);
-      window.localStorage.setItem("cart", CartString);
+      // const CartString = JSON.stringify(state);
+      // window.localStorage.setItem("cart", CartString);
     });
     builder.addCase(fetchPostCalFee.rejected, (state, action) => {
-      alert("LOI");
+      message.open({
+        content: "Có lỗi xảy ra, vui lòng thử lại",
+        type: "error",
+      });
     });
   },
 });

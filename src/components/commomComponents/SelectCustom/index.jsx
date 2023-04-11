@@ -9,7 +9,8 @@ export const Option = (props) => {
     </li>
   );
 };
-const SelectCustom = ({ value, setValue, children }) => {
+const SelectCustom = (props) => {
+  const { value, setValue, children } = props;
   const optionsRef = useRef();
   const [active, setActive] = useState(false);
   const [label, setSetLabel] = useState("Lựa chọn của bạn");
@@ -25,9 +26,13 @@ const SelectCustom = ({ value, setValue, children }) => {
           setActive(false);
         }
       });
-  }, [value]);
+  }, [value, children]);
   return (
-    <div className="select-menu" onMouseLeave={() => setActive(false)}>
+    <div
+      {...props}
+      className="select-menu"
+      onMouseLeave={() => setActive(false)}
+    >
       <div className="select-btn" onClick={() => setActive(!active)}>
         <span> {label}</span>
         <div className="icon iconDown">

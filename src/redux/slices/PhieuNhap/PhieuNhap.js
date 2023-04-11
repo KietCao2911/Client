@@ -83,28 +83,94 @@ export const fetchPutCTSL = createAsyncThunk("fetchPutCTSL", async (params) => {
   const res = await CTSLAPI.fetchPutCTSL(id, body);
   return res;
 });
+export const fetchPUTTraHang = createAsyncThunk(
+  "fetchPUTTraHang",
+  async (body) => {
+    const res = await PhieuNhapAPI.fetchPutTraHang(body);
+    return res;
+  }
+);
+export const fetchPUTHoanTien = createAsyncThunk(
+  "fetchPUTHoanTien",
+  async (body) => {
+    const res = await PhieuNhapAPI.fetchPutTraHang(body);
+    return res;
+  }
+);
 const PhieuNhapSlice = createSlice({
   initialState,
   name: "PhieuNhap",
   extraReducers: (builder) => {
+    //FetchPUTHoanTien
+    //fetchTraHang
+    builder.addCase(fetchPUTHoanTien.pending, (state, action) => {
+      state.item = {};
+      state.loading = true;
+    });
+    builder.addCase(fetchPUTHoanTien.fulfilled, (state, action) => {
+      state.item = action.payload;
+      notification.open({
+        message: "Đã hoàn tiền",
+        type: "success",
+        icon: <Truck />,
+      });
+      state.loading = false;
+    });
+    builder.addCase(fetchPUTHoanTien.rejected, (state, action) => {
+      notification.open({
+        message: "Hoàn tiền thành công",
+        type: "success",
+      });
+
+      state.loading = false;
+    });
+    //fetchTraHang
+    builder.addCase(fetchPUTTraHang.pending, (state, action) => {
+      state.item = {};
+      state.loading = true;
+    });
+    builder.addCase(fetchPUTTraHang.fulfilled, (state, action) => {
+      state.item = action.payload;
+      notification.open({
+        message: "Đã trả hàng",
+        type: "success",
+        icon: <Truck />,
+      });
+      state.loading = false;
+    });
+    builder.addCase(fetchPUTTraHang.rejected, (state, action) => {
+      notification.open({
+        message: "Trả hàng thất bại",
+        type: "success",
+      });
+    });
     //fetchPuThanhToan
+    builder.addCase(fetchPutThanhToan.pending, (state, action) => {
+      state.item = {};
+      state.loading = true;
+    });
     builder.addCase(fetchPutThanhToan.fulfilled, (state, action) => {
-      state.item.daThanhToan = true;
+      state.item = action.payload;
       notification.open({
         message: "Đã thanh toán cho đơn hàng này",
         type: "success",
         icon: <DollarSign />,
       });
+      state.loading = false;
     });
     //fetchPutNhapKho
+    builder.addCase(fetchPutNhapKho.pending, (state, action) => {
+      state.item = {};
+      state.loading = true;
+    });
     builder.addCase(fetchPutNhapKho.fulfilled, (state, action) => {
-      state.item.daNhapHang = true;
-      state.item.steps = 3;
+      state.item = action.payload;
       notification.open({
         message: "Đã nhập hàng vào kho",
         type: "success",
         icon: <Truck />,
       });
+      state.loading = false;
     });
     //fetchGetPhieuNhapID
     builder.addCase(fetchGetPhieuNhapID.pending, (state) => {
@@ -149,69 +215,6 @@ const PhieuNhapSlice = createSlice({
         type: "error",
       });
       window.location.replace("" + action.payload.id);
-    });
-    //fetchGetCTPN
-    builder.addCase(fetchGetCTPN.fulfilled, (state, action) => {
-      state.PhieuNhapInfo = action.payload[0]?.phieuNhapNavigation || {};
-      let data = [];
-      const dataTemp = action.payload.map((x) =>
-        x.sanPhamNavigation.soLuongDetails.map((item) => {
-          data.push({
-            maSanPham: x.sanPhamNavigation.maSanPham,
-            tenSanPham: x.sanPhamNavigation.tenSanPham,
-            maMau: item.maMau,
-            _id: item._id,
-            _idSize: item._idSize,
-            colorLabel: item.idMauSacNavigation.tenMau,
-            sizeLabel: item.idSizeNavigation.size1,
-            soluong: item.soluong,
-            soluongTon: item.soluongTon,
-            soluongBan: item.soluongBan,
-            giaBan: x.sanPhamNavigation.giaBan,
-          });
-        })
-      );
-      state.chiTietPhieuNhaps = data;
-      console.log(action.payload);
-      const TongTien = action.payload.reduce((prev, next) => {
-        return prev + next.sanPhamNavigation.giaBan * next.soLuong;
-      }, 0);
-      const SoMatHang = data.reduce((prev, next) => {
-        return prev + next.soluong;
-      }, 0);
-      console.log({ TongTien });
-      state.PhieuNhapInfo.SoMatHang = SoMatHang || 0;
-      state.PhieuNhapInfo.TongSoLuong = TongTien * 1.1 || 0;
-      state.PhieuNhapInfo.TrangThai =
-        action.payload[0]?.phieuNhapNavigation?.status || false;
-    });
-    builder.addCase(fetchPostCTPN.fulfilled, (state, action) => {
-      state.reload = !state.reload;
-      // let x = action.payload||[]
-      // let data =[]
-      //  x.soLuongDetails.map(item=>
-      //     {
-      //         data.push( {
-      //             maSanPham:x.maSanPham,
-      //             tenSanPham:x.tenSanPham,
-      //             maMau:item.maMau,
-      //             _id:item._id,
-      //             _idSize:item._idSize,
-      //             colorLabel:item.idMauSacNavigation.tenMau            ,
-      //             sizeLabel:item.idSizeNavigation.size1            ,
-      //             soluong :item.soluong,
-      //             soluongTon:item.soluongTon,
-      //             soluongBan:item.soluongBan,
-      //             giaBan:x.giaBan
-      //           })
-      //     })
-      // state.chiTietPhieuNhaps = [...state.chiTietPhieuNhaps,...data]
-      // const SoMatHang = action.payload.chiTietPhieuNhaps.reduce((prev,next)=>
-      // {
-      //     return prev + next.soLuong
-      // },0)
-      // state.PhieuNhapInfo.SoMatHang += SoMatHang||0;
-      // state.PhieuNhapInfo.TongSoLuong +=x.giaBan||0;
     });
   },
 });

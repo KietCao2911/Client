@@ -5,6 +5,7 @@ import {
   Descriptions,
   FloatButton,
   Input,
+  Menu,
   Popover,
   Row,
   Space,
@@ -20,7 +21,7 @@ import React, {
   useTransition,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import InputText from "~/components/commomComponents/InputText";
 import List from "~/components/commomComponents/List";
@@ -32,11 +33,13 @@ import * as KhoHangAPI from "~/redux/slices/KhoHang/KhoHangSlice";
 import ItemResult from "~/components/commomComponents/List/compoenents/ItemResult";
 import ProductsTable from "../../../QuanTriNhapHang/pages/TrangTaoDonNhap/components/ProductsTable";
 import convertVND from "~/components/utils/ConvertVND";
-import { File, Plus } from "react-feather";
+import { File, Plus, Settings } from "react-feather";
 import { message, Select } from "antd/es";
 import * as BranchAPI from "~/redux/slices/Branch/BranchSlice";
+import { v4 } from "uuid";
+import * as ThanhToanAPI from "~/redux/slices/ThanhToanSlice";
 const OrderDetailForm = (props) => {
-  const { isUpdated, isEdit, isCreated, isReadOnly } = props;
+  const { isUpdated, isEdit, isCreated, isReadOnly ,isReturn} = props;
   const { id } = useParams();
   const dispatch = useDispatch();
   const [isPending, startTransition] = useTransition();
@@ -127,12 +130,26 @@ const OrderDetailForm = (props) => {
     OrderForm.setValues({ ...hoadon });
   }, [hoadon]);
   const onClickProduct = (p) => {
-    console.log({ p });
-    if (p?.soLuongCoTheban <= 0 && p?.soLuongTon) {
-      message.open({
-        content: "Sản phẩm này hiện đã hết hàng, vui lòng nhập thêm sản phẩm",
-        type: "error",
-      });
+    console.log({p})
+    const isAny =
+      OrderForm.values.chiTietNhapXuats &&
+      OrderForm.values.chiTietNhapXuats.length > 0 &&
+      OrderForm.values.chiTietNhapXuats.some(
+        (x) => x.maSanPham.trim() == p.maSanPham.trim()
+      );
+    console.log({ isAny });
+    if ((p?.soLuongCoTheban <= 0 && p?.soLuongTon <= 0) || isAny) {
+      if (isAny) {
+        message.open({
+          content: "Sản phẩm này đã được chọn",
+          type: "error",
+        });
+      } else {
+        message.open({
+          content: "Sản phẩm này hiện đã hết hàng, vui lòng nhập thêm sản phẩm",
+          type: "error",
+        });
+      }
     } else {
       const params = {
         sanPhamNavigation: { ...p },
@@ -156,12 +173,16 @@ const OrderDetailForm = (props) => {
       OrderForm.setFieldValue("chiTietNhapXuats", temp);
     }
   };
+  const handleCancel = () => {
+    const params = { ...OrderForm.values };
+    dispatch(HoaDonApi.fetchCancelOrder({ body: params }));
+  };
   const handleChangeProductSearchText = (e) => {
     startTransition(() => {
       setproductSearchText(e.target.value);
       dispatch(
         KhoHangAPI.fetchGetProducts({
-          maChiNhanh: OrderForm.values.maChiNhanh || "CN01",
+          maChiNhanh: OrderForm.values?.maChiNhanh?.trim() || "CN01",
           query: { s: e.target.value },
         })
       );
@@ -216,23 +237,22 @@ const OrderDetailForm = (props) => {
         chietKhau: 0,
         maChiNhanh: "CN01",
         phuongThucThanhToan: "COD",
-        daThanhToan: false || hoadon?.daThanhToan,
+        daThanhToan:false,
         steps: 0 || hoadon?.steps,
       });
     }
   }, [id]);
+  console.log({ props });
   const handleSubmit = () => {
     if (Object.keys(OrderForm.errors).length <= 0) {
       const params = { ...OrderForm.values };
       if (isCreated) {
-        console.log({ params });
         alert("created");
+        console.log({params})
+        dispatch(ThanhToanAPI.fetchPostWithGuess(params));
       } else if (isUpdated) {
-        console.log({ params });
-        alert("updated");
+        // dispatch(HoaDonApi.fet(params));
       } else {
-        console.log({ params });
-        alert("READONLY");
       }
     } else {
       alert("Submit invalid");
@@ -277,12 +297,40 @@ const OrderDetailForm = (props) => {
   const handleThanhToan = () => {
     dispatch(HoaDonApi.fetchThanhToan({ body: OrderForm.values }));
   };
+  const handleHoanTien=()=>
+  {
+    dispatch( HoaDonApi.fetchPUTHoanTien({ body: OrderForm.values }))
+  }
   return (
     <form ref={FormRef}>
       <Row gutter={[, 20]}>
         <Col span={24}>
           <Row justify={"space-between"}>
-            <Space>{hoadon?.id || ""}</Space>
+            {OrderForm.values.steps < 2 ? (
+              <Popover
+                content={
+                  <Menu
+                    items={[
+                      {
+                        key: v4(),
+                        label: <Link to="chinh-sua">Chỉnh sửa</Link>,
+                      },
+                      {
+                        key: v4(),
+                        label: <Link to="">Hủy đơn này</Link>,
+                      },
+                    ]}
+                  ></Menu>
+                }
+                trigger={"click"}
+              >
+                <Space>
+                  {hoadon?.id || ""} <Settings />{" "}
+                </Space>
+              </Popover>
+            ) : (
+              <Space> {hoadon?.id || ""} </Space>
+            )}
             <Space>
               <Steps
                 current={
@@ -310,7 +358,7 @@ const OrderDetailForm = (props) => {
         </Col>
         <Col span={24}>
           <Row gutter={[20, 20]}>
-            <Col span={18}>
+            <Col md={18} xs={24}>
               <Card>
                 {isCreated && (
                   <InputText
@@ -349,7 +397,7 @@ const OrderDetailForm = (props) => {
                             name: productInfo.tenSanPham,
                             code: productInfo.maSanPham,
                             price: productInfo.giaNhap,
-                            qty: item.soLuongTon,
+                            qty: productInfo.soLuongTon,
                           }}
                         />
                       );
@@ -393,7 +441,10 @@ const OrderDetailForm = (props) => {
                     <div> {convertVND(OrderForm.values?.phiship) || 0}</div>
                   </Space>
                   <Space style={{ width: "100%" }} className="summaryItem">
-                    <InputText label="Nhập mã khuyến mãi "></InputText>
+                    <InputText
+                      disabled={OrderForm.values.steps < 2 ? false : true}
+                      label="Nhập mã khuyến mãi "
+                    ></InputText>
                   </Space>
                   <Space className="summaryItem">
                     <div>
@@ -404,9 +455,10 @@ const OrderDetailForm = (props) => {
                 </Space>
               </Card>
             </Col>
-            <Col span={6}>
+            <Col md={6} xs={24}>
               <Card title="Mã chi nhánh">
                 <Select
+                  disabled={isUpdated || isReadOnly ? true : false}
                   value={OrderForm.values?.maChiNhanh?.trim()}
                   onChange={(e) => handleOnChangeBranch(e)}
                   style={{ width: "100%" }}
@@ -425,17 +477,18 @@ const OrderDetailForm = (props) => {
           </Row>
         </Col>
         <Col span={24}>
-          {isCreated && (
-            <MyCollapse defaultOpen={true} label="Địa chỉ giao hàng">
-              <AddressForm
-                isCreated={isCreated}
-                isReadOnly={isReadOnly}
-                isUpdated={isUpdated}
-                orderForm={OrderForm}
-              />
-            </MyCollapse>
-          )}
-          {(isReadOnly || isUpdated) && (
+          {(isCreated ||
+            isUpdated) && (
+              <MyCollapse defaultOpen={true} label="Địa chỉ giao hàng">
+                <AddressForm
+                  isCreated={isCreated}
+                  isReadOnly={isReadOnly}
+                  isUpdated={isUpdated}
+                  orderForm={OrderForm}
+                />
+              </MyCollapse>
+            )}
+          {isReadOnly && (
             <Card>
               <Descriptions layout="vertical">
                 <Descriptions.Item label="Tên khách hàng">
@@ -465,47 +518,51 @@ const OrderDetailForm = (props) => {
             </Card>
           )}
         </Col>
+        {
+          isCreated?<>
+          <FloatButton.Group>
+            <FloatButton tooltip={"Xác nhận tạo"} onClick={handleSubmit} icon={<File/>}></FloatButton>
+          </FloatButton.Group>
 
-        <Col md={24}>
-          <Card title="Giao hàng">
-            <strong>
-              Phí giao hàng: {convertVND(OrderForm.values.phiship || 0)}
-            </strong>
-            <div></div>
-            <strong>
-              Tổng tiền cần thanh toán:{" "}
-              {convertVND(OrderForm.values.thanhTien || 0)}
-            </strong>
-          </Card>
-        </Col>
-        {OrderForm.values?.daThanhToan ? null : (
+          </>:null
+        }
+        {
+          isUpdated?<>
           <Col md={24}>
-            <Card
-              title="Thanh toán"
-              extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}
-            ></Card>
+          {!OrderForm.values.daThanhToan&&<Card title="Thanh toán" extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
+            {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
           </Col>
-        )}
-        {OrderForm.values?.daXuatKho ? null : (
+           <FloatButton.Group>
+            <FloatButton tooltip={"Xác nhận sửa"} icon={<File/>}></FloatButton>
+          </FloatButton.Group>
+          </>:null
+        }
+        {
+          isReadOnly&&<>
+                    <Col md={24}>
+            {!OrderForm.values.daThanhToan&&<Card title="Thanh toán" extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
+            {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
+          </Col>
+          </>
+        }
+                {
+          isReturn?<>
           <Col md={24}>
-            <Card
-              title="Xuất hàng khỏi kho"
-              extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}
-            ></Card>
+            {OrderForm.values.status==-1&&OrderForm.values.daThanhToan&& <Card title="Hoàn tiền" extra={<Button onClick={handleHoanTien}>Hoàn tiền</Button>}></Card>}
           </Col>
-        )}
-        <FloatButton.Group icon={<File />} trigger="click">
-          <FloatButton
-            onClick={() => handleSubmit()}
-            tooltip="Lưu"
-            icon={<File />}
-          ></FloatButton>
-          <FloatButton
-            onClick={() => handleSubmit()}
-            tooltip="Lưu"
-            icon={<File />}
-          ></FloatButton>
-        </FloatButton.Group>
+          <FloatButton.Group>
+                  <FloatButton tooltip={"Xác nhận trả hàng"}  onClick={handleCancel}></FloatButton>
+          </FloatButton.Group>
+          </>:null
+        }
+        {
+          (OrderForm.values.daXuatKho&&!isReturn)&&<>
+            <Col md={24}>
+            
+            <Card title="Hoàn trả/hủy đơn" extra={<Link to={"tra-hang"}> <Button>Trả hàng/hủy đơn</Button> </Link>}></Card>
+          </Col>
+          </>
+        }
       </Row>
     </form>
   );

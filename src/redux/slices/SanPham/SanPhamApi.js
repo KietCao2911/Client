@@ -7,10 +7,18 @@ export const GetAllProducts = async (params) => {
     throw err;
   }
 };
-
-export const GetProductById = async (slug) => {
+export const GetCTNXs = async (maSanPham) => {
   try {
-    const res = await Method.Get(`/api/admin/SanPham/san-pham/${slug}`);
+    const res = await Method.Get("/api/admin/SanPham/GetCTNX/"+maSanPham);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const GetProductById = async (maSanPham) => {
+  try {
+    const res = await Method.Get(`/api/admin/SanPham/${maSanPham}`);
     return res;
   } catch (error) {
     throw error;

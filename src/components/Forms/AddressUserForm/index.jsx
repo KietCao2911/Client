@@ -2,14 +2,16 @@ import React from 'react'
 import { useFormik } from 'formik';
 import * as Yup from "yup"
 import InputText from '~/components/commomComponents/InputText';
-import { SelectInput } from '~/components/commomComponents/SelectInput';
 import  *as GiaoHangNhanhApi from '~/redux/slices/GioHang/GioHangSlice'
 import { useDispatch,useSelector } from 'react-redux';
 import MyButton from '~/components/commomComponents/Button';
 import *as XacThucAPI from '~/redux/slices/XacThuc'
+import { Col, Row, Space } from 'antd';
+import SelectCustom,{Option} from '~/components/commomComponents/SelectCustom';
+import CustomSpin from '~/components/CustomSpin';
 const AddressUserForm = () => {
     const dispatch = useDispatch();
-    const {user} = useSelector(state=>state.XacThuc)
+    const {user,loading} = useSelector(state=>state.XacThuc)
     const { ghnAPI } = useSelector(state => state.GioHang);
     const {Provinces,Districts,Wards,FeeInfo,DistrictID,Loading} = ghnAPI;
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -24,7 +26,7 @@ const AddressUserForm = () => {
             WardName: "",
             ProvinceID: null,
             DistrictID: null,
-            WardId: null,
+            WardID: null,
             AddressDsc: "",
             Email: "",
             PaymendMethod: "COD",
@@ -44,22 +46,26 @@ const AddressUserForm = () => {
             console.log({values});
           },
     })
-    const handleChangeProvince =(e)=>
+    const handleChangeProvince = (id, name) => {
+      AddressUserForm.setFieldValue("ProvinceName", name);
+      AddressUserForm.setFieldValue("ProvinceID", id);
+      AddressUserForm.setFieldValue("DistrictName", "");
+      AddressUserForm.setFieldValue("DistrictID", null);
+      AddressUserForm.setFieldValue("WardName", "");
+      AddressUserForm.setFieldValue("WardID", null);
+      dispatch(GiaoHangNhanhApi.fetchGetDistrict(id));
+    };
+    const handleChangeDistrict = (id, name) => {
+      AddressUserForm.setFieldValue("DistrictName", name);
+      AddressUserForm.setFieldValue("DistrictID", id);
+      AddressUserForm.setFieldValue("WardName", "");
+      AddressUserForm.setFieldValue("WardID", null);
+      dispatch(GiaoHangNhanhApi.fetchGetWard(id));
+    };
+    const handleChangeWard=(id,name)=>
     {
-        AddressUserForm.setFieldValue("ProvinceName",e.target.options[e.target.selectedIndex].text)
-        AddressUserForm.setFieldValue("ProvinceID",e.target.value)
-        dispatch(GiaoHangNhanhApi.fetchGetDistrict(e.target.value))
-    }
-    const handleChangeDistrict=(e)=>
-    {
-        AddressUserForm.setFieldValue("DistrictName",e.target.options[e.target.selectedIndex].text)
-        AddressUserForm.setFieldValue("DistrictID",e.target.value)
-        dispatch(GiaoHangNhanhApi.fetchGetWard(e.target.value))
-    }
-    const handleChangeWard=(e)=>
-    {
-        AddressUserForm.setFieldValue("WardName",e.target.options[e.target.selectedIndex].text)
-        AddressUserForm.setFieldValue("WardId",e.target.value)
+      AddressUserForm.setFieldValue("WardName", name);
+      AddressUserForm.setFieldValue("WardID", id);
     }
     const handleSave=()=>
     {
@@ -67,40 +73,108 @@ const AddressUserForm = () => {
         dispatch(XacThucAPI.fetchAddAddress({body:{...values,tenTaiKhoan:user.userName.trim()}}))
     }
   return (
-    <div><strong>Thêm địa chỉ mới</strong>
-    <InputText placeHolder="Tên của bạn" label="Tên" name="Name" value={AddressUserForm.values.Name} onChange={AddressUserForm.handleChange}/>
+    <Space style={{width:"100%"}}  direction='vertical'>
+     {loading&& <CustomSpin/>}
+      <strong>Thêm địa chỉ mới</strong>
+    <InputText  label="Tên" name="Name" value={AddressUserForm.values.Name} onChange={AddressUserForm.handleChange}/>
     {AddressUserForm.errors.Name&&<span className='error'>{AddressUserForm.errors.Name}</span>}
-    <InputText placeHolder="Mô tả thêm về địa chỉ của bạn"  name="AddressDsc" label="Chi tiết địa chỉ" value={AddressUserForm.values.AddressDsc} onChange={AddressUserForm.handleChange}/>
+    <InputText  name="AddressDsc" label="Chi tiết địa chỉ" value={AddressUserForm.values.AddressDsc} onChange={AddressUserForm.handleChange}/>
     {AddressUserForm.errors.AddressDsc&&<span className='error'>{AddressUserForm.errors.AddressDsc}</span>}
 
-    <InputText  placeHolder="Điện thoại liên hệ" name="Phone" value={AddressUserForm.values.Phone} label="Số điện thoại" onChange={AddressUserForm.handleChange}/>
+    <InputText   name="Phone" value={AddressUserForm.values.Phone} label="Số điện thoại" onChange={AddressUserForm.handleChange}/>
     {AddressUserForm.errors.Phone&&<span className='error'>{AddressUserForm.errors.Phone}</span>}
-<   InputText placeHolder="Email liên lạc" value={AddressUserForm.values.Email} name="Email" label="Email" onChange={AddressUserForm.handleChange}/>
+<   InputText  value={AddressUserForm.values.Email} name="Email" label="Email" onChange={AddressUserForm.handleChange}/>
     {AddressUserForm.errors.Email&&<span className='error'>{AddressUserForm.errors.Email}</span>}
-    <div className="SelectAddressGroup">
-    <SelectInput  loading={Loading.Provinces} name="province" defaultLabel="Tỉnh/Thành phố" onChange={e=>handleChangeProvince(e)}>
-<option value={""}>Vui lòng chọn Tỉnh/Thành phố</option>
-{Provinces.data&&Provinces.data.map(item=>{
-return <option  key ={item.ProvinceID}value={item.ProvinceID}>{item.ProvinceName}</option>
-})}
-</SelectInput>
-<SelectInput loading={Loading.Districts} name="district" defaultLabel="Quận/Huyện" onChange={e=>handleChangeDistrict(e)}>
-<option value={""}>Vui lòng chọn Quận/Huyện</option>
-{Districts.data&& Districts?.data?.map(item=>{
-return <option key ={item.DistrictId} value={item.DistrictID}>{item.DistrictName}</option>
-})}
-</SelectInput> 
-<SelectInput  loading={Loading.Wards}  defaultLabel="Xã/Phường" name="ward" onChange={(e)=>handleChangeWard(e)}>
-<option value={""}>Vui lòng chọn Xã/Phường</option>
-{Wards.data&& Wards?.data?.map(item=>{
-return <option value={item.WardCode}>{item.WardName}</option>
-})}
-</SelectInput>
-    </div>
+    <Row gutter={[20, 20]}>
+
+              <Col span={24}>
+                <SelectCustom
+                  value={AddressUserForm.values.ProvinceID || ""}
+                  name={"ProvinceID"}
+                >
+                  <Option value={null}>Vui lòng chọn Tỉnh/Thành phố</Option>
+                  {Provinces.data &&
+                    Provinces.data.map((item) => {
+                      return (
+                        <Option
+                          onClick={() =>
+                            handleChangeProvince(
+                              item.ProvinceID,
+                              item.ProvinceName
+                            )
+                          }
+                          key={item.ProvinceID}
+                          value={item.ProvinceID}
+                        >
+                          {item.ProvinceName}
+                        </Option>
+                      );
+                    })}
+                </SelectCustom>
+                {AddressUserForm.errors.ProvinceID && (
+                  <span className="error">{AddressUserForm.errors.ProvinceID}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <SelectCustom
+                  value={AddressUserForm.values.DistrictID || ""}
+                  loading={Loading.Districts}
+                  name="DistrictID"
+                  defaultLabel="Quận/Huyện"
+                >
+                  <Option value={""}>Vui lòng chọn Quận/Huyện</Option>
+                  {Districts.data &&
+                    Districts?.data?.map((item) => {
+                      return (
+                        <Option
+                          onClick={() =>
+                            handleChangeDistrict(
+                              item.DistrictID,
+                              item.DistrictName
+                            )
+                          }
+                          key={item.DistrictID}
+                          value={item.DistrictID}
+                        >
+                          {item.DistrictName}
+                        </Option>
+                      );
+                    })}
+                </SelectCustom>
+                {AddressUserForm.errors.DistrictID && (
+                  <span className="error">{AddressUserForm.errors.DistrictID}</span>
+                )}
+              </Col>
+              <Col span={24}>
+                <SelectCustom
+                  value={AddressUserForm.values.WardID || ""}
+                  onChange={(e) => handleChangeWard(e)}
+                  loading={Loading.Wards}
+                  defaultLabel="Xã/Phường"
+                  name="WardID"
+                >
+                  <Option value={""}>Vui lòng chọn Xã/Phường</Option>
+                  {Wards.data &&
+                    Wards?.data?.map((item) => {
+                      return (
+                        <Option
+                          onClick={(e) => handleChangeWard(item.WardCode, item.WardName)}
+                          value={item.WardCode}
+                        >
+                          {item.WardName}
+                        </Option>
+                      );
+                    })}
+                </SelectCustom>
+                {AddressUserForm.errors.WardID && (
+                  <span className="error">{AddressUserForm.errors.WardID}</span>
+                )}
+              </Col>
+            </Row>
 <div className="Actions">
-<MyButton onClick={()=>handleSave()}>LƯU</MyButton>
-<MyButton>Hủy</MyButton>
-</div></div>
+<div 
+className='btn' onClick={()=>handleSave()}>LƯU</div >
+</div></Space>
   )
 }
 

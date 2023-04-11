@@ -21,9 +21,12 @@ const QuanTriNhapHang = () => {
           path="/:id/cap-nhat"
           element={<TrangTaoDonNhap isUpdated={true} />}
         ></Route>
+        <Route
+          path="/:id/tra-hang"
+          element={<TrangTaoDonNhap isReturn={true} />}
+        ></Route>
       </Routes>
     </div>
   );
 };
-
 export default QuanTriNhapHang;

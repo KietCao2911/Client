@@ -1,86 +1,75 @@
-.HaveUserComponent
-{
-    .AddressSelecteItem{
+.HaveUserComponent {
+    width: 100%;
+
+    .AddressSelecteItem {
         padding: 2rem;
-        border:.1rem solid black;
+        border: .1rem solid black;
         position: relative;
         min-height: 30rem;
         cursor: pointer;
         position: relative;
-        &:hover{
+
+        &:hover {
             box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
         }
-        &.active{
+
+        &.active {
             border: .4rem solid black;
-            &::after{
-                position: absolute;
-                content:'\2714';
-                background-color: black;
-                top: -1rem;
-                right: -1rem;
-                color:white;
-                font-size: 2rem;
-                padding: .5rem;
-                border-radius: 50%;
-            }
-           
+
+
+            &::after {}
+
         }
-        .name{
+
+        .name {
             font-weight: 700;
         }
-        .iconChecked{
+
+        .iconChecked {
             position: absolute;
             right: -1.5rem;
             top: -1.5rem;
         }
-        .action{
+
+        .action {
             display: flex;
             position: absolute;
             bottom: 3rem;
-            p{
+
+            p {
                 text-decoration: underline;
-                margin:0 1rem;
+                margin: 0 1rem;
                 padding: .5rem;
-                &:hover{
-                    
+
+                &:hover {
+
                     background-color: black;
-                    color:white;
+                    color: white;
                 }
             }
         }
     }
-    .AddItem{
-        min-width: 35rem;
+
+    .AddItem {
         width: 100%;
         min-height: 30rem;
-        padding :2rem;
-        border:.1rem solid #ccc;
+        padding: 2rem;
+        border: .1rem solid #ccc;
         transition: .3s ease;
         cursor: pointer;
-        &:hover{
-                border:.1rem solid black;            
-                
+
+        &:hover {
+            border: .1rem solid black;
+
         }
+
         position: relative;
-        .iconPlus
-        {
+
+        .iconPlus {
             position: absolute;
             bottom: 2rem;
             left: 2rem;
 
-        }
-    }
-    .SelectAddressGroup{
-        display: flex;
-    }
-    .ModalCustom{
-        .Actions{
-            display: flex;
-            justify-content: flex-end;
-            .MyButton{
-                border-radius: unset;
-             
-            }
         }
     }
 }

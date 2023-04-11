@@ -90,7 +90,10 @@ const Filter = (props) => {
     <div className="Filter">
       <div className="header" justify={"space-between"}>
         <Breadcrumb style={{ position: "relative" }}></Breadcrumb>
-        <MyFilter onClick={() => setOpenDrawer(true)} />
+        <MyFilter
+          style={{ cursor: "pointer" }}
+          onClick={() => setOpenDrawer(!openDrawer)}
+        />
       </div>
       <CustomDrawer
         placement="left"
@@ -99,7 +102,7 @@ const Filter = (props) => {
         onClose={() => setOpenDrawer(false)}
       >
         <h3>LỌC VÀ SẮP XẾP</h3>
-        <MyCollapse label="Sắp xếp">
+        <MyCollapse label="Sắp xếp" defaultOpen={true}>
           <Space direction="vertical">
             <h4
               key={uuidv4()}
@@ -123,10 +126,24 @@ const Filter = (props) => {
               {" "}
               Mới nhất
             </h4>
+            <h4 key={uuidv4()} onClick={() => handleClickSort("popular")}>
+              {" "}
+              Bán chạy nhất
+            </h4>
           </Space>
         </MyCollapse>
         <ColorOptions />
         <SizeOptions />
+        <MyCollapse label="Giới tính">
+          <h4 key={uuidv4()} onClick={() => handleClickSort("popular")}>
+            {" "}
+            Bán chạy nhất
+          </h4>
+          <h4 key={uuidv4()} onClick={() => handleClickSort("popular")}>
+            {" "}
+            Bán chạy nhất
+          </h4>
+        </MyCollapse>
       </CustomDrawer>
     </div>
   );

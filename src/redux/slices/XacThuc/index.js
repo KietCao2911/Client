@@ -70,6 +70,10 @@ const XacThucSlice = createSlice({
       state.user.avatar =action.payload.fileName;
     })
     //fetchDeleteAddress
+    builder.addCase(fetchDeleteAddress.pending,(state,action)=>
+    {
+      state.loading=true
+    })
     builder.addCase(fetchDeleteAddress.fulfilled,(state,action)=>
     {
       const id = action.payload;
@@ -87,23 +91,48 @@ const XacThucSlice = createSlice({
           })
         }
       }
+      state.loading=false;
+    })
+    builder.addCase(fetchDeleteAddress.rejected,(state,action)=>
+    {
+      state.loading=false
     })
     //fetchChangeAddressDefault
+    builder.addCase(fetchChangeAddressDefault.pending,(state,action)=>
+    {
+     state.loading=true
+    })
     builder.addCase(fetchChangeAddressDefault.fulfilled,(state,action)=>
     {
       const {body} = action.meta.arg
       console.log(action.meta.arg)
       state.user.addressDefault = body.addressDefault;
+      state.loading=false;
       notification.open({
         type:"success",
         message:"Đã cập nhật địa chỉ giao hàng mặc định"
       })
     })
+    builder.addCase(fetchChangeAddressDefault.rejected,(state,action)=>
+    {
+     state.loading=false
+    })
     //fetchAddAddress
+    builder.addCase(fetchAddAddress.pending,(state,action)=>
+    {
+     
+      state.loading=true;
+    })
     builder.addCase(fetchAddAddress.fulfilled,(state,action)=>
     {
       console.log({payload:action.payload})
       state.user.info=[...state.user.info,action.payload];
+      state.loading=false;
+    })
+    builder.addCase(fetchAddAddress.rejected,(state,action)=>
+    {
+     
+      state.loading=false;
     })
     builder.addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
       state.user = action.payload.user;
@@ -115,7 +144,12 @@ const XacThucSlice = createSlice({
       localStorage.setItem("access__token", action.payload.token);
       localStorage.setItem("refresh__token", action.payload.refreshToken);
     });
-
+    builder.addCase(fetchPostSignUser.rejected, (state, action) => {
+      notification.open({
+        message:"Thao tác thất bại, vui lòng thử lại sau",
+        type:"error"
+      })
+    });
   },
 });
 

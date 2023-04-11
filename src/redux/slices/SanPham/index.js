@@ -4,11 +4,17 @@ import convertVND from "~/components/utils/ConvertVND";
 import * as Api from "./SanPhamApi";
 import * as UserSanPhamAPI from "./Users/SanPhamAPI";
 import handleUserProduct from "./Users/index";
-import { fetchGetAllProductsUser, fetchGetProductUser } from "./Users/index";
+import {
+  fetchGetAllProductsUser,
+  fetchGetProductUser,
+  fetchQTY,
+} from "./Users/index";
 import { BASE_URL } from "~/const";
 import GroupBy from "~/components/utils/GroupBy";
 import URLConvert from "~/components/utils/URLConvert";
 const initialState = {
+  ctnxs:[],
+  qtyInfo: {},
   products: [],
   deleteState: false,
   UpdateState: false,
@@ -16,12 +22,21 @@ const initialState = {
   searchResult: [],
   productsHot: [],
   productsLatest: [],
+  trendingsProduct: [],
   loading: false,
   totalRow: 0,
   state: -1,
 };
 
 ///ADMIN
+export const fetchGetCTNXs = createAsyncThunk(
+  "fetchGetCTNXs",
+  async (props) => {
+    const { maSanPham } = props;
+    const res = await Api.GetCTNXs(maSanPham);
+    return res;
+  }
+);
 
 export const fetchGetAllProducts = createAsyncThunk(
   "fetchGetAllProducts",
@@ -34,8 +49,8 @@ export const fetchGetAllProducts = createAsyncThunk(
 export const fetchGetProduct = createAsyncThunk(
   "fetchGetProduct",
   async (params) => {
-    const { slug } = params;
-    const res = await Api.GetProductById(slug);
+    const { maSanPham } = params;
+    const res = await Api.GetProductById(maSanPham);
     return res;
   }
 );
@@ -165,9 +180,7 @@ const SanPhamSlice = createSlice({
     });
     builder.addCase(fetchGetAllProductsUser.fulfilled, (state, action) => {
       const props = action.meta.arg;
-      if (props.sort && props.sort == "popular") {
-        state.productsHot = action.payload;
-      }
+
       state.loading = false;
       const { products, totalRow } = action.payload;
       const productsTemp = [...products];
@@ -188,8 +201,23 @@ const SanPhamSlice = createSlice({
           );
         product.sanPhamNavigation.imgsDisplay = URL || [];
       });
-      state.products = [...productsTemp];
-      state.totalRow = totalRow;
+      if (props?.params.sort && props?.params.sort == "popular") {
+        state.productsHot = [...productsTemp];
+      } else if (props?.params.sort && props?.params.sort == "most-view") {
+        state.trendingsProduct = state.productsHot = [...productsTemp];
+      } else {
+        state.products = [...productsTemp];
+        state.totalRow = totalRow;
+      }
+    });
+    //fetchGETQTYUSER
+    builder.addCase(fetchQTY.pending, (state) => {
+      state.loading = true;
+      state.qtyInfo = {};
+    });
+    builder.addCase(fetchQTY.fulfilled, (state, action) => {
+      state.loading = true;
+      state.qtyInfo = action.payload;
     });
     //fetchGetProductUser
     builder.addCase(fetchGetProductUser.pending, (state) => {
@@ -258,6 +286,15 @@ const SanPhamSlice = createSlice({
       }
       state.loading = false;
     });
+    //GetCPNXs 
+    builder.addCase(fetchGetCTNXs.pending,(state,action)=>{
+      state.loading=true;
+      state.ctnxs = [];
+    })
+    builder.addCase(fetchGetCTNXs.fulfilled,(state,action)=>{
+      state.ctnxs = action.payload;
+      state.loading=false;
+    })
     //SearchProducts
     builder.addCase(SearchProducts.pending, (state, action) => {
       state.loading.searchLoading = true;
@@ -307,10 +344,9 @@ const SanPhamSlice = createSlice({
     //UploadFile
     builder.addCase(UploadFile.fulfilled, (state, action) => {
       const { maSanPham, maMau } = action.meta.arg;
-      const hinhAnhs = [...current(state.product?.chiTietHinhAnhs)];
-      const { uid, name, status, url } = action.payload;
       const temps = { ...current(state.product) };
       let array = temps.colorGrouped.find((x) => x[0].idColor.trim() == maMau);
+      console.log({ pl: action.payload });
       if (array) {
         var gg = array.map((item) => {
           return {
@@ -393,8 +429,9 @@ const SanPhamSlice = createSlice({
       state.product.colorGrouped = [...groupedArray];
       state.loading = false;
     });
-    builder.addCase(fetchGetProduct.rejected, () => {
-      window.location.replace("/");
+    builder.addCase(fetchGetProduct.rejected, (state) => {
+      // window.location.replace("/");
+      state.loading = false;
     });
     //fetchPostProduct
     builder.addCase(fetchPostProduct.pending, (state) => {
@@ -407,7 +444,7 @@ const SanPhamSlice = createSlice({
         type: "success",
       });
       window.location.replace(
-        `/admin/trang-quan-tri-san-pham/${action.payload?.slug}/versions/${action.payload?.sanPhams[0]?.maSanPham}`
+        `/admin/trang-quan-tri-san-pham/${action.payload?.maSanPham}/versions/${action.payload?.sanPhams[0]?.maSanPham}`
       );
     });
     builder.addCase(fetchPostProduct.rejected, (state, action) => {

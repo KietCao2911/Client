@@ -85,8 +85,9 @@ const WithChild = (props) => {
   const [pending, startTransition] = useTransition();
   const [selectedRowKeys, setSelectedRowKeys] = useState(() => {
     const maSP = prams111["*"].split("/")[1];
-    const init = product.sanPhams[0]?.maSanPham?.trim();
-    return [maSP?.trim() ? maSP.trim() : init];
+    // const init = product.sanPhams[0]?.maSanPham?.trim();
+    // return [maSP?.trim() ? maSP.trim() : init];
+    return [maSP || null];
   });
   const [data, setData] = useState();
   const [isEdit, setIsEdit] = useState(false);

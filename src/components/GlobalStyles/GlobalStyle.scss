@@ -1,153 +1,182 @@
 @import 'normalize.css';
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,500;0,700;1,500&display=swap');
-$colorFNC_Primary:#63c0df;
-$colorFNC_Success:#009944;
-$colorFNC_Danger:#cf000f;
-$colorFNC_Warning:#f0541e;
-$font_size_default:1vh;
-$line_height_default:1.8rem;
+$colorFNC_Primary: #63c0df;
+$colorFNC_Success: #009944;
+$colorFNC_Danger: #cf000f;
+$colorFNC_Warning: #f0541e;
+$font_size_default: 1vh;
+$line_height_default: 1.8rem;
 $primary_color : black;
-$second_color:white;
-$boxShadow : rgba(0, 0, 0, 0.24) 0px 3px 8px;    
+$second_color: white;
+$boxShadow : rgba(0, 0, 0, 0.24) 0px 3px 8px;
 $radius_cornor :.4rem;
-*{
-    box-sizing: border-box ;
-    -webkit-tap-highlight-color: transparent;
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
-html
-{
-    font-size: 62.5%;
-    user-select: none;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+
+html {
+  font-size: 62.5%;
+  user-select: none;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
-body{
+
+body {
   font-family: 'Ubuntu', sans-serif;
-    font-size: $font_size_default;
-    line-height: $line_height_default;
-    text-rendering: optimizeSpeed;
-    box-sizing: border-box;
-  }
-.error{
-  color:#cc3300;
+  font-size: $font_size_default;
+  line-height: $line_height_default;
+  text-rendering: optimizeSpeed;
+  box-sizing: border-box;
+}
+
+.error {
+  color: #cc3300;
   padding: 1rem;
   font-style: italic;
   font-weight: bold;
 }
+
+.icon {
+  cursor: pointer;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }
-a{
+
+a {
   font-size: 1.6vh;
+  color: black;
+
+  &:hover {
+    color: black;
+    ;
+  }
 }
-h1{
+
+h1 {
   font-size: 2.5vh;
   text-transform: uppercase;
 }
-ul
-{
-    list-style: none;
+
+ul {
+  list-style: none;
 }
-strong{
+
+strong {
   text-transform: uppercase;
 }
-.btn{
+
+.btn {
   padding: 1rem;
   background-color: white;
-  color:black;
+  color: black;
   transition: .3s ease;
   display: inline-block;
-  border: .1rem solid black  ;
+  border: .1rem solid black;
+  cursor: pointer;
 }
-.btn.active{
+
+.btn.active {
   background-color: black;
-  color:white;
+  color: white;
 }
-button{
-border: none;  
+
+button {
+  border: none;
 }
-.active{
+
+.active {
   opacity: 1;
   // transform:translateX(0);
 }
-.headingPage{
-  margin:1.2rem;
+
+.headingPage {
+  margin: 1.2rem;
   font-size: 3rem;
   font-weight: bolder;
 }
 
 [data-theme="dark"] .ant-layout-header {
-    background: black;
-    
-  }
+  background: black;
 
-  .ant-layout-footer {
-    background:black !important ;
-    padding: 4rem;
-  }
-  .Header
-  {
-    background: #ffffff;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: $radius_cornor;
-  }
-  img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  input{
-    width: 100%;
-    height: 100%;
-    outline: none;
-    padding: .5rem;
-    border: none;
-  }
-  svg{
-    // font-size: 2.5rem;
-  }
-  .ant-layout-content
-  {
-    // background-color: #fff;
-    min-height: 100vh !important;
-  }
-  .table-row-light
-  {
-  }
-.alert-success
-{
-  border:1px solid #b7eb8f;
+}
+
+.ant-layout-footer {
+  padding: unset !important;
+}
+
+.Header {
+  background: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: $radius_cornor;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+input {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  padding: .5rem;
+  border: none;
+}
+
+svg {
+  // font-size: 2.5rem;
+}
+
+.ant-layout-content {
+  // background-color: #fff;
+  min-height: 100vh !important;
+}
+
+.table-row-light {}
+
+.alert-success {
+  border: 1px solid #b7eb8f;
   background-color: #d6f6be;
 }
-.alert-error
-{
-  border:1px solid #ffccc7;
+
+.alert-error {
+  border: 1px solid #ffccc7;
   background-color: #fcaca5;
 }
-.ant-checkbox-group-item
-{
+
+.ant-checkbox-group-item {
   padding: .5rem;
   border: 1px solid black;
   border-radius: 4px;
 }
-$mobile-width: 480px; 
-$tablet-width: 1080px; 
-$desktop-width: 1200px;  
 
-@mixin mobile { @media (max-width: #{$mobile-width - 1px}) {     
-  @content;   
- } 
-}  
+$mobile-width: 480px;
+$tablet-width: 1080px;
+$desktop-width: 1200px;
 
-@mixin tablet { @media  (max-width: #{$tablet-width - 1px}) {       
-   @content;   
- } 
-}  
-
-@mixin desktop {   @media (min-width: #{$desktop-width}) {     
-  @content;  
- } 
+@mixin mobile {
+  @media (max-width: #{$mobile-width - 1px}) {
+    @content;
+  }
 }
+
+@mixin tablet {
+  @media (max-width: #{$tablet-width - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
 .swiper {
   width: 100%;
   height: 100%;
@@ -179,16 +208,20 @@ $desktop-width: 1200px;
   height: 100%;
   object-fit: cover;
 }
-a{
-  color:unset;
-  &:hover{
+
+a {
+  color: unset;
+
+  &:hover {
     // color:black;
   }
 }
-.linkColor{
-  color:$colorFNC_Primary;
+
+.linkColor {
+  color: $colorFNC_Primary;
   cursor: pointer;
 }
+
 .radio-custom .ant-radio-wrapper {
   border: 2px solid #ccc;
   border-radius: 8px;
@@ -207,13 +240,14 @@ a{
   overflow: hidden;
 }
 
-.radio-custom .ant-radio + * {
+.radio-custom .ant-radio+* {
   display: block;
   padding: 0;
   overflow: hidden;
   border-radius: 8px;
   overflow: hidden;
 }
+
 input[type="color"],
 input[type="date"],
 input[type="datetime"],
@@ -232,31 +266,37 @@ select:focus,
 textarea {
   font-size: 1.6rem;
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) { 
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
   select,
   textarea,
   input {
     font-size: 1.6rem;
   }
 }
-.ant-pagination-item.ant-pagination-item-active
-{
+
+.ant-pagination-item.ant-pagination-item-active {
   border-color: black;
-  a{
-    color:black;
+
+  a {
+    color: black;
 
   }
 }
-.my-custom-pagination-item
-{
-  color:black;
+
+.my-custom-pagination-item {
+  color: black;
 }
+
 .ant-layout-header {
   padding-inline: 14px !important;
-  @include tablet{
+
+  @include tablet {
     padding-inline: 20px !important;
   }
-  @include desktop{
+
+  @include desktop {
     padding-inline: 24px !important;
   }
 }

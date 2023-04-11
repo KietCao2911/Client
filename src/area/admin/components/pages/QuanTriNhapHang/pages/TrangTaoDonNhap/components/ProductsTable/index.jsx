@@ -1,10 +1,18 @@
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Popconfirm, Table } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Popconfirm,
+  Table,
+  message,
+  notification,
+} from "antd";
 import { DeleteOutlined, FileAddOutlined } from "@ant-design/icons";
 import convertVND from "~/components/utils/ConvertVND";
 
 const ProductsTable = (props) => {
-  const { Form, isEdit,isOrder=true } = props;
+  const { Form, isEdit, isOrder = true } = props;
   useEffect(() => {}, [Form.values]);
   const columns = [
     {
@@ -35,13 +43,18 @@ const ProductsTable = (props) => {
     {
       title: "Số lượng ",
       render: (_, record) => {
-        console.log({SL:record})
+        const max = isOrder
+          ? record?.sanPhamNavigation?.soLuongCoTheban &&
+            record?.sanPhamNavigation?.soLuongTon
+          : null;
         return isEdit ? (
           <Input
             type="number"
             min={1}
-            max={isOrder?record?.sanPhamNavigation?.soLuongCoTheban&&record?.sanPhamNavigation?.soLuongTon:null}
-            onChange={(e) => onChangeSoLuong(record.maSanPham, e.target.value)}
+            max={max}
+            onChange={(e) =>
+              onChangeSoLuong(record.maSanPham, e.target.value, max)
+            }
             value={record?.soLuong}
           />
         ) : (
@@ -88,7 +101,16 @@ const ProductsTable = (props) => {
       Form.setFieldValue("thanhTien", prices + phiship);
     }
   };
-  const onChangeSoLuong = (key, value) => {
+  const onChangeSoLuong = (key, value, max) => {
+    if (max) {
+      if (value > max) {
+        message.open({
+          content: "Không thể chọn giá trị lớn hơn số lượng trong kho.",
+          type: "error",
+        });
+        return;
+      }
+    }
     const obj = Form.values.chiTietNhapXuats.find(
       (x) => x.maSanPham.trim() == key.trim()
     );

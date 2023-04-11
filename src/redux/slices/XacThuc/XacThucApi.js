@@ -1,7 +1,7 @@
 import * as Method from "~/axiosRequest/request";
 export const GetCurrentUser = async () => {
   try {
-    const res = await Method.Get("/api/Auth/GetUser");
+    const res = await Method.Get("/api/admin/Auth/GetUser");
     return res;
   } catch (error) {
     throw error;
@@ -10,7 +10,7 @@ export const GetCurrentUser = async () => {
 
 export const UserSignIn = async (body) => {
   try {
-    const res = await Method.Post("/api/Auth/SignIn", body);
+    const res = await Method.Post("/api/admin/Auth/SignIn", body);
     return res;
   } catch (error) {
     throw error;

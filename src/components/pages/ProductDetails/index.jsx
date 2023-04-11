@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import "./ProductDetail.scss";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { useSelector, useDispatch } from "react-redux";
 import "swiper/css/pagination";
 import { Col, Row, Space, Rate, notification } from "antd";
-import { FreeMode, Pagination } from "swiper";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as SanPhamAPI from "~/redux/slices/SanPham/Users";
@@ -17,23 +15,19 @@ import {
   CarOutlined,
   RollbackOutlined,
 } from "@ant-design/icons";
-import { fetchGetQTY } from "~/redux/slices/ChiTietSoLuong/CtslAPI";
 import GioHangSlice, { AddToCart } from "~/redux/slices/GioHang/GioHangSlice";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import ReactHtmlParser from "react-html-parser";
-import CardProduct from "~/components/commomComponents/CardProduct";
 import CustomSpin from "~/components/CustomSpin";
 import { Plus, PlusSquare, Star } from "react-feather";
 import { BASE_URL } from "~/const";
-import MyButton from "~/components/commomComponents/Button";
 import Breadcrumb from "~/components/commomComponents/Breadcrumb";
 import ListProducts from "~/components/commomComponents/ListProducts";
 import ShowMore from "~/components/commomComponents/ShowMore";
+
 const TrangChiTietSanPham = () => {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const dispatch = useDispatch();
-  const { product, loading } = useSelector((state) => state.SanPham);
-  const { Messages } = useSelector((state) => state.Message);
+  const { product, loading, qtyInfo } = useSelector((state) => state.SanPham);
   const { slug } = useParams();
   const [productsRecentlyView, setProductsRecentlyView] = useState(
     JSON.parse(window.localStorage.getItem("recentlyView")) || []
@@ -57,7 +51,8 @@ const TrangChiTietSanPham = () => {
       CartItem.sanPhamNavigation = productChild;
       CartItem.donGia = productChild?.giaBanLe || 0;
       CartItem.thanhTien = productChild?.giaBanLe || 0;
-      CartItem.maChiNhanh = window.localStorage.getItem("location") || "";
+      CartItem.maChiNhanh =
+        JSON.parse(window.localStorage.getItem("location"))?.maChiNhanh || null;
       dispatch(AddToCart(CartItem));
     } else {
       notification.open({

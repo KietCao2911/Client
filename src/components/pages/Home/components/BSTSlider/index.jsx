@@ -36,24 +36,11 @@ const BSTSlider = () => {
           return (
             <div className="ImgContainer" key={v4()}>
               <SwiperSlide key={v4()}>
-                <div direction="vertical" className="content">
-                  <div className="name"> {item?.tenBoSuuTap || ""} </div>
-
-                  <Link
-                    to={"/collection/" + item.slug.trim()}
-                    className="button"
-                  >
-                    KHÁM PHÁ NGAY
-                    <div className="icon">
-                      <ArrowRight />
-                    </div>
-                  </Link>
-                </div>
                 <Link to={"/collection/" + item.slug.trim()}>
                   <img
                     style={{
                       width: "100%",
-                      objectFit: "cover",
+                      objectFit: "cover"
                     }}
                     src={`${BASE_URL}wwwroot/res/BstImgs/${item?.img}`}
                   />

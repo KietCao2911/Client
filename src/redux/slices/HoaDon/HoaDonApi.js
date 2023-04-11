@@ -40,10 +40,17 @@ export const fetchThanhToan = async (body) => {
     throw error;
   }
 };
-
+export const fetchPUTHoanTien = async (body) => {
+  try {
+    const res = await Method.Put("/api/admin/DonHang/HoanTien", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
 export const fetchCancelOrder = async (body) => {
   try {
-    const res = await Method.Delete("/api/admin/DonHang/HuyDon", body);
+    const res = await Method.Put("/api/admin/DonHang/TraHang", body);
     return res;
   } catch (error) {
     throw error;

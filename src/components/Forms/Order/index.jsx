@@ -14,6 +14,7 @@ import {
   Alert,
   Card,
   Col,
+  message,
   notification,
   Radio,
   Row,
@@ -33,12 +34,11 @@ import SelectCustom, {
 const OrderForm = (props) => {
   document.title = "Trang thông tin giao hàng";
   const { user } = useSelector((state) => state.XacThuc);
-  const { setGuessInfo } = props;
   const { ghnAPI, chiTietNhapXuats, thanhTien, tongSoLuong, phiShip } =
     useSelector((state) => state.GioHang);
   const [infoLocalStorage, setInfoLocalStorage] = useState(() => {
     const values =
-      JSON.parse(window.localStorage.getItem("cart")).diaChiNavigation || {};
+      JSON.parse(window.localStorage.getItem("cart"))?.diaChiNavigation || {};
     return values;
   });
   const { Provinces, Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
@@ -126,15 +126,20 @@ const OrderForm = (props) => {
   const handleOrder = () => {
     const diaChiNavigation = orderForm.values;
     const cart = JSON.parse(window.localStorage.getItem("cart"));
+    cart.thanhTien = thanhTien;
+    cart.phiShip = phiShip;
     const params = {
       ...cart,
       diaChiNavigation,
     };
     if (Object.keys(orderForm.errors).length <= 0) {
-      console.log({ order: params });
-      // dispatch(ThanhToanApi.fetchPostWithGuess(params));
+      // console.log({ order: params });
+      dispatch(ThanhToanApi.fetchPostWithGuess(params));
     } else {
-      alert("sai thong tin");
+      message.open({
+        content: "Kiểm tra lại thông tin",
+        type: "error",
+      });
     }
   };
   const handlePaymentMethod = (value) => {

@@ -1,25 +1,4 @@
-.Footer{
-    background-color: black;
-    color:white;
-    .FooterPc{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        >div{
-            flex:1;
-        }
-        ul>span{
-            font-weight: 700;
-            font-size: 1.8rem;
-        }
-        ul  a{
-            display: block;
-            margin: 1rem 0;
-            transition: .3s ease;
-            &:hover{
-                color:rgb(93, 78, 78);
-            }
-        }
-    }
+.Footer {
+    display: flex;
+    justify-content: center;
 }

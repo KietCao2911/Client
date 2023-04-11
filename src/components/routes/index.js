@@ -34,18 +34,9 @@ const publicRoute = [
     element: Elements.DeliveryPage,
   },
   {
-    path: "/dang-nhap",
+    path: "/auth/*",
     element: Elements.AuthPage,
     layout: GuessAuthLayout,
-  },
-  {
-    path: "/dang-nhap/phoneOTP",
-    element: Elements.PhoneOTP,
-    layout: GuessAuthLayout,
-  },
-  {
-    path: "/dang-ky",
-    element: Elements.GuessRegisterForm,
   },
 ];
 const privateRoute = [

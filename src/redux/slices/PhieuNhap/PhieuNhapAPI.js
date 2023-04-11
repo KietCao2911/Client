@@ -1,8 +1,26 @@
 import * as Method from "~/axiosRequest/request";
-//Nhập kho
+//Hoàn tiền
+export const fetchPutHoanTien = async (body) => {
+  try {
+    const res = await Method.Put("/api/PhieuNhaps/HoanTien", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+//Thanh toán
 export const fetchPutThanhToan = async (body) => {
   try {
     const res = await Method.Put("/api/PhieuNhaps/ThanhToan", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+//Trả hàng
+export const fetchPutTraHang = async (body) => {
+  try {
+    const res = await Method.Put("/api/PhieuNhaps/TraHang", body);
     return res;
   } catch (error) {
     throw error;

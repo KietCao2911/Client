@@ -52,7 +52,7 @@ const OrderPage = () => {
   },[])
   return (
     <div className='OrderPage'>
-      {myOrders.length>0?myOrders.map(item=>
+      {myOrders&&myOrders.length>0?myOrders.map(item=>
         {
           return item.chiTietHoaDons.map(cthd=>
             <Item cthd={cthd} hd={item}></Item>)

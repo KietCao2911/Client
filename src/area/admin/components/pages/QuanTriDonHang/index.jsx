@@ -20,6 +20,10 @@ const QuanTriDonHang = () => {
           element={<OrderDetailForm isCreated={true} />}
           path=":tao-moi"
         ></Route>
+                <Route
+          element={<OrderDetailForm isReturn={true} />}
+          path=":id/tra-hang"
+        ></Route>
       </Routes>
     </div>
   );

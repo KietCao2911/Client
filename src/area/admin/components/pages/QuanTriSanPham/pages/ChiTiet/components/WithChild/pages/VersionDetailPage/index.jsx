@@ -25,17 +25,17 @@ import InputText from "~/components/commomComponents/InputText";
 import { UploadFile, DeleteFile } from "~/redux/slices/SanPham";
 import { useMemo } from "react";
 import CustomSpin from "~/components/CustomSpin";
-import { setFieldValue } from "~/redux/slices/SanPham/index";
 import { memo } from "react";
-import { useCallback } from "react";
-import { BASE_URL } from "~/const";
+import * as SanPhamAPI from "~/redux/slices/SanPham";
 const { Dragger } = Upload;
+
 const VersionDetailPage = (props) => {
   const params = useParams();
   const { khohangs } = useSelector((state) => state.KhoHang);
-  const { product } = useSelector((state) => state.SanPham);
+  const { product,ctnxs } = useSelector((state) => state.SanPham);
   const { isEdit, version, form } = props;
   const [isPending, startTransition] = useTransition();
+  console.log({ params });
   const [fileList, setFileList] = useState(() => {
     let imgs =
       product?.colorGrouped?.filter(
@@ -45,9 +45,6 @@ const VersionDetailPage = (props) => {
   });
   const [progress, setProgress] = useState(0);
   const dispatch = useDispatch();
-
-  const [options, setOptions] = useState(["1"]);
-  console.log({ DetailMASP: params });
   const getImgs = useMemo(() => {
     let imgs =
       product?.colorGrouped?.filter(
@@ -56,7 +53,11 @@ const VersionDetailPage = (props) => {
     setFileList(imgs[0]?.chiTietHinhAnhs || []);
   }, [version?.idColor, product?.colorGrouped]);
   useEffect(() => {
-    dispatch(KhoHangAPI.fetchGetKhoHang({ maSP: params.maSP }));
+    dispatch(
+      KhoHangAPI.fetchGetKhoHang({ maSP: params["*"].split("/")[1] || "" })
+      
+    );
+    dispatch(SanPhamAPI.fetchGetCTNXs({maSanPham:params["*"].split("/")[1] || ""}));
   }, [params.maSP]);
   const handleChangeFieldValue = (value, fieldName) => {
     let tempValue = { ...version };
@@ -67,7 +68,6 @@ const VersionDetailPage = (props) => {
       arr[index] = tempValue;
       form.setFieldValue("sanPhams", arr);
     } else {
-      console.log(-1);
     }
   };
   const uploadImage = async (options) => {
@@ -117,12 +117,12 @@ const VersionDetailPage = (props) => {
     {
       key: "1",
       label: "Kho hàng",
-      children: <TonKho khohangs={version.khoHangs} />,
+      children: <TonKho khohangs={khohangs || []} />,
     },
     {
       key: "2",
       label: "Lịch sử nhập xuất kho",
-      children: <LichSuKho khohangs={version.chiTietNhapXuats} />,
+      children: <LichSuKho khohangs={ctnxs || []} />,
     },
   ];
   return (
@@ -162,13 +162,13 @@ const VersionDetailPage = (props) => {
                     <Space>
                       <i>Màu sắc</i>:
                     </Space>
-                    <Space>{version?.mauSacNavigation?.tenMau}</Space>
+                    <Space>{version?.idColor}</Space>
                   </Space>
                   <Space>
                     <Space>
                       <i>Kích thước</i>:
                     </Space>
-                    <Space>{version?.sizeNavigation?.size1}</Space>
+                    <Space>{version?.idSize}</Space>
                   </Space>
                   <Space></Space>
                   <Space></Space>

@@ -25,6 +25,11 @@ const AddressForm = (props) => {
       e.target.options[e.target.selectedIndex].text
     );
     orderForm.setFieldValue("diaChiNavigation.provinceID", e.target.value);
+    orderForm.setFieldValue("phiship", 0);
+    orderForm.setFieldValue(
+      "thanhTien",
+      (orderForm.values?.thanhTien || 0) - (orderForm.values.phiship || 0)
+    );
     const res = await fetchGetDistrict(e.target.value);
     setDistricts(res);
   };
@@ -34,6 +39,11 @@ const AddressForm = (props) => {
       e.target.options[e.target.selectedIndex].text
     );
     orderForm.setFieldValue("diaChiNavigation.districtID", e.target.value);
+    orderForm.setFieldValue("phiship", 0);
+    orderForm.setFieldValue(
+      "thanhTien",
+      (orderForm.values?.thanhTien || 0) - (orderForm.values.phiship || 0)
+    );
     const res = await fetchGetWard(e.target.value);
     setWards(res);
   };
@@ -60,17 +70,19 @@ const AddressForm = (props) => {
         coupon: null,
       });
       orderForm.setFieldValue("phiship", fee?.data?.total || 0);
-      orderForm.setFieldValue("thanhTien", (orderForm.values?.thanhTien||0) + fee?.data?.total || 0);
+      orderForm.setFieldValue(
+        "thanhTien",
+        (orderForm.values?.thanhTien || 0) + fee?.data?.total || 0
+      );
     }
   };
   useEffect(() => {
     const fetch = async () => {
       const provinces = await fetchGetProvince();
-      setProvinces(provinces)
+      setProvinces(provinces);
     };
     fetch();
-  }, [
-  ]);
+  }, []);
   return (
     <div title="Địa chỉ giao hàng">
       <Row gutter={[20, 20]}>
@@ -227,7 +239,11 @@ const AddressForm = (props) => {
             <option value={""}>Vui lòng chọn Xã/Phường</option>
             {Wards.data &&
               Wards?.data?.map((item) => {
-                return <option key={item?.WardCode} value={item.WardCode}>{item.WardName}</option>;
+                return (
+                  <option key={item?.WardCode} value={item.WardCode}>
+                    {item.WardName}
+                  </option>
+                );
               })}
           </SelectInput>
           {orderForm.touched.diaChiNavigation?.wardID &&

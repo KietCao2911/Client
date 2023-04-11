@@ -11,11 +11,8 @@ const UserHeader = () => {
   return (
     <div className="UserHeader">
       {Object.keys(user).length > 0 ? (
-        <Link to="/me" className="User">
-          <MyButton style={{ border: "unset" }} icon={<User />}>
-            {" "}
-            Người dùng : {user.nameDisplay || user.userName}
-          </MyButton>
+        <Link to="/me" className="icon User">
+         <User/>
         </Link>
       ) : (
         <Link to="/dang-nhap" className="icon NonUser">

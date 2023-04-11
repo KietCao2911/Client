@@ -13,6 +13,7 @@ import GioHangSlice, {
 import { H1 } from "glamorous";
 import EmptyCart from "./components/EmtyCart";
 import { Card, Col, Row } from "antd";
+import { v4 } from "uuid";
 function CartPage() {
   document.title = "Giỏ hàng";
   const props = useSelector((state) => state.GioHang);
@@ -51,7 +52,7 @@ function CartPage() {
                   chiTietNhapXuats.map((item) => {
                     console.log({ item });
                     return (
-                      <Col md={24}>
+                      <Col key={v4()} md={24} xs={24}>
                         <ProductInfoItem
                           {...item}
                           removeItemFnc={() =>

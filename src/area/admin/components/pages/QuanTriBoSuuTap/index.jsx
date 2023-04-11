@@ -16,15 +16,15 @@ const QuanTriBST = () => {
       <Route path="" element={<TrangChinh />}></Route>
       <Route
         path=":id"
-        element={<BSTForm isReadOnly={true} isEdit={false} isUpdate={true} />}
+        element={<BSTForm isReadOnly={true}  />}
       ></Route>
       <Route
         path=":id/chinh-sua"
-        element={<BSTForm isUpdated={true} isEdit={true} />}
+        element={<BSTForm isUpdated={true} />}
       ></Route>
       <Route
         path="tao-moi"
-        element={<BSTForm isCreated={false} isEdit={true} />}
+        element={<BSTForm isCreated={false} />}
       ></Route>
     </Routes>
   );

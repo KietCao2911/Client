@@ -21,6 +21,7 @@ import {
   LogIn,
   ShoppingBag,
   Menu as MenuIcon,
+  MapPin,
 } from "react-feather";
 import CustomDrawer from "~/components/commomComponents/CustomDrawer";
 function getItem(label, key, icon, children, type) {
@@ -55,9 +56,6 @@ function HeaderMainHome() {
       });
     return temp;
   };
-  const handleOpenSearchDrawer = () => {
-    setSearchDrawer(true);
-  };
   const handleOpenMenuDrawer = () => {
     setMenuMobileOpen(!menuMobileOpen);
   };
@@ -81,6 +79,7 @@ function HeaderMainHome() {
             <Col>
               <div className="Actions">
                 <Space size={10}>
+                <MapPin className="icon"/>
                   <div className="Search_Container">
                     <div className="content">
                       <Search
@@ -113,9 +112,10 @@ function HeaderMainHome() {
             </Link>
 
             <Space size={10}>
+              <MapPin className="icon"/>
               <Search
                 className={"icon iconSearch__mobile"}
-                onClick={handleOpenSearchDrawer}
+                onClick={() => setSearchModal(true)}
               />
               <Badge count={tongSoLuong}>
                 <Link to="/gio-hang">
@@ -138,9 +138,9 @@ function HeaderMainHome() {
         <Menu items={handleRenderItems(items) || []} mode={"inline"} />
       </CustomDrawer>
       <CustomDrawer
-        open={searchDrawer}
-        setOpen={setSearchDrawer}
-        onClose={() => setSearchDrawer(false)}
+        open={searchModal}
+        setOpen={setSearchModal}
+        onClose={() => setSearchModal(false)}
         closeIcon={<X />}
       >
         <div className="searchInputContainer">

@@ -1,88 +1,162 @@
 @import "/src/components/GlobalStyles/GlobalStyle.scss";
-.Card{
+
+.Card {
     width: 100%;
     opacity: 0;
     position: relative;
     transition: opacity .3s, transform .3s ease, box-shadow .3s;
     border-radius: .6rem;
-    @include mobile{
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    .CardRibbon {
+        // background-color: red;
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        position: absolute;
+        z-index: 10;
+        top: -10px;
+        left: -10px;
+        cursor: pointer;
+
+        span {
+            position: absolute;
+            display: block;
+            width: 150%;
+            padding: .4rem 0;
+            background-color: #DF2E38;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+            color: #fff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+            text-transform: uppercase;
+            text-align: center;
+            right: -25px;
+            top: 30px;
+            transform: rotate(-45deg);
         }
-        &:hover {
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-        .ContentBox >  .versions{
-            display: flex;
-            
+
+        &::after {
+            top: 0;
+            right: 0;
+        }
+
+        &::before {
+            bottom: 0;
+            left: 0;
+        }
+
+        &::after,
+        &::before {
+            position: absolute;
+            z-index: -1;
+            content: '';
+            display: block;
+            border: 5px solid #DF2E38;
+            border-top-color: transparent;
+            border-left-color: transparent;
         }
     }
-    
-    .ImgBox{
+
+    @include mobile {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+
+        .ContentBox>.versions {
+            display: flex;
+
+        }
+    }
+
+    .ImgBox {
         // background-color: #ECEFF1;
         width: 100%;
         position: relative;
-        
-        
-        & > img{
+
+
+        &>img {
             // max-width: 30.69rem;
-            object-fit: cover; /* Hiển thị hình ảnh bằng cách che kín vùng hiển thị */
+            object-fit: cover;
+            /* Hiển thị hình ảnh bằng cách che kín vùng hiển thị */
             object-position: center;
             height: 100%;
             height: 48rem;
-            @include mobile{
+
+            @include mobile {
                 height: 14rem;
             }
         }
-        .versions{
+
+        .versions {
             position: absolute;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        @include mobile{
-           display: none;
-        }
-            .item{
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+
+            @include mobile {
+                display: none;
+            }
+
+            .item {
                 // border:.1rem solid black;
                 // z-index: 99;
-                
+
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                img{
-                    box-shadow:  rgba(0, 0, 0, 0.24) 0px 3px 8px;    ;
+
+                img {
+                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                    ;
 
                     border-radius: 50%;
                     object-fit: contain;
                     object-position: center;
-                   width: 5rem;
-                   height: 5rem;
-                  
+                    width: 5rem;
+                    height: 5rem;
+
                 }
             }
         }
 
-      
+
     }
-    .ContentBox
-    {
+
+    .ContentBox {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        .priceDetails{
+        position: relative;
+
+
+        .priceDetails {
             padding: .5rem;
             background-color: white;
+
+            &.sale {
+                display: flex;
+                color: brown;
+
+                &>div {
+                    margin: 0 .5rem;
+                }
+            }
         }
 
-            color:black;
-            &:hover{
-                color:unset;
-            }
-     .name{
-        text-overflow: ellipsis;
-        overflow: hidden; 
-        text-align: center;
-        white-space: nowrap;
-     }
+        color:black;
+
+        &:hover {
+            color: unset;
+        }
+
+        .name {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: center;
+            white-space: nowrap;
+        }
     }
 }

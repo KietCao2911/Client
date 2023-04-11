@@ -52,12 +52,14 @@ import { SaveTwoTone } from "@ant-design/icons";
 import CustomSpin from "~/components/CustomSpin";
 import { BASE_URL } from "~/const";
 import ShowMore from "~/components/commomComponents/ShowMore";
+import { getValue } from "@testing-library/user-event/dist/utils";
 const TrangTaoDonNhap = (props) => {
+
   const [step, setStep] = useState(0);
   const [description, setDesciption] = useState("");
   const [openAddNCC, setOpenAddNCC] = useState(false);
   const { nccs } = useSelector((state) => state.NCC);
-  const { isCreated, isUpdated, isReadOnly } = props;
+  const { isCreated, isUpdated, isReadOnly, isReturn } = props;
   const { sanPhamTrongKho } = useSelector((state) => state.KhoHang);
   const { item, loading } = useSelector((state) => state.PhieuNhap);
   const { branchs } = useSelector((state) => state.Branch);
@@ -66,13 +68,20 @@ const TrangTaoDonNhap = (props) => {
   const [productSearchText, setproductSearchText] = useState("");
   const [isPending, startTransition] = useTransition();
   const { id } = useParams();
-
+  document.title= isCreated
+    ? "Trang tạo đơn nhập hàng"
+    : isReadOnly
+    ? "Trang xem đơn nhập"
+    : isReturn
+    ? "Trang trả hàng"
+    : "";
   const Form = useFormik({
     initialValues: {
       tongSoLuong: 0,
       thanhTien: 0,
       chietKhau: 0,
       thanhToan: 0,
+      status: null,
       daNhapHang: false,
       daThanhToan: false,
       nhaCungCapNavigation: {},
@@ -128,7 +137,6 @@ const TrangTaoDonNhap = (props) => {
         };
         if (isCreated && !isReadOnly) {
           dispatch(PhieuNhapAPI.fetchPostPhieuNhaps({ body }));
-          console.log({ CreatedBody: body });
         } else {
           console.log({ CreatedBody: body });
           dispatch(PhieuNhapAPI.fetchPutPhieuNhaps({ body }));
@@ -136,22 +144,25 @@ const TrangTaoDonNhap = (props) => {
       }
     }
   };
+
   const handleSubmitThanhToan = () => {
     const body = { ...Form.values };
+    console.log({ body });
     dispatch(PhieuNhapAPI.fetchPutThanhToan({ body }));
   };
   const handleSubmitNhapKho = () => {
-    const body = { ...Form.values };
+    const body = { ...Form.values, status: 1 };
     dispatch(PhieuNhapAPI.fetchPutNhapKho({ body }));
   };
   const callBackSetForm = useMemo(() => {
-    if (isReadOnly || isUpdated) {
-      Form.setValues({ ...item });
+    if (isReadOnly || isUpdated || isReturn) {
+      Form.setValues(item);
     }
   }, [item]);
+  console.log({ FORM: Form.values });
   useEffect(() => {
     dispatch(BranchAPI.fetchGetBranch());
-    if (isReadOnly || isUpdated) {
+    if (isReadOnly || isUpdated || isReturn) {
       dispatch(PhieuNhapAPI.fetchGetPhieuNhapID({ id }));
     }
   }, []);
@@ -173,7 +184,9 @@ const TrangTaoDonNhap = (props) => {
     });
   };
   const onClickProduct = (value) => {
+    console.log({value})
     const fncCheck = (ele) => ele.maSanPham == value.maSanPham;
+
     console.log({ values: Form.values });
     let check = Form.values.chiTietNhapXuats?.some(fncCheck);
     if (!check) {
@@ -211,11 +224,33 @@ const TrangTaoDonNhap = (props) => {
       Form.setFieldValue("thanhTien", totalPrices * (1 - value / 100));
     }
   };
-
+  const handleTraHang = () => {
+    const body = { ...Form.values };
+    console.log({ body });
+    dispatch(PhieuNhapAPI.fetchPUTTraHang(body));
+  };
+  const handleHoanTien = () => {
+    const body = { ...Form.values };
+    console.log({ body });
+    dispatch(PhieuNhapAPI.fetchPUTHoanTien(body));
+  };
   return loading ? (
     <CustomSpin />
   ) : (
     <>
+      {isReturn && (
+        <FloatButton.Group
+          trigger="hover"
+          type="primary"
+          style={{ right: 94 }}
+          icon={<Save />}
+        >
+          <FloatButton
+            onClick={handleTraHang}
+            tooltip={<p>Xác nhận trả hàng</p>}
+          />
+        </FloatButton.Group>
+      )}
       {(isUpdated || isCreated) && (
         <FloatButton.Group
           trigger="hover"
@@ -304,7 +339,15 @@ const TrangTaoDonNhap = (props) => {
                       <h1>{"#" + id}</h1>
                     )
                   ) : (
-                    <h1>Tạo Trang Nhập Hàng</h1>
+                    <h1>
+                      {isCreated
+                        ? "Trang tạo đơn nhập hàng"
+                        : isReadOnly
+                        ? "Trang xem đơn nhập"
+                        : isReturn
+                        ? "Trang trả hàng"
+                        : ""}
+                    </h1>
                   )}
                 </Col>
                 <Col>
@@ -457,7 +500,7 @@ const TrangTaoDonNhap = (props) => {
                     <Card title="Thông tin sản phẩm">
                       <ProductsTable
                         Form={Form}
-                        isEdit={isCreated ? true : false}
+                        isEdit={isCreated || isReturn ? true : false}
                       />
                     </Card>
                     <div className="summary">
@@ -545,46 +588,30 @@ const TrangTaoDonNhap = (props) => {
                                 </div>
                                 <div> {convertVND(Form.values.thanhTien)}</div>
                               </div>
-                              {/* <p> {convertNumberToWords(Form.values.thanhTien)} </p> */}
                             </>
                           )}
                         </Col>
-                        <Col md={24}>
-                          {isUpdated ||
-                            (isReadOnly && (
+                        {(isUpdated || isReadOnly) &&
+                          Form.values.status > -1 && (
+                            <Col md={24}>
                               <Card
-                                title={
-                                  <>
-                                    <DollarSign /> Thanh toán
-                                  </>
-                                }
+                                title="Thanh toán"
                                 extra={
-                                  <>
-                                    {isCreated || isUpdated ? (
-                                      <Checkbox
-                                        checked={Form.values.daThanhToan}
-                                        disabled={
-                                          isCreated || isUpdated ? false : true
-                                        }
-                                        onChange={() =>
-                                          Form.setFieldValue(
-                                            "daThanhToan",
-                                            !Form.values.daThanhToan
-                                          )
-                                        }
-                                      >
-                                        Thanh toán với nhà cung cấp
-                                      </Checkbox>
-                                    ) : Form.values.daThanhToan ? null : (
-                                      <Button onClick={handleSubmitThanhToan}>
-                                        Thanh toán
-                                      </Button>
-                                    )}
-                                  </>
+                                  !Form.values.daThanhToan &&
+                                  Form.values.status != -1 ? (
+                                    <Button onClick={handleSubmitThanhToan}>
+                                      Thanh toán
+                                    </Button>
+                                  ) : (
+                                    Form.values.status == -1&& <Button onClick={handleHoanTien}>
+                                    Hoàn tiền
+                                  </Button>
+                                   
+                                  )
                                 }
                               ></Card>
-                            ))}
-                        </Col>
+                            </Col>
+                          )}
                         <Col md={24}>
                           {(isReadOnly || isUpdated) && (
                             <Card
@@ -595,7 +622,8 @@ const TrangTaoDonNhap = (props) => {
                               }
                               extra={
                                 <>
-                                  {isCreated || isUpdated ? (
+                                  {(isCreated || isUpdated) &&
+                                  Form.values.status != -1 ? (
                                     <Checkbox
                                       checked={Form.values.daNhapHang}
                                       disabled={
@@ -610,7 +638,11 @@ const TrangTaoDonNhap = (props) => {
                                     >
                                       Nhập kho
                                     </Checkbox>
-                                  ) : item?.daNhapHang ? null : (
+                                  ) : item?.daNhapHang ? (
+                                    <Link to="tra-hang">
+                                      <Button>Trả hàng</Button>
+                                    </Link>
+                                  ) : (
                                     <Button
                                       onClick={() => handleSubmitNhapKho()}
                                     >
@@ -630,7 +662,7 @@ const TrangTaoDonNhap = (props) => {
                   <Card title="Thông tin đơn nhập">
                     <Card title="Chi nhánh">
                       <Select
-                        disabled={isReadOnly || isUpdated ? true : false}
+                        disabled={isCreated ? false : true}
                         value={Form.values?.maChiNhanh?.trim()}
                         onChange={(e) => handleOnChangeBranch(e)}
                         style={{ width: "100%" }}

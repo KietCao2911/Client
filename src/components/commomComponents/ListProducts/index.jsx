@@ -9,11 +9,10 @@ import * as Api from "~/redux/slices/SanPham";
 import { Col, Empty, Row, Skeleton } from "antd";
 import { v4 } from "uuid";
 import Skeletons from "../Skeleton";
-import { InView } from "react-intersection-observer";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const ListProducts = ({ items, loading, type, miniProducts }) => {
+const ListProducts = ({ items, loading, type, itemResponsive }) => {
   const [products, setProducts] = useState(items || []);
   const cardRefs = useRef([]);
   const [visible, setVisible] = useState([]);
@@ -36,7 +35,7 @@ const ListProducts = ({ items, loading, type, miniProducts }) => {
                   return (
                     <Col xs={12} xl={8} xxl={6} key={v4()}>
                       <CardProduct
-                        value={item?.sanPhamNavigation}
+                        value={item?.sanPhamNavigation||item||{}}
                       ></CardProduct>
                     </Col>
                   );
@@ -50,7 +49,10 @@ const ListProducts = ({ items, loading, type, miniProducts }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Empty />
+                  <Empty
+                    image="https://img.freepik.com/free-vector/empty-concept-illustration_114360-1253.jpg?w=826&t=st=1680529331~exp=1680529931~hmac=ddb8537ee8ef939e5a9db79ac7fa991ade6858172622aa12cbde1de8aa3f5b50"
+                    description="Hiện chưa có sản phẩm nào"
+                  />
                 </div>
               )}
             </Row>
@@ -70,11 +72,11 @@ const ListProducts = ({ items, loading, type, miniProducts }) => {
                 },
                 768: {
                   width: 768,
-                  slidesPerView: 3,
+                  slidesPerView: 2,
                 },
                 1600: {
                   width: 1600,
-                  slidesPerView: 3,
+                  slidesPerView: 6,
                 },
               }}
               style={{ padding: "1rem" }}
@@ -91,8 +93,8 @@ const ListProducts = ({ items, loading, type, miniProducts }) => {
                   return (
                     <SwiperSlide key={v4()}>
                       <CardProduct
-                        Height14={miniProducts ? true : false}
-                        value={item?.sanPhamNavigation}
+                        
+                        value={item?.sanPhamNavigation||item||{}}
                       ></CardProduct>
                     </SwiperSlide>
                     //  <Col xl={8}>
@@ -109,7 +111,7 @@ const ListProducts = ({ items, loading, type, miniProducts }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Empty />
+                  <Empty description="Hiện chưa có sản phẩm nào" />
                 </div>
               )}
             </Swiper>

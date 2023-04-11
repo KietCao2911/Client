@@ -28,12 +28,6 @@ export const InputText = (props) => {
     children,
   } = props;
   const [open, setOpen] = useState(false);
-  const handleChange = (e) => {
-    onChange(e);
-  };
-  const onClickClear = () => {
-    onChange("");
-  };
   return (
     <div
       className="InputText"
@@ -45,7 +39,7 @@ export const InputText = (props) => {
         autoComplete="off"
         type={"text"}
         placeholder=" "
-        onChange={() => onChange()}
+        onChange={() => onChange && onChange()}
         {...props}
         onMouseEnter={type == "search" ? () => setOpen(true) : null}
       />

@@ -17,6 +17,9 @@ import Skeletons from "~/components/commomComponents/Skeleton";
 import * as BrandAPI from "~/redux/slices/Brand/BrandSlice";
 import ListProducts from "~/components/commomComponents/ListProducts";
 import { v4 } from "uuid";
+import CategoryTag from "./components/CategoryTag";
+import Discover from "./components/Discover/Discover";
+import TrendingProducts from "./components/TrendingProducts";
 
 const Home = () => {
   document.title = "Trang chính";
@@ -29,8 +32,14 @@ const Home = () => {
   const profile = user?.info?.find((x) => user.addressDefault == x.id) || null;
   console.log("HOME ");
   useEffect(() => {
-    dispatch(SanPhamUserAPI.fetchGetAllProductsUser({ sort: "popular" }));
-    dispatch(SanPhamUserAPI.fetchGetAllProductsUser({ sort: "date-newest" }));
+    dispatch(
+      SanPhamUserAPI.fetchGetAllProductsUser({ params: { sort: "popular" } })
+    );
+    dispatch(
+      SanPhamUserAPI.fetchGetAllProductsUser({
+        params: { sort: "date-newest" },
+      })
+    );
     dispatch(Api.fetchAllBST({}));
     dispatch(BrandAPI.fetchGetBrand());
   }, []);
@@ -55,20 +64,26 @@ const Home = () => {
         </Card>
         <Card title="Vừa cập nhật" bordered={false}>
           <ListProducts
-            type={"slider"}
             items={products || []}
             loading={loading}
             miniProducts={true}
           />
         </Card>
-
         <Card title="Sản phẩm nổi bật" bordered={false}>
           <ListProducts
-            type={"slider"}
-            items={productsHot.products || []}
+            items={productsHot || []}
             loading={loading}
             miniProducts={true}
           />
+        </Card>
+        <Card title="Sản phẩm xu hướng">
+          <TrendingProducts />
+        </Card>
+        <Card title="Khám phá ngay">
+          <Discover />
+        </Card>
+        <Card title="Danh mục được tìm kiếm nhiều nhất">
+          <CategoryTag />
         </Card>
       </Space>
     </div>

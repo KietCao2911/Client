@@ -1,0 +1,34 @@
+.CardCollection {
+    cursor: pointer;
+    width: 100%;
+
+    .container {
+
+
+        .img {
+            height: 40rem;
+
+            img {
+                // object-fit: contain;
+            }
+        }
+
+        .content {
+            p {
+                text-align: left;
+            }
+
+            .name {
+                font-weight: bold;
+            }
+
+            .dsc {
+
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+    }
+}

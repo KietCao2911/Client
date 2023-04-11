@@ -6,7 +6,7 @@ const MyCollapse = (props) => {
   const { Icon, children, label, defaultOpen } = props;
   const [open, setOpen] = useState(defaultOpen ? true : false);
   return (
-    <section className="MyCollapse">
+    <section className="MyCollapse" {...props}>
       <div className="labelGroup" onClick={() => setOpen(!open)}>
         <h3 className="label">{label}</h3>
         <div className="Icon Icon-Down">

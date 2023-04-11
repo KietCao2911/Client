@@ -1,8 +1,7 @@
 import React,{useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import "./HaveUserComponent.scss"
-import {CheckCircleFilled,PlusCircleFilled} from "@ant-design/icons"
-import { Col, Modal, Row } from 'antd'
+import { Col, Input, Modal, Row, Space } from 'antd'
 import { useDispatch,useSelector } from 'react-redux'
 import ModalCustom from '../ModalCustom'
 import { InputText } from '../InputText'
@@ -14,6 +13,9 @@ import MyButton from '../Button'
 import CustomSpin from '~/components/CustomSpin'
 import { v4 } from 'uuid'
 import AddressUserForm from '~/components/Forms/AddressUserForm'
+import OrderDsc from '../OrderDsc/OrderDsc'
+import convertVND from '~/components/utils/ConvertVND'
+import { CheckCircle, Plus } from 'react-feather'
 const Item=(props)=>
 {
     const {data,user} = props;
@@ -36,7 +38,6 @@ const Item=(props)=>
     }
     return(
         <div className={`AddressSelecteItem ${user.addressDefault == data.id?"active":""}`} {...props} >
-            {/* <CheckCircleFilled className='iconChecked'/> */}
                <div className="name">{data.name}</div>
                <div className="addressDsc">{data.addressDsc}</div>
                <div className="ward">{data.wardName}</div>
@@ -54,7 +55,7 @@ const AddItem=(props)=>
     return(
         <div className='AddItem' {...props}>
             <span>Thêm địa chỉ</span>
-            <PlusCircleFilled className='iconPlus'/>
+            <Plus className='iconPlus'/>
         </div>
     )
 }
@@ -62,88 +63,93 @@ const HaveUserAddressComponent = () => {
     const {user} = useSelector(state=>state.XacThuc)
     const {ghnAPI,totalPrice} = useSelector(state=>state.GioHang);
     const {Provinces,Districts,Wards,FeeInfo,DistrictID,Loading} = ghnAPI;
+    const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip } = useSelector(
+      (state) => state.GioHang
+    );
     const [openModal,setOpenModal] = useState(false);
-    const [GuessInfo,setGuessInfo] = useState({
-      Name:"",
-      Phone:"",
-      ProvinceName:"",
-      DistrictName:"",
-      WardName:"",
-      ProvinceID:null,
-      DistrictID:null,
-      WardId:null,
-      AddressDsc:"",
-      Email:"",
-      PaymendMethod:"COD"
-  })
-  const [wrong,setWrong] = useState(false)
-    const dispatch = useDispatch()
-    useEffect(()=>
-    {
-      dispatch(GiaoHangNhanhApi.fetchGetProvinces())
-    },[])
- 
-    const handleChangeProvince=(e)=>
-    {
-      if(e.target.value == null)
-      {
-        return;
-      }
-      else
-      {
-        setGuessInfo({...GuessInfo,ProvinceID:e.target.value,ProvinceName:e.target.options[e.target.selectedIndex].text})
-        dispatch(GiaoHangNhanhApi.fetchGetDistrict(e.target.value))
-      }
-    }
-    const handleChangeDistrict=(e)=>
-    {
-      if(e.target.value == null)
-      {
-        return;
-      }
-      else
-      {
-        setGuessInfo({...GuessInfo,DistrictID:e.target.value,DistrictName:e.target.options[e.target.selectedIndex].text})
-        dispatch(GiaoHangNhanhApi.fetchGetWard(e.target.value))
-      }
-    }
-    const handleChangeWard=(e)=>{
-      if(e.target.value == null)
-      {
-        return;
-      }
-      else
-      {
-        setGuessInfo({...GuessInfo,WardId:e.target.value,WardName:e.target.options[e.target.selectedIndex].text})
-      }
-    }
+    const dispatch = useDispatch();
     const handleSave=()=>
     {
-      dispatch(XacThucAPI.fetchAddAddress({body:{...GuessInfo,tenTaiKhoan:user.userName.trim()}}))
+      dispatch(XacThucAPI.fetchAddAddress({body:{}}))
     }
   return (
     <div className='HaveUserComponent'>
-        <div className="WelcomeBack"></div>
+      <Row gutter={[20,20]}>
+        <Col md={16} xs={24}>
         <div className="AddressSelected">
-            <Row gutter={16}  >
+            <Row gutter={[20,20]} >
+              <Col md={16} xs={24}>
+                <Row gutter={[10,10]}>
             {user.info&&user.info.map(item=>
                 
-                 <Col key={v4()} md={{span:8}} xs={{span:24}}>
+               <Col key={v4()} md={8} xs={24}>
                 
                 <Item user={user} data={item}/>  
-             
-              
           </Col>
                 )}
-                
-                <Col md={{span:8}} xs={{span:24}}>
+                <Col md={8} xs={24}>
                 <AddItem onClick={()=>setOpenModal(true)}/>
                 </Col>
+               </Row>
+               </Col>
+                
+               
             </Row>
             
             
         </div>
-        <Modal visible={openModal} onCancel={()=>setOpenModal(false)}>
+        </Col>
+        <Col md={8} xs={24}>
+              <Space direction='vertical'>
+              <Row>
+                <Col span={24}>
+                  <Row  style={{textAlign:"center"}}> 
+                    <Col span={12}>
+                     (x{tongSoLuong}) Sản phẩm:
+                    </Col>
+                    <Col span={12}>
+                    {convertVND(
+                chiTietNhapXuats?.reduce(
+                  (x, y) => x + (y?.donGia * y?.soLuong || 0),
+                  0
+                )
+              ) || convertVND(0)}
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={24}
+                >
+                     <Row style={{textAlign:"center"}}> 
+                    <Col span={12}>
+                      Phí giao hàng:
+                    </Col>
+                    <Col span={12}>{convertVND(phiShip||0)}</Col>
+                  </Row>
+                </Col>
+                <Col span={24}>
+                <Row style={{textAlign:"center"}}> 
+                    <Col span={12}>
+                      Thành tiền:
+                    </Col>
+                    <Col span={12}>{convertVND(thanhTien) || convertVND("0")}</Col>
+                  </Row>
+                </Col>
+              </Row>
+              <InputText label="Nhập mã khuyến mãi nếu có"></InputText>
+              <MyButton >Xác nhận mua hàng</MyButton>
+              </Space>
+        </Col>
+      </Row>
+
+        <Modal okButtonProps={{style:{
+          display:"none"
+        }}} 
+        cancelButtonProps={{
+          style:{
+            display:"none"
+          }
+        }}
+        open={openModal} onCancel={()=>setOpenModal(false)}>
             <AddressUserForm/>
         </Modal>
       {/* <CustomSpin></CustomSpin> */}

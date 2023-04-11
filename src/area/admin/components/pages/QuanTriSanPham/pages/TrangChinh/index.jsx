@@ -65,13 +65,7 @@ const columns = (props) => {
       key: "tenSanPham",
       render: (_, record) => {
         return (
-          <Link
-            to={
-              record.slug.trim() +
-              "/versions/" +
-              record?.sanPhams[0]?.maSanPham.trim()
-            }
-          >
+          <Link to={record.maSanPham.trim() + "/versions/"}>
             {record.tenSanPham}
           </Link>
         );

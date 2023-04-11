@@ -9,9 +9,11 @@ import {
 import {
   Card,
   Col,
+  FloatButton,
   Form,
   Input,
   InputNumber,
+  message,
   Modal,
   notification,
   Row,
@@ -149,6 +151,14 @@ const CreateProduct = () => {
     }
   };
   const handleSubmt = async () => {
+    if(versions.length<=0)
+    {
+      message.open({
+        content:"Vui lòng chọn ít nhất một phiên bản",
+        type:"error"
+      })
+      return ;
+    }
     const temp = [];
     versions.forEach((item) => {
       item.map((c) => {
@@ -171,8 +181,6 @@ const CreateProduct = () => {
       try {
         console.log({ body: params });
         dispatch(SanPhamAPI.fetchPostProduct({ body: params }));
-        // const {payload} = res;
-        // nav(`/admin/trang-quan-tri-san-pham/${payload?.slug.trim()+"/versions/"+payload?.sanPhams[0]?.maSanPham?.trim()}`)
       } catch (error) {}
     }
   };
@@ -303,7 +311,7 @@ const CreateProduct = () => {
                   </Row>
                 </Card>
               </Col>
-              <Col md={24} xs={24}>
+              {/* <Col md={24} xs={24}>
                 <Card
                   style={{ width: "100%" }}
                   title="Khởi tạo kho hàng"
@@ -334,7 +342,7 @@ const CreateProduct = () => {
                     </Row>
                   )}
                 </Card>
-              </Col>
+              </Col> */}
               <Col xs={24} md={24}>
                 <Card
                   style={{ width: "100%" }}
@@ -535,26 +543,6 @@ const CreateProduct = () => {
           )}
         </Col>
       </Row>
-      <div className="actions">
-        <Row>
-          <MyButton
-            style={{ backgroundColor: "red", width: "15rem" }}
-            icon={loading ? <Spin /> : <CloseOutlined />}
-          >
-            Thoát
-          </MyButton>
-          <MyButton
-            style={{ backgroundColor: "green", width: "15rem" }}
-            icon={<SaveOutlined />}
-            onClick={handleSubmt}
-          >
-            Tạo
-          </MyButton>
-          <MyButton style={{ width: "15rem" }} icon={<BarcodeOutlined />}>
-            In mã vạch
-          </MyButton>
-        </Row>
-      </div>
       <Modal
         onOk={() => handleAddNewType()}
         title="Thêm mới loại hàng"
@@ -608,6 +596,9 @@ const CreateProduct = () => {
           ></Input>
         </Form.Item>
       </Modal>
+      <FloatButton.Group>
+        <FloatButton tooltip="Xác nhận tạo" onClick={handleSubmt}></FloatButton>
+      </FloatButton.Group>
     </Form>
   );
 };

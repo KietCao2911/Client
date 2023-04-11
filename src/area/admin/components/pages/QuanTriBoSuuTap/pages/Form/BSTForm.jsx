@@ -96,7 +96,6 @@ const BSTForm = (props) => {
     },
   });
 
-  console.log({ values: FormBst.values });
   const reSetBST = useMemo(() => {
     FormBst.setValues({ ...boSuuTap });
   }, [boSuuTap]);
@@ -133,21 +132,16 @@ const BSTForm = (props) => {
     const params = {
       ...FormBst.values,
     };
-    if (!isCreated) {
-      if (
-        FormBst.values.chiTietBSTs &&
-        FormBst.values.chiTietBSTs.length > 0 &&
-        params.tenBoSuuTap
-      ) {
-        dispatch(BstAPI.fetchPostBST({ body: params }));
-      } else {
-        message.open({
-          content: "Vui lòng chọn ít nhát một sản phẩm",
-          type: "error",
-        });
-      }
-    } else {
-      dispatch(BstAPI.fetchPutBST({ id, body: params }));
+    if(isCreated)
+    {
+      dispatch(BstAPI.fetchPostBST({body:params}))
+    }
+    else if(isUpdated)
+    {
+      dispatch(BstAPI.fetchPutBST({body:params,id}))
+    }
+    else{
+      return ;
     }
   };
   const onUpload = (file) => {
@@ -163,14 +157,14 @@ const BSTForm = (props) => {
         <Col span={24}>
           <Space style={{ width: "100%" }} direction="vertical">
             <InputText
-              disabled={!isEdit}
+              disabled={isCreated||isUpdated?false:true}
               label="Nhập tên bộ sưu tập"
               name="tenBoSuuTap"
               value={FormBst.values.tenBoSuuTap}
               onChange={FormBst.handleChange}
             />
             <CKEditor
-              disabled={!isEdit}
+              disabled={isCreated||isUpdated?false:true}
               data={FormBst?.values?.mota || ""}
               placeHolder="Mô tả"
               onChange={(e, editor) => {
@@ -180,7 +174,7 @@ const BSTForm = (props) => {
             >
               Mô tả sản phẩm
             </CKEditor>
-            {isEdit && isCreated && (
+            {(
               <UploadCustom
                 fileList={boSuuTap?.fileList || []}
                 onUpload={onUpload}
@@ -189,7 +183,7 @@ const BSTForm = (props) => {
             )}
             {/* <UploadCustom /> */}
             <Space direction="vertical" style={{ width: "100%" }}>
-              {isEdit ? (
+              {isCreated||isUpdated ? (
                 <>
                   <InputText
                     onChange={(e) => handleChangeSearchProducts(e.target.value)}
@@ -233,21 +227,7 @@ const BSTForm = (props) => {
                 columns={columns || []}
               />
             </Space>
-            <Space>
-              {<Button onClick={() => handleSubmit()}>Xác nhận</Button>}
-              {isCreated && !isEdit && (
-                <Link to="chinh-sua">
-                  {" "}
-                  <Button>Sửa</Button>
-                </Link>
-              )}
-              {isCreated && isEdit && (
-                <Link to={"../" + id}>
-                  {" "}
-                  <Button>Hủy</Button>
-                </Link>
-              )}
-            </Space>
+            <Button onClick={() => handleSubmit()}>Xác nhận</Button>
           </Space>
         </Col>
         <Col></Col>

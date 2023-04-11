@@ -5,6 +5,7 @@ import * as HoaDonApi from "./HoaDonApi";
 const initialState = {
   hoadons: [],
   hoadon: {},
+  loading: false,
 };
 
 export const fetchGetAllOrder = createAsyncThunk(
@@ -33,8 +34,8 @@ export const fetchPutDaGiaoHang = createAsyncThunk(
 export const fetchCancelOrder = createAsyncThunk(
   "HoaDon/fetchCancelOrder",
   async (params) => {
-    const { id } = params;
-    const res = await HoaDonApi.fetchCancelOrder(id);
+    const { body } = params;
+    const res = await HoaDonApi.fetchCancelOrder(body);
     return res;
   }
 );
@@ -54,29 +55,44 @@ export const fetchThanhToan = createAsyncThunk(
     return res;
   }
 );
+export const fetchPUTHoanTien = createAsyncThunk(
+  "fetchPUTHoanTien",
+  async (params) => {
+    const { body } = params;
+    const res = await HoaDonApi.fetchPUTHoanTien(body);
+    return res;
+  }
+);
 const HoaDonSlice = createSlice({
   initialState,
   name: "HoaDon",
   extraReducers: (builder) => {
+    //fetchPUTHoanTien
+    builder.addCase(fetchPUTHoanTien.pending, (state, action) => {
+      state.hoadon = {};
+      state.loading = true;
+    });
+    builder.addCase(fetchPUTHoanTien.fulfilled, (state, action) => {
+      state.hoadon = action.payload;
+      state.loading = false;
+    });
     //fetchPutXuatKho
+    builder.addCase(fetchPutXuatKho.pending, (state, action) => {
+      state.hoadon = {};
+      state.loading = true;
+    });
     builder.addCase(fetchPutXuatKho.fulfilled, (state, action) => {
       state.hoadon = action.payload;
+      state.loading = false;
     });
     //fetchCancelOrder
     builder.addCase(fetchCancelOrder.fulfilled, (state, action) => {
-      const id = action.payload;
-      const hoadons = current(state.hoadons);
-      console.log({ hoadons });
-      let obj = hoadons.find((x) => x.id == id);
-      const index = hoadons.indexOf(obj);
-      console.log({ obj, index, id });
-      if (index > -1) {
-        state.hoadons[index].deliveryStatus = -1;
-        notification.open({
-          message: "Thành công",
-          type: "success",
-        });
-      }
+      state.hoadon = action.payload;
+      state.loading = false;
+      notification.open({
+        message: "Trả hàng thành công",
+        type: "success",
+      });
     });
     builder.addCase(fetchPutDaGiaoHang.fulfilled, (state, action) => {
       const { hd } = action.payload;

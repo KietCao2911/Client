@@ -20,6 +20,8 @@ import BranchSlice from "../slices/Branch/BranchSlice";
 import KhoHangSlice from "../slices/KhoHang/KhoHangSlice";
 import VatSlice from "../slices/Vat/VatSlice";
 import NCCSlice from "../slices/NCC";
+import CouponSlice from "../slices/Coupon";
+import KhuyenMaiSlice from "../slices/KhuyenMai";
 export const store = configureStore({
   reducer: {
     DanhMuc: DanhMucSlice.reducer,
@@ -42,6 +44,8 @@ export const store = configureStore({
     Branch:BranchSlice.reducer,
     KhoHang:KhoHangSlice.reducer,
     Vat:VatSlice.reducer,
-    NCC:NCCSlice.reducer
+    NCC:NCCSlice.reducer,
+    Coupon:CouponSlice.reducer,
+    KhuyenMai:KhuyenMaiSlice.reducer,
   },
 });

@@ -5,8 +5,7 @@ import "./MePage.scss"
 import AccountPage from "./pages/AccountPage";
 import NewPage from "./pages/NewsPage";
 import OrderPage from "./pages/OrderPage";
-import { useRef } from "react";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const MePage = () => {
   const [itemsNav,setItemsNav]= useState([{
@@ -22,6 +21,7 @@ const MePage = () => {
     label:"Tài khoản",
     checked:false
   }])
+  const {user} =useSelector((state)=>state.XacThuc)
   const params = useParams();
   const key = params['*']
   const handleSetClass =(href)=>
@@ -43,7 +43,7 @@ const MePage = () => {
   return <div className="MePage PageContainer">
       <div className="HeaderNavAccount">
         <div className="infomation">
-          <div className="name">CHÀO MỪNG 0325560344 TRỞ LẠI</div>
+          <div className="name">CHÀO MỪNG {user?.userName} TRỞ LẠI</div>
           <div className="level">LEVEL DIMOND</div>
         </div>
         <div className="nav">

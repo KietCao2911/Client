@@ -21,7 +21,7 @@ const ImgVersion = (props) => {
   );
 };
 const CardProduct = (props, ref) => {
-  const { value, key, Height14 } = props;
+  const { value, key, heightimg } = props;
   const [img, setImg] = useState(() => {
     let pic = "";
     if (value && value?.colorGrouped?.length > 0) {
@@ -59,15 +59,22 @@ const CardProduct = (props, ref) => {
     <InView key={v4()}>
       {({ inView, ref, entry }) => (
         <div className={`Card ${inView ? "active" : ""}`} {...props} ref={ref}>
+          {
+            props?.ribbonTooltip||value?.isSale?  <div className="CardRibbon">
+            <span>{props?.ribbonTooltip||"Giá ưu đãi"}</span>
+          </div>:null
+          }
+         
           <Link
             draggable={false}
             to={`/${value?.slug?.trim()}`}
             className="CardContent"
           >
+           
             <div className="ImgBox">
               <img
                 draggable={false}
-                className={`${Height14 && "Height14"}`}
+                style={{height:heightimg||""}}
                 src={
                   inView
                     ? img ||
@@ -115,7 +122,18 @@ const CardProduct = (props, ref) => {
                   {value?.tenSanPham}
                 </p>{" "}
               </div>
-              <div className="priceDetails">{price || " 400.000₫"}</div>
+              {
+                !value?.isSale?<div className={`priceDetails`}>{price || " 400.000₫"}</div>:<div>
+                  <div className="priceDetails sale"> 
+                  <div>
+                  <del>{convertVND(value?.tienDaGiam+value?.giaBanLe)}</del>
+                    </div>
+                 <div>
+                 {convertVND(value?.giaBanLe)}
+                 </div>
+                  </div>
+                </div>
+              }
               <div className="category">
                 {" "}
                 <small>{value?.nhanHieu?.name}</small>{" "}

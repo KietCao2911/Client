@@ -1,4 +1,4 @@
-import { Button, Space, Table } from "antd";
+import { Button, Space, Table, Tag } from "antd";
 import React, { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,9 +39,25 @@ const columns = [
     },
   },
   {
+    title: "Tiến trình",
+    render: (_, record) => {
+      return <p>{`${record?.steps < 2 ? "Đang chờ duyệt" : "Đã duyệt"}`}</p>;
+    },
+  },
+  {
     title: "Trạng thái",
     render: (_, record) => {
-      return <p>{`${record.steps < 2 ? "Đang xử lý" : "Đã xử lý"}`}</p>;
+      return (
+        <>
+          {record?.status == 0 ? (
+            "Đang xử lý"
+          ) : record.status == 1 ? (
+            <Tag color="green">Đã xử lý</Tag>
+          ) : (
+            <Tag color="red">Đã hủy/trả hàng</Tag>
+          )}
+        </>
+      );
     },
   },
   {
@@ -55,11 +71,10 @@ const columns = [
     },
   },
 ];
-
 const TrangChinh = () => {
+  document.title="Trang quản lý đơn nhập"
   const dispatch = useDispatch();
   const { items } = useSelector((state) => state.PhieuNhap);
-
   useEffect(() => {
     dispatch(PhieuNhapAPI.fetchGetPhieuNhaps());
   }, []);

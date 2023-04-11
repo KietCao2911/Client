@@ -72,12 +72,6 @@ const Columns = (props) => {
       render: (_, record) => {
         return (
           <>
-            <Button onClick={() => handleCancelOrder(record?.id)}>
-              Hủy đơn
-            </Button>
-            <Link to={record.id + "/chinh-sua"}>
-              <Button>Chỉnh sửa</Button>
-            </Link>
             <Link to={record.id + ""}>
               <Button>Xem</Button>
             </Link>
@@ -91,11 +85,7 @@ const Columns = (props) => {
       dataIndex: "tags",
       render: (_, record) => (
         <>
-          {record?.daThanhToan ? (
-            <Tag color="green">Đã thanh toán</Tag>
-          ) : (
-            <Tag color="yellow">Chưa thanh toán</Tag>
-          )}
+      {record?.status!=-1?record?.daThanhToan?<Tag>Đã thanh toán</Tag>:<Tag>Chưa thanh toán</Tag>:record?.status==-1?record?.daThanhToan?<Tag>Đã hoàn tiền</Tag>:<Tag>Chưa hoàn tiền</Tag>:null}
         </>
       ),
     },
@@ -105,11 +95,7 @@ const Columns = (props) => {
       dataIndex: "tags",
       render: (_, record) => (
         <>
-          {record?.steps < 4 ? (
-            <Tag color="yellow">Đang xử lý</Tag>
-          ) : (
-            <Tag color="green">Đã xuất kho</Tag>
-          )}
+            {record?.status==0?<Tag color="green">Đang xử lý</Tag>:record?.status==1?<Tag color="green">Đã xử lý</Tag>:<Tag color="red">Đã hủy đơn</Tag>}
         </>
       ),
     },

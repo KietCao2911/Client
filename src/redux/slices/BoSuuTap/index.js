@@ -3,6 +3,7 @@ import { notification } from "antd";
 import GroupBy from "~/components/utils/GroupBy";
 import URLConvert from "~/components/utils/URLConvert";
 import * as api from "./BoSuuTapApi";
+import { BASE_URL } from "~/const";
 export const fetchAllBST = createAsyncThunk(
   "BoSuuTap/fetchAllBST",
   async (params) => {
@@ -131,12 +132,10 @@ const BSTSlice = createSlice({
       state.boSuuTap = action.payload;
       var imgTemp = [
         {
-          uid: "1",
+          uid: action.payload.id,
           name: action.payload.img,
           status: "done",
-          // custom error message to show
-          url: `https://localhost:44328/wwwroot/res/BstImgs/${action.payload.img.trim()}`,
-          ...state.boSuuTap.img,
+          url: `${BASE_URL}wwwroot/res/BstImgs/${action.payload?.img?.trim()}`,
         },
       ];
       state.boSuuTap.fileList = imgTemp;
@@ -193,6 +192,7 @@ const BSTSlice = createSlice({
           product.maSanPham
         );
       });
+
       state.products = [...productsTemp];
     });
     builder.addCase(fetchGetProductByBST.rejected, (state, action) => {
@@ -226,8 +226,7 @@ const BSTSlice = createSlice({
           name: res.img,
           status: "done",
           // custom error message to show
-          url: `https://localhost:44328/wwwroot/res/BstImgs/${res.img.trim()}`,
-          ...state.boSuuTap.img,
+          url: `${BASE_URL}wwwroot/res/BstImgs/${res.img.trim()}`,
         },
       ];
       state.boSuuTap.fileList = imgTemp;
