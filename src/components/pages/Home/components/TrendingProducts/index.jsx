@@ -15,7 +15,7 @@ const TrendingProducts = () => {
   }, []);
   return (
     <div>
-      <ListProducts items={trendingsProduct} />
+      <ListProducts loading={loading} items={trendingsProduct} />
     </div>
   );
 };

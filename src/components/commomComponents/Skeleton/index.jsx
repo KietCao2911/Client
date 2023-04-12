@@ -28,7 +28,7 @@ const Skeletons = ({ itemsSize }) => {
     <Row gutter={[20, 20]}>
       {renderSkeleton().map((item) => {
         return (
-          <Col key={v4()} xs={24} md={6}>
+          <Col key={v4()} xs={24} md={8} xxl={6}>
             <Skeleton />
           </Col>
         );
