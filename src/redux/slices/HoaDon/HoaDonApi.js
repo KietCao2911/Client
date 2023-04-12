@@ -56,3 +56,12 @@ export const fetchCancelOrder = async (body) => {
     throw error;
   }
 };
+export const fetchPutHoaDon = async(body)=>
+{
+  try {
+    const res = await Method.Put("/api/admin/DonHang", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}

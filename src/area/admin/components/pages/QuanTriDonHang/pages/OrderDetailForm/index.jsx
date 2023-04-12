@@ -301,6 +301,10 @@ const OrderDetailForm = (props) => {
   {
     dispatch( HoaDonApi.fetchPUTHoanTien({ body: OrderForm.values }))
   }
+  const handleUpdate=()=>
+  {
+    dispatch(HoaDonApi.fetchPUTHoaDon({ body: OrderForm.values }))
+  }
   return (
     <form ref={FormRef}>
       <Row gutter={[, 20]}>
@@ -533,7 +537,7 @@ const OrderDetailForm = (props) => {
             {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
           </Col>
            <FloatButton.Group>
-            <FloatButton tooltip={"Xác nhận sửa"} icon={<File/>}></FloatButton>
+            <FloatButton tooltip={"Xác nhận sửa"} onClick={handleUpdate} icon={<File/>}></FloatButton>
           </FloatButton.Group>
           </>:null
         }

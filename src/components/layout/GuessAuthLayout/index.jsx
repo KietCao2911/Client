@@ -12,7 +12,7 @@ const GuessAuthLayout = ({ children }) => {
     <>
     {Object.keys(user).length>0?<NotFound/>:<div className="GuessAuthLayout" style={{background:LoginBg}}>
       <div className="mainAuthLayout">
-        <h1>Chào mừng đến với SHOP</h1>
+        <h1 className="Logo">LOGO <spam>.</spam></h1>
         {children}
       </div>
     </div>}

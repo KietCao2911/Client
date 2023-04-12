@@ -24,7 +24,7 @@ const QuanTriBST = () => {
       ></Route>
       <Route
         path="tao-moi"
-        element={<BSTForm isCreated={false} />}
+        element={<BSTForm isCreated={true} />}
       ></Route>
     </Routes>
   );

@@ -1,26 +1,30 @@
-.InputText{
+.InputText {
     position: relative;
     width: 100%;
     display: flex;
 
     flex-direction: column;
-    .icon{
+
+    .icon {
         position: absolute;
         right: 1rem;
         top: 50%;
         transform: translateY(-50%);
-        &.icon--error{
-                color:red;
+
+        &.icon--error {
+            color: red;
         }
     }
-    .IconClose{
+
+    .IconClose {
         position: absolute;
         right: 2rem;
         top: 50%;
         transform: translateY(-50%);
 
     }
-    label{
+
+    label {
         position: absolute;
         display: flex;
         top: 50%;
@@ -28,28 +32,33 @@
         left: 2rem;
         transition: .3s ease;
         pointer-events: none;
-        color:#999;
-        transform: 0.25s ease;    
+        color: #999;
+        transform: 0.25s ease;
     }
-    input{
+
+    input {
         padding: 2rem;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 
         border-radius: .6rem;
-        &:focus{
+
+        &:focus {
             border-color: blue;
         }
-        &.error{
-            border-color:red;
+
+        &.error {
+            border: 1px solid red;
         }
-        &:not(:placeholder-shown) + label,&:focus +label{
+
+        &:not(:placeholder-shown)+label,
+        &:focus+label {
             top: 0;
-            background-color: white;
+            background-color: transparent;
             padding: 1rem;
-            color:blue;
+            color: blue;
         }
 
     }
-  
+
 
 }

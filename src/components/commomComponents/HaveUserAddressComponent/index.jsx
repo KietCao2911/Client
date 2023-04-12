@@ -6,16 +6,13 @@ import { useDispatch,useSelector } from 'react-redux'
 import ModalCustom from '../ModalCustom'
 import { InputText } from '../InputText'
 import { SelectInput } from '../SelectInput'
-import GioHangSlice,* as GiaoHangNhanhApi from '~/redux/slices/GioHang/GioHangSlice'
-import XacThucSlice,*as XacThucAPI from '~/redux/slices/XacThuc'
+import *as XacThucAPI from '~/redux/slices/XacThuc'
 import { useState } from 'react'
 import MyButton from '../Button'
-import CustomSpin from '~/components/CustomSpin'
 import { v4 } from 'uuid'
 import AddressUserForm from '~/components/Forms/AddressUserForm'
-import OrderDsc from '../OrderDsc/OrderDsc'
 import convertVND from '~/components/utils/ConvertVND'
-import { CheckCircle, Plus } from 'react-feather'
+import { Plus } from 'react-feather'
 const Item=(props)=>
 {
     const {data,user} = props;
@@ -75,7 +72,7 @@ const HaveUserAddressComponent = () => {
   return (
     <div className='HaveUserComponent'>
       <Row gutter={[20,20]}>
-        <Col md={16} xs={24}>
+        <Col md={24} xs={24}>
         <div className="AddressSelected">
             <Row gutter={[20,20]} >
               <Col md={16} xs={24}>
@@ -99,7 +96,7 @@ const HaveUserAddressComponent = () => {
             
         </div>
         </Col>
-        <Col md={8} xs={24}>
+        {/* <Col md={8} xs={24}>
               <Space direction='vertical'>
               <Row>
                 <Col span={24}>
@@ -138,7 +135,7 @@ const HaveUserAddressComponent = () => {
               <InputText label="Nhập mã khuyến mãi nếu có"></InputText>
               <MyButton >Xác nhận mua hàng</MyButton>
               </Space>
-        </Col>
+        </Col> */}
       </Row>
 
         <Modal okButtonProps={{style:{

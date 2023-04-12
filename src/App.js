@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import { adminRoute } from "~/area/admin/components/routes";
 import { publicRoute, privateRoute } from "~/components/routes";
@@ -16,6 +17,9 @@ import { v4 } from "uuid";
 import NotFound from "./components/commomComponents/NotFound";
 import Location from "./components/commomComponents/LocationSelect";
 import SelectCustom from "./components/commomComponents/SelectCustom";
+import AdminAuthLayout from "./components/layout/AdminAuthLayout";
+import DangNhap from "./area/admin/components/pages/AuthPage/pages/DangNhap/DangNhap";
+import AuthPage from "./area/admin/components/pages/AuthPage";
 function App() {
   SwiperCore.use([Autoplay]);
   const dispatch = useDispatch();
@@ -30,25 +34,25 @@ function App() {
           <Route element={<NotFound />} path={"*"}></Route>
           {adminRoute.map((route, index) => {
             const Page = route.element;
-
+            const Layout = route?.layout || AdminLayout;
             return (
               <Route
                 key={v4()}
                 element={
-                  // user.role == "1" && user ? (
-                  //   <AdminLayout>
-                  //     <Suspense fallback={<CustomSpin />}>
-                  //       <Page />
-                  //     </Suspense>
-                  //   </AdminLayout>
-                  // ) : (
-                  //  <NotFound/>
-                  // )
-                  <AdminLayout>
-                    <Suspense fallback={<CustomSpin />}>
-                      <Page />
-                    </Suspense>
-                  </AdminLayout>
+                  user.role == "1" && user ? (
+                    <Layout>
+                      <Suspense fallback={<CustomSpin />}>
+                        <Page />
+                      </Suspense>
+                    </Layout>
+                  ) : (
+                  <NotFound/>
+                  )
+                  // <Layout>
+                  //   <Suspense fallback={<CustomSpin />}>
+                  //     <Page />
+                  //   </Suspense>
+                  // </Layout>
                 }
                 path={route.path}
               ></Route>

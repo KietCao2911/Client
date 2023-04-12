@@ -1,6 +1,13 @@
 import * as Elements from "~/components/pages";
 import { GuessAuthLayout } from "../layout";
+import AdminAuthLayout from "../layout/AdminAuthLayout";
+import AuthPage from "~/area/admin/components/pages/AuthPage";
 const publicRoute = [
+  {
+    path: "/admin/auth/*",
+    element: AuthPage,
+    layout: AdminAuthLayout,
+  },
   {
     path: "/",
     element: Elements.Home,

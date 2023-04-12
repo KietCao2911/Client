@@ -63,10 +63,38 @@ export const fetchPUTHoanTien = createAsyncThunk(
     return res;
   }
 );
+export const fetchPUTHoaDon = createAsyncThunk(
+  "fetchPUTHoaDon",
+  async (params) => {
+    const { body } = params;
+    const res = await HoaDonApi.fetchPutHoaDon(body);
+    return res;
+  }
+);
 const HoaDonSlice = createSlice({
   initialState,
   name: "HoaDon",
   extraReducers: (builder) => {
+    //fetchPUTHoaDon
+    builder.addCase(fetchPUTHoaDon.pending, (state, action) => {
+      state.hoadon = {};
+      state.loading = true;
+    });
+    builder.addCase(fetchPUTHoaDon.fulfilled, (state, action) => {
+      state.hoadon = action.payload;
+      state.loading = false;
+      notification.open({
+        message:"Cập nhật thành công",
+        type:"success"
+      })
+    });
+    builder.addCase(fetchPUTHoaDon.rejected, (state, action) => {
+      state.loading = false;
+      notification.open({
+        message:"Cập nhật thất bại",
+        type:"error"
+      })
+    });
     //fetchPUTHoanTien
     builder.addCase(fetchPUTHoanTien.pending, (state, action) => {
       state.hoadon = {};

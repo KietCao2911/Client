@@ -1,5 +1,4 @@
-.MyButton
-{
+.MyButton {
     position: relative;
     width: 100%;
     max-width: 100%;
@@ -16,20 +15,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border:1px solid black;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: .4rem;
 
-    .Icon{
+    .Icon {
         position: absolute;
         right: 1rem;
     }
-    .Content{
-         
-    }
-    &:hover
-    {
+
+    .Content {}
+
+    &:hover {
         background-color: black;
         color: white !important;
-        a{
+
+        a {
             color: white;
         }
     }

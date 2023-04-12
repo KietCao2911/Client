@@ -4,7 +4,7 @@ import MyHeader from "~/components/layout/AdminLayout/Header";
 import "./AdminLayout.scss";
 import { Layout } from "antd";
 const { Header, Content, Sider } = Layout;
-const AdminLayout = ({ children }) => {
+const AdminAuthLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout>
@@ -31,4 +31,4 @@ const AdminLayout = ({ children }) => {
   );
 };
 
-export default AdminLayout;
+export default AdminAuthLayout;

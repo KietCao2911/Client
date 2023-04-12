@@ -137,18 +137,31 @@ const XacThucSlice = createSlice({
     builder.addCase(fetchGetCurrentUser.fulfilled, (state, action) => {
       state.user = action.payload.user;
     });
+    //fetchPostSignUser
+    builder.addCase(fetchPostSignUser.pending, (state, action) => {
+     
+        state.loading=true
+    });
     builder.addCase(fetchPostSignUser.fulfilled, (state, action) => {
       state.user = action.payload.info;
       state.token = action.payload.token;
       window.location.replace("/");
       localStorage.setItem("access__token", action.payload.token);
       localStorage.setItem("refresh__token", action.payload.refreshToken);
+      if(state.user.role==1)
+      {
+        window.location.replace("/admin")
+      }
+      state.loading=false
+
     });
     builder.addCase(fetchPostSignUser.rejected, (state, action) => {
       notification.open({
-        message:"Thao tác thất bại, vui lòng thử lại sau",
+        message:"Thông tin không chính xác",
         type:"error"
       })
+      state.loading=false
+
     });
   },
 });

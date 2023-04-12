@@ -7,6 +7,7 @@ import shoesLogo from "~/assets/shoesLogo.png";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { PhoneOTP } from "..";
+import Email from "./pages/Email";
 import Method from "./components/Method";
 const AuthPage = () => {
   return (
@@ -15,6 +16,7 @@ const AuthPage = () => {
       <Outlet/>
       <Routes>
         <Route element={<PhoneOTP/> } path="phone/*"></Route>
+        <Route element={<Email/> } path="email/*"></Route>
         <Route element={<Method/> } path=""></Route>
       </Routes>
     </div></>
