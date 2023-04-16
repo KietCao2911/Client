@@ -2,7 +2,13 @@ import * as Elements from "~/components/pages";
 import { GuessAuthLayout } from "../layout";
 import AdminAuthLayout from "../layout/AdminAuthLayout";
 import AuthPage from "~/area/admin/components/pages/AuthPage";
+import NoneLayout from "../layout/NoneLayout";
 const publicRoute = [
+  {
+    path: "/verify_email/:token",
+    element: Elements.EmailVerifyPage,
+    layout: NoneLayout,
+  },
   {
     path: "/admin/auth/*",
     element: AuthPage,

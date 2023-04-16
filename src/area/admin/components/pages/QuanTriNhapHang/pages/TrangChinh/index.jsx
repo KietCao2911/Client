@@ -1,6 +1,6 @@
-import { Button, Space, Table, Tag } from "antd";
+import { Button, FloatButton, Space, Table, Tag } from "antd";
 import React, { useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as PhieuNhapAPI from "~/redux/slices/PhieuNhap/PhieuNhap";
 import convertVND from "~/components/utils/ConvertVND";
@@ -75,16 +75,15 @@ const TrangChinh = () => {
   document.title="Trang quản lý đơn nhập"
   const dispatch = useDispatch();
   const { items } = useSelector((state) => state.PhieuNhap);
+  const nav = useNavigate();
   useEffect(() => {
     dispatch(PhieuNhapAPI.fetchGetPhieuNhaps());
   }, []);
   return (
     <>
-      <Space>
-        <Link to="tao-moi">
-          <MyButton icon={<FilePlus />}>Tạo mới phiếu nhập </MyButton>
-        </Link>
-      </Space>
+    <FloatButton onClick={()=>nav("tao-moi")} icon={<FilePlus/>} tooltip="Thêm mới phiếu nhập">
+     
+    </FloatButton>
       <Table columns={columns} dataSource={items}></Table>
     </>
   );

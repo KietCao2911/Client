@@ -9,11 +9,10 @@ export const fetchGetKhoHang = async(maSP)=>
         throw error
     }
 }
-export const fetchGetProducts =async(maChiNhanh,query)=>
+export const fetchGetProducts =async(params)=>
 {   
-    console.log({query});
     try {
-        const res = await request.Get("/api/admin/KhoHang/GetProducts/"+maChiNhanh,{params:query});
+        const res = await request.Get("/api/admin/KhoHang/GetProducts",{params});
         return res;
     } catch (error) {
         throw error

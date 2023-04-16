@@ -50,9 +50,9 @@ export const PostCategory = async (body) => {
     throw err;
   }
 };
-export const GetAllDanhMuc = async () => {
+export const GetAllDanhMuc = async (params) => {
   try {
-    const res = await Method.Get("/api/admin/DanhMuc/GetAllDanhMuc");
+    const res = await Method.Get("/api/admin/DanhMuc/GetAllDanhMuc",params);
     return res;
   } catch (err) {
     throw err;

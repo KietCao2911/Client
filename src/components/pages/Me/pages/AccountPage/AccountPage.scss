@@ -1,13 +1,16 @@
 @import "../../../../GlobalStyles/GlobalStyle.scss";
-.AccountPage{
+
+.AccountPage {
     display: flex;
-    @include tablet{
+
+    @include tablet {
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
-    .AccountNav{
-        button{
+
+    .AccountNav {
+        button {
             border-radius: unset;
             margin: unset;
             border: unset;
@@ -15,10 +18,13 @@
             font-size: 1.8rem;
             font-weight: 400;
             transition: unset;
-            &.active{
-                font-weight: 600;
+            margin: 1rem 0;
+
+            &.active {
+                background-color: black;
+                color: white;
             }
         }
-       
+
     }
 }

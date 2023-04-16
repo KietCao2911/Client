@@ -1,6 +1,5 @@
 import QuanTriDanhMuc from "~/area/admin/components/pages/QuanTriDanhMuc";
 import QuanTriSanPham from "~/area/admin/components/pages/QuanTriSanPham";
-import SuaDanhMuc from "../pages/QuanTriDanhMuc/components/SuaDanhMuc";
 import QuanTriBST from "../pages/QuanTriBoSuuTap";
 import { lazy } from "react";
 import AdminAuthLayout from "~/components/layout/AdminAuthLayout";
@@ -17,11 +16,16 @@ const TrangQuanTriNhapHang = lazy(() =>
 const BaoCaoNhapXuat = lazy(() => import("../pages/BaoCaoNhapXuat"));
 const QuanTriKhachHang = lazy(() => import("../pages/QuanTriKhachHang"));
 const QuanTriKhuyenMai = lazy(() => import("../pages/QuanTriKhuyenMai"));
-const AuthPage = lazy(() => import("../pages/AuthPage"));
+const QuanTriKhoHang = lazy(() => import("../pages/QuanTriKhoHang"));
+
 export const adminRoute = [
   {
     path: "/admin",
     element: HomeAdmin,
+  },
+  {
+    path: "/admin/quan-tri-kho-hang/*",
+    element: QuanTriKhoHang,
   },
   {
     path: "/admin/quan-tri-khuyen_mai/*",
@@ -44,7 +48,7 @@ export const adminRoute = [
     element: QuanTriKhachHang,
   },
   {
-    path: "/admin/trang-quan-tri-danh-muc",
+    path: "/admin/quan-tri-danh-muc/*",
     element: QuanTriDanhMuc,
   },
   {
@@ -58,10 +62,6 @@ export const adminRoute = [
   {
     path: "/admin/trang-quan-tri-nhap-hang/*",
     element: TrangQuanTriNhapHang,
-  },
-  {
-    path: "/admin/trang-quan-tri-danh-muc/chinh-sua/:maDM",
-    element: SuaDanhMuc,
   },
   {
     path: "/admin/trang-quan-tri-bo-suu-tap",

@@ -12,8 +12,8 @@ export const fetchGetKhoHang = createAsyncThunk(
 export const fetchGetProducts = createAsyncThunk(
   "KhoHang/fetchGetProducts",
   async (params) => {
-    const { maChiNhanh, query } = params;
-    const res = await KhoHangAPI.fetchGetProducts(maChiNhanh, query);
+
+    const res = await KhoHangAPI.fetchGetProducts(params);
     return res;
   }
 );

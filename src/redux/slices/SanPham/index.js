@@ -42,7 +42,7 @@ export const fetchGetAllProducts = createAsyncThunk(
   "fetchGetAllProducts",
   async (props) => {
     const { params } = props;
-    const res = await Api.GetAllProducts(params);
+    const res = await Api.GetAllProducts(props);
     return res;
   }
 );

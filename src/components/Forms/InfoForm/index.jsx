@@ -46,11 +46,11 @@ const InfoForm = () => {
        </div>
         <Space direction='vertical'> 
         
-        <InputText label="Tên hiển thị" placeHolder="Tên hiển thị" name="TenHienThi" onChange={infoForm.handleChange} value={infoForm.values.TenHienThi}></InputText>
+        <InputText label="Tên hiển thị"  name="TenHienThi" onChange={infoForm.handleChange} value={infoForm.values.TenHienThi}></InputText>
             <Space>
-            <InputText label="Ngày " placeHolder="Ngày sinh" name="NgaySinh" onChange={infoForm.handleChange} value={infoForm.values.NgaySinh}></InputText>
-            <InputText label="Tháng " placeHolder="Tháng sinh" name="ThangSinh" onChange={infoForm.handleChange} value={infoForm.values.ThangSinh}></InputText>
-            <InputText label="Năm " placeHolder="Năm sinh" name="NamSinh" onChange={infoForm.handleChange} value={infoForm.values.NamSinh}></InputText>
+            <InputText label="Ngày "  name="NgaySinh" onChange={infoForm.handleChange} value={infoForm.values.NgaySinh}></InputText>
+            <InputText label="Tháng "  name="ThangSinh" onChange={infoForm.handleChange} value={infoForm.values.ThangSinh}></InputText>
+            <InputText label="Năm"  name="NamSinh" onChange={infoForm.handleChange} value={infoForm.values.NamSinh}></InputText>
             </Space>
         </Space>
     </div>

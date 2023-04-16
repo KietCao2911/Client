@@ -1,7 +1,7 @@
 import * as Method from "~/axiosRequest/request";
 export const GetAllProducts = async (params) => {
   try {
-    const res = await Method.Get("/api/admin/SanPham", params);
+    const res = await Method.Get("/api/admin/SanPham", {params});
     return res;
   } catch (err) {
     throw err;

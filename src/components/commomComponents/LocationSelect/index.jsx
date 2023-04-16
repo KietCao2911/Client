@@ -5,17 +5,13 @@ import * as BranchsAPI from "~/redux/slices/Branch/BranchSlice";
 import { SelectInput } from "../SelectInput";
 import { v4 } from "uuid";
 import SelectCustom, { Option } from "../SelectCustom";
-const Location = () => {
+const Location = ({visiabe,setVisiable}) => {
   const { branchs } = useSelector((state) => state.Branch);
   const dispatch = useDispatch();
   const [Loc, setLoc] = useState(() => {
     return JSON.parse(window.localStorage.getItem("location")) || {};
   });
-  const [visiabe, setVisiable] = useState(() => {
-    const location = window.localStorage.getItem("location");
-
-    return location ? false : true;
-  });
+  console.log({Loc})
   const handleChangeLocation = (id, name) => {
     const params = { maChiNhanh: id, tenChiNhanh: name };
     setLoc({ ...params });
@@ -47,22 +43,21 @@ const Location = () => {
       }}
       title="Vui lòng chọn chi nhánh gần bạn"
       open={visiabe}
+      onCancel={()=>setVisiable(false)}
     >
-      <SelectCustom value={Loc} setValue={setLoc}>
+      <SelectCustom value={Loc?.maChiNhanh.trim()} setValue={setLoc}>
         {branchs &&
           branchs.map((branch) => {
             return (
-              <div key={v4()}>
                    <Option
-                
+                key={v4()}
                 onClick={() =>
-                  handleChangeLocation(branch?.maChiNhanh, branch?.tenChiNhanh)
+                  handleChangeLocation(branch?.maChiNhanh.trim(), branch?.tenChiNhanh)
                 }
-                value={branch?.maChiNhanh}
+                value={branch?.maChiNhanh.trim()}
               >
                 {branch?.tenChiNhanh}{" "}
               </Option>
-              </div>
             );
           })}
       </SelectCustom>

@@ -5,6 +5,7 @@ import { notification } from "antd";
 const initialState = {
   user: {},
   token: "",
+  emailValidateStatus:false,
   loading:false,
 };
 
@@ -55,10 +56,101 @@ export const fetchSetAvatar = createAsyncThunk("fetchSetAvatar",async(params)=>
   const res = MeAPI.setAvatar(id,body)
   return res;
 })
+    //EmailRegister
+    export const EmailRegister = createAsyncThunk("EmailRegister",async(params)=>
+{
+  const {body} = params;
+  const res = Api.EmailRegister(body)
+  return res;
+})
+//EmailSignIn
+export const EmailSignIn = createAsyncThunk("EmailSignIn",async(params)=>
+{
+  const {body} = params;
+  const res = Api.EmailSignIn(body)
+  return res;
+})
+//EmailVerify
+export const EmailVerify = createAsyncThunk("EmailVerify",async(params)=>
+{
+  const {token} = params;
+  const res = Api.EmailVerify(token)
+  return res;
+})
 const XacThucSlice = createSlice({
   name: "XacThuc",
   initialState,
   extraReducers: (builder) => {
+    //EmailRegister
+    builder.addCase(EmailRegister.pending,(state)=>
+    {
+      state.loading=true;
+    })
+    builder.addCase(EmailRegister.fulfilled,(state,action)=>
+    {
+      state.loading=false;
+      notification.open({
+        message:"Tạo tài khoản thành công, vui lòng xác nhận trong email của bạn",
+        type:"success"
+      })
+    })
+    builder.addCase(EmailRegister.rejected,(state,action)=>
+    {
+      state.loading=false;
+      const message   = action.error.message;
+      notification.open({
+        message,
+        type:"error"
+      })
+    })
+//EmailSignIn
+builder.addCase(EmailSignIn.pending,(state)=>
+{
+  state.loading=true;
+})
+builder.addCase(EmailSignIn.fulfilled,(state,action)=>
+{
+  state.user = action.payload.info;
+  state.token = action.payload.token;
+  window.location.replace("/");
+  localStorage.setItem("access__token", action.payload.token);
+  localStorage.setItem("refresh__token", action.payload.refreshToken);
+  if(state.user.role==1)
+  {
+    window.location.replace("/admin")
+  }
+  state.loading=false
+  
+})
+builder.addCase(EmailSignIn.rejected,(state,action)=>
+{
+  state.loading=false;
+  const message   = action.error.message;
+  notification.open({
+    message,
+    type:"error"
+  })
+})
+//EmailVerify
+builder.addCase(EmailVerify.pending,(state)=>
+{
+  state.loading=true;
+  state.emailValidateStatus=false
+})
+builder.addCase(EmailVerify.fulfilled,(state,action)=>
+{
+  state.loading=false;
+  state.emailValidateStatus=true;
+  notification.open({
+    message:"Xác thực thành công",
+    type:"success"
+  })
+})
+builder.addCase(EmailVerify.rejected,(state)=>
+{
+  state.emailValidateStatus=false
+  state.loading=false;
+})
     //fetchSetAvatar
     builder.addCase(fetchSetAvatar.pending,(state)=>
     {
@@ -142,6 +234,7 @@ const XacThucSlice = createSlice({
      
         state.loading=true
     });
+
     builder.addCase(fetchPostSignUser.fulfilled, (state, action) => {
       state.user = action.payload.info;
       state.token = action.payload.token;
@@ -157,7 +250,7 @@ const XacThucSlice = createSlice({
     });
     builder.addCase(fetchPostSignUser.rejected, (state, action) => {
       notification.open({
-        message:"Thông tin không chính xác",
+        message:"Thao tác thất bại",
         type:"error"
       })
       state.loading=false

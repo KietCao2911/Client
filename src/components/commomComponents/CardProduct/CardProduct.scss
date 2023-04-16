@@ -153,10 +153,10 @@
         }
 
         .name {
-            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            text-align: center;
-            white-space: nowrap;
         }
     }
 }

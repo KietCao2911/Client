@@ -22,6 +22,7 @@ const BrandSlice = createSlice({
     },
     extraReducers:builder=>
     {
+        
         builder.addCase(fetchGetBrand.fulfilled,(state,action)=>
         {
             state.brands = action.payload;

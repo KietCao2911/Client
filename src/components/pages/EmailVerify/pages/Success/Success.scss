@@ -1,0 +1,19 @@
+.SuccessPage {
+    padding: 4rem;
+    background-color: black;
+    border-radius: .6rem;
+    color: white;
+    text-align: center;
+
+    .icon.iconSuccess {
+        color: green;
+    }
+
+    .icon.iconFail {
+        color: red;
+    }
+
+    .content {
+        h1 {}
+    }
+}

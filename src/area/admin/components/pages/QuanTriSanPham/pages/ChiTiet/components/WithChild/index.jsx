@@ -3,6 +3,7 @@ import {
   Card,
   Cascader,
   Col,
+  FloatButton,
   Modal,
   Row,
   Select,
@@ -45,6 +46,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import ShowMore from "~/components/commomComponents/ShowMore";
+import { Delete, Edit, Save, Trash2, X } from "react-feather";
 const VersionDetailPage = lazy(() => import("./pages/VersionDetailPage"));
 const FooterTable = () => {
   return (
@@ -207,6 +209,14 @@ const WithChild = (props) => {
   };
   return (
     <>
+    {isEdit&&<FloatButton.Group>
+      <FloatButton icon={<Save/>}  onClick={handleSave} tooltip="Lưu"></FloatButton>
+      <FloatButton icon={<X/>}  onClick={handleCancel} tooltip="Hủy"></FloatButton>
+    </FloatButton.Group>}
+    {!isEdit&&<FloatButton.Group>
+      <FloatButton icon={<Edit/>} onClick={()=>setIsEdit(true)} tooltip="Sửa"></FloatButton>
+      <FloatButton icon={<Trash2/>} onClick={handleDeleteProduct} tooltip="Xóa"></FloatButton>
+    </FloatButton.Group>}
       <div className="headerActions">
         <div className="backToList">
           {" "}
@@ -214,44 +224,7 @@ const WithChild = (props) => {
           <Link to="/admin/trang-quan-tri-san-pham">Trở lại danh sách</Link>
         </div>
         <div className="actions">
-          <Space>
-            {isEdit ? (
-              <>
-                <Space>
-                  <MyButton onClick={handleCancel}>Hủy</MyButton>
-                </Space>
-                <Space>
-                  {" "}
-                  <MyButton
-                    style={{ backgroundColor: "#0DCAF0" }}
-                    onClick={handleSave}
-                  >
-                    Lưu
-                  </MyButton>
-                </Space>
-              </>
-            ) : (
-              <>
-                <Space>
-                  <MyButton
-                    onClick={() => setIsEdit(true)}
-                    style={{ backgroundColor: "#0D6EFD" }}
-                  >
-                    Sửa sản phẩm
-                  </MyButton>
-                </Space>
-                <Space>
-                  {" "}
-                  <MyButton
-                    style={{ backgroundColor: "#F8F9FA" }}
-                    onClick={handleOpenModalDelete}
-                  >
-                    Xóa
-                  </MyButton>
-                </Space>
-              </>
-            )}
-          </Space>
+
         </div>
       </div>
       <Row gutter={[20, 20]}>

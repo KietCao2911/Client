@@ -41,6 +41,16 @@ body {
 
 .icon {
   cursor: pointer;
+  transition: .3s;
+
+  &.deteleHover {
+    &:hover {
+      color: red;
+      scale: 1.2;
+    }
+  }
+
+  &:hover {}
 }
 
 ::-webkit-scrollbar {
@@ -48,7 +58,7 @@ body {
 }
 
 a {
-  font-size: 1.6vh;
+  font-size: 1.4vh;
   color: black;
 
   &:hover {
@@ -105,7 +115,9 @@ button {
 
 }
 
-.ant-layout-footer {}
+.ant-layout-footer {
+  background-color: black !important;
+}
 
 .Header {
   background: #ffffff;
@@ -131,10 +143,7 @@ svg {
   // font-size: 2.5rem;
 }
 
-.ant-layout-content {
-  // background-color: #fff;
-  min-height: 100vh !important;
-}
+
 
 .table-row-light {}
 
@@ -300,7 +309,21 @@ textarea {
   }
 }
 
+.layout,
+.ant-layout-content,
+.GuessAuthLayout {
+  padding-inline: 14px !important;
 
+  @include tablet {
+    padding-inline: 20px !important;
+  }
+
+  @include desktop {
+    padding-inline: 24px !important;
+  }
+
+  min-height: 100vh !important;
+}
 
 *,
 *::before,
@@ -331,6 +354,8 @@ body {
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+
+
 }
 
 /*

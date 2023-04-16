@@ -11,7 +11,7 @@ const Method = () => {
       <Link to="phone">
             <MyButton icon={<Phone></Phone>}>Đăng nhập/đăng ký với số điện thoại</MyButton>
         </Link>
-        <Link to="email">
+        <Link to="email/dang-nhap">
             <MyButton icon={<Mail/>}>Tiếp tục với Email/Password</MyButton>
         </Link>
       </Space>

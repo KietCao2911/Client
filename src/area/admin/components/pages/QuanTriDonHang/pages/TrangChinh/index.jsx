@@ -12,14 +12,6 @@ const Columns = (props) => {
   const { setOpenModal } = props;
   const dispatch = useDispatch();
 
-  const handleGetProductDetails = (id) => {
-    dispatch(HoaDonApi.fetchGetOrderDetails({ id }));
-    setOpenModal(true);
-  };
-  const handleCancelOrder = (id) => {
-    dispatch(HoaDonApi.fetchCancelOrder({ id: id }));
-  };
-
   return [
     {
       title: "#ID",
@@ -81,8 +73,13 @@ const Columns = (props) => {
     },
     {
       title: "Tráng thái thanh toán",
-      key: "tags",
-      dataIndex: "tags",
+      key: "daThanhToan",
+      dataIndex: "daThanhToan",
+      filters:[{
+        text:"Đã thanh toán",value:true,
+      },{
+        text:"Chưa thanh toán",value:false,
+      }],
       render: (_, record) => (
         <>
       {record?.status!=-1?record?.daThanhToan?<Tag>Đã thanh toán</Tag>:<Tag>Chưa thanh toán</Tag>:record?.status==-1?record?.daThanhToan?<Tag>Đã hoàn tiền</Tag>:<Tag>Chưa hoàn tiền</Tag>:null}
@@ -91,11 +88,19 @@ const Columns = (props) => {
     },
     {
       title: "Tráng thái ",
-      key: "tags",
-      dataIndex: "tags",
+      key: "status",
+      dataIndex: "status",
+      filters:[{
+        text:"Đã xử lý",value:"HoanThanh",
+      },{
+        text:"Đang xử lý",value:0,
+      },
+      {
+        text:"Đã bị bị hủy",value:"DaHuy",
+      }],
       render: (_, record) => (
         <>
-            {record?.status==0?<Tag color="green">Đang xử lý</Tag>:record?.status==1?<Tag color="green">Đã xử lý</Tag>:<Tag color="red">Đã hủy đơn</Tag>}
+            {record?.status==0?<Tag color="">Đang xử lý</Tag>:record?.status==1?<Tag color="green">Đã xử lý</Tag>:<Tag color="red">Đã hủy đơn</Tag>}
         </>
       ),
     },
@@ -103,15 +108,30 @@ const Columns = (props) => {
 };
 const TrangChinh = () => {
   const dispatch = useDispatch();
-  const { hoadons, hoadon } = useSelector((state) => state.HoaDon);
+  const { hoadons, hoadon,loading } = useSelector((state) => state.HoaDon);
   const [openModal, setOpenModal] = useState(false);
-  console.log({ hoadon });
+
+  const [tableParams, setTableParams] = useState({});
+
+  const handleTableChange=(pagination,filters,sorter)=>
+  {
+    console.log({filters,sorter})
+    const daThanhToan = filters["daThanhToan"];
+    const status = filters["status"];
+    
+    setTableParams({
+      daThanhToan:daThanhToan[0]??"",
+      status:status[0]??"",
+    });
+  }
   useEffect(() => {
-    dispatch(HoaDonApi.fetchGetAllOrder());
-  }, []);
+    dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}));
+  }, [tableParams]);
   return (
     <div>
       <Table
+      loading={loading}
+      onChange={handleTableChange}
         rowKey={(recort) => v4()}
         scroll={{ x: 400 }}
         columns={Columns({ setOpenModal })}

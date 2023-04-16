@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
-import { Col, Input, Row, Select, Space, Table } from "antd";
+import { Col, FloatButton, Input, Row, Select, Space, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as SanPhamAPI from "~/redux/slices/SanPham";
 import { useEffect } from "react";
@@ -13,9 +13,11 @@ import moment from "moment";
 import { useState } from "react";
 import InputText from "~/components/commomComponents/InputText";
 import "./TrangChinh.scss";
+import * as TypeAPI from "~/redux/slices/Type/TypeSlice";
+import * as BrandAPI from "~/redux/slices/Brand/BrandSlice";
+import { Plus } from "react-feather";
 const expandedRowRender = (props) => {
   const { data } = props;
-  console.log({ data });
   const columns = [
     {
       title: "Tên sản phẩm",
@@ -127,11 +129,13 @@ const columns = (props) => {
 const TrangChinh = () => {
   const dispatch = useDispatch();
   const { products, loading } = useSelector((state) => state.SanPham);
-  console.log({ products });
+  const { types} = useSelector((state) => state.Type);
+  const { brands } = useSelector((state) => state.Brand);
+  const [searchText,setSearchText] = useState("")
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState();
+  const nav = useNavigate()
   const onSelectChange = (key) => {
-    console.log({ key });
     setSelectedRowKeys(key);
     // setSelectedRowKeys([...selectedRowKeys,...key])
   };
@@ -141,6 +145,8 @@ const TrangChinh = () => {
   };
   useEffect(() => {
     dispatch(SanPhamAPI.fetchGetAllProducts({}));
+    dispatch(TypeAPI.fetchGetTypes());
+    dispatch(BrandAPI.fetchGetBrand());
   }, []);
   const ChangeData1 = useMemo(() => {
     let temp = products.map((item) => {
@@ -151,30 +157,46 @@ const TrangChinh = () => {
     });
     setData([...temp]);
   }, [products]);
+  const handleSearch=(e)=>
+  {
+    const value = e.target.value;
+    setSearchText(value)
+    dispatch(SanPhamAPI.fetchGetAllProducts({s:value}))
+  }
+  const handleChangeType=(id)=>
+  {
+    dispatch(SanPhamAPI.fetchGetAllProducts({type:id}))
+  }
+  const handleChangeBrand=(id)=>
+  {
+    dispatch(SanPhamAPI.fetchGetAllProducts({brand:id}))
+  }
   return (
     <div className="TrangChinhQLSP">
       <div className="filesActions">
         <div className="printDocs"></div>
-        <div className="create">
-          <Link to="tao-moi">
-            <MyButton style={{ width: "30rem" }} icon={<FileAddFilled />}>
-              Tạo sản phẩm mới
-            </MyButton>
-          </Link>
-        </div>
+        <FloatButton onClick={()=>nav("tao-moi")} icon={<Plus/>} tooltip="Thêm mới sản phẩm"></FloatButton>
       </div>
-      <div className="productsTable">
+      <Space direction="vertical" className="productsTable">
         <div className="filterActions">
           <Row gutter={20} align={"middle"}>
             <Col xl={12}>
-              <InputText placeHolder="Tìm kiếm sản phẩm" type="search" />
+              <InputText value={searchText} onChange={(e)=>handleSearch(e)} label="Tìm kiếm sản phẩm" type="search" />
             </Col>
             <Col xl={12}>
-              <Select defaultValue={null}>
+              <Select onChange={(e)=>handleChangeType(e)} defaultValue={null}>
                 <Select.Option value={null}>Loại sản phẩm</Select.Option>
+                {types&&types.length>0&&types.map(type=>
+                  {
+                    return <Select.Option value={type?.slug}>{type?.name}</Select.Option>
+                  })}
               </Select>
-              <Select defaultValue={null}>
+              <Select onChange={(e)=>handleChangeBrand(e)} defaultValue={null}>
                 <Select.Option value={null}>Thương hiệu</Select.Option>
+                {brands&&brands.length>0&&brands.map(brand=>
+                  {
+                    return <Select.Option value={brand?.slug}>{brand?.name}</Select.Option>
+                  })}
               </Select>
             </Col>
           </Row>
@@ -200,7 +222,7 @@ const TrangChinh = () => {
             columns={columns({ product: data })}
           ></Table>
         </div>
-      </div>
+      </Space>
     </div>
   );
 };

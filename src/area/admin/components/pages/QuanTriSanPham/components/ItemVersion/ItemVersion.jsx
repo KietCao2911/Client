@@ -9,6 +9,7 @@ import "./ItemVersion.scss"
 
 import { v4 } from 'uuid'
 import { memo } from 'react'
+import { Trash2 } from 'react-feather'
 const {Option} = Select
 const ItemVersion = (props) => {
   const {versions,branchs,setVersions, index,initValues,sizes,colors,soLuongTon,giaVon,giaBanSi,giaBanLe,tenSanPham,giaNhap} = props;
@@ -120,7 +121,7 @@ const ItemVersion = (props) => {
           </Checkbox.Group>
         </Col>
         <Col xl={8}>
-          <MyButton onClick={handleDeleteItem} ><DeleteOutlined/></MyButton>
+          <Trash2 className='icon deteleHover' onClick={handleDeleteItem}></Trash2>
         </Col>
     </Row>
         </Col>

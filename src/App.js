@@ -8,7 +8,7 @@ import {
 import { adminRoute } from "~/area/admin/components/routes";
 import { publicRoute, privateRoute } from "~/components/routes";
 import { DefaultLayout, AdminLayout } from "~/components/layout";
-import { Suspense, useEffect, useLayoutEffect } from "react";
+import { Suspense, useEffect, useLayoutEffect, useState } from "react";
 import CustomSpin from "~/components/CustomSpin";
 import SwiperCore, { Autoplay } from "swiper";
 import XacThucSlice, * as XacThucAPi from "./redux/slices/XacThuc";
@@ -22,6 +22,11 @@ import DangNhap from "./area/admin/components/pages/AuthPage/pages/DangNhap/Dang
 import AuthPage from "./area/admin/components/pages/AuthPage";
 function App() {
   SwiperCore.use([Autoplay]);
+  const [visiabe, setVisiable] = useState(() => {
+    const location = window.localStorage.getItem("location");
+
+    return location ? false : true;
+  });
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.XacThuc);
   useLayoutEffect(() => {
@@ -39,20 +44,20 @@ function App() {
               <Route
                 key={v4()}
                 element={
-                  user.role == "1" && user ? (
-                    <Layout>
-                      <Suspense fallback={<CustomSpin />}>
-                        <Page />
-                      </Suspense>
-                    </Layout>
-                  ) : (
-                  <NotFound/>
-                  )
-                  // <Layout>
-                  //   <Suspense fallback={<CustomSpin />}>
-                  //     <Page />
-                  //   </Suspense>
-                  // </Layout>
+                  // user.role == "1" && user ? (
+                  //   <Layout>
+                  //     <Suspense fallback={<CustomSpin />}>
+                  //       <Page />
+                  //     </Suspense>
+                  //   </Layout>
+                  // ) : (
+                  // <NotFound/>
+                  // )
+                  <Layout>
+                    <Suspense fallback={<CustomSpin />}>
+                      <Page />
+                    </Suspense>
+                  </Layout>
                 }
                 path={route.path}
               ></Route>
@@ -65,8 +70,8 @@ function App() {
               <Route
                 key={v4()}
                 element={
-                  <Layout>
-                    <Location />
+                  <Layout >
+                    <Location visiabe={visiabe}/>
                     <Page />
                   </Layout>
                 }

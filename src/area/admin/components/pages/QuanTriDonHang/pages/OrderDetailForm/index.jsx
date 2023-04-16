@@ -173,10 +173,7 @@ const OrderDetailForm = (props) => {
       OrderForm.setFieldValue("chiTietNhapXuats", temp);
     }
   };
-  const handleCancel = () => {
-    const params = { ...OrderForm.values };
-    dispatch(HoaDonApi.fetchCancelOrder({ body: params }));
-  };
+
   const handleChangeProductSearchText = (e) => {
     startTransition(() => {
       setproductSearchText(e.target.value);
@@ -290,8 +287,6 @@ const OrderDetailForm = (props) => {
     setproductSearchText("");
   };
   const handleXuatHangKhoiKho = () => {
-    console.log({ body: OrderDetailForm.values });
-    alert("Xuat hang khoi kho");
     dispatch(HoaDonApi.fetchPutXuatKho({ body: OrderForm.values }));
   };
   const handleThanhToan = () => {
@@ -305,36 +300,21 @@ const OrderDetailForm = (props) => {
   {
     dispatch(HoaDonApi.fetchPUTHoaDon({ body: OrderForm.values }))
   }
+  const handleTraHang =()=>
+  {
+    dispatch(HoaDonApi.fetchPutTraHang({ body: OrderForm.values }))
+
+  }
+  const handleCancel = () => {
+    const params = { ...OrderForm.values };
+    dispatch(HoaDonApi.fetchCancelOrder({ body: params }));
+  };
   return (
     <form ref={FormRef}>
       <Row gutter={[, 20]}>
         <Col span={24}>
           <Row justify={"space-between"}>
-            {OrderForm.values.steps < 2 ? (
-              <Popover
-                content={
-                  <Menu
-                    items={[
-                      {
-                        key: v4(),
-                        label: <Link to="chinh-sua">Chỉnh sửa</Link>,
-                      },
-                      {
-                        key: v4(),
-                        label: <Link to="">Hủy đơn này</Link>,
-                      },
-                    ]}
-                  ></Menu>
-                }
-                trigger={"click"}
-              >
-                <Space>
-                  {hoadon?.id || ""} <Settings />{" "}
-                </Space>
-              </Popover>
-            ) : (
-              <Space> {hoadon?.id || ""} </Space>
-            )}
+          <Space> {hoadon?.id || ""} </Space>
             <Space>
               <Steps
                 current={
@@ -559,6 +539,12 @@ const OrderDetailForm = (props) => {
           </FloatButton.Group>
           </>:null
         }
+        {isReadOnly&&OrderForm.values.steps<2&&<>
+          <FloatButton.Group>
+                  <FloatButton tooltip={"Hủy đơn này"}  onClick={handleCancel}></FloatButton>
+                  <FloatButton tooltip={"Sửa đơn này"}  onClick={handleTraHang}></FloatButton>
+          </FloatButton.Group>
+        </>}
         {
           (OrderForm.values.daXuatKho&&!isReturn)&&<>
             <Col md={24}>

@@ -1,8 +1,8 @@
 import * as Method from "~/axiosRequest/request";
 
-export const fetchGetAllHoaDon = async () => {
+export const fetchGetAllHoaDon = async (params) => {
   try {
-    const res = await Method.Get("api/admin/DonHang");
+    const res = await Method.Get("api/admin/DonHang",{params});
     return res;
   } catch (error) {
     throw error;
@@ -50,7 +50,7 @@ export const fetchPUTHoanTien = async (body) => {
 };
 export const fetchCancelOrder = async (body) => {
   try {
-    const res = await Method.Put("/api/admin/DonHang/TraHang", body);
+    const res = await Method.Put("/api/admin/DonHang/HuyDon", body);
     return res;
   } catch (error) {
     throw error;
@@ -60,6 +60,15 @@ export const fetchPutHoaDon = async(body)=>
 {
   try {
     const res = await Method.Put("/api/admin/DonHang", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+export const fetchPutTraHang = async(body)=>
+{
+  try {
+    const res = await Method.Put("/api/admin/DonHang/TraHang", body);
     return res;
   } catch (error) {
     throw error;

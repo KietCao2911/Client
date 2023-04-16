@@ -1,0 +1,14 @@
+.CategoryTag {
+    .Link {
+        text-align: center;
+    }
+
+    a {
+        display: block;
+        font-weight: 700;
+        margin: 1rem 0;
+        border-bottom: .2rem solid black;
+        text-transform: uppercase;
+        font-size: 1.8vh;
+    }
+}

@@ -25,6 +25,7 @@ const AccountPage = () => {
   const handleLogout =()=>
   {
     localStorage.removeItem("access__token")
+    localStorage.removeItem("refresh_token")
     window.location.replace("/")
   }
   return (

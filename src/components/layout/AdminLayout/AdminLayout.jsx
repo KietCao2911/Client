@@ -20,6 +20,7 @@ const AdminAuthLayout = ({ children }) => {
         onCollapse={(collapsed, type) => {
           setCollapsed(collapsed)
         }}
+        
       >
         {/* <div className="logo">header</div> */}
         <ActionSideBar />

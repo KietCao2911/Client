@@ -147,6 +147,7 @@ const OrderForm = (props) => {
     cart.phuongThucThanhToan = value;
     let cartString = JSON.stringify(cart);
     window.localStorage.setItem("cart", cartString);
+    orderForm.setFieldValue("phuongThucThanhToan",value)
   };
   const fetch = async () => {
     dispatch(GiaoHangNhanhApi.fetchGetProvinces());

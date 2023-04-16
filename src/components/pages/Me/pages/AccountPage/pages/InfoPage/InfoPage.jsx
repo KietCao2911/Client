@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import "./InfoPage.scss"
 import { useDispatch,useSelector } from 'react-redux'
-import {Modal} from "antd"
+import {Modal, Space} from "antd"
 import ModalCustom from '~/components/commomComponents/ModalCustom'
 import { InputText } from '~/components/commomComponents/InputText'
 import MyButton from '~/components/commomComponents/Button'
@@ -27,7 +27,6 @@ const InfoPage = () => {
         }
     })
     const [sex,setSex] = useState(user.info.gioitinh||null);
-    console.log({sex})
     const handleToggleModalInfo=()=>
     {
         setModalInfo(true)
@@ -74,12 +73,23 @@ const InfoPage = () => {
 
             </div>
         </div>
-       <Modal visible={modalInfo} onCancel={()=>setModalInfo(false)}>
-      <div className="formUpdateInfo">
-      <strong>CHỈNH SỬA THÔNG TIN CỦA BẠN</strong>
+       <Modal 
+       cancelButtonProps={{
+        style:{
+            display:"none"
+        }
+       }} 
+       okButtonProps={{
+        style:{
+            display:"none"
+        }
+       }} open={modalInfo} onCancel={()=>setModalInfo(false)}>
+     
+       <Space direction='vertical'>
+       <strong>CHỈNH SỬA THÔNG TIN CỦA BẠN</strong>
             <InfoForm/>
             <MyButton style={{width:"100%"}}>CẬP NHẬT</MyButton>
-      </div>
+       </Space>
        </Modal>
     </div>
   )

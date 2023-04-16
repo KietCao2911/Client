@@ -227,7 +227,9 @@ const BSTForm = (props) => {
                 columns={columns || []}
               />
             </Space>
+           {isCreated||isUpdated&&<>
             <Button onClick={() => handleSubmit()}>Xác nhận</Button>
+           </>}
           </Space>
         </Col>
         <Col></Col>

@@ -8,6 +8,30 @@ export const GetCurrentUser = async () => {
   }
 };
 
+export const EmailRegister = async (body) => {
+  try {
+    const res = await Method.Post("/api/admin/Auth/EmailRegister", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+export const EmailSignIn= async (body) => {
+  try {
+    const res = await Method.Post("/api/admin/Auth/EmailLogin", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+export const EmailVerify= async (token) => {
+  try {
+    const res = await Method.Post("/api/admin/Auth/EmailVerify?token="+token);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
 export const UserSignIn = async (body) => {
   try {
     const res = await Method.Post("/api/admin/Auth/SignIn", body);

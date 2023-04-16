@@ -43,7 +43,7 @@ const MePage = () => {
   return <div className="MePage PageContainer">
       <div className="HeaderNavAccount">
         <div className="infomation">
-          <div className="name">CHÀO MỪNG {user?.userName} TRỞ LẠI</div>
+          <div className="name">CHÀO MỪNG {user?.nameDisplay||user?.userName} TRỞ LẠI</div>
           <div className="level">LEVEL DIMOND</div>
         </div>
         <div className="nav">

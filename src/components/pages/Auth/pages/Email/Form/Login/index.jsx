@@ -1,4 +1,4 @@
-import { Space, notification } from 'antd'
+import { Checkbox, Space, notification } from 'antd'
 import { useFormik } from 'formik'
 import React from 'react'
 import CustomSpin from '~/components/CustomSpin'
@@ -11,23 +11,25 @@ import { Link } from 'react-router-dom'
 const EmailLoginForm = () => {
     const {loading} = useSelector(state=>state.XacThuc)
     const dispatch = useDispatch();
+    const regexEmail="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
     const Form = useFormik(
         {
          initialValues:{
-          userName:"",
-          password:"",
+          tenTaiKhoan:"",
+          matKhau:"",
          }, 
          initialErrors:{
-          userName:"Vui lòng nhập trường này",
-          password:"Vui lòng nhập trường này"
+          tenTaiKhoan:"Vui lòng nhập trường này",
+          matKhau:"Vui lòng nhập trường này"
          },
          initialTouched:{
-          userName:false,
-          password:false
+          tenTaiKhoan:false,
+          matKhau:false
          },
     validationSchema:YUP.object({
-      userName:YUP.string().required("Vui lòng nhập trường này"),
-      password:YUP.string().required("Vui lòng nhập trường này"),
+      
+      tenTaiKhoan:YUP.string().required("Vui lòng nhập trường này").matches(regexEmail,"Email sai định dạng"),
+      matKhau:YUP.string().required("Vui lòng nhập trường này"),
     }),
     
         }
@@ -36,12 +38,13 @@ const EmailLoginForm = () => {
       {
           const valid = Form.isValid
           const params = {
-            userName:Form.values.userName,
-            password:Form.values.password,
+            tenTaiKhoan:Form.values.tenTaiKhoan,
+            matKhau:Form.values.matKhau,
           }
           if(valid)
           {
-            // dispatch(XacThucAPI.fetchPostSignUser(params))
+            console.log({params});
+            dispatch(XacThucAPI.EmailSignIn({body:params}))
           }
           else
           {
@@ -56,16 +59,17 @@ const EmailLoginForm = () => {
           {loading&&<CustomSpin/>}
     <Space style={{width:"100%"}} direction='vertical'>
 
-    <form  >
-   <Space style={{width:"100%"}} direction='vertical'>
-   <InputText onBlur={Form.handleBlur} className={` ${Form.touched.userName&&Form.errors.userName?"error":""}`} onChange={Form.handleChange} value={Form.values.userName} name="userName" label="Email"></InputText>
-   {<span className=' error'>{Form.touched.userName&&Form.errors.userName&&Form.errors.userName}</span>}
 
-      <InputText onBlur={Form.handleBlur} className={` ${Form.touched.password&&Form.errors.password?"error":""}`} onChange={Form.handleChange}  value={Form.values.password} name="password" type="password" label="Mật khẩu"></InputText>
-      {<span className='error'>{Form.touched.password&&Form.errors.password&&Form.errors.password}</span>}
-   </Space>
-    </form>
+   <Space style={{width:"100%"}} direction='vertical'>
+   <InputText onBlur={Form.handleBlur} className={` ${Form.touched.tenTaiKhoan&&Form.errors.tenTaiKhoan?"error":""}`} onChange={Form.handleChange} value={Form.values.tenTaiKhoan} name="tenTaiKhoan" label="Email"></InputText>
+   {<span className=' error'>{Form.touched.tenTaiKhoan&&Form.errors.tenTaiKhoan&&Form.errors.tenTaiKhoan}</span>}
+
+      <InputText type="password" onBlur={Form.handleBlur} className={` ${Form.touched.matKhau&&Form.errors.matKhau?"error":""}`} onChange={Form.handleChange}  value={Form.values.matKhau} name="matKhau"  label="Mật khẩu"></InputText>
+      {<span className='error'>{Form.touched.matKhau&&Form.errors.matKhau&&Form.errors.matKhau}</span>}
+      <Checkbox value={true}> Duy trì đăng nhập</Checkbox>
       <MyButton onClick={onSubmit} >Đăng nhập</MyButton>
+   </Space>
+
       <small>Nếu chưa có tài khoản, <Link to={"../dang-ky"}>
         đăng ký tại đây
         </Link></small>

@@ -36,7 +36,7 @@ function ActionSideBar() {
         null
       ),
     ]),
-    getItem("Quản lý sản phẩm", "sub1", [
+    getItem("Sản phẩm", "sub1", [
       getItem(
         <Link to={"/admin/trang-quan-tri-san-pham"}> Sản phẩm</Link>,
         v4(),
@@ -48,13 +48,19 @@ function ActionSideBar() {
         v4()
       ),
       getItem(
-        <Link to={"/admin/trang-quan-ly-kho-hang"}>Quản lý kho hàng</Link>,
+        <Link to={"/admin/quan-tri-kho-hang"}>Quản lý kho hàng</Link>,
         v4(),
         null,
         <LeftCircleFilled style={{ color: "white" }} />
       ),
       getItem(
         <Link to={"/admin/quan-tri-bo_suu_tap"}>Bộ sưu tập</Link>,
+        v4(),
+        null,
+        <DownOutlined />
+      ),
+      getItem(
+        <Link to={"/admin/quan-tri-danh-muc"}>Danh mục</Link>,
         v4(),
         null,
         <DownOutlined />

@@ -54,13 +54,13 @@ validationSchema:YUP.object({
   return (
     <div className='DangNhap'>
       {loading&&<CustomSpin/>}
-    <Space direction='vertical'>
+    <Space direction='vertical' style={{width:"100%"}}> 
       <div className="Logo">
         <span>LOGO</span>
         <span className='dot'>.</span>
       </div>
-    <form ref={Form} >
-   <Space direction='vertical'>
+    <form  >
+   <Space direction='vertical' style={{width:"100%"}}>
    <InputText onBlur={Form.handleBlur} className={` ${Form.touched.userName&&Form.errors.userName?"error":""}`} onChange={Form.handleChange} value={Form.values.userName} name="userName" label="Tên tài khoản"></InputText>
    {<span className=' error'>{Form.touched.userName&&Form.errors.userName&&Form.errors.userName}</span>}
 

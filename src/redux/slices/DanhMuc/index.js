@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as request from "./DanhMucApi";
 import { notification } from "antd";
+import { v4 } from "uuid";
 const initialState = {
   items: [],
   item: {},
@@ -46,8 +47,8 @@ export const fetchCategoryAdd = createAsyncThunk(
 );
 export const fetchCategoryAll = createAsyncThunk(
   "DanhMuc/fetchCategoryAll",
-  async () => {
-    const res = await request.GetAllDanhMuc();
+  async (params) => {
+    const res = await request.GetAllDanhMuc({params});
     return res;
   }
 );
@@ -88,7 +89,12 @@ const DanhMucSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchCategoryAll.fulfilled, (state, action) => {
-     
+      
+      const arg = action.meta.arg;
+      if(arg?.order&&arg.order=="most-view")
+      {
+        state.itemsArr = action.payload;
+      }
       const cecurseUI=(arr,root)=>
       {
        
@@ -97,11 +103,12 @@ const DanhMucSlice = createSlice({
             return{
 
               ...parent,
+              key:v4(),
               children:cecurseUI(arr,parent.id)
             }
           })
       }
-      state.itemsArr = action.payload;
+      
       state.items = cecurseUI([...action.payload],-1);
       state.loading = false;
     });

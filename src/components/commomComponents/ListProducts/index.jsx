@@ -76,7 +76,7 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
                 },
                 1600: {
                   width: 1600,
-                  slidesPerView: 6,
+                  slidesPerView: 4,
                 },
               }}
               style={{ padding: "1rem" }}

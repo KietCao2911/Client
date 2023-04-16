@@ -24,6 +24,7 @@ import {
   MapPin,
 } from "react-feather";
 import CustomDrawer from "~/components/commomComponents/CustomDrawer";
+import Location from "~/components/commomComponents/LocationSelect";
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -34,13 +35,13 @@ function getItem(label, key, icon, children, type) {
   };
 }
 function HeaderMainHome() {
+  const [visiabe, setVisiable] = useState(false);
   const [searchDrawer, setSearchDrawer] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const { tongSoLuong } = useSelector((state) => state.GioHang);
   const headerRef = useRef();
   const { items } = useSelector((state) => state.DanhMuc);
-  const { user } = useSelector((state) => state.XacThuc);
   const [data, setData] = useState([]);
   const handleRenderItems = (arr) => {
     const temp =
@@ -66,6 +67,7 @@ function HeaderMainHome() {
   });
   return (
     <div>
+      <Location visiabe={visiabe} setVisiable={setVisiable}></Location>
       <Row className="MainHeader" ref={headerRef}>
         <Col xs={0} xl={{ span: 24 }}>
           <Row align="middle" justify="space-between">
@@ -79,7 +81,7 @@ function HeaderMainHome() {
             <Col>
               <div className="Actions">
                 <Space size={10}>
-                <MapPin className="icon"/>
+                <MapPin onClick={()=>setVisiable(!visiabe)} className="icon"/>
                   <div className="Search_Container">
                     <div className="content">
                       <Search
@@ -106,13 +108,18 @@ function HeaderMainHome() {
         </Col>
         <Col xl={{ span: 0 }} xs={{ span: 24 }}>
           <Row justify={"space-between"} align="middle">
+            <Space >
             <MenuIcon className="icon Bar" onClick={handleOpenMenuDrawer} />
+            <MapPin onClick={()=>setVisiable(!visiabe)} className="icon"/>
+           
+            </Space>
+            <Space>
             <Link to="/">
               <div className="Logo">BLVCK&WH!TE</div>
             </Link>
-
-            <Space size={10}>
-              <MapPin className="icon"/>
+            </Space>
+            <Space >
+              
               <Search
                 className={"icon iconSearch__mobile"}
                 onClick={() => setSearchModal(true)}

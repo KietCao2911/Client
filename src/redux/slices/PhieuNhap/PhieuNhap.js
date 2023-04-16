@@ -93,7 +93,7 @@ export const fetchPUTTraHang = createAsyncThunk(
 export const fetchPUTHoanTien = createAsyncThunk(
   "fetchPUTHoanTien",
   async (body) => {
-    const res = await PhieuNhapAPI.fetchPutTraHang(body);
+    const res = await PhieuNhapAPI.fetchPutHoanTien(body);
     return res;
   }
 );

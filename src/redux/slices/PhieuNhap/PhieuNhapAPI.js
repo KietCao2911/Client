@@ -2,7 +2,7 @@ import * as Method from "~/axiosRequest/request";
 //Hoàn tiền
 export const fetchPutHoanTien = async (body) => {
   try {
-    const res = await Method.Put("/api/PhieuNhaps/HoanTien", body);
+    const res = await Method.Put("/api/admin/PhieuNhaps/HoanTien", body);
     return res;
   } catch (error) {
     throw error;
@@ -11,7 +11,7 @@ export const fetchPutHoanTien = async (body) => {
 //Thanh toán
 export const fetchPutThanhToan = async (body) => {
   try {
-    const res = await Method.Put("/api/PhieuNhaps/ThanhToan", body);
+    const res = await Method.Put("/api/admin/PhieuNhaps/ThanhToan", body);
     return res;
   } catch (error) {
     throw error;
@@ -20,7 +20,7 @@ export const fetchPutThanhToan = async (body) => {
 //Trả hàng
 export const fetchPutTraHang = async (body) => {
   try {
-    const res = await Method.Put("/api/PhieuNhaps/TraHang", body);
+    const res = await Method.Put("/api/admin/PhieuNhaps/TraHang", body);
     return res;
   } catch (error) {
     throw error;
@@ -29,7 +29,7 @@ export const fetchPutTraHang = async (body) => {
 //Nhập kho
 export const fetchPutNhapKho = async (body) => {
   try {
-    const res = await Method.Put("/api/PhieuNhaps/NhapKho", body);
+    const res = await Method.Put("/api/admin/PhieuNhaps/NhapKho", body);
     return res;
   } catch (error) {
     throw error;
@@ -38,7 +38,7 @@ export const fetchPutNhapKho = async (body) => {
 //Phiếu nhập
 export const fetchGetAllPhieuNhap = async () => {
   try {
-    const res = await Method.Get("/api/PhieuNhaps");
+    const res = await Method.Get("/api/admin/PhieuNhaps");
     return res;
   } catch (error) {
     throw error;
@@ -46,7 +46,7 @@ export const fetchGetAllPhieuNhap = async () => {
 };
 export const fetchGetPhieuNhapID = async (id) => {
   try {
-    const res = await Method.Get("/api/PhieuNhaps/" + id);
+    const res = await Method.Get("/api/admin/PhieuNhaps/" + id);
     return res;
   } catch (error) {
     throw error;
@@ -54,7 +54,7 @@ export const fetchGetPhieuNhapID = async (id) => {
 };
 export const fetchPostPhieuNhap = async (body) => {
   try {
-    const res = await Method.Post("/api/PhieuNhaps", body);
+    const res = await Method.Post("/api/admin/PhieuNhaps", body);
     return res;
   } catch (error) {
     throw error;
@@ -62,7 +62,7 @@ export const fetchPostPhieuNhap = async (body) => {
 };
 export const fetchPutPhieuNhap = async (body) => {
   try {
-    const res = await Method.Put("/api/PhieuNhaps/ChinhSuaPhieuNhap", body);
+    const res = await Method.Put("/api/admin/PhieuNhaps/ChinhSuaPhieuNhap", body);
     return res;
   } catch (error) {
     throw error;
@@ -71,7 +71,7 @@ export const fetchPutPhieuNhap = async (body) => {
 //Chi tiết phiếu nhập
 export const fetchGetAllCTPN = async (id) => {
   try {
-    const res = await Method.Get("/api/admin/ChiTietNhapHang/" + id);
+    const res = await Method.Get("/api/admin/admin/ChiTietNhapHang/" + id);
     return res;
   } catch (error) {
     throw error;

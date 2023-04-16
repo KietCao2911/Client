@@ -58,7 +58,10 @@ export const Put = async (path, data, config) => {
   const response = await request.put(path, data, config);
   return response.data;
 };
-
+export const Patch = async (path, data, config) => {
+  const response = await request.patch(path, data, config);
+  return response.data;
+};
 export const Delete = async (path, config) => {
   const response = await request.delete(path, config);
   return response.data;

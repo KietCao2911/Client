@@ -79,9 +79,11 @@ const Home = () => {
         <Card title="Sản phẩm xu hướng">
           <TrendingProducts />
         </Card>
-        <Card title="Khám phá ngay">
-          <Discover />
-        </Card>
+     {
+      boSuuTaps&&boSuuTaps.length>0&&   <Card title="Khám phá ngay">
+      <Discover />
+    </Card>
+     }
         <Card title="Danh mục được tìm kiếm nhiều nhất">
           <CategoryTag />
         </Card>

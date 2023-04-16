@@ -10,8 +10,8 @@ const initialState = {
 
 export const fetchGetAllOrder = createAsyncThunk(
   "HoaDon/fetchGetAllOrder",
-  async () => {
-    const res = await HoaDonApi.fetchGetAllHoaDon();
+  async (params) => {
+    const res = await HoaDonApi.fetchGetAllHoaDon(params);
     return res;
   }
 );
@@ -71,10 +71,31 @@ export const fetchPUTHoaDon = createAsyncThunk(
     return res;
   }
 );
+export const fetchPutTraHang = createAsyncThunk(
+  "fetchPutTraHang",
+  async (params) => {
+    const { body } = params;
+    const res = await HoaDonApi.fetchPutTraHang(body);
+    return res;
+  }
+);
 const HoaDonSlice = createSlice({
   initialState,
   name: "HoaDon",
   extraReducers: (builder) => {
+//fetchPutTraHang
+    builder.addCase(fetchPutTraHang.pending, (state, action) => {
+      state.hoadon = {};
+      state.loading = true;
+    });
+    builder.addCase(fetchPutTraHang.fulfilled, (state, action) => {
+      state.hoadon = action.payload;
+      state.loading = false;
+      notification.open({
+        message:"Đã trả hàng thành công",
+        type:"success"
+      })
+    });
     //fetchPUTHoaDon
     builder.addCase(fetchPUTHoaDon.pending, (state, action) => {
       state.hoadon = {};

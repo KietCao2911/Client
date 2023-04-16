@@ -178,7 +178,8 @@ const TrangTaoDonNhap = (props) => {
       dispatch(
         KhoHangAPI.fetchGetProducts({
           maChiNhanh: Form.values.maChiNhanh,
-          query: { s: e.target.value },
+           s: e.target.value ,
+           onlyVersion:true,
         })
       );
     });
@@ -592,7 +593,7 @@ const TrangTaoDonNhap = (props) => {
                           )}
                         </Col>
                         {(isUpdated || isReadOnly) &&
-                          Form.values.status > -1 && (
+                           (
                             <Col md={24}>
                               <Card
                                 title="Thanh toán"
@@ -603,7 +604,7 @@ const TrangTaoDonNhap = (props) => {
                                       Thanh toán
                                     </Button>
                                   ) : (
-                                    Form.values.status == -1&& <Button onClick={handleHoanTien}>
+                                    !Form.values.daThanhToan&& Form.values.status == -1&& <Button onClick={handleHoanTien}>
                                     Hoàn tiền
                                   </Button>
                                    
@@ -622,33 +623,7 @@ const TrangTaoDonNhap = (props) => {
                               }
                               extra={
                                 <>
-                                  {(isCreated || isUpdated) &&
-                                  Form.values.status != -1 ? (
-                                    <Checkbox
-                                      checked={Form.values.daNhapHang}
-                                      disabled={
-                                        isCreated || isUpdated ? false : true
-                                      }
-                                      onChange={() =>
-                                        Form.setFieldValue(
-                                          "daNhapHang",
-                                          !Form.values.daNhapHang
-                                        )
-                                      }
-                                    >
-                                      Nhập kho
-                                    </Checkbox>
-                                  ) : item?.daNhapHang ? (
-                                    <Link to="tra-hang">
-                                      <Button>Trả hàng</Button>
-                                    </Link>
-                                  ) : (
-                                    <Button
-                                      onClick={() => handleSubmitNhapKho()}
-                                    >
-                                      Nhập kho
-                                    </Button>
-                                  )}
+                               {isCreated||isReadOnly&&(Form.values.daNhapHang?(Form.values.status==-1?null:<Link to="tra-hang"><Button>Trả hàng</Button></Link>):(!Form.values.status!=-1?<Button  onClick={()=>handleSubmitNhapKho()}>Nhập kho</Button>:null))}
                                 </>
                               }
                             ></Card>
