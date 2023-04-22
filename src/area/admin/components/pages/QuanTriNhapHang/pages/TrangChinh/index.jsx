@@ -1,5 +1,5 @@
 import { Button, FloatButton, Space, Table, Tag } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as PhieuNhapAPI from "~/redux/slices/PhieuNhap/PhieuNhap";
@@ -40,12 +40,19 @@ const columns = [
   },
   {
     title: "Tiến trình",
+    
     render: (_, record) => {
       return <p>{`${record?.steps < 2 ? "Đang chờ duyệt" : "Đã duyệt"}`}</p>;
     },
   },
   {
     title: "Trạng thái",
+    key:"status",
+    filters:[{
+      text:"Đã hoàn thành",value:"HoanThanh",
+    },{
+      text:"Đã hủy",value:"DaHuy",
+    }],
     render: (_, record) => {
       return (
         <>
@@ -76,15 +83,27 @@ const TrangChinh = () => {
   const dispatch = useDispatch();
   const { items } = useSelector((state) => state.PhieuNhap);
   const nav = useNavigate();
+  const [tableParams, setTableParams] = useState({});
   useEffect(() => {
-    dispatch(PhieuNhapAPI.fetchGetPhieuNhaps());
-  }, []);
+    dispatch(PhieuNhapAPI.fetchGetPhieuNhaps({...tableParams}));
+  }, [tableParams]);
+  
+  const handleTableChange=(pagination,filters,sorter)=>
+  {
+    console.log({filters,sorter})
+    const daThanhToan = filters["daThanhToan"];
+    const status = filters["status"];
+    
+    setTableParams({
+      status:status[0]??"",
+    });
+  }
   return (
     <>
     <FloatButton onClick={()=>nav("tao-moi")} icon={<FilePlus/>} tooltip="Thêm mới phiếu nhập">
      
     </FloatButton>
-      <Table columns={columns} dataSource={items}></Table>
+      <Table onChange={handleTableChange} columns={columns} dataSource={items}></Table>
     </>
   );
 };

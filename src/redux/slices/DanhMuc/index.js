@@ -65,18 +65,29 @@ const DanhMucSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     //fetchCategoryAdd
-
+    builder.addCase(fetchCategoryAdd.pending, (state, action) => {
+    state.loading=true;
+    });
     builder.addCase(fetchCategoryAdd.fulfilled, (state, action) => {
+      const body = action.payload;
+      console.log({body})
+      if(body.parentCategoryID==-1)
+      {
+        state.items = [...state.items,action.payload]
+      }
+      
       notification.open({
         message: "Thêm thành công!",
         type: "success",
       });
+      state.loading=false;
     });
-    builder.addCase(fetchCategoryAdd.rejected, () => {
+    builder.addCase(fetchCategoryAdd.rejected, (state) => {
       notification.open({
         message: "Có lỗi xảy ra",
         type: "error",
       });
+      state.loading=false;
     });
     builder.addCase(fetchCategoryGetById.pending, (state, action) => {
       state.loading = true;
@@ -87,6 +98,8 @@ const DanhMucSlice = createSlice({
     });
     builder.addCase(fetchCategoryAll.pending, (state, action) => {
       state.loading = true;
+      state.items=[];
+      state.itemsArr=[];
     });
     builder.addCase(fetchCategoryAll.fulfilled, (state, action) => {
       
@@ -95,31 +108,52 @@ const DanhMucSlice = createSlice({
       {
         state.itemsArr = action.payload;
       }
-      const cecurseUI=(arr,root)=>
+      else
       {
-       
-        return arr.filter(({parentCategoryID})=>parentCategoryID==root).map(parent=>
-          {
-            return{
-
-              ...parent,
-              key:v4(),
-              children:cecurseUI(arr,parent.id)
-            }
-          })
+        const cecurseUI=(arr,root)=>
+        {
+         
+          return arr.filter(({parentCategoryID})=>parentCategoryID==root).map(parent=>
+            {
+              return{
+  
+                ...parent,
+                key:v4(),
+                children:cecurseUI(arr,parent.id)
+              }
+            })
+        }
+        state.items = cecurseUI([...action.payload],-1);
       }
-      
-      state.items = cecurseUI([...action.payload],-1);
+ 
+      state.loading = false;
+    });
+    builder.addCase(fetchCategoryAll.rejected, (state, action) => {
       state.loading = false;
     });
     builder.addCase(fetchCategoryDelete.pending, (state, action) => {
-      state.loading = true;
+      state.loading = false;
     });
     builder.addCase(fetchCategoryDelete.fulfilled, (state, action) => {
-      const id = action.meta.arg;
-      let temp = state.items.danhmucs.filter((x) => x.id != id);
-      state.loading = false;
-      state.items.danhmucs = temp;
+      const body = action.payload;
+      if(body.parentCategoryID==-1)
+      {
+        const category = state.items.find(x=>x.id==body.id);
+        if(category)
+        {
+          const index = state.items.indexOf(category);
+          if(index>-1)
+          {
+            let arr = [...state.items];
+            arr.splice(index,1);
+            state.items=[...arr];
+          }
+        }
+      }
+      else
+      {
+       
+      }
       notification.open({
         message: "Xóa thành công!",
         type: "success",

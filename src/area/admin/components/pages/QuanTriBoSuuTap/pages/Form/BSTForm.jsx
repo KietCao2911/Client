@@ -2,10 +2,12 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import {
   Button,
   Col,
+  FloatButton,
   Image,
   Input,
   message,
   Row,
+  Select,
   Space,
   Table,
   Upload,
@@ -131,14 +133,17 @@ const BSTForm = (props) => {
   const handleSubmit = () => {
     const params = {
       ...FormBst.values,
+      img:boSuuTap?.fileList?.length>0&&boSuuTap?.fileList[0]&&boSuuTap?.fileList[0]?.name||"",
     };
     if(isCreated)
     {
       dispatch(BstAPI.fetchPostBST({body:params}))
+
     }
     else if(isUpdated)
     {
       dispatch(BstAPI.fetchPutBST({body:params,id}))
+      console.log({params});
     }
     else{
       return ;
@@ -150,10 +155,11 @@ const BSTForm = (props) => {
   const onRemove = (fileObj) => {
     dispatch(BstAPI.fetchRemoveImgBST({ id, fileName: fileObj?.name }));
   };
-  document.title = "Quản lý bộ sưu tập - Tạo mới";
+  document.title =isCreated?"Quản trị bộ sưu tập - tạo mới":isUpdated?"Quản trị bộ sưu tập - cập nhật":isReadOnly?"Quản trị bộ sưu tập - chi tiết":"";
   return (
     <form ref={formRef}>
-      <Row>
+      <Row gutter={[20,20]}>
+        <h1>{isCreated?"Quản trị bộ sưu tập - tạo mới":isUpdated?"Quản trị bộ sưu tập - cập nhật":isReadOnly?"Quản trị bộ sưu tập - chi tiết":""}</h1>
         <Col span={24}>
           <Space style={{ width: "100%" }} direction="vertical">
             <InputText
@@ -163,6 +169,14 @@ const BSTForm = (props) => {
               value={FormBst.values.tenBoSuuTap}
               onChange={FormBst.handleChange}
             />
+            <Select defaultValue={["Banner"]}>
+            <Select.Option value={"Banner"}>
+                Banner
+              </Select.Option>
+              <Select.Option value={"Products"}>
+                Bộ sưu tập 
+              </Select.Option>
+            </Select>
             <CKEditor
               disabled={isCreated||isUpdated?false:true}
               data={FormBst?.values?.mota || ""}
@@ -175,7 +189,7 @@ const BSTForm = (props) => {
               Mô tả sản phẩm
             </CKEditor>
             {(
-              <UploadCustom
+             isUpdated&& <UploadCustom
                 fileList={boSuuTap?.fileList || []}
                 onUpload={onUpload}
                 onRemove={onRemove}
@@ -227,9 +241,7 @@ const BSTForm = (props) => {
                 columns={columns || []}
               />
             </Space>
-           {isCreated||isUpdated&&<>
-            <Button onClick={() => handleSubmit()}>Xác nhận</Button>
-           </>}
+            <FloatButton tooltip="Xác nhận" onClick={() => handleSubmit()}></FloatButton>
           </Space>
         </Col>
         <Col></Col>

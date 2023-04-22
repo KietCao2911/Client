@@ -7,6 +7,7 @@ import * as NCCAPI from "~/redux/slices/NCC/index"
 import { useDispatch } from 'react-redux'
 const FormCreateNCC = (props) => {
   const {open,onCancel} = props;
+  console.log({s:addressJson})
   const dispatch = useDispatch();
     const NCCForm = useFormik({
         initialValues:{
@@ -62,8 +63,12 @@ const FormCreateNCC = (props) => {
           }}>
             <Select.Option value={null}>Chọn thành phố</Select.Option>
             {Object.keys(addressJson).map(item=>
-              <Select.Option value={item}>{addressJson[item]?.name_with_type}</Select.Option>
-              )}
+{
+  
+ return <Select.Option value={item}>{addressJson[item]?.name_with_type}</Select.Option>
+
+}
+)}
           </Select>
       </Form.Item>
       <Form.Item label="Xã phường ">

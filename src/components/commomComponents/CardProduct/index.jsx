@@ -1,5 +1,5 @@
 import React, { forwardRef, memo } from "react";
-import { Card } from "antd";
+import { Card, Rate } from "antd";
 import "./CardProduct.scss";
 import { Link } from "react-router-dom";
 import glamorous from "glamorous";
@@ -11,6 +11,7 @@ import { v4 } from "uuid";
 import { BASE_URL } from "~/const";
 import { Switch, Typography } from "antd";
 import { InView } from "react-intersection-observer";
+import { Star } from "react-feather";
 const { Paragraph, Text } = Typography;
 const ImgVersion = (props) => {
   const { src, key } = props;
@@ -21,7 +22,7 @@ const ImgVersion = (props) => {
   );
 };
 const CardProduct = (props, ref) => {
-  const { value, key, heightimg } = props;
+  const { value, key,type } = props;
   const [img, setImg] = useState(() => {
     let pic = "";
     if (value && value?.colorGrouped?.length > 0) {
@@ -74,7 +75,7 @@ const CardProduct = (props, ref) => {
             <div className="ImgBox">
               <img
                 draggable={false}
-                style={{height:heightimg||""}}
+                className={`${type=="slider"?"slider":""}`}
                 src={
                   inView
                     ? img ||
@@ -122,6 +123,7 @@ const CardProduct = (props, ref) => {
                   {value?.tenSanPham}
                 </p>{" "}
               </div>
+            
               {
                 !value?.isSale?<div className={`priceDetails`}>{price || " 400.000₫"}</div>:<div>
                   <div className="priceDetails sale"> 

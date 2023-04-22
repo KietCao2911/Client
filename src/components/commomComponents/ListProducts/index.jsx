@@ -64,10 +64,10 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
 
                 // when window width is >= 768px
                 0: {
-                  slidesPerView: 2,
+                  slidesPerView: 1,
                 },
-                499: {
-                  width: 499,
+                375: {
+                  // width: 375,
                   slidesPerView: 2,
                 },
                 768: {
@@ -75,8 +75,8 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
                   slidesPerView: 2,
                 },
                 1600: {
-                  width: 1600,
-                  slidesPerView: 4,
+                  // width: 1600,
+                  slidesPerView: 6,
                 },
               }}
               style={{ padding: "1rem" }}
@@ -84,7 +84,7 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
                 clickable: true,
                 bulletClass: "my-custom-pagination-item",
               }}
-              spaceBetween={30}
+              spaceBetween={10}
               modules={[Pagination, FreeMode, Navigation]}
               className="mySwiper"
             >
@@ -93,7 +93,7 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
                   return (
                     <SwiperSlide key={v4()}>
                       <CardProduct
-                        
+                        type={type}
                         value={item?.sanPhamNavigation||item||{}}
                       ></CardProduct>
                     </SwiperSlide>

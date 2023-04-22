@@ -31,8 +31,8 @@ export const fetchPutNhapKho = createAsyncThunk(
 );
 export const fetchGetPhieuNhaps = createAsyncThunk(
   "fetchGetPhieuNhaps",
-  async () => {
-    const res = await PhieuNhapAPI.fetchGetAllPhieuNhap();
+  async (params) => {
+    const res = await PhieuNhapAPI.fetchGetAllPhieuNhap(params);
     return res;
   }
 );

@@ -1,10 +1,11 @@
-import { Button, Image, Table } from "antd";
+import { Button, FloatButton, Image, Table } from "antd";
 import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "~/const/index";
 import { useDispatch, useSelector } from "react-redux";
 import BSTSlice, { fetchAllBST, fetchDeleteBST } from "~/redux/slices/BoSuuTap";
+import { Plus } from "react-feather";
 
 const columns = (dispatch) => {
   const handleDelete = (record) => {
@@ -39,9 +40,12 @@ const columns = (dispatch) => {
               {" "}
               <Button>Chi tiết</Button>
             </Link>
+            <Link to={`${value.id}/chinh-sua`}>
             <Button>
-              <Link to={`${value.id}/chinh-sua`}>Chỉnh sửa</Link>
+            Chỉnh sửa
             </Button>
+            </Link>
+            
             <Button onClick={() => handleDelete(value)} type="primary" danger>
               Xóa
             </Button>
@@ -54,6 +58,7 @@ const columns = (dispatch) => {
 const TrangChinh = () => {
   const dispatch = useDispatch();
   document.title = "Quản lý bộ sưu tập";
+  const nav = useNavigate();
   const { boSuuTaps, boSuuTap, loading } = useSelector(
     (state) => state.BoSuuTap
   );
@@ -63,10 +68,7 @@ const TrangChinh = () => {
   }, []);
   return (
     <div>
-      {" "}
-      <Link to="tao-moi">
-        <Button type="primary">Thêm bộ sưu tập</Button>
-      </Link>
+      <FloatButton icon={<Plus/>} tooltip="Thêm bộ sưu tập" onClick={()=>nav("tao-moi")}></FloatButton>
       <Table
         loading={loading}
         key={uuidv4()}

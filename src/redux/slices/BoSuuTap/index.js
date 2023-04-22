@@ -7,8 +7,15 @@ import { BASE_URL } from "~/const";
 export const fetchAllBST = createAsyncThunk(
   "BoSuuTap/fetchAllBST",
   async (params) => {
+    const res = await api.GetAllBST(params);
+    return res;
+  }
+);
+export const fetchAllBSTUSER = createAsyncThunk(
+  "BoSuuTap/fetchAllBSTUSER",
+  async (params) => {
     const { query } = params;
-    const res = await api.GetAllBST(query);
+    const res = await api.GetAllBSTUSER(query);
     return res;
   }
 );
@@ -99,11 +106,34 @@ const initialState = {
   products: [],
   boSuuTap: {},
   loading: false,
+  types:{
+    Banner:[],
+    Products:[],
+  }
 };
 const BSTSlice = createSlice({
   initialState,
   name: "BoSuuTap",
   extraReducers: (builder) => {
+    //fetchAllBSTUSER
+    builder.addCase(fetchAllBSTUSER.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchAllBSTUSER.fulfilled, (state, action) => {
+      const {type} = action?.meta?.arg;
+      if(type&&type=="Banner")
+      {
+        state.types.Banner= action.payload;
+      }
+      else{
+        state.types.Products = action.payload;
+      }
+      state.loading = false;
+      state.boSuuTaps = action.payload;
+    });
+    builder.addCase(fetchAllBSTUSER.rejected, (state, action) => {
+      state.loading = false;
+    });
     //fetchBySlugBST
     builder.addCase(fetchBySlugBST.pending, (state, action) => {
       state.loading = true;
@@ -113,6 +143,7 @@ const BSTSlice = createSlice({
       state.boSuuTap = action.payload;
       state.loading = false;
     });
+    //fetchAllBST
     builder.addCase(fetchAllBST.pending, (state) => {
       state.loading = true;
     });
@@ -130,7 +161,7 @@ const BSTSlice = createSlice({
     });
     builder.addCase(fetchByIdBST.fulfilled, (state, action) => {
       state.boSuuTap = action.payload;
-      var imgTemp = [
+      var imgTemp = action.payload?.img&&[
         {
           uid: action.payload.id,
           name: action.payload.img,
@@ -138,7 +169,7 @@ const BSTSlice = createSlice({
           url: `${BASE_URL}wwwroot/res/BstImgs/${action.payload?.img?.trim()}`,
         },
       ];
-      state.boSuuTap.fileList = imgTemp;
+      state.boSuuTap.fileList = imgTemp||[];
       state.loading = false;
     });
     builder.addCase(fetchByIdBST.rejected, (state, action) => {

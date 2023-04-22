@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import ActionSideBar from "~/components/layout/AdminLayout/ActionSideBar";
 import MyHeader from "~/components/layout/AdminLayout/Header";
 import "./AdminLayout.scss";
-import { Layout } from "antd";
+import { Avatar, Layout } from "antd";
+import HeaderMainHome from "../DefaultLayout/Header";
+import HeaderAdmin from "../AdminAuthLayout/components/Header";
 const { Header, Content, Sider } = Layout;
 const AdminAuthLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout>
+
+
+      <Layout>
       <Sider
+        
+        style={{backgroundColor:"transparent"}}
       collapsible
       collapsed={collapsed} 
         width={280}
@@ -25,8 +32,7 @@ const AdminAuthLayout = ({ children }) => {
         {/* <div className="logo">header</div> */}
         <ActionSideBar />
       </Sider>
-      <Layout className="Admin_Body">
-        <Content> {children}</Content>
+      <Content> {children}</Content>
       </Layout>
     </Layout>
   );

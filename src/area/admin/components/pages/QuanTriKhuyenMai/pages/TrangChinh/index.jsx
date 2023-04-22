@@ -1,7 +1,8 @@
-import { Table } from 'antd'
+import { FloatButton, Table } from 'antd'
 import React, { useEffect } from 'react'
+import { Plus } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import * as KhuyenMaiApi from '~/redux/slices/KhuyenMai'
 const columns=[{
     title:"Tên khuyến mãi",
@@ -13,6 +14,7 @@ const columns=[{
 }]
 const TrangChinh = () => {
     const dispatch = useDispatch();
+    const nav = useNavigate()
     const {khuyenmais} = useSelector(state=>state.KhuyenMai)
     console.log({khuyenmais})
     useEffect(()=>
@@ -20,7 +22,10 @@ const TrangChinh = () => {
         dispatch(KhuyenMaiApi.GetKhuyenMaisThunk());
     },[])
   return (
+   <>
+   <FloatButton onClick={()=>nav('tao-moi')} icon={<Plus/>} tooltip="Thêm 1 chương trình khuyến mãi"></FloatButton>
     <Table columns={columns||[]} dataSource={khuyenmais}></Table>
+   </>
   )
 }
 

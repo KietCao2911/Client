@@ -3,11 +3,12 @@ import "./QuanTriDonHang.scss";
 import { useDispatch, useSelector } from "react-redux";
 import HoaDonSlice, * as HoaDonApi from "~/redux/slices/HoaDon/HoaDonSlice";
 import { useEffect } from "react";
-import { Button, Modal, Table, Tag } from "antd";
+import { Button, FloatButton, Modal, Table, Tag } from "antd";
 import convertVND from "~/components/utils/ConvertVND";
 import { useState } from "react";
 import { v4 } from "uuid";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Plus } from "react-feather";
 const Columns = (props) => {
   const { setOpenModal } = props;
   const dispatch = useDispatch();
@@ -110,7 +111,7 @@ const TrangChinh = () => {
   const dispatch = useDispatch();
   const { hoadons, hoadon,loading } = useSelector((state) => state.HoaDon);
   const [openModal, setOpenModal] = useState(false);
-
+  const nav = useNavigate();
   const [tableParams, setTableParams] = useState({});
 
   const handleTableChange=(pagination,filters,sorter)=>
@@ -129,6 +130,7 @@ const TrangChinh = () => {
   }, [tableParams]);
   return (
     <div>
+      <FloatButton onClick={()=>nav("tao-moi")} icon={<Plus/>}></FloatButton>
       <Table
       loading={loading}
       onChange={handleTableChange}

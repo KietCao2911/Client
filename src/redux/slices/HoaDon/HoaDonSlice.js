@@ -173,6 +173,4 @@ const HoaDonSlice = createSlice({
   },
 });
 
-// export const {} = HoaDonSlice.actions
-
 export default HoaDonSlice;

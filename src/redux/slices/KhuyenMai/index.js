@@ -69,6 +69,10 @@ const KhuyenMaiSlice=createSlice({
             state.khuyenmais = action.payload
             state.loading=false;
         })
+        builder.addCase(GetKhuyenMaisThunk.rejected,(state)=>
+        {
+            state.loading = false;
+        })
         //GetKhuyenMaiThunk
         builder.addCase(GetKhuyenMaiThunk.pending,(state)=>
         {

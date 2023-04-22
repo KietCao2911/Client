@@ -36,9 +36,9 @@ export const fetchPutNhapKho = async (body) => {
   }
 };
 //Phiếu nhập
-export const fetchGetAllPhieuNhap = async () => {
+export const fetchGetAllPhieuNhap = async (params) => {
   try {
-    const res = await Method.Get("/api/admin/PhieuNhaps");
+    const res = await Method.Get("/api/admin/PhieuNhaps",{params});
     return res;
   } catch (error) {
     throw error;

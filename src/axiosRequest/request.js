@@ -1,3 +1,4 @@
+import { notification } from "antd";
 import axios from "axios";
 import { BASE_URL } from "~/const";
 const request = axios.create({
@@ -25,6 +26,14 @@ request.interceptors.response.use(
         config.headers["authorization"] = `Bearer ${refresh__token} `;
         config.baseURL = BASE_URL;
         return request(config);
+      }
+      else if (error.response.status===403)
+      {
+        alert("Bạn không đủ quyền truy cập tính năng này, vui lòng liên hệ với admin")
+        notification.open({
+          message:"Bạn không đủ quyền truy cập tính năng này, vui lòng liên hệ với admin",
+          type:"error"
+        })
       }
       // console.log('get new token using refresh token', getLocalRefreshToken())
       // return refreshToken().then(rs => {

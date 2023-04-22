@@ -4,6 +4,7 @@ import {
   Cascader,
   Col,
   FloatButton,
+  Input,
   Modal,
   Row,
   Select,
@@ -238,7 +239,7 @@ const WithChild = (props) => {
                   </Space>
                   {isEdit ? (
                     <Space>
-                      <InputText
+                      <Input
                         label="Tên sản phẩm"
                         name={"tenSanPham"}
                         value={form.values.tenSanPham}

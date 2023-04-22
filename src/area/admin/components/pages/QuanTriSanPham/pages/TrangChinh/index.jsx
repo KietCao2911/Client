@@ -179,12 +179,13 @@ const TrangChinh = () => {
       </div>
       <Space direction="vertical" className="productsTable">
         <div className="filterActions">
-          <Row gutter={20} align={"middle"}>
+          <Row gutter={[10,10]} align={"middle"}>
             <Col xl={12}>
-              <InputText value={searchText} onChange={(e)=>handleSearch(e)} label="Tìm kiếm sản phẩm" type="search" />
+              <Input value={searchText} onChange={(e)=>handleSearch(e)} placeholder="Tìm kiếm sản phẩm" type="search" />
             </Col>
             <Col xl={12}>
-              <Select onChange={(e)=>handleChangeType(e)} defaultValue={null}>
+            <Space>
+            <Select onChange={(e)=>handleChangeType(e)} defaultValue={null}>
                 <Select.Option value={null}>Loại sản phẩm</Select.Option>
                 {types&&types.length>0&&types.map(type=>
                   {
@@ -198,6 +199,7 @@ const TrangChinh = () => {
                     return <Select.Option value={brand?.slug}>{brand?.name}</Select.Option>
                   })}
               </Select>
+            </Space>
             </Col>
           </Row>
         </div>

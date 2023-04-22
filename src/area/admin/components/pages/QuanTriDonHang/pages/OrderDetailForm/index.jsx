@@ -344,7 +344,8 @@ const OrderDetailForm = (props) => {
           <Row gutter={[20, 20]}>
             <Col md={18} xs={24}>
               <Card>
-                {isCreated && (
+               <Space direction="vertical" style={{width:"100%"}}>
+               {isCreated && (
                   <InputText
                     value={productSearchText}
                     label="Tìm kiếm sản phẩm"
@@ -437,6 +438,7 @@ const OrderDetailForm = (props) => {
                     <div> {convertVND(OrderForm.values?.thanhTien)}</div>
                   </Space>
                 </Space>
+               </Space>
               </Card>
             </Col>
             <Col md={6} xs={24}>

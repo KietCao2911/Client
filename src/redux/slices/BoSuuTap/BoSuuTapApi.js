@@ -8,10 +8,17 @@ export const GetBSTBySlug = async (slug) => {
     throw err;
   }
 };
-
+export const GetAllBSTUSER = async (params) => {
+  try {
+    const res = await request.Get("/api/BoSuuTap", params);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
 export const GetAllBST = async (params) => {
   try {
-    const res = await request.Get("/api/admin/BoSuuTap", params);
+    const res = await request.Get("/api/admin/BoSuuTap", {params});
     return res;
   } catch (err) {
     throw err;

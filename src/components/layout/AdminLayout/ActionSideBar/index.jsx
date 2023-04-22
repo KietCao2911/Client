@@ -1,19 +1,40 @@
 import React from "react";
-import { Menu } from "antd";
+import { Avatar, Menu } from "antd";
 import { DownOutlined, LeftCircleFilled } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
+import { adminRoute } from "~/area/admin/components/routes";
+import { useSelector } from "react-redux";
+import { User } from "react-feather";
 function ActionSideBar() {
+  const { user } = useSelector((state) => state.XacThuc);
   function getItem(label, key, children, icon) {
     return {
       key,
       children,
       label,
+      icon
     };
+  }
+  const ItemsRender=()=>
+  {
+const    eles = adminRoute.map(route=>
+      {
+        //  if(user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim())))
+        //  {
+        //     return getItem(<Link to={route?.slug}>{route?.name}</Link>,v4(),null,route.icon)
+        //  }else
+        //  {
+        //   console.log("NOT ROLE")
+        //  }
+        return getItem(<Link to={route?.slug}>{route?.name}</Link>,v4(),null,route.icon)
+      })
+      eles.push(getItem(<Link to={"/admin/account"}>{"Tài khoản  của tôi"}</Link>,v4(),null,<Avatar src="https://images.pexels.com/photos/16063640/pexels-photo-16063640.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"/> ))
+      return eles
   }
   const items = [
     getItem(
-      <Link to={"/admin/quan-tri-bo_suu_tap"}>Trang chính</Link>,
+      <Link to={"/admin"}>Trang chính</Link>,
       "main",
       null,
       <DownOutlined />
@@ -36,7 +57,7 @@ function ActionSideBar() {
         null
       ),
     ]),
-    getItem("Sản phẩm", "sub1", [
+     getItem("Sản phẩm", "sub1", [
       getItem(
         <Link to={"/admin/trang-quan-tri-san-pham"}> Sản phẩm</Link>,
         v4(),
@@ -94,17 +115,21 @@ function ActionSideBar() {
     ]),
   ];
   return (
+   <>
+  
     <Menu
-      style={{
-        minHeight: "100vh",
-        boxShadow:
-          "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
-      }}
-      defaultOpenKeys={["sub1"]}
-      mode="inline"
-      theme="dark"
-      items={items}
-    />
+      
+    style={{
+      minHeight: "100vh",
+      boxShadow:
+        "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
+    }}
+    defaultOpenKeys={["sub1"]}
+    mode="inline"
+    theme="light"
+    items={ItemsRender()}
+  />
+   </>
   );
 }
 

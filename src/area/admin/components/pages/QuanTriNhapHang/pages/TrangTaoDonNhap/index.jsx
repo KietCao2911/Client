@@ -84,6 +84,8 @@ const TrangTaoDonNhap = (props) => {
       status: null,
       daNhapHang: false,
       daThanhToan: false,
+      daHoanTien: false,
+      daTraHang: false,
       nhaCungCapNavigation: {},
       chiTietNhapXuats: [],
       loaiPhieu: "PHIEUNHAP",
@@ -598,13 +600,13 @@ const TrangTaoDonNhap = (props) => {
                               <Card
                                 title="Thanh toán"
                                 extra={
-                                  !Form.values.daThanhToan &&
+                                  !Form.values.daTraHang &&!Form.values.daThanhToan&&
                                   Form.values.status != -1 ? (
                                     <Button onClick={handleSubmitThanhToan}>
                                       Thanh toán
                                     </Button>
                                   ) : (
-                                    !Form.values.daThanhToan&& Form.values.status == -1&& <Button onClick={handleHoanTien}>
+                                    !Form.values.daHoanTien&&Form.values.daTraHang&&Form.values.daThanhToan&& Form.values.status == -1&& <Button onClick={handleHoanTien}>
                                     Hoàn tiền
                                   </Button>
                                    
@@ -623,7 +625,7 @@ const TrangTaoDonNhap = (props) => {
                               }
                               extra={
                                 <>
-                               {isCreated||isReadOnly&&(Form.values.daNhapHang?(Form.values.status==-1?null:<Link to="tra-hang"><Button>Trả hàng</Button></Link>):(!Form.values.status!=-1?<Button  onClick={()=>handleSubmitNhapKho()}>Nhập kho</Button>:null))}
+                            {Form.values.daNhapHang?<Link to="tra-hang"><Button >Trả hàng</Button></Link>:<Button  onClick={()=>handleSubmitNhapKho()}>Nhập kho</Button>}
                                 </>
                               }
                             ></Card>

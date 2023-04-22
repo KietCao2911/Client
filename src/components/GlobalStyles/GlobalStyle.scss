@@ -110,8 +110,8 @@ button {
   font-weight: bolder;
 }
 
-[data-theme="dark"] .ant-layout-header {
-  background: black;
+.ant-layout-header {
+  background: transparent !important;
 
 }
 
@@ -157,11 +157,7 @@ svg {
   background-color: #fcaca5;
 }
 
-.ant-checkbox-group-item {
-  padding: .5rem;
-  border: 1px solid black;
-  border-radius: 4px;
-}
+
 
 $mobile-width: 480px;
 $tablet-width: 1080px;
@@ -312,14 +308,14 @@ textarea {
 .layout,
 .ant-layout-content,
 .GuessAuthLayout {
-  padding-inline: 14px !important;
+  padding: 12px !important;
 
   @include tablet {
-    padding-inline: 20px !important;
+    padding: 16px !important;
   }
 
   @include desktop {
-    padding-inline: 24px !important;
+    padding: 24px !important;
   }
 
   min-height: 100vh !important;

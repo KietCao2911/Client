@@ -45,7 +45,7 @@ const Location = ({visiabe,setVisiable}) => {
       open={visiabe}
       onCancel={()=>setVisiable(false)}
     >
-      <SelectCustom value={Loc?.maChiNhanh.trim()} setValue={setLoc}>
+      <SelectCustom value={Loc?.maChiNhanh?.trim()||""} setValue={setLoc}>
         {branchs &&
           branchs.map((branch) => {
             return (

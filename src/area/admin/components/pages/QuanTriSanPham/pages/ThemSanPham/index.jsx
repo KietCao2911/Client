@@ -230,7 +230,6 @@ const CreateProduct = () => {
                   <Row gutter={[20, 20]}>
                     <Col md={12} xs={24}>
                       <InputText
-                        placeHolder="Mã sản phẩm (Có thể bỏ trống)"
                         label="Mã sản phẩm"
                         name="product.maSanPham"
                         value={form.values.product.maSanPham}
@@ -241,7 +240,6 @@ const CreateProduct = () => {
                       <InputText
                         label="Tên sản phẩm "
                         name={"product.tenSanPham"}
-                        placeHolder={"Tên sản phẩm (Không thể bỏ trống)"}
                         value={form.values.product.tenSanPham}
                         onChange={form.handleChange}
                       />
@@ -462,7 +460,7 @@ const CreateProduct = () => {
                   phẩm này.
                 </Card>
               </Col>
-              <Col md={24} xs={24}>
+              {/* <Col md={24} xs={24}>
                 <Card
                   style={{ width: "100%" }}
                   title="Thuế"
@@ -510,7 +508,7 @@ const CreateProduct = () => {
                     </>
                   )}
                 </Card>
-              </Col>
+              </Col> */}
             </Row>
           </div>
         </Col>
@@ -553,7 +551,7 @@ const CreateProduct = () => {
       >
         <Form.Item label="Tên loại hàng">
           <Input
-            placeholder="Nhập tên loại hàng..."
+
             value={modalAddNewType.value}
             onChange={(e) =>
               setmodalAddNewType({ ...modalAddNewType, value: e.target.value })

@@ -22,6 +22,7 @@ import VatSlice from "../slices/Vat/VatSlice";
 import NCCSlice from "../slices/NCC";
 import CouponSlice from "../slices/Coupon";
 import KhuyenMaiSlice from "../slices/KhuyenMai";
+import RoleSlice from "../slices/RoleManager";
 export const store = configureStore({
   reducer: {
     DanhMuc: DanhMucSlice.reducer,
@@ -47,5 +48,6 @@ export const store = configureStore({
     NCC:NCCSlice.reducer,
     Coupon:CouponSlice.reducer,
     KhuyenMai:KhuyenMaiSlice.reducer,
+    Role:RoleSlice.reducer
   },
 });
