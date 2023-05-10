@@ -10,7 +10,7 @@ export const GetBSTBySlug = async (slug) => {
 };
 export const GetAllBSTUSER = async (params) => {
   try {
-    const res = await request.Get("/api/BoSuuTap", params);
+    const res = await request.Get("/api/BoSuuTap", {params});
     return res;
   } catch (err) {
     throw err;

@@ -5,8 +5,18 @@ import AuthPage from "~/area/admin/components/pages/AuthPage";
 import NoneLayout from "../layout/NoneLayout";
 const publicRoute = [
   {
+    path: "/orderStatus/:orderID/:token",
+    element: Elements.OrderResult,
+    layout: NoneLayout,
+  },
+  {
     path: "/verify_email/:token",
     element: Elements.EmailVerifyPage,
+    layout: NoneLayout,
+  },
+  {
+    path: "/rating/:orderID/:token",
+    element: Elements.RatingPage,
     layout: NoneLayout,
   },
   {

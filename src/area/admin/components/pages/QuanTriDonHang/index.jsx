@@ -1,6 +1,7 @@
 import { Outlet, Route, Routes } from "react-router-dom";
 import OrderDetailForm from "./pages/OrderDetailForm";
 import TrangChinh from "./pages/TrangChinh";
+import Create from "./pages/Create";
 
 const QuanTriDonHang = () => {
   return (
@@ -17,7 +18,7 @@ const QuanTriDonHang = () => {
           path=":id/chinh-sua"
         ></Route>
         <Route
-          element={<OrderDetailForm isCreated={true} />}
+          element={<Create/>}
           path=":tao-moi"
         ></Route>
                 <Route

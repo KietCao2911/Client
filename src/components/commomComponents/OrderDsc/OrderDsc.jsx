@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import GioHangSlice, { ViewCart } from "~/redux/slices/GioHang/GioHangSlice";
 import { Card, Space } from "antd";
 import InputText from "../InputText";
-import { ArrowRight } from "react-feather";
+import { ArrowRight, Tag } from "react-feather";
 const OrderDsc = (props) => {
   const { disableBtnPayment } = props;
   const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip } = useSelector(
@@ -21,11 +21,11 @@ const OrderDsc = (props) => {
     dispatch(ViewCart());
   }, []);
   return (
-    <div className="PaymentInfo" title="Tóm tắt đơn hàng">
+    <div className="PaymentInfo" title="ORDER SUMMARY">
       <div className="content">
         <Space style={{ width: "100%" }} direction="vertical">
           <div className="QtyTotal">
-            <p>x{tongSoLuong} Sản phẩm</p>
+            <p>x{tongSoLuong} item</p>
             <div className="price">
               {convertVND(
                 chiTietNhapXuats?.reduce(
@@ -40,17 +40,16 @@ const OrderDsc = (props) => {
               className="ShipPrice"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <p>Phí giao hàng</p>
+              <p>Delivery</p>
               <p>{convertVND(phiShip)}</p>
             </div>
           )}
           <div className="TotalPrice">
-            <h3>TỔNG</h3>
+            <h3>Total</h3>
             <div className="price">
               <b>{convertVND(thanhTien) || convertVND("0")}</b>
             </div>
           </div>
-          <InputText label="Nhập mã khuyến mãi tại đây"></InputText>
           {!disableBtnPayment && (
             <Link to="/giao-hang">
               {" "}

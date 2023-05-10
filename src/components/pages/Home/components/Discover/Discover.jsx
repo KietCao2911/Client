@@ -7,13 +7,13 @@ import { Pagination, FreeMode, Navigation } from "swiper";
 import { v4 } from "uuid";
 
 const Discover = () => {
-  const {boSuuTaps} = useSelector((state)=>state.BoSuuTap)
+  const {types} = useSelector((state)=>state.BoSuuTap)
   return <Row gutter={[20,20]}>
     <Col xxl={24} md={0} xs={0}>
       <Row gutter={[20,20]}>
 
     {
-      boSuuTaps&&boSuuTaps.map(bst=>  <Col  xxl={6} md={12} xs={24}>
+      types?.Products&&types?.Products.map(bst=>  <Col  key={v4()} xxl={6} md={12} xs={24}>
         <CardCollection {...bst}/>
     
         </Col>)
@@ -52,7 +52,7 @@ const Discover = () => {
               className="mySwiper"
             >
               {
-      boSuuTaps&&boSuuTaps.map(bst=>  <SwiperSlide key={v4()} >
+      types.Products&&types.Products.map(bst=>  <SwiperSlide key={v4()} >
         <CardCollection {...bst}/>
     
         </SwiperSlide>)

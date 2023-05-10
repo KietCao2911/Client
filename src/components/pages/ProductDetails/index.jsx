@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import "./ProductDetail.scss";
 import { useSelector, useDispatch } from "react-redux";
 import "swiper/css/pagination";
-import { Col, Row, Space, Rate, notification } from "antd";
+import { Col, Row, Space, Rate, notification, Card, Pagination, Badge } from "antd";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as SanPhamAPI from "~/redux/slices/SanPham/Users";
+import {GetQTY} from "~/redux/slices/SanPham/Users/SanPhamAPI"
 import { v4 as uuidv4 } from "uuid";
 import convertVND from "~/components/utils/ConvertVND";
 import SizeSelect from "./components/SizeCompoent";
@@ -25,9 +26,35 @@ import Breadcrumb from "~/components/commomComponents/Breadcrumb";
 import ListProducts from "~/components/commomComponents/ListProducts";
 import ShowMore from "~/components/commomComponents/ShowMore";
 
+
+const handleCheckQtyProduct=async(product,productsArray)=>
+{
+  const obj =  productsArray.chiTietNhapXuats.find(
+    (x) => x.maSanPham.trim() == product.maSanPham.trim()
+  );
+  if(obj)
+  {
+    const res = await GetQTY(product.maSanPham);
+    console.log({res,obj})
+    if(res.soLuongCoTheban< obj.soLuong+1)
+    {
+      alert("Số lượng trong kho không cho phép");
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+  else
+  {
+    return true;
+  }
+}
+
 const TrangChiTietSanPham = () => {
   const dispatch = useDispatch();
   const { product, loading, qtyInfo } = useSelector((state) => state.SanPham);
+  const Carts = useSelector((state) => state.GioHang);
   const { slug } = useParams();
   const [productsRecentlyView, setProductsRecentlyView] = useState(
     JSON.parse(window.localStorage.getItem("recentlyView")) || []
@@ -36,6 +63,13 @@ const TrangChiTietSanPham = () => {
   const handleAddToCart = async () => {
     if (product.productCurrent && product.productCurrent.maSanPham) {
       const productChild = product.productCurrent;
+      const check =await handleCheckQtyProduct(productChild,Carts)
+
+      if(!check)
+      {
+        return;
+      }
+
       let CartItem = {};
       CartItem.soLuong = 1;
       CartItem.img =
@@ -70,10 +104,10 @@ const TrangChiTietSanPham = () => {
   ) : (
     <Row gutter={{ md: 20 }} className="ProductDetail">
       <Col md={16}>
-        <Row>
+        <Row gutter={[10,10]}>
           <Col className="ProductInfo" md={24} xs={24}>
             <Col xs={0} md={24}>
-              <Breadcrumb style={{ width: "100%" }} />
+              <Breadcrumb location="PRODUCT" style={{ width: "100%" }} />
             </Col>
             <Col xs={24} md={0}>
               <Row
@@ -84,17 +118,16 @@ const TrangChiTietSanPham = () => {
                   width: "100%",
                 }}
               >
-                <Breadcrumb />
+                <Breadcrumb location="PRODUCT"/>
                 <Rate
-                  character={<Star />}
                   style={{ color: "black" }}
                   allowHalf
                   disabled
-                  value={5}
+                  value={product?.sanPhamNavigation?.starReviewNavigation?.avr}
                 />{" "}
               </Row>
               <h1 className="InfoTitle">
-                {product?.tenSanPham || "GIÀY SUPERSTAR TAEGEUKDANG"}
+                {product?.sanPhamNavigation?.tenSanPham || "GIÀY SUPERSTAR TAEGEUKDANG"}
               </h1>
               <p className="InfoPrice">
                 {convertVND(
@@ -105,7 +138,7 @@ const TrangChiTietSanPham = () => {
               </p>
               <p>
                 Mã SKU:{" "}
-                {product?.sanPhamNavigation?.productCurrent?.maSanPham ||
+                {product?.productCurrent?.maSanPham ||
                   product?.sanPhamNavigation?.maSanPham}
               </p>
             </Col>
@@ -129,6 +162,7 @@ const TrangChiTietSanPham = () => {
                   })}
               </Row>
             </ShowMore>
+
           </Col>
           {/* Product Description */}
           <Col xs={{ order: 1, span: 24 }} md={24}>
@@ -145,6 +179,7 @@ const TrangChiTietSanPham = () => {
                 </Space>
               )}
             </Col>
+
             {productsRecentlyView && productsRecentlyView.length > 0 && (
               <Col md={24}>
                 <Space style={{ width: "100%" }} direction="vertical">
@@ -156,6 +191,7 @@ const TrangChiTietSanPham = () => {
                     items={productsRecentlyView}
                   ></ListProducts>
                 </Space>
+
               </Col>
             )}
           </Col>
@@ -165,7 +201,10 @@ const TrangChiTietSanPham = () => {
               <Space style={{ width: "100%" }} direction="vertical">
                 <strong>Kích cỡ</strong>
                 {product?.productInfoByColor?.length > 0 ? (
-                  <SizeSelect items={product?.productInfoByColor || []} />
+                               <SizeSelect
+                               checkedValue={product.productCurrent?.idSize}
+                               items={product?.productInfoByColor || []}
+                             />
                 ) : (
                   <strong
                     style={{ color: "	#df4759" }}
@@ -206,10 +245,30 @@ const TrangChiTietSanPham = () => {
                   {/* {ReactHtmlParser(product?.motaChiTiet)} */}
                 </MyCollapse>
               )}
+                         <MyCollapse label="Đánh giá " Icon={ <Rate
+                  style={{ color: "black" }}
+                  allowHalf
+                  disabled
+                  value={product?.sanPhamNavigation?.starReviewNavigation?.avr}
+                />}>
+{product?.sanPhamNavigation?.starReviewNavigation?.starReviewDetails?.map(review=>
+                    {
+                      return <Space style={{width:"100%"}} direction="vertical">
+                        <Card bordered={false} role="article" extra={<Rate
+                        style={{ color: "black" }}
+                        allowHalf
+                        disabled
+                        value={review?.rating}
+                      />} defaultOpen={true} title={`Ẩn danh`}>
+                        {review?.comment||""}
+                      </Card>
+                      </Space>
+                    })}
+                </MyCollapse>
             </Space>
           </Col>
         </Row>
-      </Col>
+      </  Col>
       <Col md={8} xs={0}>
         {/* Product Checkout forPC*/}
         <Space className="ProductInfo" direction="vertical">
@@ -218,16 +277,17 @@ const TrangChiTietSanPham = () => {
               <div className="InforHeader_ClsName">
                 {/* {product?.boSuuTap?.value || "Chưa thuộc bộ sưu tập nào"} */}
               </div>
-              <div className="InforHeader_Star">
-                {" "}
+              <a href="#ReviewPC" className="InforHeader_Star">
+                <Badge count={product?.sanPhamNavigation?.starReviewNavigation?.total} color={"black"}>
                 <Rate
-                  character={<Star />}
                   style={{ color: "black" }}
                   allowHalf
                   disabled
-                  value={5}
-                />{" "}
-              </div>
+                  value={product?.sanPhamNavigation?.starReviewNavigation?.avr}
+                />
+                </Badge>
+              
+              </a>
             </div>
             <div>
               {" "}
@@ -240,7 +300,8 @@ const TrangChiTietSanPham = () => {
               </p>
               <p>
                 Mã SKU:{" "}
-                {product?.productCurrent?.maSanPham || product?.maSanPham}
+                {product?.productCurrent?.maSanPham ||
+                  product?.sanPhamNavigation?.maSanPham}
               </p>
             </div>
           </Space>
@@ -280,6 +341,26 @@ const TrangChiTietSanPham = () => {
             <RollbackOutlined /> Không đúng kích cỡ hoặc màu sắc? Vui lòng truy
             cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết chi tiết
           </a>
+          <MyCollapse defaultOpen={true} id="ReviewPC" label="Đánh giá của người dùng" Icon={ <Rate
+                  style={{ color: "#D21312" }}
+                  allowHalf
+                  disabled
+                  value={product?.sanPhamNavigation?.starReviewNavigation?.avr}
+                />}>
+                  {product?.sanPhamNavigation?.starReviewNavigation?.starReviewDetails?.map(review=>
+                    {
+                      return <Space style={{width:"100%"}} direction="vertical">
+                      <Card bordered={false} role="article" extra={<Rate
+                      style={{ color: "black" }}
+                      allowHalf
+                      disabled
+                      value={review?.rating}
+                    />} defaultOpen={true} title={`Ẩn danh`}>
+                      {review?.comment||""}
+                    </Card>
+                    </Space>
+                    })}
+                </MyCollapse>
           {product?.sanPhamNavigation?.mota && (
             <MyCollapse defaultOpen={true} label="Mô tả">
               <div style={{ textAlign: "start" }}>

@@ -14,11 +14,11 @@ import { BASE_URL } from "~/const";
 import SelectCustom, {
   Option,
 } from "~/components/commomComponents/SelectCustom";
-import { fetchQTY } from "~/redux/slices/SanPham/Users/index";
+import { GetQTY } from "~/redux/slices/SanPham/Users/SanPhamAPI";
 function ProductInfoItem(props) {
   const { donGia, soLuong, maSanPham, sanPhamNavigation, removeItemFnc } =
     props;
-  const { qtyInfo } = useSelector((state) => state.SanPham);
+  const [qtyInfo,setQtyInfo] = useState({});
   const [qty, setQty] = useState(soLuong || 0);
   const [options, setOptions] = useState([]);
   const dispatch = useDispatch();
@@ -26,14 +26,12 @@ function ProductInfoItem(props) {
     if (removeItemFnc) removeItemFnc();
   };
   const Render = useMemo(() => {
-    if (qty > qtyInfo.soLuongCoTheban) {
-      // removeItemFnc&&removeItemFnc();
-    }
     const t = [];
     const onClickChangeQty = (qty) => {
       dispatch(UpdateQtyItem({ maSP: maSanPham, qty }));
     };
-    for (let i = 0; i < qtyInfo.soLuongCoTheban; i++) {
+    let qty =  qtyInfo.soLuongCoTheban>10?10: qtyInfo.soLuongCoTheban;
+    for (let i = 0; i <qty; i++) {
       t.push(
         <Option key={v4()} onClick={() => onClickChangeQty(i + 1)} value={i + 1}>
           {i + 1}
@@ -44,9 +42,13 @@ function ProductInfoItem(props) {
   }, [qtyInfo]);
 
   useEffect(() => {
-    dispatch(fetchQTY({ maSanPham }));
+    const fetchQty=async()=>
+    {
+      const res =await GetQTY(maSanPham);
+      setQtyInfo({...res})
+    }
+    fetchQty();
   }, []);
-  console.log({ Render: options });
   return (
     <Link to={"#"} className="PrductInfoItem" {...props}>
       <X
@@ -55,7 +57,7 @@ function ProductInfoItem(props) {
         onClick={handleRemoveItem}
       />
       <Row gutter={[10, 10]}>
-        <Col md={6} xs={10} className="img">
+        <Col md={6} xs={12} className="img">
           <img
             src={
               BASE_URL +
@@ -70,9 +72,9 @@ function ProductInfoItem(props) {
             alt=""
           />
         </Col>
-        <Col className="content" md={18} xs={14}>
-          <Row>
-            <Col span={24}>
+        <Col className="content" md={18} xs={12}>
+          <Row style={{height:"100%"}} align="middle" justify={"center"}>
+            <Col span={24} >
               <div className="name">
                 <h4>
                   {sanPhamNavigation.tenSanPham ||
@@ -82,32 +84,26 @@ function ProductInfoItem(props) {
               <p>{convertVND(sanPhamNavigation?.giaBanLe) || "---"}</p>
             </Col>
             <Col span={24}>
-              <Space direction="vertical">
-                <div className="size">
-                  <Space>
-                    <span>Kích thước:</span>
+              <Space direction="vertical" style={{width:"100%"}}>
+              <Space>
+                    <span>SIZE:</span>
                     <span>{sanPhamNavigation?.idSize}</span>
                   </Space>
-                </div>
-                <div className="color">
-                  <Space>
-                    <span>Màu sắc: </span>
+                <Space>
+                    <span>COLOR: </span>
                     <div
                       className="colorValue"
                       style={{
-                        backgroundColor: `${sanPhamNavigation?.idColor}`,
+                        padding:"1rem", backgroundColor: `${sanPhamNavigation?.idColor}`,
                       }}
                     ></div>
                   </Space>
-                </div>
-                <div className="qty">
-                  <Space>
-                    <span>Số lượng:</span>
-                    <SelectCustom value={soLuong} setValue={setQty} >
+                <Space style={{width:"100%"}}>
+                    <span>QUANTITY:</span>
+                     <SelectCustom value={soLuong} setValue={setQty} >
                       {options&&options.map((item) => item)}
                     </SelectCustom>
                   </Space>
-                </div>
               </Space>
             </Col>
           </Row>

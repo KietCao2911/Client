@@ -4,6 +4,7 @@ import { Space, notification } from 'antd'
 import CustomSpin from '~/components/CustomSpin'
 import XacThucSlice, * as ApiXacThuc from "~/redux/slices/XacThuc";
 import { useDispatch } from 'react-redux';
+import MyButton from '~/components/commomComponents/Button';
 const Verify = () => {
     const dispatch = useDispatch();
     const codeRef = useRef([])
@@ -98,7 +99,7 @@ const Verify = () => {
                 <input   ref={(e)=>codeRef.current[4]=e} placeholder='0' className="code" required min={0} type='number' max={9}></input>
                 <input   ref={(e)=>codeRef.current[5]=e} placeholder='0' className="code" required min={0} type='number' max={9}></input>
             </Space>
-            <div className="button" onClick={()=>onSubmit()}>Xác nhận</div>
+            <MyButton className="button" onClick={()=>onSubmit()}>Xác nhận</MyButton>
             <small>Nếu bạn chưa nhận được tin nhắn, vui lòng nhấn <b>gửi lại</b></small>
             <small></small>
         </Space>

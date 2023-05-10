@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import * as DanhMucAPI from "~/redux/slices/DanhMuc";
 import "./CategoryTag.scss"
+import { v4 } from "uuid";
 const CategoryTag = () => {
   const dispatch = useDispatch();
   const {itemsArr} =useSelector(state=>state.DanhMuc)
@@ -19,9 +20,9 @@ const CategoryTag = () => {
 
 itemsArr&&itemsArr.map(link=>
   {
-    return <Col className="Link" xxl={6} md={8} xs={12}>
+    return <Col key={v4()} className="Link" xxl={6} md={8} xs={12}>
     <Link to={`/category/${link?.slug}`}>
-    {link?.tenDanhMuc}
+    <h2>{link?.tenDanhMuc}</h2>
   </Link>
     </Col>
   })

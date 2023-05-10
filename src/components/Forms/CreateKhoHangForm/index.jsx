@@ -7,8 +7,8 @@ import * as BranchAPI from '~/redux/slices/Branch/BranchSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Plus } from 'react-feather'
 import { v4 } from 'uuid'
-const CreateKhoHangForm = () => {
-  const [open,setOpen]=useState(false);
+const CreateKhoHangForm = (props) => {
+  const {open,setOpen} = props
   const {loading} = useSelector(state=>state.Branch)
   const dispatch = useDispatch();
     const FormBranch = useFormik({
@@ -47,7 +47,6 @@ const CreateKhoHangForm = () => {
     }
   return (
 <>
-<FloatButton icon={<Plus/>} onClick={()=>setOpen(!open)} tooltip="Thêm mới kho hàng"></FloatButton>
 <Modal confirmLoading={loading} onOk={handleSubmit} open={open} onCancel={()=>setOpen(false)}>
     <Form.Item required label="Mã chi nhánh">
   <Input placeholder='Mã chi nhánh' name="maChiNhanh" values={FormBranch.values.maChiNhanh}  onChange={FormBranch.handleChange}/>

@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import * as Method from "~/axiosRequest/request";
 
 export const getKhachHangs =async()=>

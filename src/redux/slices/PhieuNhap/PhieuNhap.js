@@ -193,14 +193,36 @@ const PhieuNhapSlice = createSlice({
       state.searchItems = action.payload;
     });
     //fetchPutPhieuNhaps
+    builder.addCase(fetchPutPhieuNhaps.pending, (state, action) => {
+      
+      state.loading=true;
+
+    });
     builder.addCase(fetchPutPhieuNhaps.fulfilled, (state, action) => {
+      
       state.PhieuNhapInfo = action.payload;
       notification.open({
         message: "Cập nhật thành công",
       });
+      state.loading=false;
+
     });
-    builder.addCase(fetchGetPhieuNhaps.fulfilled, (state, action) => {
+    builder.addCase(fetchPutPhieuNhaps.rejected, (state, action) => {
+      
+      state.loading=false;
+      notification.open({
+        message: "Cập nhật thất bại",
+        type:"error"
+      });
+
+    });
+    //fetchGetPhieuNhaps
+    builder.addCase(fetchGetPhieuNhaps.pending, (state, action) => {
       state.items = action.payload;
+    });
+    //fetchPostPhieuNhaps
+    builder.addCase(fetchPostPhieuNhaps.pending, (state, action) => {
+     state.loading=true;
     });
     builder.addCase(fetchPostPhieuNhaps.fulfilled, (state, action) => {
       notification.open({
@@ -208,6 +230,8 @@ const PhieuNhapSlice = createSlice({
         type: "success",
       });
       window.location.replace("" + action.payload.id);
+      state.loading=false;
+
     });
     builder.addCase(fetchPostPhieuNhaps.rejected, (state, action) => {
       notification.open({
@@ -215,6 +239,8 @@ const PhieuNhapSlice = createSlice({
         type: "error",
       });
       window.location.replace("" + action.payload.id);
+      state.loading=false;
+
     });
   },
 });

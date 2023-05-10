@@ -29,7 +29,6 @@ const    eles = adminRoute.map(route=>
         //  }
         return getItem(<Link to={route?.slug}>{route?.name}</Link>,v4(),null,route.icon)
       })
-      eles.push(getItem(<Link to={"/admin/account"}>{"Tài khoản  của tôi"}</Link>,v4(),null,<Avatar src="https://images.pexels.com/photos/16063640/pexels-photo-16063640.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"/> ))
       return eles
   }
   const items = [

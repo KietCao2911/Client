@@ -1,0 +1,25 @@
+
+.RatingContainer
+{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .Rating
+    {
+        .name{
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        position: relative;
+            max-width: 30rem;
+        text-align: center;
+        border:.1rem solid black;
+        padding: 1rem 2rem;
+        strong{
+        }
+    }
+}

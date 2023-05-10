@@ -1,14 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./QuanTriDonHang.scss";
 import { useDispatch, useSelector } from "react-redux";
 import HoaDonSlice, * as HoaDonApi from "~/redux/slices/HoaDon/HoaDonSlice";
 import { useEffect } from "react";
-import { Button, FloatButton, Modal, Table, Tag } from "antd";
+import { Button, FloatButton, Modal, Space, Table, Tag } from "antd";
 import convertVND from "~/components/utils/ConvertVND";
 import { useState } from "react";
 import { v4 } from "uuid";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Plus } from "react-feather";
+import StickyActions from "~/components/commomComponents/stickyActions";
 const Columns = (props) => {
   const { setOpenModal } = props;
   const dispatch = useDispatch();
@@ -60,18 +61,7 @@ const Columns = (props) => {
         return <p>{`${convertVND(record?.thanhTien)}`}</p>;
       },
     },
-    {
-      title: "Hành động",
-      render: (_, record) => {
-        return (
-          <>
-            <Link to={record.id + ""}>
-              <Button>Xem</Button>
-            </Link>
-          </>
-        );
-      },
-    },
+    
     {
       title: "Tráng thái thanh toán",
       key: "daThanhToan",
@@ -83,12 +73,12 @@ const Columns = (props) => {
       }],
       render: (_, record) => (
         <>
-      {record?.status!=-1?record?.daThanhToan?<Tag>Đã thanh toán</Tag>:<Tag>Chưa thanh toán</Tag>:record?.status==-1?record?.daThanhToan?<Tag>Đã hoàn tiền</Tag>:<Tag>Chưa hoàn tiền</Tag>:null}
+      {record?.daHoanTien?"Đã hoàn tiền":"Chưa hoàn tiền"?record?.daThanhToan?"Đã thanh toán":"Chưa thanh toán":null}
         </>
       ),
     },
     {
-      title: "Tráng thái ",
+      title: "Trạng thái kho",
       key: "status",
       dataIndex: "status",
       filters:[{
@@ -105,6 +95,24 @@ const Columns = (props) => {
         </>
       ),
     },
+    {
+      title: "Trạng thái đơn ",
+      key: "status",
+      dataIndex: "status",
+      filters:[{
+        text:"Đã xử lý",value:"HoanThanh",
+      },{
+        text:"Đang xử lý",value:0,
+      },
+      {
+        text:"Đã bị bị hủy",value:"DaHuy",
+      }],
+      render: (_, record) => (
+        <>
+            {record?.daXuatKho?<Tag color="green">Đã xuất kho</Tag>:<Tag >Chờ xuất kho</Tag>}
+        </>
+      ),
+    },
   ];
 };
 const TrangChinh = () => {
@@ -116,7 +124,6 @@ const TrangChinh = () => {
 
   const handleTableChange=(pagination,filters,sorter)=>
   {
-    console.log({filters,sorter})
     const daThanhToan = filters["daThanhToan"];
     const status = filters["status"];
     
@@ -128,17 +135,33 @@ const TrangChinh = () => {
   useEffect(() => {
     dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}));
   }, [tableParams]);
+  const action=(
+    <Link to="tao-moi"><Button type="primary">Thêm mới</Button></Link>
+  )
   return (
     <div>
-      <FloatButton onClick={()=>nav("tao-moi")} icon={<Plus/>}></FloatButton>
+      <Space direction="vertical" style={{width:"100%"}}>
+        <StickyActions IconBack={<Fragment/>} Actionsbtn={action}></StickyActions>
       <Table
+      onRow={(record,index)=>
+      {
+        return{
+          onClick:(e)=>
+          {
+            nav(`${record?.id}`)
+          }
+        }
+      }}
       loading={loading}
+      rowClassName={"icon"}
       onChange={handleTableChange}
         rowKey={(recort) => v4()}
         scroll={{ x: 400 }}
         columns={Columns({ setOpenModal })}
         dataSource={hoadons}
       ></Table>
+      </Space>
+
       <Modal
         okButtonProps={{ style: { display: "none" } }}
         cancelButtonProps={{ style: { display: "none" } }}

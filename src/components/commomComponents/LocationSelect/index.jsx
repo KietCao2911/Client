@@ -11,22 +11,15 @@ const Location = ({visiabe,setVisiable}) => {
   const [Loc, setLoc] = useState(() => {
     return JSON.parse(window.localStorage.getItem("location")) || {};
   });
-  console.log({Loc})
   const handleChangeLocation = (id, name) => {
     const params = { maChiNhanh: id, tenChiNhanh: name };
+    window.localStorage.removeItem("cart")
     setLoc({ ...params });
     const localString = JSON.stringify(params);
     window.localStorage.setItem("location", localString);
     window.location.reload();
   };
   useEffect(() => {
-   if(Object.keys(Loc).length>0)
-   {
-    notification.open({
-      message: "Bạn đang mua sắm tại  " + Loc?.tenChiNhanh || "",
-      type: "info",
-    });
-   }
     dispatch(BranchsAPI.fetchGetBranch());
   }, []);
   return (

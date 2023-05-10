@@ -122,7 +122,7 @@ const VersionDetailPage = (props) => {
     {
       key: "2",
       label: "Lịch sử nhập xuất kho",
-      children: <LichSuKho khohangs={ctnxs || []} />,
+      children: <LichSuKho khohangs={ctnxs?.filter(x=>x.deletedAT==null) || []} />,
     },
   ];
   return (

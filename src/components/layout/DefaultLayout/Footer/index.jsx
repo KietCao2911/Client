@@ -11,32 +11,32 @@ const FooterMainHome = () => {
         <Row gutter={[20,20]}>
               <Col md={6} xs={12}>
              <Space direction="vertical" style={{width:"100%"}}> 
-             <p>SẢN PHẨM</p>
-             <Link to="/category/nam">Nam</Link>
-            <Link to="/category/nu"> Nữ</Link >
-           <Link to="/category/tre-em">Trẻ em</Link >
+             <p>PRODUCTS</p>
+             <Link to="/category/nam">Men</Link>
+            <Link to="/category/nu"> Women</Link >
+           <Link to="/category/tre-em">Children</Link >
              </Space>
               </Col>
               <Col md={6} xs={12}>
 
                   <Space style={{width:"100%"}} direction="vertical">
-                  <p>VỀ CHÚNG TÔI</p>
-                <Link to="/">Thông tin chúng tôi</Link>
+                  <p>ABOUT US</p>
+                <Link to="/">About us</Link>
 
-             <Link to="/">Tuyển dụng</Link >
+             <Link to="/">Careers</Link >
                   </Space>
               </Col>
               <Col md={6} xs={12}>
             <Space direction="vertical">
-            <p>HỖ TRỢ</p>
-            <Link to="/">Faqs</Link>
-             <Link to="/">Chính sách và hỗ trợ</Link >
-             <Link to="/">Tra cứu đơn</Link >
+            <p>SUPPORT</p>
+            <Link to="/">Delivery</Link>
+             <Link to="/">Help & Customer Service</Link >
+             <Link to="/">Returns & Refunds</Link >
             </Space>
               </Col>
               <Col md={6} xs={12}>
                     <Space direction="vertical">
-                      <p>Liên hệ</p>
+                      <p>FOLLOW US</p>
                     <Link to="/">Facebook</Link>
              <Link to="/">Zalo</Link >
              <Link to="/">Instagram</Link >

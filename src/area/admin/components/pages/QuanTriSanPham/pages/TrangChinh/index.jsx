@@ -181,10 +181,7 @@ const TrangChinh = () => {
         <div className="filterActions">
           <Row gutter={[10,10]} align={"middle"}>
             <Col xl={12}>
-              <Input value={searchText} onChange={(e)=>handleSearch(e)} placeholder="Tìm kiếm sản phẩm" type="search" />
-            </Col>
-            <Col xl={12}>
-            <Space>
+              <Input value={searchText} onChange={(e)=>handleSearch(e)} placeholder="Tìm kiếm sản phẩm" type="search" addonAfter={ <Space>
             <Select onChange={(e)=>handleChangeType(e)} defaultValue={null}>
                 <Select.Option value={null}>Loại sản phẩm</Select.Option>
                 {types&&types.length>0&&types.map(type=>
@@ -199,7 +196,10 @@ const TrangChinh = () => {
                     return <Select.Option value={brand?.slug}>{brand?.name}</Select.Option>
                   })}
               </Select>
-            </Space>
+            </Space>}/>
+            </Col>
+            <Col xl={12}>
+           
             </Col>
           </Row>
         </div>

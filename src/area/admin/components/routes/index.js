@@ -4,7 +4,8 @@ import QuanTriBST from "../pages/QuanTriBoSuuTap";
 import { lazy } from "react";
 import AdminAuthLayout from "~/components/layout/AdminAuthLayout";
 
-import { Archive, DollarSign, File, FileText, Gift, Home, Key, Menu, ShoppingBag, Table, Truck, User, Users } from "react-feather";
+import { Archive, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
+import QuanTriCoupon from "../pages/QuanTriCoupon";
 
 const HomeAdmin = lazy(() => import("~/area/admin/components/pages/HomeAdmin"));
 const ThongKeDoanhThu = lazy(() =>
@@ -36,7 +37,7 @@ export const adminRoute = [
     role:["PRODUCT_CREATE","PRODUCT_DELETE","PRODUCT_UPDATE"],
     name:"Quản trị sản phẩm",
     slug: "/admin/trang-quan-tri-san-pham/",
-    icon:<Archive/>
+    icon:<Box/>
   },
   {
     path: "/admin/quan-tri-kho-hang/*",
@@ -44,7 +45,23 @@ export const adminRoute = [
     name:"Quản trị kho hàng",
     slug: "/admin/quan-tri-kho-hang/",
     role:["KHO_MANAGER"],
-    icon:<File/>
+    icon:<Archive/>
+  },
+  {
+    path: "/admin/trang-quan-tri-don-hang/*",
+    element: QuanTriDonHang,
+    name:"Quản trị đơn hàng",
+    slug: "/admin/trang-quan-tri-don-hang/",
+    role:["ORDER_CREATE","ORDER_UPDATE","ORDER_DELETE"],
+    icon:<ShoppingBag/>
+  },
+  {
+    path: "/admin/quan-tri-coupons/*",
+    element: QuanTriCoupon,
+    name:"Quản trị coupons",
+    slug: "/admin/quan-tri-coupons/",
+    role:["ADMIN","SALE_MANAGER","STAFF"],
+    icon:<Tag/>
   },
   {
     path: "/admin/quan-tri-khuyen_mai/*",
@@ -87,22 +104,7 @@ export const adminRoute = [
     role:["CATE_CREATE","CATE_DELETE","CATE_UPDATE"],
     icon:<Menu/>
   },
-  {
-    path: "/admin/trang-quan-tri-don-hang/*",
-    element: QuanTriDonHang,
-    name:"Quản trị đơn hàng",
-    slug: "/admin/trang-quan-tri-don-hang/",
-    role:["ORDER_CREATE","ORDER_UPDATE","ORDER_DELETE"],
-    icon:<ShoppingBag/>
-  },
-  {
-    path: "/admin/trang-bao-cao-nhap-xuat",
-    element: BaoCaoNhapXuat,
-    name:"Báo cáo nhập xuất",
-    slug: "/admin/trang-bao-cao-nhap-xuat",
-    role:["ADMIN"],
-    icon:<FileText/>
-  },
+
   {
     path: "/admin/trang-quan-tri-nhap-hang/*",
     element: TrangQuanTriNhapHang,

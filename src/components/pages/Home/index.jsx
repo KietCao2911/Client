@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import BSTSlider from "./components/BSTSlider";
 import NewRelease from "./components/NewReleaseSlider";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { BackTop, Card, Col, FloatButton, Row, Space, Statistic, Tabs } from "antd";
+import { BackTop, Card, Col, FloatButton, Modal, Row, Space, Statistic, Tabs } from "antd";
 import HotProducts from "./components/HotProducts";
 import "./Home.scss";
 import * as SanPhamAPI from "~/redux/slices/SanPham";
@@ -23,7 +23,7 @@ import TrendingProducts from "./components/TrendingProducts";
 import { Pagination, FreeMode, Navigation } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { ArrowUpCircle, SkipBack } from "react-feather";
+import { ArrowUp, ArrowUpCircle, SkipBack } from "react-feather";
 const Home = () => {
   document.title = "Trang chính";
   const dispatch = useDispatch();
@@ -33,7 +33,6 @@ const Home = () => {
   const { productsHot, products } = useSelector((state) => state.SanPham);
   const { brands } = useSelector((state) => state.Brand);
   const profile = user?.info?.find((x) => user.addressDefault == x.id) || null;
-  console.log("HOME ");
   useEffect(() => {
     dispatch(
       SanPhamUserAPI.fetchGetAllProductsUser({ params: { sort: "popular" } })
@@ -43,21 +42,21 @@ const Home = () => {
         params: { sort: "date-newest" },
       })
     );
-    dispatch(Api.fetchAllBSTUSER({type:""}));
+    dispatch(Api.fetchAllBSTUSER({type:"Banner"}));
     dispatch(Api.fetchAllBSTUSER({type:"Products"}));
     dispatch(BrandAPI.fetchGetBrand());
   }, []);
 
   return (
     <div className="HomeDefaultLayout">
-      <BackTop />
+      <FloatButton.BackTop icon={<ArrowUp/>}  />
       <BSTSlider />
       <Space
         direction="vertical"
         style={{ width: "100%" }}
         className="PageContainer"
       >
-        <Card title="Nhãn hàng" bordered={false}>
+        <Card title="BRANCHS" bordered={false}>
           <Row gutter={[20, 20]}>
           <Col md={24} xs={0}>
          <Row gutter={[10, 10]}>
@@ -113,35 +112,38 @@ const Home = () => {
           </Col>
           </Row>
         </Card>
-        <Card title="Vừa cập nhật" bordered={false}>
+        <Card title="LASTED UPDATE" bordered={false}>
           <ListProducts
-                    type={"slider"}
+                    // type={"slider"}
 
             items={products || []}
             loading={loading}
             miniProducts={true}
           />
         </Card>
-        <Card title="Sản phẩm nổi bật" bordered={false}>
+        <Card title="MOST ORDER" bordered={false}>
           <ListProducts
-          type={"slider"}
+          // type={"slider"}
             items={productsHot || []}
             loading={loading}
             miniProducts={true}
           />
         </Card>
-        <Card title="Sản phẩm xu hướng">
+        <Card title="HOT PRODUCTS">
           <TrendingProducts />
         </Card>
      {
-      boSuuTaps&&boSuuTaps.length>0&&   <Card title="Khám phá ngay">
+      boSuuTaps&&boSuuTaps.length>0&&   <Card title="TRENDING">
       <Discover />
     </Card>
      }
-        <Card title="Danh mục được tìm kiếm nhiều nhất">
+        <Card title="NOW POPULAR CATEGORY">
           <CategoryTag />
         </Card>
       </Space>
+      {/* <Modal  open={true}>
+        <img src="https://localhost:44328/wwwroot/res/BstImgs/WinterCollection.png" alt="" />
+      </Modal> */}
     </div>
   );
 };

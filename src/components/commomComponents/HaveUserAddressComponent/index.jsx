@@ -75,7 +75,7 @@ const HaveUserAddressComponent = () => {
         <Col md={24} xs={24}>
         <div className="AddressSelected">
             <Row gutter={[20,20]} >
-              <Col md={16} xs={24}>
+              <Col md={24} xs={24}>
                 <Row gutter={[10,10]}>
             {user.info&&user.info.map(item=>
                 

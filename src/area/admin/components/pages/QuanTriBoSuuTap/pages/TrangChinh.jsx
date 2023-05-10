@@ -1,4 +1,4 @@
-import { Button, FloatButton, Image, Table } from "antd";
+import { Button, FloatButton, Image, Space, Table } from "antd";
 import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Link, useNavigate } from "react-router-dom";
@@ -34,7 +34,7 @@ const columns = (dispatch) => {
       key: uuidv4(),
       render: (_, value) => {
         return (
-          <>
+          <Space>
             {" "}
             <Link to={`${value.id}`}>
               {" "}
@@ -49,7 +49,7 @@ const columns = (dispatch) => {
             <Button onClick={() => handleDelete(value)} type="primary" danger>
               Xóa
             </Button>
-          </>
+          </Space>
         );
       },
     },

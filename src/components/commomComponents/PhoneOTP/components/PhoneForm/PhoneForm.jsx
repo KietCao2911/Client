@@ -3,13 +3,15 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { authentication } from "~/firebaseConfig";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Input, notification } from "antd";
+import { Input, Space, notification } from "antd";
 import "./PhoneOTP.scss";
 import { useSelector, useDispatch } from "react-redux";
 import  * as Yup from "yup"
 import { useFormik } from "formik";
 import * as ApiXacThuc from "~/redux/slices/XacThuc";
 import Verify from "../Verify";
+import { InputText } from "~/components/commomComponents/InputText";
+import MyButton from "~/components/commomComponents/Button";
 const { Search } = Input;
 const PhoneForm = () => {
 
@@ -73,7 +75,7 @@ const PhoneForm = () => {
           <div className="InputRow">
             <input
             name="phone"
-              placeholder="Nhập số điện thoại của bạn"
+              placeholder="enter your phone number"
               className="OTP"
               // disabled={disable.status}
               value={Form.values.phone}
@@ -83,7 +85,7 @@ const PhoneForm = () => {
               className={`btnAccept `}
               onClick={()=>onSignInSubmit()}
             >
-             Gửi mã
+             SEND 
             </button>
           </div>
         </div>

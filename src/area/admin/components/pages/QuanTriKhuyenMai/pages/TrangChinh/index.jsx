@@ -24,7 +24,12 @@ const TrangChinh = () => {
   return (
    <>
    <FloatButton onClick={()=>nav('tao-moi')} icon={<Plus/>} tooltip="Thêm 1 chương trình khuyến mãi"></FloatButton>
-    <Table columns={columns||[]} dataSource={khuyenmais}></Table>
+    <Table rowClassName={"icon"} onRow={(record,index)=>
+    {
+      return {
+        onClick:(e)=>nav(`${record?.id}`)
+      }
+    }} columns={columns||[]} dataSource={khuyenmais}></Table>
    </>
   )
 }

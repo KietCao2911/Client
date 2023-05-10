@@ -1,10 +1,7 @@
 import React, { forwardRef, memo } from "react";
-import { Card, Rate } from "antd";
+import { Card, Col, Rate, Space } from "antd";
 import "./CardProduct.scss";
 import { Link } from "react-router-dom";
-import glamorous from "glamorous";
-import glamor from "glamor";
-import MyButton from "../Button";
 import { useState } from "react";
 import convertVND from "~/components/utils/ConvertVND";
 import { v4 } from "uuid";
@@ -60,9 +57,12 @@ const CardProduct = (props, ref) => {
     <InView key={v4()}>
       {({ inView, ref, entry }) => (
         <div className={`Card ${inView ? "active" : ""}`} {...props} ref={ref}>
+
           {
             props?.ribbonTooltip||value?.isSale?  <div className="CardRibbon">
-            <span>{props?.ribbonTooltip||"Giá ưu đãi"}</span>
+            <span>{props?.ribbonTooltip||(
+             `- ${ (((value?.giaBanLe+value?.tienDaGiam)-value?.tienDaGiam)/(value?.giaBanLe+value?.tienDaGiam)*100)||0}%`
+            )}</span>
           </div>:null
           }
          
@@ -111,19 +111,17 @@ const CardProduct = (props, ref) => {
                   })}
               </div>
             </div>
-            <div className="ContentBox">
+            <Space direction="vertical" className="ContentBox">
               <div className="name">
-                <p
-                  ellipsis={{
-                    rows: 1,
-                    expandable: true,
-                    symbol: "Xem thêm...",
-                  }}
-                >
+                
                   {value?.tenSanPham}
-                </p>{" "}
               </div>
-            
+              {
+                value?.colorGrouped.length>1?
+                  <small>{` ${value?.colorGrouped?.length} colours`}</small>
+               :<small>1 color</small>
+              }
+                  
               {
                 !value?.isSale?<div className={`priceDetails`}>{price || " 400.000₫"}</div>:<div>
                   <div className="priceDetails sale"> 
@@ -140,7 +138,7 @@ const CardProduct = (props, ref) => {
                 {" "}
                 <small>{value?.nhanHieu?.name}</small>{" "}
               </div>
-            </div>
+            </Space>
           </Link>
         </div>
       )}

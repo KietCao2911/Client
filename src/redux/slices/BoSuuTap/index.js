@@ -14,8 +14,7 @@ export const fetchAllBST = createAsyncThunk(
 export const fetchAllBSTUSER = createAsyncThunk(
   "BoSuuTap/fetchAllBSTUSER",
   async (params) => {
-    const { query } = params;
-    const res = await api.GetAllBSTUSER(query);
+    const res = await api.GetAllBSTUSER(params);
     return res;
   }
 );

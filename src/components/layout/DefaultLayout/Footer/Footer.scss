@@ -1,6 +1,10 @@
+@import "/src/components/GlobalStyles/GlobalStyle.scss";
+
 .Footer {
     display: flex;
     justify-content: center;
-    text-align: center;
+    text-align: left;
     color: white;
+    @include mobile {
+       text-align: center;    }
 }

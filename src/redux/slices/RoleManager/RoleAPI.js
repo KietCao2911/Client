@@ -49,7 +49,16 @@ export const PostRole =async(body)=>
         throw err
     }
 }
-
+export const PostRoleGroup =async(body)=>
+{
+    try{
+        const res = await Method.Post("/api/admin/Role/PostRoleGroup",body);
+        return res;
+    }catch(err)
+    {
+        throw err
+    }
+}
 export const PutRole =async(body)=>
 {
     try{

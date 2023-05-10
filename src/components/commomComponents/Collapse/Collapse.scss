@@ -6,7 +6,7 @@
     outline: none;
     padding: 2rem 0;
     border-top: .1rem solid #ccc;
-    border-bottom: .1rem solid #ccc;
+    // border-bottom: .1rem solid #ccc;
     background-color: transparent;
     cursor: pointer;
     overflow-y: scroll;
@@ -26,7 +26,6 @@
         transition: max-height .2s  ease;
         text-align: left;
         overflow-y: scroll;
-        // transition: max-height .5s ease;
         &.active{
             max-height:1000vh ;
         }

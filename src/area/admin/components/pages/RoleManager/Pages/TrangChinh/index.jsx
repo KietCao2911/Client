@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, FloatButton, Input, Modal, Row, Select, Space, Table, Tabs } from 'antd'
+import { Button, Checkbox, Col, FloatButton, Form, Input, Modal, Row, Select, Space, Table, Tabs } from 'antd'
 import { useFormik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { Key, UserPlus, Users } from 'react-feather'
@@ -48,8 +48,10 @@ const RoleGroup=(props)=>
 {
     const {rolesChecked,roleGroup} = props;
     const {roles,rolesGroup,loading}= useSelector(state=>state.Role)
+    
     const [values,setValues] = useState([])
     const dispatch = useDispatch();
+    
     const handleChange=(value)=>
     {
         setValues([...value])
@@ -67,6 +69,7 @@ const RoleGroup=(props)=>
             dispatch(RoleAPI.ChangeRoles(params))
     }
     return <>
+
     <Row gutter={[10,10]}>
         <Col span={24}>
         <Checkbox.Group 
@@ -93,11 +96,7 @@ const RoleGroup=(props)=>
         <Col span={24}> <Button onClick={handleChangeRoles} loading={loading}>Change roles</Button></Col>
     </Row>
 
-    <FloatButton.Group>
-   
-    <FloatButton icon={<Users/>} tooltip="Thêm một nhóm quyền "></FloatButton>
-    
-    </FloatButton.Group>
+  
     </>
 }
 const UserTab=()=>
@@ -123,9 +122,9 @@ const UserTab=()=>
     <FloatButton onClick={()=>setOpen(!open)} icon={<UserPlus/>} tooltip="Thêm một tài khoản "></FloatButton>
     
     </FloatButton.Group>
-    <Modal confirmLoading={loading} onOk={handleSubmit} open={open}>
+    <Modal onCancel={()=>setOpen(false)} confirmLoading={loading} onOk={handleSubmit} open={open}>
       <Space style={{width:"100%"}} direction='vertical'>
-      <Input  onChange={(e)=>Form.setFieldValue("tenTaiKhoan",e.target.value)} placeholder='Tên tài khoản'></Input>
+      <Input type='email' onChange={(e)=>Form.setFieldValue("tenTaiKhoan",e.target.value)} placeholder='Tên tài khoản'></Input>
         <Input onChange={(e)=>Form.setFieldValue("matKhau",e.target.value)} placeholder='Mật khẩu'></Input>
         <Select onChange={(e)=>Form.setFieldValue("roleGroup",e)} style={{width:"100%"}} placeholder="Nhóm quyền">
             {rolesGroup&&rolesGroup?.length>0&&rolesGroup?.map(otp=><Option value={otp?.groupName}> {otp?.groupName}</Option>)}
@@ -136,14 +135,40 @@ const UserTab=()=>
 }
 const RoleManagerTab=()=>
 {
-    const {roles,rolesGroup}= useSelector(state=>state.Role)
-    return <Tabs items={rolesGroup&&rolesGroup.length>0&&rolesGroup?.map(role=>{
-        return {
-            key:v4(),
-            label:role?.groupName,
-            children:<RoleGroup roleGroup={role} rolesChecked={role?.roleDetails||[]}/>
+    const {roles,rolesGroup,loading}= useSelector(state=>state.Role)
+    const [open,setOpen] = useState(false);
+    const dispatch = useDispatch()
+const RoleGroupForm = useFormik({
+        initialValues:{
+            groupName:"",
+            groupDsc:""
         }
-    })}></Tabs>
+    });
+    const handleSubmit=()=>
+    {
+        const params={...RoleGroupForm.values}
+        dispatch(RoleAPI.PostRoleGroup(params));
+    }
+    return ( <>
+            <Modal onCancel={()=>setOpen(false)} confirmLoading={loading} onOk={handleSubmit} open={open}>
+      <Space style={{width:"100%"}} direction='vertical'>
+      <Input type='text' onChange={(e)=>RoleGroupForm.setFieldValue("groupName",e.target.value)} name="groupName" placeholder='Tên nhóm quyền'></Input>
+        <Input onChange={(e)=>RoleGroupForm.setFieldValue("groupDsc",e.target.value)} name='groupDsc' placeholder='Mô tả'></Input>
+      </Space>
+    </Modal>
+        <FloatButton.Group>
+       
+       <FloatButton onClick={()=>setOpen(!open)} icon={<Users/>} tooltip="Thêm một nhóm quyền "></FloatButton>
+       
+       </FloatButton.Group>
+       <Tabs items={rolesGroup&&rolesGroup.length>0&&rolesGroup?.map(role=>{
+           return {
+               key:v4(),
+               label:role?.groupName,
+               children:<RoleGroup roleGroup={role} rolesChecked={role?.roleDetails||[]}/>
+           }
+       })}></Tabs>
+     </>)
 }
 
 const TrangChinh = () => {

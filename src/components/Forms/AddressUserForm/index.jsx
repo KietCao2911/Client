@@ -172,8 +172,9 @@ const AddressUserForm = () => {
               </Col>
             </Row>
 <div className="Actions">
-<div 
-className='btn' onClick={()=>handleSave()}>LƯU</div >
+<MyButton 
+loading={loading}
+onClick={()=>handleSave()}>LƯU</MyButton >
 </div></Space>
   )
 }

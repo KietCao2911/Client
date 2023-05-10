@@ -18,7 +18,7 @@ const Item=(props)=>
             <span>Kích thước: {cthd?.sanPhamNavigation?.idSize}</span>
           </div>
           <div className="color">
-            <span>Màu sắc: {cthd?.sanPhamNavigation?.idColor}</span>
+            <span>Màu sắc: <span style={{display:"inline-block", backgroundColor:`${cthd?.sanPhamNavigation?.idColor}`,width:"2rem",height:"2rem",borderRadius:"50%"}}></span></span>
           </div>
         </div>
       </div>
@@ -30,10 +30,10 @@ const Item=(props)=>
              ${hd.diaChiNavigation?.wardName},
               ${hd.diaChiNavigation?.districtName},
               ${hd.diaChiNavigation?.provinceName}`} </span></div>
-            <div className="totalMoney"><span><b>Tổng tiền:</b> {convertVND(cthd?.giaBan)}</span></div>
+            <div className="totalMoney"><span><b>Tổng tiền:</b> {convertVND(hd?.thanhTien)}</span></div>
             <div className="paymentInfo"><span><b>Phương thức thanh toán:</b>{hd?.phuongThucThanhToan}</span></div>
             <div className="paymentStatus"><span><b>Trạng thái thanh toán:</b> {hd?.status==0?"Chưa thanh toán":"Đã thanh toán"}</span></div>
-            <div className="deliveryStatus"><span><b>Trạng thái đơn hàng:</b>{hd?.deliveryStatus==0?"Đang chuẩn bị hàng":"Đã hủy"}</span></div>
+            <div className="deliveryStatus"><span><b>Trạng thái đơn hàng:</b>{hd?.status==0?"Đang chuẩn bị hàng":hd?.status==1?"Đã duyệt":"Đã hủy"}</span></div>
           </div>
       </div>
       {/* <div className="infoDelivery">

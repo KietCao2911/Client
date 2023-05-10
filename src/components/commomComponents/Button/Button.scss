@@ -2,10 +2,7 @@
     position: relative;
     width: 100%;
     max-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.4rem 4rem;
+    padding: 1rem 4rem;
     text-align: center;
     line-height: normal;
     background-color: white;
@@ -15,9 +12,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border-radius: .4rem;
-
+    border: .1rem solid #BBBBBB;
+    
+    &:disabled{
+       pointer-events: none;
+       background-color: #ccc;
+    }
     .Icon {
         position: absolute;
         right: 1rem;
@@ -26,8 +26,7 @@
     .Content {}
 
     &:hover {
-        background-color: black;
-        color: white !important;
+        
 
         a {
             color: white;

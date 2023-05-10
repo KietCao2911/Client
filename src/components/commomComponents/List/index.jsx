@@ -14,9 +14,11 @@ const List = (props) => {
   const { items, onItemClick, AddNewField, labelProps, children } = props;
   const { icon, text, onClick } = AddNewField || {};
   return (
-    <div {...props}>
+    <div {...props} className="List">
       {AddNewField && <ItemAdd icon={icon} text={text} onClick={onClick} />}
+      <div className="ListChildren">
       {children}
+      </div>
     </div>
   );
 };

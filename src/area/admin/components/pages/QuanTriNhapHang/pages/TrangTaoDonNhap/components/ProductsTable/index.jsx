@@ -10,6 +10,7 @@ import {
 } from "antd";
 import { DeleteOutlined, FileAddOutlined } from "@ant-design/icons";
 import convertVND from "~/components/utils/ConvertVND";
+import { v4 } from "uuid";
 
 const ProductsTable = (props) => {
   const { Form, isEdit, isOrder = true } = props;
@@ -19,6 +20,11 @@ const ProductsTable = (props) => {
       title: "Mã CTK",
       render: (_, record) => {
         return <a>{record?.maSanPham}</a>;
+      },
+    },
+    {
+      render: (_, record) => {
+        return <img style={{width:"12rem",height:"12rem"}}  src={record?.img||""}/>;
       },
     },
     {
@@ -166,7 +172,8 @@ const ProductsTable = (props) => {
         bordered
         scroll={{ x: 400 }}
         columns={columns}
-        dataSource={Form.values.chiTietNhapXuats || []}
+        rowKey={()=>v4()}
+        dataSource={Form.values.chiTietNhapXuats&&Form.values.chiTietNhapXuats.length>0&&Form.values.chiTietNhapXuats?.filter(x=>x.deletedAT==null) || []}
       ></Table>
     </>
   );

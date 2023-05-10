@@ -5,19 +5,23 @@ import GioHangSlice, * as GiaoHangNhanhApi from "~/redux/slices/GioHang/GioHangS
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import HaveUserComponent from "../../commomComponents/HaveUserAddressComponent";
-import { Col, notification, Radio, Row, Space } from "antd";
+import { Card, Col, notification, Radio, Row, Space } from "antd";
 import OrderForm from "~/components/Forms/Order";
 import convertVND from "~/components/utils/ConvertVND";
 import * as  ghnAPI  from "~/redux/slices/GHNAPI/GhnSlice";
 import * as ThanhToanApi from "~/redux/slices/ThanhToanSlice";
 import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
+import { Plus } from "react-feather";
+import Promo from "~/components/Forms/Order/Promo";
 const DeliveryPage = () => {
   const dispatch = useDispatch();
+  const [promo,setPromo] = useState("")
+
   const { user } = useSelector((state) => state.XacThuc);
   const { DiaChi, loading } = useSelector((state) => state.ThanhToan);
   const { Provinces, Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
-  const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip } = useSelector(
+  const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation } = useSelector(
     (state) => state.GioHang
   );
   const [error, setWrong] = useState(false);
@@ -55,50 +59,8 @@ const DeliveryPage = () => {
       }
     }
   }, [user]);
-  const handleOrder = (paymentMethod) => {
-      if (user.info && user.info.length > 0) {
-        const address = user.info.find(
-          (item) => item.id == user.addressDefault
-        );
-        const params = {
-          Id: address.id,
-          Name: address.name,
-          Phone: address.phone,
-          ProvinceName: address.provinceName,
-          DistrictName: address.districtName,
-          WardName: address.wardName,
-          ProvinceID: address.provinceID,
-          DistrictID: address.districtID,
-          WardId: address.wardID,
-          AddressDsc: address.addressDsc,
-          Email: address.email,
-          PaymendMethod: paymentMethod,
-        };
-        if (!error) {
-          dispatch(
-            ThanhToanApi.fetchPostWithGuess({
-              DiaChi: params,
-              hoaDonDetails: chiTietNhapXuats,
-              HoaDon: {
-                Thanhtien: parseInt(thanhTien * 1.1),
-                totalQty: tongSoLuong,
-                PhuongThucThanhToan: paymentMethod,
-                Phiship: phiShip,
-                idTaiKhoan: user.userName.trim(),
-                idDiaChi: address.id,
-              },
-            })
-          );
-        } else {
-          notification.open({
-            message: "Vui lòng nhập đầy đủ thông tin",
-            type: "error",
-          });
-        }
-      }
-    
-  };
-  const handleSubmit=()=>
+
+  const handleOrder=(method)=>
   {
     if (user.info && user.info.length > 0) {
       const address = user.info.find(
@@ -114,20 +76,30 @@ const DeliveryPage = () => {
         idTaiKhoan: user.userName.trim(),
         idDiaChi: address.id,
       };
-      dispatch(ThanhToanApi.fetchPostWithGuess(params));
+      if(method=="COD")
+      {
+        dispatch(ThanhToanApi.OrderWithCOD(params));
+        
       }
+      else if(method=="VNPAY")
+      {
+        dispatch(ThanhToanApi.OrderWithVNPAY(params));
+
+      }
+    }
     }
 
     
   }
   return (
-    <Row md={16}>
-      <Col md={user?.info ?16:24}>
+    <Row gutter={[10,10]}>
+      <Col xs={24} md={user?.info ?16:24}>
       {user?.info ? <HaveUserComponent /> : <OrderForm />}
-      </Col>
+      </Col >
         {
           user?.info?      <Col md={8}>
-          <Space direction='vertical'>
+        <Card>
+        <Space direction='vertical'>
                   <Row>
                     <Col span={24}>
                       <Row  style={{textAlign:"center"}}> 
@@ -162,9 +134,54 @@ const DeliveryPage = () => {
                       </Row>
                     </Col>
                   </Row>
-                  <InputText label="Nhập mã khuyến mãi nếu có"></InputText>
-                  <MyButton onClick={handleSubmit}>Xác nhận mua hàng</MyButton>
-                  </Space></Col>:null
+                 {
+                   (  !couponCode)&&<InputText
+                   loading={loadingCoupon}
+                     value={promo}
+                     onChange={(e)=>setPromo(e.target.value)}
+                       icon={<Plus onClick={()=>
+                         {
+                         if(promo)
+                         {
+                          if (user.info && user.info.length > 0) {
+                            const address = user.info.find(
+                              (item) => item.id == user.addressDefault
+                            );
+                            if(address)
+                            {
+                              const cart = JSON.parse(window.localStorage.getItem("cart"));
+                              cart.thanhTien = thanhTien;
+                              cart.phiShip = phiShip;
+                              cart.couponCode = promo;
+                              const params = {
+                                ...cart,
+                                idTaiKhoan: user.userName.trim(),
+                                idDiaChi: address.id,
+                              };
+                             
+    
+                               dispatch(GiaoHangNhanhApi.fetchPostApplyCoupon(params))
+                            }
+                          }
+                          
+                         }
+                         }
+                         }/>}
+                         label={`Enter your promo code `}
+                       ></InputText>
+                 }
+                 {couponCode&&<Promo/>}
+                  <MyButton onClick={()=>handleOrder("COD")}  loading={loading} type="submit">
+           <strong> ORDER NOW</strong>
+          </MyButton >
+          <MyButton  onClick={()=>handleOrder("VNPAY")} style={{backgroundColor:"#E23E57",color:"white"}} loading={loading} type="submit">
+           <strong> ORDER/PAYMENT WITH VNPAY</strong>
+          </MyButton >
+          <MyButton loading={loading} onClick={()=>handleOrder("PAYPAL")} style={{backgroundColor:"#002E80",color:"white"}} >
+           <strong>ORDER/PAYMENT WITH PAYPAL</strong>
+          </MyButton >
+                  </Space>
+          </Card></Col>:null
         }
 
     </Row>

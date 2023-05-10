@@ -74,3 +74,12 @@ export const fetchPutTraHang = async(body)=>
     throw error;
   }
 }
+export const fetchGetStatusOrder = async(orderID,body)=>
+{
+  try {
+    const res = await Method.Post(`/api/HoaDon/CheckStatusOrder/${orderID}`,body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}

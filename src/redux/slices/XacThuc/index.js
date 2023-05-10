@@ -93,6 +93,7 @@ const XacThucSlice = createSlice({
         message:"Tạo tài khoản thành công, vui lòng xác nhận trong email của bạn",
         type:"success"
       })
+      window.location.replace("/")
     })
     builder.addCase(EmailRegister.rejected,(state,action)=>
     {

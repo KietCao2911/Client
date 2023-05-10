@@ -8,8 +8,8 @@ import MenuMobile from "./components/MenuMobile";
 import GioHangSlice from "~/redux/slices/GioHang/GioHangSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Badge, Card, Col, Drawer, List, Menu, Modal, Row, Space } from "antd";
-import { Link } from "react-router-dom";
+import { Badge, Card, Col, Drawer, Input, List, Menu, Modal, Row, Space } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import MyButton from "~/components/commomComponents/Button";
 import ModalCustom from "~/components/commomComponents/ModalCustom";
 import InputText from "~/components/commomComponents/InputText";
@@ -43,7 +43,10 @@ function HeaderMainHome() {
   const headerRef = useRef();
   const { items } = useSelector((state) => state.DanhMuc);
   const [data, setData] = useState([]);
+  const [searchTexts,setSeachTexts] = useState("")
+  const nav = useNavigate();
   const handleRenderItems = (arr) => {
+    
     const temp =
       arr &&
       arr.map((item) => {
@@ -73,7 +76,7 @@ function HeaderMainHome() {
           <Row align="middle" justify="space-between">
             {/* //LOGO */}
             <Link to="/">
-              <div className="Logo">BLVCK&WH!TE</div>
+              <div className="Logo">LOGO.</div>
             </Link>
             {/* MENU */}
             <MenuComponent />
@@ -113,11 +116,10 @@ function HeaderMainHome() {
             <MapPin onClick={()=>setVisiable(!visiabe)} className="icon"/>
            
             </Space>
-            <Space>
             <Link to="/">
-              <div className="Logo">BLVCK&WH!TE</div>
+              <div className="Logo">LOGO.</div>
             </Link>
-            </Space>
+
             <Space >
               
               <Search
@@ -151,7 +153,12 @@ function HeaderMainHome() {
         closeIcon={<X />}
       >
         <div className="searchInputContainer">
-          <InputText label="Tìm kiếm sản phẩm tại đây" />
+          <Input onChange={(e)=>{
+            setSeachTexts(e.target.value)
+          }} placeholder="Tìm kiếm sản phẩm tại đây" addonAfter={<Search onClick={()=>{
+            nav("/products?s="+searchTexts)
+            setSearchModal(false)
+          }}/>} />
         </div>
         <div className="searchDrawerResult">
           <List

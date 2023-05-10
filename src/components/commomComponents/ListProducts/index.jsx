@@ -33,7 +33,7 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
               {products.length > 0 ? (
                 products?.map((item, index) => {
                   return (
-                    <Col xs={12} xl={8} xxl={6} key={v4()}>
+                    <Col xs={12} xl={6} xxl={6} key={v4()}>
                       <CardProduct
                         value={item?.sanPhamNavigation||item||{}}
                       ></CardProduct>

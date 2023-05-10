@@ -5,9 +5,9 @@ import * as Yup from "yup"
 import addressJson from "~/assets/address.json"
 import * as NCCAPI from "~/redux/slices/NCC/index"
 import { useDispatch } from 'react-redux'
+import { v4 } from 'uuid'
 const FormCreateNCC = (props) => {
   const {open,onCancel} = props;
-  console.log({s:addressJson})
   const dispatch = useDispatch();
     const NCCForm = useFormik({
         initialValues:{
@@ -65,7 +65,7 @@ const FormCreateNCC = (props) => {
             {Object.keys(addressJson).map(item=>
 {
   
- return <Select.Option value={item}>{addressJson[item]?.name_with_type}</Select.Option>
+ return <Select.Option key={v4()} value={item}>{addressJson[item]?.name_with_type}</Select.Option>
 
 }
 )}
@@ -77,9 +77,9 @@ const FormCreateNCC = (props) => {
             NCCForm.setFieldValue("diachiNavigation.DistrictName",addressJson[NCCForm?.values?.diachiNavigation?.ProvinceID]["quan-huyen"][e]?.name_with_type)
             NCCForm.setFieldValue("diachiNavigation.WardID",null)
           }}>
-            <Select.Option value={null}>Chọn quận huyện</Select.Option>
+            <Select.Option key={v4()} value={null}>Chọn quận huyện</Select.Option>
             {NCCForm.values.diachiNavigation.ProvinceID&&Object.keys(addressJson[`${NCCForm?.values?.diachiNavigation?.ProvinceID}`]["quan-huyen"]).map(item=>
-              <Select.Option value={item}>{addressJson[NCCForm?.values?.diachiNavigation?.ProvinceID]["quan-huyen"][item]?.name_with_type}</Select.Option>
+              <Select.Option key={v4()} value={item}>{addressJson[NCCForm?.values?.diachiNavigation?.ProvinceID]["quan-huyen"][item]?.name_with_type}</Select.Option>
               )}
           </Select>
       </Form.Item>
@@ -90,7 +90,7 @@ const FormCreateNCC = (props) => {
           }}>
             <Select.Option value={null}>Chọn xã phường</Select.Option>
             {NCCForm.values.diachiNavigation.DistrictID&&Object.keys(addressJson[`${NCCForm?.values?.diachiNavigation?.ProvinceID}`]["quan-huyen"][NCCForm?.values?.diachiNavigation?.DistrictID]["xa-phuong"]).map(item=>
-              <Select.Option value={item}>{addressJson[NCCForm?.values?.diachiNavigation?.ProvinceID]["quan-huyen"][NCCForm?.values?.diachiNavigation?.DistrictID]["xa-phuong"][item]?.name_with_type}</Select.Option>
+              <Select.Option key={v4()} value={item}>{addressJson[NCCForm?.values?.diachiNavigation?.ProvinceID]["quan-huyen"][NCCForm?.values?.diachiNavigation?.DistrictID]["xa-phuong"][item]?.name_with_type}</Select.Option>
               )}
           </Select>
       </Form.Item>

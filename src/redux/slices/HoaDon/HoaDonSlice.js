@@ -6,6 +6,7 @@ const initialState = {
   hoadons: [],
   hoadon: {},
   loading: false,
+  orderStatus:null,
 };
 
 export const fetchGetAllOrder = createAsyncThunk(
@@ -79,13 +80,33 @@ export const fetchPutTraHang = createAsyncThunk(
     return res;
   }
 );
+export const fetchGetStatusOrder = createAsyncThunk(
+  "fetchGetStatusOrder",
+  async (params) => {
+    const {orderID,body } = params;
+    const res = await HoaDonApi.fetchGetStatusOrder(orderID,body);
+    return res;
+  }
+);
 const HoaDonSlice = createSlice({
   initialState,
   name: "HoaDon",
   extraReducers: (builder) => {
+    //fetchGetStatusOrder
+    builder.addCase(fetchGetStatusOrder.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchGetStatusOrder.fulfilled, (state, action) => {
+      state.orderStatus=true;
+      state.hoadon = action.payload
+      state.loading=false;
+    });
+    builder.addCase(fetchGetStatusOrder.rejected, (state, action) => {
+      state.orderStatus=false;
+      state.loading = false;
+    });
 //fetchPutTraHang
     builder.addCase(fetchPutTraHang.pending, (state, action) => {
-      state.hoadon = {};
       state.loading = true;
     });
     builder.addCase(fetchPutTraHang.fulfilled, (state, action) => {
@@ -96,6 +117,9 @@ const HoaDonSlice = createSlice({
         type:"success"
       })
     });
+    builder.addCase(fetchPutTraHang.rejected, (state, action) => {
+      state.loading = false;
+    });
     //fetchPUTHoaDon
     builder.addCase(fetchPUTHoaDon.pending, (state, action) => {
       state.hoadon = {};
@@ -104,6 +128,7 @@ const HoaDonSlice = createSlice({
     builder.addCase(fetchPUTHoaDon.fulfilled, (state, action) => {
       state.hoadon = action.payload;
       state.loading = false;
+      window.location.replace("/admin/trang-quan-tri-don-hang/"+state.hoadon.id);
       notification.open({
         message:"Cập nhật thành công",
         type:"success"
@@ -134,12 +159,19 @@ const HoaDonSlice = createSlice({
       state.hoadon = action.payload;
       state.loading = false;
     });
+    builder.addCase(fetchPutXuatKho.rejected, (state, action) => {
+      notification.open({
+        message:action?.error?.message||"Không thể xuất kho",
+        type:"error"
+      })
+      state.loading = false;
+    });
     //fetchCancelOrder
     builder.addCase(fetchCancelOrder.fulfilled, (state, action) => {
       state.hoadon = action.payload;
       state.loading = false;
       notification.open({
-        message: "Trả hàng thành công",
+        message: "Hủy đơn thành công",
         type: "success",
       });
     });
@@ -161,14 +193,28 @@ const HoaDonSlice = createSlice({
       });
     });
     //Lấy tất cả
+    builder.addCase(fetchGetAllOrder.pending, (state, action) => {
+      state.loading=true
+    });
     builder.addCase(fetchGetAllOrder.fulfilled, (state, action) => {
       state.hoadons = action.payload;
+      state.loading=false
+
+    });
+    builder.addCase(fetchGetAllOrder.rejected, (state, action) => {
+      state.hoadons = action.payload;
+      state.loading=false
+
     });
     builder.addCase(fetchGetOrderDetails.pending, (state, action) => {
-      state.hoadon = {};
+      state.loading=true;
     });
     builder.addCase(fetchGetOrderDetails.fulfilled, (state, action) => {
       state.hoadon = action.payload;
+      state.loading=false;
+    });
+    builder.addCase(fetchGetOrderDetails.rejected, (state, action) => {
+      state.loading=false;
     });
   },
 });

@@ -1,0 +1,10 @@
+.Promo{
+    position: relative;
+    .iconClose{
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+    padding: 1rem 2rem;
+    border:.1rem solid black;
+}

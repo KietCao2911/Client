@@ -27,6 +27,11 @@ export const PostRole = createAsyncThunk("PostRole",async(body)=>
     const res = await RoleAPI.PostRole(body);
     return res;
 })
+export const PostRoleGroup = createAsyncThunk("PostRoleGroup",async(body)=>
+{
+    const res = await RoleAPI.PostRoleGroup(body);
+    return res;
+})
 export const PutRole = createAsyncThunk("PutRole",async(body)=>
 {
     const res = await RoleAPI.PutRole(body);
@@ -48,6 +53,20 @@ const RoleSlice = createSlice({
     },
     extraReducers:builder=>
     {
+        //PostRoleGroup
+        builder.addCase(PostRoleGroup.pending,(state)=>
+        {
+            state.loading= true;
+        })
+        builder.addCase(PostRoleGroup.fulfilled,(state,action)=>
+        {
+            state.rolesGroup = [...state.rolesGroup, action.payload]
+            state.loading= false;
+        })
+        builder.addCase(PostRoleGroup.rejected,(state)=>
+        {
+            state.loading= false;
+        })
         //ChangeRoles
         builder.addCase(ChangeRoles.pending,(state)=>
         {

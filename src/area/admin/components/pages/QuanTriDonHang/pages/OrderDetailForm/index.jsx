@@ -14,6 +14,8 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import React, {
+  createContext,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -21,7 +23,7 @@ import React, {
   useTransition,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import InputText from "~/components/commomComponents/InputText";
 import List from "~/components/commomComponents/List";
@@ -33,20 +35,25 @@ import * as KhoHangAPI from "~/redux/slices/KhoHang/KhoHangSlice";
 import ItemResult from "~/components/commomComponents/List/compoenents/ItemResult";
 import ProductsTable from "../../../QuanTriNhapHang/pages/TrangTaoDonNhap/components/ProductsTable";
 import convertVND from "~/components/utils/ConvertVND";
-import { File, Plus, Settings } from "react-feather";
+import { ArrowLeft, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Edit3, File, Plus, Save, Settings, X } from "react-feather";
 import { message, Select } from "antd/es";
 import * as BranchAPI from "~/redux/slices/Branch/BranchSlice";
 import { v4 } from "uuid";
 import * as ThanhToanAPI from "~/redux/slices/ThanhToanSlice";
+import CustomSpin from "~/components/CustomSpin";
+import StickyActions from "~/components/commomComponents/stickyActions";
+import ReactHtmlParser from "react-html-parser"
 const OrderDetailForm = (props) => {
   const { isUpdated, isEdit, isCreated, isReadOnly ,isReturn} = props;
   const { id } = useParams();
   const dispatch = useDispatch();
   const [isPending, startTransition] = useTransition();
-  const { hoadons, hoadon } = useSelector((state) => state.HoaDon);
+  const { hoadons, hoadon,loading } = useSelector((state) => state.HoaDon);
   const { sanPhamTrongKho } = useSelector((state) => state.KhoHang);
+  const { phiShip,thanhTien,couponCode,counponNavigation } = useSelector((state) => state.GioHang);
   const { branchs } = useSelector((state) => state.Branch);
   const [productSearchText, setproductSearchText] = useState("");
+  const [expandProductTable,setExpandProductTable] = useState(false);
   document.title = isUpdated
     ? "Quản lý đơn hàng - Chỉnh sửa"
     : isCreated
@@ -57,34 +64,39 @@ const OrderDetailForm = (props) => {
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const emailRegex =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const nav = useNavigate();
+  const initialValues ={
+    diaChiNavigation: hoadon?.diaChiNavigation || {
+      name: "",
+      phone: "",
+      ProvinceName: "",
+      DistrictName: "",
+      WardName: "",
+      ProvinceID: null,
+      DistrictID: null,
+      WardID: null,
+      addressDsc: "",
+      email: "",
+    },
+    phuongThucThanhToan: hoadon?.phuongThucThanhToan || "COD",
+    chiTietNhapXuats: hoadon?.chiTietNhapXuats || [],
+    thanhTien: hoadon?.thanhTien || 0,
+    loaiPhieu: "PHIEUXUAT",
+    tongSoLuong: hoadon?.tongSoLuong || 0,
+    couponCode :hoadon?.couponCode||"",
+    couponNavigation:hoadon.couponNavigation||"",
+    phiship: hoadon?.phiShip || 0,
+    maChiNhanh: "",
+    chietKhau: hoadon?.chiKhau || 0,
+    tongSoLuong: hoadon?.tongSoLuong || 0,
+    daThanhToan: false || hoadon?.daThanhToan,
+    daXuatKho: false || hoadon?.daXuatKho,
+    daHoanTien: false || hoadon?.daHoanTien,
+    steps: 0 || hoadon?.steps,
+  }
 
   const OrderForm = useFormik({
-    initialValues: {
-      diaChiNavigation: hoadon?.diaChiNavigation || {
-        name: "",
-        phone: "",
-        provinceName: "",
-        districtName: "",
-        wardName: "",
-        provinceID: null,
-        districtID: null,
-        wardID: null,
-        addressDsc: "",
-        email: "",
-      },
-      phuongThucThanhToan: hoadon?.phuongThucThanhToan || "COD",
-      chiTietNhapXuats: hoadon?.chiTietNhapXuats || [],
-      thanhTien: hoadon?.thanhTien || 0,
-      loaiPhieu: "PHIEUXUAT",
-      tongSoLuong: hoadon?.tongSoLuong || 0,
-      phiship: hoadon?.phiShip || 0,
-      maChiNhanh: "CN01",
-      chietKhau: hoadon?.chiKhau || 0,
-      tongSoLuong: hoadon?.tongSoLuong || 0,
-      daThanhToan: false || hoadon?.daThanhToan,
-      daXuatKho: false || hoadon?.daXuatKho,
-      steps: 0 || hoadon?.steps,
-    },
+    initialValues,
     validationSchema: Yup.object().shape({
       diaChiNavigation: Yup.object().shape({
         phone: Yup.string()
@@ -92,22 +104,22 @@ const OrderDetailForm = (props) => {
           .matches(phoneRegExp, "Định dạng số điện thoại không đúng")
           .min(10, "Số điện thoại phải hơn 10 chữ số")
           .max(10, "Số điện thoại không quá 10 chữ số"),
-        name: Yup.string().required("Phải nhập trường này"),
-        email: Yup.string()
+          name: Yup.string().required("Phải nhập trường này"),
+          email: Yup.string()
           ?.trim()
           .required("Phải nhập trường này")
           .matches(emailRegex, "Định dạng email không đúng"),
-        provinceID: Yup.number()
+        ProvinceID: Yup.number()
           .nullable(true)
           .required("Phải chọn trường này"),
-        districtID: Yup.number()
+          DistrictID: Yup.number()
           .nullable(true)
           .required("Phải chọn trường này"),
-        wardID: Yup.number().nullable(true).required("Phải chọn trường này"),
-        addressDsc: Yup.string().required("Phải nhập trường này"),
+        WardID: Yup.number().nullable(true).required("Phải chọn trường này"),
       }),
       phuongThucThanhToan: Yup.string().required("Phải chọn trường này"),
       chiTietNhapXuats: Yup.array().min(1, "Chọn ít nhất một sản phẩm"),
+      phiship:Yup.number().required("Giá trị phí giao hàng không thể bỏ trống")
     }),
     onSubmit: (values) => {
       alert("SUBMIT");
@@ -124,20 +136,17 @@ const OrderDetailForm = (props) => {
       OrderForm.setFieldValue("thanhTien", totalPrices * (1 - value / 100));
     }
   };
-
-  const getReData = useMemo(() => {
-    console.log("getReData");
+  useEffect(()=>
+  {
     OrderForm.setValues({ ...hoadon });
-  }, [hoadon]);
-  const onClickProduct = (p) => {
-    console.log({p})
+  },[hoadon])
+  const onClickProduct = (p,url) => {
     const isAny =
       OrderForm.values.chiTietNhapXuats &&
       OrderForm.values.chiTietNhapXuats.length > 0 &&
       OrderForm.values.chiTietNhapXuats.some(
         (x) => x.maSanPham.trim() == p.maSanPham.trim()
       );
-    console.log({ isAny });
     if ((p?.soLuongCoTheban <= 0 && p?.soLuongTon <= 0) || isAny) {
       if (isAny) {
         message.open({
@@ -152,11 +161,12 @@ const OrderDetailForm = (props) => {
       }
     } else {
       const params = {
-        sanPhamNavigation: { ...p },
+        img:url,
+        sanPhamNavigation: { ...p.sanPhamNavigation },
         soLuong: 1,
-        donGia: p.giaBanLe || 0,
-        thanhTien: parseFloat(p.giaBanLe) * 1,
-        maSanPham: p?.maSanPham || "",
+        donGia: p?.sanPhamNavigation?.giaBanLe || 0,
+        thanhTien: parseFloat(p?.sanPhamNavigation?.giaBanLe) * 1,
+        maSanPham: p?.sanPhamNavigation?.maSanPham || "",
       };
 
       let temp = OrderForm.values.chiTietNhapXuats
@@ -166,8 +176,8 @@ const OrderDetailForm = (props) => {
       OrderForm.setFieldValue(
         "thanhTien",
         OrderForm.values?.thanhTien +
-          parseFloat(params.thanhTien) +
-          (OrderForm.values?.phiship || 0)
+        parseFloat(params.thanhTien) +
+        (OrderForm.values?.phiship || 0)
       );
       OrderForm.setFieldValue("tongSoLuong", OrderForm.values.tongSoLuong + 1);
       OrderForm.setFieldValue("chiTietNhapXuats", temp);
@@ -175,85 +185,43 @@ const OrderDetailForm = (props) => {
   };
 
   const handleChangeProductSearchText = (e) => {
+    if(!OrderForm.values.maChiNhanh)
+    {
+      message.open({
+        content:"Vui lòng chọn nhà cung cấp",
+        type:"error"
+      })
+      return ;
+    }
     startTransition(() => {
       setproductSearchText(e.target.value);
       dispatch(
         KhoHangAPI.fetchGetProducts({
-          maChiNhanh: OrderForm.values?.maChiNhanh?.trim() || "CN01",
-          query: { s: e.target.value },
+          maChiNhanh: OrderForm.values?.maChiNhanh?.trim() || "",
+          onlyVersion:true,
         })
       );
     });
   };
   useEffect(() => {
     dispatch(BranchAPI.fetchGetBranch());
-    if (isUpdated || isReadOnly) {
-      dispatch(HoaDonApi.fetchGetOrderDetails({ id }));
-    } else {
-      OrderForm.setTouched({
-        diaChiNavigation: {
-          name: false,
-          phone: false,
-          provinceName: false,
-          districtName: false,
-          wardName: false,
-          provinceID: false,
-          districtID: false,
-          wardID: false,
-          addressDsc: false,
-          email: false,
-        },
-        chiTietNhapXuats: false,
-        thanhTien: false,
-        loaiPhieu: false,
-        tongSoLuong: false,
-        phiship: false,
-        chietKhau: false,
-        maChiNhanh: false,
-        daThanhToan: false,
-        phuongThucThanhToan: "COD",
-      });
-      OrderForm.setValues({
-        diaChiNavigation: {
-          name: "",
-          phone: "",
-          provinceName: "",
-          districtName: "",
-          wardName: "",
-          provinceID: null,
-          districtID: null,
-          wardID: null,
-          addressDsc: "",
-          email: "",
-        },
-        chiTietNhapXuats: [],
-        thanhTien: 0,
-        loaiPhieu: "PHIEUXUAT",
-        tongSoLuong: 0,
-        phiship: 0,
-        chietKhau: 0,
-        maChiNhanh: "CN01",
-        phuongThucThanhToan: "COD",
-        daThanhToan:false,
-        steps: 0 || hoadon?.steps,
-      });
-    }
+    dispatch(HoaDonApi.fetchGetOrderDetails({ id }));
   }, [id]);
-  console.log({ props });
+  
   const handleSubmit = () => {
     if (Object.keys(OrderForm.errors).length <= 0) {
+     
       const params = { ...OrderForm.values };
       if (isCreated) {
-        alert("created");
         console.log({params})
-        dispatch(ThanhToanAPI.fetchPostWithGuess(params));
+        dispatch(ThanhToanAPI.OrderWithCOD(params));
       } else if (isUpdated) {
-        // dispatch(HoaDonApi.fet(params));
+        dispatch(HoaDonApi.fetchPUTHoaDon({body:params}));
       } else {
       }
     } else {
+      console.log({erros:OrderForm.errors})
       alert("Submit invalid");
-      console.log({ errors: OrderForm.errors, values: OrderForm.values });
     }
   };
   const handleOnChangeBranch = (e) => {
@@ -282,6 +250,7 @@ const OrderDetailForm = (props) => {
       phuongThucThanhToan: "COD",
 
       daThanhToan: false || hoadon?.daThanhToan,
+      daHoanTien: false || hoadon?.daHoanTien,
       steps: 0 || hoadon?.steps,
     });
     setproductSearchText("");
@@ -303,20 +272,68 @@ const OrderDetailForm = (props) => {
   const handleTraHang =()=>
   {
     dispatch(HoaDonApi.fetchPutTraHang({ body: OrderForm.values }))
-
+    
   }
   const handleCancel = () => {
     const params = { ...OrderForm.values };
     dispatch(HoaDonApi.fetchCancelOrder({ body: params }));
   };
+  const reCallShip =useMemo(()=>
+  {
+    var ctnx = [...OrderForm.values.chiTietNhapXuats]
+
+    const price = ctnx.reduce((x,y)=>
+    {
+      return x+y.thanhTien;
+    },0) 
+    OrderForm.setFieldValue("phiship",phiShip)
+    OrderForm.setFieldValue("thanhTien",price+phiShip)
+  },[phiShip,thanhTien])
+  const action=(
+    <>
+      {isReadOnly&&OrderForm.values.steps<2&&OrderForm.values?.status!=-1&&<>
+          
+          <Space>
+            <Link to="chinh-sua">
+            <Button       >Chỉnh sửa</Button>
+
+            </Link>
+        <Button   onClick={handleCancel} loading={loading}  type={"primary"} danger>Hủy đơn này</Button>
+                
+          </Space>
+        </>}
+{isUpdated&&OrderForm.values.steps<2&&<>
+          <Space>
+                  <Button type="primary" onClick={handleSubmit}  loading={loading}>Xác nhận</Button>
+                  <Link to={"../"+hoadon?.id}>
+                  <Button tooltip={"Hủy "}  >Hủy</Button>
+
+                  </Link>
+          </Space>
+        </>}
+    </>
+  
+  )
   return (
-    <form ref={FormRef}>
-      <Row gutter={[, 20]}>
+    <div value={OrderForm}>
+      {/* {loading&&<CustomSpin/>} */}
+      <Row  gutter={[, 20]}>
+        {/* HEADER */}
         <Col span={24}>
-          <Row justify={"space-between"}>
-          <Space> {hoadon?.id || ""} </Space>
-            <Space>
-              <Steps
+          <StickyActions Actionsbtn={action}></StickyActions>
+        </Col>
+        <Col span={24}>
+           <Row justify={"space-between"}>
+           <Col >
+               <Link to="/admin/trang-quan-tri-don-hang">
+               <Row  align={"middle"} justify={"center"}>
+               <ArrowLeft/><p>Trở về trang đơn hàng</p>
+               </Row>
+               </Link>
+            </Col>
+            <Col >
+            <Steps
+              responsive={true}
                 current={
                   hoadon?.daThanhToan && hoadon?.daNhapHang
                     ? 4
@@ -336,14 +353,38 @@ const OrderDetailForm = (props) => {
                     title: "Hoàn thành",
                   },
                 ]}
-              />
-            </Space>
-          </Row>
+              /></Col>
+           </Row>
         </Col>
-        <Col span={24}>
+        <Col span={24}> 
+            {/* BRANCH SELECTED  */}
+              <Card title="Chi nhánh xuất hàng">
+                <Select
+                  disabled={isUpdated || isReadOnly ? true : false}
+                  value={OrderForm.values?.maChiNhanh?.trim()}
+                  onChange={(e) => handleOnChangeBranch(e)}
+                  style={{ width: "100%" }}
+                >
+                   <Select.Option value={""}>
+                          Chọn chi nhánh
+                        </Select.Option>
+                  {branchs &&
+                    branchs.map((branch) => {
+                      return (
+                        <Select.Option value={branch?.maChiNhanh.trim()}>
+                          {branch?.tenChiNhanh}
+                        </Select.Option>
+                      );
+                    })}
+                </Select>
+              </Card>
+            </Col>
+
+       { <Col span={24}>
           <Row gutter={[20, 20]}>
-            <Col md={18} xs={24}>
-              <Card>
+  
+            <Col md={expandProductTable? 24:12} xs={24}>
+              <Card title="Sản phẩm"  extra={expandProductTable?<ChevronsLeft className="icon infoHover" onClick={()=>setExpandProductTable(!expandProductTable)} />:<ChevronsRight className="icon infoHover" onClick={()=>setExpandProductTable(!expandProductTable)} />}>
                <Space direction="vertical" style={{width:"100%"}}>
                {isCreated && (
                   <InputText
@@ -373,16 +414,16 @@ const OrderDetailForm = (props) => {
                         "";
                       return (
                         <ItemResult
-                          value={productInfo}
+                          value={item}
                           onItemClick={(productInfo) =>
-                            onClickProduct(productInfo)
+                            onClickProduct(productInfo,url)
                           }
                           labelProps={{
                             img: url,
                             name: productInfo.tenSanPham,
                             code: productInfo.maSanPham,
                             price: productInfo.giaNhap,
-                            qty: productInfo.soLuongTon,
+                            qty: item.soLuongTon,
                           }}
                         />
                       );
@@ -422,14 +463,11 @@ const OrderDetailForm = (props) => {
                     </div>
                   </Space>
                   <Space className="summaryItem">
-                    <div>phí giao hàng:</div>
+                    <div>Phí giao hàng:</div>
                     <div> {convertVND(OrderForm.values?.phiship) || 0}</div>
                   </Space>
-                  <Space style={{ width: "100%" }} className="summaryItem">
-                    <InputText
-                      disabled={OrderForm.values.steps < 2 ? false : true}
-                      label="Nhập mã khuyến mãi "
-                    ></InputText>
+                  <Space className="summaryItem">
+                    <div>Mã giảm giá <b>{OrderForm.values.couponCode}</b> </div>
                   </Space>
                   <Space className="summaryItem">
                     <div>
@@ -441,40 +479,25 @@ const OrderDetailForm = (props) => {
                </Space>
               </Card>
             </Col>
-            <Col md={6} xs={24}>
-              <Card title="Mã chi nhánh">
-                <Select
-                  disabled={isUpdated || isReadOnly ? true : false}
-                  value={OrderForm.values?.maChiNhanh?.trim()}
-                  onChange={(e) => handleOnChangeBranch(e)}
-                  style={{ width: "100%" }}
-                >
-                  {branchs &&
-                    branchs.map((branch) => {
-                      return (
-                        <Select.Option value={branch?.maChiNhanh.trim()}>
-                          {branch?.tenChiNhanh}
-                        </Select.Option>
-                      );
-                    })}
-                </Select>
-              </Card>
-            </Col>
-          </Row>
-        </Col>
-        <Col span={24}>
+                    {/* ADDRESS */}
+                    
+        <Col md={expandProductTable? 24:12} xs={24}>
+          <Row gutter={[10,10]}>
+          <Col span={24}>
           {(isCreated ||
             isUpdated) && (
-              <MyCollapse defaultOpen={true} label="Địa chỉ giao hàng">
-                <AddressForm
-                  isCreated={isCreated}
-                  isReadOnly={isReadOnly}
-                  isUpdated={isUpdated}
-                  orderForm={OrderForm}
-                />
-              </MyCollapse>
+           <Card title="Địa chỉ">
+               <AddressForm
+              isCreated={isCreated}
+              isReadOnly={isReadOnly}
+              isUpdated={isUpdated}
+              orderForm={OrderForm}
+              setFieldValue={OrderForm.setFieldValue}
+              
+            />
+           </Card>
             )}
-          {isReadOnly && (
+          {(isReadOnly||isReturn) && (
             <Card>
               <Descriptions layout="vertical">
                 <Descriptions.Item label="Tên khách hàng">
@@ -503,7 +526,21 @@ const OrderDetailForm = (props) => {
               </Descriptions>
             </Card>
           )}
+          </Col>
+
+          <Col span={24}>
+          <Card title="Khuyến mãi">
+{          hoadon?.couponNavigation?.moTa&&  ReactHtmlParser(hoadon?.couponNavigation?.moTa||"")
+}
+          </Card>
+          </Col>
+          </Row>
+
         </Col>
+           
+          </Row>
+        </Col>}
+
         {
           isCreated?<>
           <FloatButton.Group>
@@ -514,18 +551,16 @@ const OrderDetailForm = (props) => {
         }
         {
           isUpdated?<>
-          <Col md={24}>
-          {!OrderForm.values.daThanhToan&&<Card title="Thanh toán" extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
+          <Col md={24} xs={24}>
+          {!OrderForm.values.daThanhToan&&!OrderForm.values.daHoanTien&&<Card title={`${OrderForm.values.phuongThucThanhToan=="COD"?"Thanh toán":"Xác nhận đã thanh toán bằng "+OrderForm.values?.phuongThucThanhToan}`} extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
             {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
           </Col>
-           <FloatButton.Group>
-            <FloatButton tooltip={"Xác nhận sửa"} onClick={handleUpdate} icon={<File/>}></FloatButton>
-          </FloatButton.Group>
+      
           </>:null
         }
         {
-          isReadOnly&&<>
-                    <Col md={24}>
+          isReadOnly&&OrderForm.values?.status!=-1&&<>
+                    <Col md={24} xs={24}>
             {!OrderForm.values.daThanhToan&&<Card title="Thanh toán" extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
             {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
           </Col>
@@ -533,30 +568,26 @@ const OrderDetailForm = (props) => {
         }
                 {
           isReturn?<>
-          <Col md={24}>
-            {OrderForm.values.status==-1&&OrderForm.values.daThanhToan&& <Card title="Hoàn tiền" extra={<Button onClick={handleHoanTien}>Hoàn tiền</Button>}></Card>}
+          <Col md={24} xs={24}>
+            {OrderForm.values.status==-1&&OrderForm.values.daThanhToan&&!OrderForm.values?.daHoanTien&& <Card title="Hoàn tiền" extra={<Button onClick={handleHoanTien}>Hoàn tiền</Button>}></Card>}
           </Col>
           <FloatButton.Group>
-                  <FloatButton tooltip={"Xác nhận trả hàng"}  onClick={handleCancel}></FloatButton>
+                  <FloatButton tooltip={"Xác nhận trả hàng"}  onClick={handleTraHang}></FloatButton>
           </FloatButton.Group>
           </>:null
         }
-        {isReadOnly&&OrderForm.values.steps<2&&<>
-          <FloatButton.Group>
-                  <FloatButton tooltip={"Hủy đơn này"}  onClick={handleCancel}></FloatButton>
-                  <FloatButton tooltip={"Sửa đơn này"}  onClick={handleTraHang}></FloatButton>
-          </FloatButton.Group>
-        </>}
+      
         {
           (OrderForm.values.daXuatKho&&!isReturn)&&<>
             <Col md={24}>
             
-            <Card title="Hoàn trả/hủy đơn" extra={<Link to={"tra-hang"}> <Button>Trả hàng/hủy đơn</Button> </Link>}></Card>
+           {<Card title="Hoàn trả/hủy đơn" extra={<Link to={"tra-hang"}> <Button>Trả hàng/hủy đơn</Button> </Link>}></Card>}
           </Col>
           </>
         }
       </Row>
-    </form>
+      
+    </div>
   );
 };
 

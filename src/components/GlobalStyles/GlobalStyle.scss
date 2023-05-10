@@ -4,7 +4,7 @@ $colorFNC_Primary: #63c0df;
 $colorFNC_Success: #009944;
 $colorFNC_Danger: #cf000f;
 $colorFNC_Warning: #f0541e;
-$font_size_default: 1vh;
+$font_size_default: 1.8vw;
 $line_height_default: 1.8rem;
 $primary_color : black;
 $second_color: white;
@@ -38,12 +38,28 @@ body {
   font-style: italic;
   font-weight: bold;
 }
-
+.actions{
+  transition: all .20s ;
+  
+  &.sticky{
+    background-color: #F5F5F5;
+    position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  z-index: 99;
+  }
+}
 .icon {
+  font-size: 1rem;
   cursor: pointer;
   transition: .3s;
-
-  &.deteleHover {
+  &.infoHover:hover{
+    color:greenyellow;
+    scale: 1.2;
+  }
+  &.deleteHover {
     &:hover {
       color: red;
       scale: 1.2;
@@ -111,7 +127,7 @@ button {
 }
 
 .ant-layout-header {
-  background: transparent !important;
+  background: white !important;
 
 }
 
@@ -308,14 +324,16 @@ textarea {
 .layout,
 .ant-layout-content,
 .GuessAuthLayout {
-  padding: 12px !important;
+  @include mobile{
+     padding: 12px !important;
 
+  }
   @include tablet {
     padding: 16px !important;
   }
 
   @include desktop {
-    padding: 24px !important;
+    padding: 18px !important;
   }
 
   min-height: 100vh !important;

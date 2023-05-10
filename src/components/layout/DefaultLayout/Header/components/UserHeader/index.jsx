@@ -15,7 +15,7 @@ const UserHeader = () => {
          <UserCheck/>
         </Link>
       ) : (
-        <Link to="/auth" className="icon NonUser">
+        <Link to="/auth" className="icon">
           <UserX />
         </Link>
       )}

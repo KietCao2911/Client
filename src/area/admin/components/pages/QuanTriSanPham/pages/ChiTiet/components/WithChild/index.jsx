@@ -47,7 +47,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import ShowMore from "~/components/commomComponents/ShowMore";
-import { Delete, Edit, Save, Trash2, X } from "react-feather";
+import { ArrowLeft, Delete, Edit, Save, Trash2, X } from "react-feather";
 const VersionDetailPage = lazy(() => import("./pages/VersionDetailPage"));
 const FooterTable = () => {
   return (
@@ -218,17 +218,20 @@ const WithChild = (props) => {
       <FloatButton icon={<Edit/>} onClick={()=>setIsEdit(true)} tooltip="Sửa"></FloatButton>
       <FloatButton icon={<Trash2/>} onClick={handleDeleteProduct} tooltip="Xóa"></FloatButton>
     </FloatButton.Group>}
-      <div className="headerActions">
-        <div className="backToList">
-          {" "}
-          <LeftOutlined />{" "}
-          <Link to="/admin/trang-quan-tri-san-pham">Trở lại danh sách</Link>
-        </div>
-        <div className="actions">
 
-        </div>
-      </div>
       <Row gutter={[20, 20]}>
+      <Col span={24}>
+           <Row justify={"space-between"}>
+           <Col >
+               <Link to="/admin/trang-quan-tri-san-pham">
+               <Row  align={"middle"} justify={"center"}>
+               <ArrowLeft/><p>Trở về trang sản phẩm</p>
+               </Row>
+               </Link>
+            </Col>
+            <Col ></Col>
+           </Row>
+        </Col>
         <Col span={24}>
           <Card title="Thông tin sản phẩm">
             <Space>

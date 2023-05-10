@@ -25,9 +25,6 @@ const SizeRadio = ({ label, value, onChange, obj, disable }) => {
   const handleSelected = async () => {
     dispatch(sizeSelected({ size: value }));
   };
-  console.log({
-    obj,
-  });
   return (
     <>
       <div className={`SizeRadio ${disabled ? "disable" : ""}`}>

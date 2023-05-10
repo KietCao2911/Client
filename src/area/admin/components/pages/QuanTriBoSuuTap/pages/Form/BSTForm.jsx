@@ -33,7 +33,8 @@ import { BASE_URL } from "~/const";
 import convertVND from "~/components/utils/ConvertVND";
 import { DeleteOutlined } from "@ant-design/icons";
 import * as BstAPI from "~/redux/slices/BoSuuTap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+import CustomSpin from "~/components/CustomSpin";
 const isEdit = false;
 const columns = [
   {
@@ -84,10 +85,10 @@ const BSTForm = (props) => {
   const dispatch = useDispatch();
   const formRef = useRef();
   const { products } = useSelector((state) => state.SanPham);
-  const { boSuuTap } = useSelector((state) => state.BoSuuTap);
+  const { boSuuTap ,loading} = useSelector((state) => state.BoSuuTap);
   const { id } = useParams();
   const url = BASE_URL + "wwwroot/res/BstImgs/" + boSuuTap?.img || "";
-
+  const param =useLocation();
   const FormBst = useFormik({
     initialValues: {
       tenBoSuuTap: boSuuTap?.tenBoSuuTap || "",
@@ -95,19 +96,31 @@ const BSTForm = (props) => {
       show: boSuuTap?.show || false,
       chiTietBSTs: boSuuTap?.chiTietBSTs || [],
       img: url || "",
+      type: boSuuTap?.type ||"Banner",
     },
   });
 
-  const reSetBST = useMemo(() => {
+  // const reSetBST = useMemo(() => {
+  //   FormBst.setValues({ ...boSuuTap });
+  // }, [boSuuTap]);
+  useEffect(()=>
+  {
     FormBst.setValues({ ...boSuuTap });
-  }, [boSuuTap]);
+  },[boSuuTap])
   useEffect(() => {
     if (isUpdated || isReadOnly) {
       dispatch(BstAPI.fetchByIdBST({ id }));
     } else {
-      FormBst.setValues({});
+      FormBst.setValues( {
+        tenBoSuuTap:  "",
+        mota: "",
+        show:  false,
+        chiTietBSTs:  [],
+        img:  "",
+        type: "Banner",
+      });
     }
-  }, []);
+  }, [param.pathname]);
   const handleChangeSearchProducts = (e) => {
     dispatch(SanPhamAPI.fetchGetAllProducts({ params: { s: e } }));
   };
@@ -157,7 +170,8 @@ const BSTForm = (props) => {
   };
   document.title =isCreated?"Quản trị bộ sưu tập - tạo mới":isUpdated?"Quản trị bộ sưu tập - cập nhật":isReadOnly?"Quản trị bộ sưu tập - chi tiết":"";
   return (
-    <form ref={formRef}>
+    <form >
+      {loading&&<CustomSpin/>}
       <Row gutter={[20,20]}>
         <h1>{isCreated?"Quản trị bộ sưu tập - tạo mới":isUpdated?"Quản trị bộ sưu tập - cập nhật":isReadOnly?"Quản trị bộ sưu tập - chi tiết":""}</h1>
         <Col span={24}>
@@ -169,7 +183,7 @@ const BSTForm = (props) => {
               value={FormBst.values.tenBoSuuTap}
               onChange={FormBst.handleChange}
             />
-            <Select defaultValue={["Banner"]}>
+            <Select onChange={(e)=>FormBst.setFieldValue("type",e)} defaultValue={["Banner"]} value={FormBst.values.type}>
             <Select.Option value={"Banner"}>
                 Banner
               </Select.Option>
@@ -241,7 +255,7 @@ const BSTForm = (props) => {
                 columns={columns || []}
               />
             </Space>
-            <FloatButton tooltip="Xác nhận" onClick={() => handleSubmit()}></FloatButton>
+            {(isUpdated||isCreated)&&<FloatButton tooltip="Xác nhận" onClick={() => handleSubmit()}></FloatButton>}
           </Space>
         </Col>
         <Col></Col>

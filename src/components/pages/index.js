@@ -9,6 +9,8 @@ import CartPage from "./Cart";
 import DeliveryPage from "./Delivery";
 import CollectionsPage from "./Collection";
 import EmailVerifyPage from "./EmailVerify";
+import RatingPage from "./RatingPage";
+import OrderResult from "./OrderResultPage";
 export {
   Home,
   TrangChiTietSanPham,
@@ -20,5 +22,7 @@ export {
   CartPage,
   DeliveryPage,
   CollectionsPage,
-  EmailVerifyPage
+  EmailVerifyPage,
+  RatingPage,
+  OrderResult,
 };

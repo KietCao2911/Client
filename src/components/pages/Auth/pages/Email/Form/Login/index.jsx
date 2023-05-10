@@ -8,6 +8,7 @@ import  * as XacThucAPI from '~/redux/slices/XacThuc';
 import * as YUP from "yup"
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Lock, User } from 'react-feather'
 const EmailLoginForm = () => {
     const {loading} = useSelector(state=>state.XacThuc)
     const dispatch = useDispatch();
@@ -61,10 +62,10 @@ const EmailLoginForm = () => {
 
 
    <Space style={{width:"100%"}} direction='vertical'>
-   <InputText onBlur={Form.handleBlur} className={` ${Form.touched.tenTaiKhoan&&Form.errors.tenTaiKhoan?"error":""}`} onChange={Form.handleChange} value={Form.values.tenTaiKhoan} name="tenTaiKhoan" label="Email"></InputText>
+   <InputText icon={<User/>} onBlur={Form.handleBlur} className={` ${Form.touched.tenTaiKhoan&&Form.errors.tenTaiKhoan?"error":""}`} onChange={Form.handleChange} value={Form.values.tenTaiKhoan} name="tenTaiKhoan" label="Email"></InputText>
    {<span className=' error'>{Form.touched.tenTaiKhoan&&Form.errors.tenTaiKhoan&&Form.errors.tenTaiKhoan}</span>}
 
-      <InputText type="password" onBlur={Form.handleBlur} className={` ${Form.touched.matKhau&&Form.errors.matKhau?"error":""}`} onChange={Form.handleChange}  value={Form.values.matKhau} name="matKhau"  label="Mật khẩu"></InputText>
+      <InputText icon={<Lock/>} type="password" onBlur={Form.handleBlur} className={` ${Form.touched.matKhau&&Form.errors.matKhau?"error":""}`} onChange={Form.handleChange}  value={Form.values.matKhau} name="matKhau"  label="Mật khẩu"></InputText>
       {<span className='error'>{Form.touched.matKhau&&Form.errors.matKhau&&Form.errors.matKhau}</span>}
       <Checkbox value={true}> Duy trì đăng nhập</Checkbox>
       <MyButton onClick={onSubmit} >Đăng nhập</MyButton>

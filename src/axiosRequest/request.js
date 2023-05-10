@@ -1,4 +1,4 @@
-import { notification } from "antd";
+import { message, notification } from "antd";
 import axios from "axios";
 import { BASE_URL } from "~/const";
 const request = axios.create({
@@ -46,6 +46,7 @@ request.interceptors.response.use(
       //     return instance(config)
       // })
     }
+  
     // return Promise.reject(error)
     if (error.response) {
       throw error.response.data;

@@ -2,18 +2,21 @@ import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { X } from "react-feather";
 import * as GiaoHangNhanhApi from "~/redux/slices/GHNAPI/GhnApi";
+import * as ThanhToanAPI from "~/redux/slices/ThanhToanSlice/ThanhToanApi"
 let cart = JSON.parse(localStorage.getItem("cart"));
 let address = JSON.parse(localStorage.getItem("address"));
 let location =
   JSON.parse(window.localStorage.getItem("location"))?.maChiNhanh || null;
 const initialState = {
+  loadingCoupon:false,
   item: {},
   tongSoLuong: cart?.tongSoLuong || 0,
   thanhTien: cart?.thanhTien || 0,
+  tienDaGiam: cart?.tienDaGiam || 0,
   chiTietNhapXuats: cart?.chiTietNhapXuats || [],
   phiShip: cart?.phiShip || 0,
   diaChiNavigation: cart?.diaChiNavigation || {},
-  couponNavigation: cart?.couponNavigation || {},
+  couponNavigation: cart?.couponNavigation || null,
   couponCode: cart?.couponCode || null,
   phuongThucThanhToan: cart?.phuongThucThanhToan || "COD",
   loaiPhieu: "PHIEUXUAT",
@@ -59,10 +62,27 @@ export const fetchPostCalFee = createAsyncThunk(
     return res;
   }
 );
+export const fetchPostApplyCoupon =createAsyncThunk("fetchPostApplyCoupon",async(body)=>
+{
+  const res= await ThanhToanAPI.fetchPostApplyCoupon(body);
+  return res;
+})
 const GioHangSlice = createSlice({
   initialState,
   name: "GioHang",
   reducers: {
+    removeCoupon:(state)=>
+        {
+            state.couponCode="";
+            state.couponNavigation=null;
+            if(state.tienDaGiam)
+            {
+              state.thanhTien+=state.tienDaGiam;
+            }
+            const addressString = JSON.stringify(state);
+            window.localStorage.setItem("cart", addressString);
+        },
+        
     ViewCart(state, action) {
       let cart = localStorage.getItem("cart");
       let cartObj = JSON.parse(cart);
@@ -129,13 +149,13 @@ const GioHangSlice = createSlice({
         }
       } else {
       }
+      
     },
     UpdateQtyItem: (state, action) => {
       const { maSP, qty } = action.payload;
       let items = current(state.chiTietNhapXuats);
       const obj = items.find((x) => x.maSanPham.trim() == maSP.trim());
       const index = items.indexOf(obj);
-      console.log({ obj, index ,maSP});
       if (index > -1) {
         state.chiTietNhapXuats[index].soLuong = qty;
         state.thanhTien = state.chiTietNhapXuats[index].donGia * qty;
@@ -148,6 +168,29 @@ const GioHangSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    //fetchPostApplyCoupon
+    builder.addCase(fetchPostApplyCoupon.pending,(state,action)=>
+    {
+        state.loadingCoupon=true
+    })
+    builder.addCase(fetchPostApplyCoupon.fulfilled,(state,action)=>
+    {
+        state.thanhTien =action.payload.thanhTien;
+        state.couponNavigation = action.payload.couponNavigation;
+        state.tienDaGiam = action.payload.tienDaGiam;
+        state.couponCode = action.payload.couponCode;
+        const addressString = JSON.stringify(state);
+        window.localStorage.setItem("cart", addressString);
+        state.loadingCoupon=false
+    })
+    builder.addCase(fetchPostApplyCoupon.rejected,(state,action)=>
+    {
+        state.loadingCoupon=false
+        message.open({
+          type:"error",
+          content:"promo code invalid"
+        })
+    })
     builder.addCase(fetchGetProvinces.pending, (state) => {
       state.ghnAPI.Loading.Provinces = true;
       state.ghnAPI.Wards = {};
@@ -202,6 +245,11 @@ const GioHangSlice = createSlice({
       state.ghnAPI.FeeInfo = action.payload;
       state.phiShip = phiShip || 0;
       state.thanhTien += phiShip;
+      if(state.tienDaGiam)
+      {
+        state.thanhTien -= state.tienDaGiam;
+
+      }
       // const CartString = JSON.stringify(state);
       // window.localStorage.setItem("cart", CartString);
     });
@@ -214,7 +262,7 @@ const GioHangSlice = createSlice({
   },
 });
 
-export const { ViewCart, AddToCart, RemoveItem, UpdateQtyItem } =
+export const { ViewCart, AddToCart, RemoveItem, UpdateQtyItem ,removeCoupon} =
   GioHangSlice.actions;
 
 export default GioHangSlice;

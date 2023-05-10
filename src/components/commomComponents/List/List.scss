@@ -1,4 +1,9 @@
-
+.List{
+    .ListChildren
+    {
+        max-height: 50vh;
+        overflow-y: scroll;
+    }
 .ItemAdd
 {
     background-color: white;
@@ -15,4 +20,6 @@
     &:hover{
         background-color: #333;
     }
+    
+}
 }

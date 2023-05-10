@@ -9,10 +9,13 @@ const Method = () => {
     <div>
       <Space direction='vertical'>
       <Link to="phone">
-            <MyButton icon={<Phone></Phone>}>Đăng nhập/đăng ký với số điện thoại</MyButton>
+            <MyButton icon={<Phone></Phone>}> <strong>continue with phone number</strong> </MyButton>
         </Link>
         <Link to="email/dang-nhap">
-            <MyButton icon={<Mail/>}>Tiếp tục với Email/Password</MyButton>
+            <MyButton icon={<Mail/>}>
+              
+            <strong>continue with email/password</strong>
+            </MyButton>
         </Link>
       </Space>
     </div>

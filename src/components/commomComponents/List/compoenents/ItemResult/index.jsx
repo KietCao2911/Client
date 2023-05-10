@@ -4,7 +4,6 @@ export const ItemResult=(props)=>
 {
     const {value,onItemClick,labelProps} = props;
     const {name,qty,price,code,img} = labelProps;
-    console.log({img})
   return <div className="itemResult" onClick={()=>onItemClick(value)}>
     
     <div className="productInfo" >

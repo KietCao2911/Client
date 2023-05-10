@@ -43,7 +43,8 @@ import * as BranchAPI from "~/redux/slices/Branch/BranchSlice";
 import * as BrandAPI from "~/redux/slices/Brand/BrandSlice";
 import * as SanPhamAPI from "~/redux/slices/SanPham";
 import * as VatAPI from "~/redux/slices/Vat/VatSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "react-feather";
 const CreateProduct = () => {
   const [khoiTaoKho, setKhoiTaoKho] = useState(false);
   const [initStyles, setInitStyle] = useState(false);
@@ -222,6 +223,18 @@ const CreateProduct = () => {
   return (
     <Form>
       <Row gutter={[10, 20]}>
+      <Col span={24}>
+           <Row justify={"space-between"}>
+           <Col >
+               <Link to="/admin/trang-quan-tri-san-pham">
+               <Row  align={"middle"} justify={"center"}>
+               <ArrowLeft/><p>Trở về trang sản phẩm</p>
+               </Row>
+               </Link>
+            </Col>
+            <Col ></Col>
+           </Row>
+        </Col>
         <Col xl={16} md={{ span: 24, order: 1 }} xs={{ span: 24, order: 2 }}>
           <div className="left">
             <Row gutter={[0, 20]}>

@@ -53,6 +53,8 @@ import CustomSpin from "~/components/CustomSpin";
 import { BASE_URL } from "~/const";
 import ShowMore from "~/components/commomComponents/ShowMore";
 import { getValue } from "@testing-library/user-event/dist/utils";
+import StickyActions from "~/components/commomComponents/stickyActions";
+import { v4 } from "uuid";
 const TrangTaoDonNhap = (props) => {
 
   const [step, setStep] = useState(0);
@@ -89,7 +91,7 @@ const TrangTaoDonNhap = (props) => {
       nhaCungCapNavigation: {},
       chiTietNhapXuats: [],
       loaiPhieu: "PHIEUNHAP",
-      maChiNhanh: "CN01",
+      maChiNhanh: "",
     },
   });
   const handleOnChangeBranch = (e) => {
@@ -102,7 +104,7 @@ const TrangTaoDonNhap = (props) => {
       nhaCungCapNavigation: ncc || {},
       chiTietNhapXuats: [],
       loaiPhieu: "PHIEUNHAP",
-      maChiNhanh: e || "CN01",
+      maChiNhanh: e || "",
     });
     setproductSearchText("");
   };
@@ -140,7 +142,6 @@ const TrangTaoDonNhap = (props) => {
         if (isCreated && !isReadOnly) {
           dispatch(PhieuNhapAPI.fetchPostPhieuNhaps({ body }));
         } else {
-          console.log({ CreatedBody: body });
           dispatch(PhieuNhapAPI.fetchPutPhieuNhaps({ body }));
         }
       }
@@ -149,7 +150,6 @@ const TrangTaoDonNhap = (props) => {
 
   const handleSubmitThanhToan = () => {
     const body = { ...Form.values };
-    console.log({ body });
     dispatch(PhieuNhapAPI.fetchPutThanhToan({ body }));
   };
   const handleSubmitNhapKho = () => {
@@ -161,7 +161,6 @@ const TrangTaoDonNhap = (props) => {
       Form.setValues(item);
     }
   }, [item]);
-  console.log({ FORM: Form.values });
   useEffect(() => {
     dispatch(BranchAPI.fetchGetBranch());
     if (isReadOnly || isUpdated || isReturn) {
@@ -186,11 +185,9 @@ const TrangTaoDonNhap = (props) => {
       );
     });
   };
-  const onClickProduct = (value) => {
-    console.log({value})
+  const onClickProduct = (value,url) => {
     const fncCheck = (ele) => ele.maSanPham == value.maSanPham;
 
-    console.log({ values: Form.values });
     let check = Form.values.chiTietNhapXuats?.some(fncCheck);
     if (!check) {
       const props = {
@@ -199,6 +196,7 @@ const TrangTaoDonNhap = (props) => {
         thanhTien: value.giaNhap * 1,
         donGia: Number(value.giaNhap) || 0,
         sanPhamNavigation: { tenSanPham: value.tenSanPham },
+        img:url||"",
         logText: "Nhập hàng",
       };
       const arrs = [...Form.values.chiTietNhapXuats];
@@ -229,69 +227,39 @@ const TrangTaoDonNhap = (props) => {
   };
   const handleTraHang = () => {
     const body = { ...Form.values };
-    console.log({ body });
     dispatch(PhieuNhapAPI.fetchPUTTraHang(body));
   };
   const handleHoanTien = () => {
     const body = { ...Form.values };
-    console.log({ body });
     dispatch(PhieuNhapAPI.fetchPUTHoanTien(body));
   };
+  const Actionsbtn =(
+    <Space style={{width:"100%"}}>
+            {isReturn && (
+              <Button loading={loading} onClick={handleTraHang}>Xác nhận trả hàng</Button>
+      
+      )}
+      {(isUpdated || isCreated) && (
+       <>
+        <Button  loading={loading}onClick={() => handleSubmit(1)}>Đặt hàng</Button>
+        <Button type="primary" loading={loading}  onClick={() => handleSubmit(2)}>{isCreated ? "Đặt hàng và duyệt" : "Xác nhận sửa"}</Button>
+       </>
+      
+      )}
+    </Space>
+  )
   return loading ? (
     <CustomSpin />
   ) : (
     <>
-      {isReturn && (
-        <FloatButton.Group
-          trigger="hover"
-          type="primary"
-          style={{ right: 94 }}
-          icon={<Save />}
-        >
-          <FloatButton
-            onClick={handleTraHang}
-            tooltip={<p>Xác nhận trả hàng</p>}
-          />
-        </FloatButton.Group>
-      )}
-      {(isUpdated || isCreated) && (
-        <FloatButton.Group
-          trigger="hover"
-          type="primary"
-          style={{ right: 94 }}
-          icon={<Save />}
-        >
-          {isCreated && (
-            <FloatButton
-              onClick={() => handleSubmit(1)}
-              tooltip={<p>Đặt hàng</p>}
-            />
-          )}
-          <FloatButton
-            onClick={() => handleSubmit(2)}
-            tooltip={<p>{isCreated ? "Đặt hàng và duyệt" : "Xác nhận sửa"}</p>}
-          />
-        </FloatButton.Group>
-      )}
+    
+
+
       <div className="TrangTaoDonNhap">
         <div className="mainContent">
           <Row gutter={[20, 20]}>
-            <Col md={24}>
-              <Row gutter={[20, 20]}>
-                <Col md={12}>
-                  {" "}
-                  <Space.Compact>
-                    <Space>
-                      {" "}
-                      <ArrowLeft />
-                    </Space>
-                    <Space>
-                      {" "}
-                      <a href={"./"}>Quay lại</a>{" "}
-                    </Space>
-                  </Space.Compact>{" "}
-                </Col>
-              </Row>
+            <Col  span={24}>
+              <StickyActions label="Trở về trang đặt hàng"  link="/admin/trang-quan-tri-nhap-hang"Actionsbtn={Actionsbtn}/>
             </Col>
             <Col md={24}>
               <Row justify={"space-between"} align="middle">
@@ -468,7 +436,7 @@ const TrangTaoDonNhap = (props) => {
                     )}
                     {isCreated ||
                     (isUpdated && productSearchText.length > 0) ? (
-                      <List onItemClick={(e) => console.log(e)}>
+                      <List >
                         {productSearchText &&
                           sanPhamTrongKho.length > 0 &&
                           sanPhamTrongKho.map((item) => {
@@ -486,7 +454,7 @@ const TrangTaoDonNhap = (props) => {
                               <ItemResult
                                 value={productInfo}
                                 onItemClick={(productInfo) =>
-                                  onClickProduct(productInfo)
+                                  onClickProduct(productInfo,url)
                                 }
                                 labelProps={{
                                   img: url,
@@ -643,11 +611,15 @@ const TrangTaoDonNhap = (props) => {
                         value={Form.values?.maChiNhanh?.trim()}
                         onChange={(e) => handleOnChangeBranch(e)}
                         style={{ width: "100%" }}
+                        defaultValue={[""]}
                       >
+                         <Select.Option value={""}>
+                              Chọn chi nhánh
+                              </Select.Option>
                         {branchs &&
                           branchs.map((branch) => {
                             return (
-                              <Select.Option value={branch?.maChiNhanh.trim()}>
+                              <Select.Option key={v4()} value={branch?.maChiNhanh.trim()}>
                                 {branch?.tenChiNhanh}
                               </Select.Option>
                             );

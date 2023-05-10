@@ -26,15 +26,18 @@ import * as ThanhToanApi from "~/redux/slices/ThanhToanSlice";
 import CustomSpin from "~/components/CustomSpin";
 import OrderDsc from "~/components/commomComponents/OrderDsc/OrderDsc";
 import ProductInfoItem from "~/components/pages/Cart/components/ProductInfoItem";
-import { CreditCard, Gift, List, Truck } from "react-feather";
+import { CreditCard, DollarSign, Gift, List, Phone, Plus, Tag, Truck } from "react-feather";
 import SelectCustom, {
   Option,
 } from "~/components/commomComponents/SelectCustom";
+import convertVND from "~/components/utils/ConvertVND";
+import Promo from "./Promo";
 
 const OrderForm = (props) => {
   document.title = "Trang thông tin giao hàng";
+  const [promo,setPromo] = useState("")
   const { user } = useSelector((state) => state.XacThuc);
-  const { ghnAPI, chiTietNhapXuats, thanhTien, tongSoLuong, phiShip } =
+  const { ghnAPI, chiTietNhapXuats, thanhTien, tongSoLuong, phiShip,couponCode,chiTietCoupons,tienDaGiam,loadingCoupon ,couponNavigation} =
     useSelector((state) => state.GioHang);
   const [infoLocalStorage, setInfoLocalStorage] = useState(() => {
     const values =
@@ -123,7 +126,7 @@ const OrderForm = (props) => {
       );
     }
   };
-  const handleOrder = () => {
+  const handleOrder = (method) => {
     const diaChiNavigation = orderForm.values;
     const cart = JSON.parse(window.localStorage.getItem("cart"));
     cart.thanhTien = thanhTien;
@@ -132,9 +135,26 @@ const OrderForm = (props) => {
       ...cart,
       diaChiNavigation,
     };
+    if(!phiShip||!thanhTien)
+    {
+      alert("Phí giao hàng chưa được tính, vui lòng thao tác lại");
+      return;
+    }
     if (Object.keys(orderForm.errors).length <= 0) {
       // console.log({ order: params });
-      dispatch(ThanhToanApi.fetchPostWithGuess(params));
+      if(method=="COD")
+      {
+
+        dispatch(ThanhToanApi.OrderWithCOD(params));
+      }
+      else if(method=="VNPAY")
+      {
+        
+        dispatch(ThanhToanApi.OrderWithVNPAY(params));
+      }
+      else{
+
+      }
     } else {
       message.open({
         content: "Kiểm tra lại thông tin",
@@ -156,9 +176,7 @@ const OrderForm = (props) => {
     orderForm.values?.WardID &&
       dispatch(GiaoHangNhanhApi.fetchGetWard(orderForm.values?.DistrictID));
   };
-  const test = useMemo(() => {
-    fetch();
-  }, [orderForm.values.diaChiNavigation]);
+
   useEffect(() => {
     const address = JSON.parse(window.localStorage.getItem("address"));
 
@@ -168,53 +186,55 @@ const OrderForm = (props) => {
     <form onSubmit={orderForm.handleSubmit} className="OrderForm" ref={formRef}>
       <Row gutter={[20, 20]}>
         <Col span={24}>
-          <Card title="Địa chỉ giao hàng">
+          <Row gutter={[20,20]}>
+            <Col md={12} xs={24}>
+            <Card title="SHIPPING ADDRESS">
             <Row gutter={[20, 20]}>
               <Col span={24}>
                 <InputText
                   className={`${orderForm.errors.Name && "error"} `}
                   name={"Name"}
-                  label="Tên"
+                  label="name"
                   value={orderForm.values.Name}
                   onChange={orderForm.handleChange}
                 />
                 {orderForm.touched.Name && orderForm.errors.Name && (
-                  <span className="error">{orderForm.errors.Name}</span>
+                  <small className="error">{orderForm.errors.Name}</small>
                 )}
               </Col>
               <Col span={24}>
                 <InputText
                   className={`${orderForm.errors.Phone && "error"} `}
                   name={"Phone"}
-                  label="Số điện thoại"
+                  label="phone"
                   value={orderForm.values.Phone}
                   onChange={orderForm.handleChange}
                 />
                 {orderForm.errors.Phone && (
-                  <span className="error">{orderForm.errors.Phone}</span>
+                  <small className="error">{orderForm.errors.Phone}</small>
                 )}
               </Col>
               <Col span={24}>
                 <InputText
                   className={`${orderForm.errors.Email && "error"} `}
                   name={"Email"}
-                  label="Email"
+                  label="email"
                   value={orderForm.values.Email}
                   onChange={orderForm.handleChange}
                 />
                 {orderForm.errors.Email && (
-                  <span className="error">{orderForm.errors.Email}</span>
+                  <small className="error">{orderForm.errors.Email}</small>
                 )}
               </Col>
               <Col span={24}>
                 <InputText
                   name={"AddressDsc"}
-                  label="Chi tiết địa chỉ"
+                  label="address detail"
                   value={orderForm.values.AddressDsc}
                   onChange={orderForm.handleChange}
                 />
                 {orderForm.errors.AddressDsc && (
-                  <span className="error">{orderForm.errors.AddressDsc}</span>
+                  <small className="error">{orderForm.errors.AddressDsc}</small>
                 )}
               </Col>
               <Col span={24}>
@@ -223,7 +243,7 @@ const OrderForm = (props) => {
                   onChange={handleChangeProvince}
                   name={"ProvinceID"}
                 >
-                  <Option value={null}>Vui lòng chọn Tỉnh/Thành phố</Option>
+                  <Option value={null}>Province</Option>
                   {Provinces.data &&
                     Provinces.data.map((item) => {
                       return (
@@ -243,7 +263,7 @@ const OrderForm = (props) => {
                     })}
                 </SelectCustom>
                 {orderForm.errors.ProvinceID && (
-                  <span className="error">{orderForm.errors.ProvinceID}</span>
+                  <small className="error">{orderForm.errors.ProvinceID}</small>
                 )}
               </Col>
               <Col span={24}>
@@ -254,7 +274,7 @@ const OrderForm = (props) => {
                   name="DistrictID"
                   defaultLabel="Quận/Huyện"
                 >
-                  <Option value={""}>Vui lòng chọn Quận/Huyện</Option>
+                  <Option value={""}>District</Option>
                   {Districts.data &&
                     Districts?.data?.map((item) => {
                       return (
@@ -274,7 +294,7 @@ const OrderForm = (props) => {
                     })}
                 </SelectCustom>
                 {orderForm.errors.DistrictID && (
-                  <span className="error">{orderForm.errors.DistrictID}</span>
+                  <small className="error">{orderForm.errors.DistrictID}</small>
                 )}
               </Col>
               <Col span={24}>
@@ -285,7 +305,7 @@ const OrderForm = (props) => {
                   defaultLabel="Xã/Phường"
                   name="WardID"
                 >
-                  <Option value={""}>Vui lòng chọn Xã/Phường</Option>
+                  <Option value={""}>Ward</Option>
                   {Wards.data &&
                     Wards?.data?.map((item) => {
                       return (
@@ -299,50 +319,51 @@ const OrderForm = (props) => {
                     })}
                 </SelectCustom>
                 {orderForm.errors.WardID && (
-                  <span className="error">{orderForm.errors.WardID}</span>
+                  <small className="error">{orderForm.errors.WardID}</small>
                 )}
               </Col>
             </Row>
           </Card>
-        </Col>
+            </Col>
+            <Col md={12} xs={24}>
+              <Row gutter={[20,20]}>
         <Col span={24}>
-          <Card
-            title="Phương thức thanh toán"
-            className="PaymentMethod"
-            extra={<CreditCard />}
-          >
-            <Radio.Group
-              value={orderForm.values?.phuongThucThanhToan}
-              onChange={(e) => handlePaymentMethod(e.target.value)}
-            >
-              <Space direction="vertical">
-                <Radio value="COD">Thanh toán khi nhận hàng</Radio>
-                <Radio value={"VNPAY"}>
-                  {" "}
-                  <Truck />
-                  Thanh toán với VNPAY{" "}
-                </Radio>
+              <Space style={{width:"100%"} } direction="vertical">
+              {
+              (  !couponCode)&&<InputText
+                loading={loadingCoupon}
+                  value={promo}
+                  onChange={(e)=>setPromo(e.target.value)}
+                    icon={<Plus onClick={()=>
+                      {
+                      if(promo)
+                      {
+                        const diaChiNavigation = orderForm.values;
+                        const cart = JSON.parse(window.localStorage.getItem("cart"));
+                        cart.thanhTien = thanhTien;
+                        cart.phiShip = phiShip;
+                        cart.couponCode = promo;
+                        const params = {
+                          ...cart,
+                          diaChiNavigation,
+                        };
+                        dispatch(GiaoHangNhanhApi.fetchPostApplyCoupon(params))
+                      }
+                      }
+                      }/>}
+                      label={`Enter your promo code `}
+                    ></InputText>
+              }
+
+            {couponCode&&<Promo/>}
               </Space>
-            </Radio.Group>
-          </Card>
-        </Col>
-        <Col span={24}>
-          <Card title={`Mã khuyến mãi/quà tặng`} extra={<Gift />}>
-            <InputText
-              label={`Nhập mã khuyến mãi có được tại đây `}
-            ></InputText>
-          </Card>
         </Col>
         {loading && <CustomSpin></CustomSpin>}
         <Col span={24}>
-          <div className="InfoOrder">
-            <div className="Login">
-              {/* <LoginComponent></LoginComponent> */}
-            </div>
-
+          <div className="InfoOrder"> 
             <div className="OrderDetails">
-              <Card title="Chi tiết đơn hàng">
-                <Row gutter={[0, 20]}>
+              <Card title="ORDER DETAILS">
+                <Row gutter={[20, 20]}>
                   {chiTietNhapXuats &&
                     chiTietNhapXuats.map((item) => {
                       return (
@@ -356,38 +377,62 @@ const OrderForm = (props) => {
                     })}
                 </Row>
               </Card>
-
-              {/* <ProductInfoItem></ProductInfoItem>
-          <ProductInfoItem></ProductInfoItem>
-          <ProductInfoItem></ProductInfoItem> */}
             </div>
-            {Object.keys(user).length > 0 && (
-              <>
-                <MyButton onClick={() => handleOrder("VNPAY")}>
-                  Thanh toán với VNPAY
-                </MyButton>
-                <MyButton onClick={() => handleOrder("COD")}>
-                  Thanh toán khi nhận hàng
-                </MyButton>
-              </>
-            )}
           </div>
         </Col>
         <Col span={24}>
-          {" "}
-          <OrderDsc
-            ship={FeeInfo?.data?.total}
-            disableBtnPayment={true}
-          ></OrderDsc>
+              <Row>
+                <Col span={24}>
+                  <Row justify={"space-between"}>
+                    <Col><b>x{tongSoLuong} items:</b></Col>
+                    <Col>              {convertVND(
+                chiTietNhapXuats?.reduce(
+                  (x, y) => x + (y?.donGia * y?.soLuong || 0),
+                  0
+                )
+              ) || convertVND(0)}</Col>
+                  </Row>
+                </Col>
+                {couponCode&& <Col span={24}>
+                  <Row justify={"space-between"}>
+                    <Col><b>Promotion: ( {couponCode} ) </b></Col>
+                    <Col>
+                    <del>
+                    {convertVND(tienDaGiam||0)}
+                    </del>
+                    </Col>
+                  </Row>
+                </Col>}
+                <Col span={24}>
+                  <Row justify={"space-between"}>
+                    <Col><b>Total:</b></Col>
+                    <Col>{convertVND(thanhTien||0)}</Col>
+                  </Row>
+                </Col>
+
+              </Row>
+          
         </Col>
+        </Row>
+            </Col>
+          </Row>
+
+        </Col>
+
       </Row>
 
       <div className="actionsOrder">
         <Space direction="vertical" style={{ width: "100%" }}>
           <div className="OrderDsc"></div>
-          <button type="submit" className="btnAcceptOrder">
-            THANH TOÁN
-          </button>
+          <MyButton onClick={()=>handleOrder("COD")}  loading={loading} type="submit">
+           <strong> ORDER NOW</strong>
+          </MyButton >
+          <MyButton  onClick={()=>handleOrder("VNPAY")} style={{backgroundColor:"#E23E57",color:"white"}} loading={loading} type="submit">
+           <strong> ORDER/PAYMENT WITH VNPAY</strong>
+          </MyButton >
+          <MyButton loading={loading}  onClick={()=>handleOrder("PAYPAL")} style={{backgroundColor:"#002E80",color:"white"}} >
+           <strong>ORDER/PAYMENT WITH PAYPAL</strong>
+          </MyButton >
         </Space>
       </div>
     </form>

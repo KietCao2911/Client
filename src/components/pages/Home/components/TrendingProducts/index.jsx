@@ -15,7 +15,8 @@ const TrendingProducts = () => {
   }, []);
   return (
     <div>
-      <ListProducts           type={"slider"}
+      <ListProducts       
+          // type={"slider"}
  loading={loading} items={trendingsProduct} />
     </div>
   );

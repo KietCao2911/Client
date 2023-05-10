@@ -13,7 +13,8 @@ import { v4 } from "uuid";
 import "./BSTSlider.scss";
 import { ArrowDownRight, ArrowRight } from "react-feather";
 const BSTSlider = () => {
-  const { boSuuTaps } = useSelector((state) => state.BoSuuTap);
+  const { boSuuTaps,types } = useSelector((state) => state.BoSuuTap);
+  
   const dispatch = useDispatch();
   useEffect(() => {}, []);
 
@@ -32,7 +33,7 @@ const BSTSlider = () => {
         modules={[Pagination]}
         className="mySwiper"
       >
-        {boSuuTaps.map((item) => {
+        {types?.Banner?.map((item) => {
           return (
             <div className="ImgContainer" key={v4()}>
               <SwiperSlide key={v4()}>

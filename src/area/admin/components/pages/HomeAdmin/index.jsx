@@ -57,7 +57,7 @@ return <Row gutter={[10,10]}>
   <Col span={24}>
   </Col>
   <Col span={24}>
-    <Row>
+    <Row gutter={[10,10]}>
       <Col md={6}>
         <Card  title="Doanh thu" bordered={false} >
         <Statistic
@@ -77,18 +77,57 @@ return <Row gutter={[10,10]}>
         </Card>
       </Col>
       <Col md={6}>
-        <Card title="Tổng thu">
-        {convertVND(500000)}
+                <Card  title="Doanh thu" bordered={false} >
+        <Statistic
+          title="Active"
+          value={convertVND(500000)}
+        />
+        <Statistic
+          title="Active"
+          value={11.28}
+          precision={2}
+          valueStyle={{ color: '#3f8600' }}
+          prefix={<ArrowUp />}
+          suffix="%"
+        />
+
+       
         </Card>
       </Col>
       <Col md={6}>
-        <Card  title="Tổng chi">
-        {convertVND(500000)}
+               <Card  title="Doanh thu" bordered={false} >
+        <Statistic
+          title="Active"
+          value={convertVND(500000)}
+        />
+        <Statistic
+          title="Active"
+          value={11.28}
+          precision={2}
+          valueStyle={{ color: '#3f8600' }}
+          prefix={<ArrowUp />}
+          suffix="%"
+        />
+
+       
         </Card>
       </Col>
       <Col md={6}>
-        <Card title="Tổng giảm giá">
-        {convertVND(500000)}
+               <Card  title="Doanh thu" bordered={false} >
+        <Statistic
+          title="Active"
+          value={convertVND(500000)}
+        />
+        <Statistic
+          title="Active"
+          value={11.28}
+          precision={2}
+          valueStyle={{ color: '#3f8600' }}
+          prefix={<ArrowUp />}
+          suffix="%"
+        />
+
+       
         </Card>
       </Col>
     

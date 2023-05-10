@@ -67,16 +67,7 @@ const columns = [
       );
     },
   },
-  {
-    title: "Hành động",
-    render: (_, record) => {
-      return (
-        <Link to={`${record.id}`}>
-          <Button>Xem</Button>
-        </Link>
-      );
-    },
-  },
+
 ];
 const TrangChinh = () => {
   document.title="Trang quản lý đơn nhập"
@@ -103,7 +94,10 @@ const TrangChinh = () => {
     <FloatButton onClick={()=>nav("tao-moi")} icon={<FilePlus/>} tooltip="Thêm mới phiếu nhập">
      
     </FloatButton>
-      <Table onChange={handleTableChange} columns={columns} dataSource={items}></Table>
+      <Table rowClassName={"icon"} onRow={(record,index)=>
+      {
+        return {onClick:(e)=> nav(`${record.id}`)}
+      }} onChange={handleTableChange} columns={columns} dataSource={items}></Table>
     </>
   );
 };

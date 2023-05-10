@@ -22,37 +22,29 @@ const initialState={
     phiShip:0,
     giamGia:0,
 }
-export const fetchPostWithGuess =createAsyncThunk("ThanhToanSlice/fetchPostWithGuess",async(body)=>
+export const OrderWithVNPAY =createAsyncThunk("ThanhToanSlice/OrderWithVNPAY",async(body)=>
 {
-    const res = await ThanhToanApi.fetchPostWithGuess(body);
+    const res = await ThanhToanApi.OrderWithVNPAY(body);
     return res;
 })
-export const fetchPostWithUser =createAsyncThunk("ThanhToanSlice/fetchPostWithUser",async(body)=>
+export const OrderWithCOD =createAsyncThunk("ThanhToanSlice/fetchPostWithUser",async(body)=>
 {
-    const res = await ThanhToanApi.fetchPostWithUser(body);
+    const res = await ThanhToanApi.OrderWithCOD(body);
     return res;
 })
 const ThanhToanSlice =createSlice({
     initialState,
     name:"ThanhToan",
     reducers:{
-        AddressInfo:(state,action)=>
-        {
-            console.log({payload:action.payload})
-            state.DiaChi = action.payload;
-        },
-        ChangeValueField:(state,action)=>
-        {
-            state[action.payload.key] = action.payload.value;
-        }
+        
     },
     extraReducers:(builder)=>
     {
-        builder.addCase(fetchPostWithGuess.pending,(state)=>
+        builder.addCase(OrderWithCOD.pending,(state)=>
         {
             state.loading=true;
         })
-        builder.addCase(fetchPostWithGuess.fulfilled,(state,action)=>
+        builder.addCase(OrderWithCOD.fulfilled,(state,action)=>
         {
             state.loading=false;
             if(action.payload.redirect)
@@ -65,12 +57,12 @@ const ThanhToanSlice =createSlice({
                     message:"Đặt hàng thành công.",
                     type:"success",
                 })
-                // localStorage.removeItem("cart");
-                // window.location.replace("/")
+                localStorage.removeItem("cart");
+                window.location.replace("../")
             }
 
         })
-        builder.addCase(fetchPostWithGuess.rejected,(state)=>
+        builder.addCase(OrderWithCOD.rejected,(state)=>
         {
             state.loading=false;
             notification.open({
@@ -79,11 +71,11 @@ const ThanhToanSlice =createSlice({
             })
         })
         //fetchPostWithUser
-        builder.addCase(fetchPostWithUser.pending,(state)=>
+        builder.addCase(OrderWithVNPAY.pending,(state)=>
         {
             state.loading=true;
         })
-        builder.addCase(fetchPostWithUser.fulfilled,(state,action)=>
+        builder.addCase(OrderWithVNPAY.fulfilled,(state,action)=>
         {
             state.loading=false;
             if(action.payload.redirect)
@@ -97,9 +89,9 @@ const ThanhToanSlice =createSlice({
                 })
             }
             state = {};
-             window.location.replace("/")
+            //  window.location.replace("/")
         })
-        builder.addCase(fetchPostWithUser.rejected,(state)=>
+        builder.addCase(OrderWithVNPAY.rejected,(state)=>
         {
             state.loading=false;
             notification.open({

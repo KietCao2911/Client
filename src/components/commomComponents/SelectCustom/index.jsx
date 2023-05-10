@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./SelectCustom.scss";
 import { ArrowDown, ChevronDown } from "react-feather";
 import { v4 } from "uuid";
+import LoadingElement from "../LoadingElement";
 export const Option = (props) => {
   return (
     <li {...props} key={v4()} className="option">
@@ -10,7 +11,7 @@ export const Option = (props) => {
   );
 };
 const SelectCustom = (props) => {
-  const { value, setValue, children } = props;
+  const { value, setValue, children,loading } = props;
   const optionsRef = useRef();
   const [active, setActive] = useState(false);
   const [label, setSetLabel] = useState("Lựa chọn của bạn");
@@ -20,7 +21,6 @@ const SelectCustom = (props) => {
       nodeLists.forEach((el) => {
         const label = el?.innerHTML || "";
         const valueChild = el.getAttribute("value") || "";
-        console.log({ label, value, valueChild });
         if (value == valueChild) {
           setSetLabel(label);
           setActive(false);
@@ -37,7 +37,7 @@ const SelectCustom = (props) => {
         <span> {label}</span>
         <div className="icon iconDown">
           {" "}
-          <ChevronDown />{" "}
+         {loading?<LoadingElement/>:<ChevronDown/>}
         </div>
       </div>
       <ul ref={optionsRef} className={`options ${active ? "active" : ""}`}>

@@ -89,13 +89,16 @@ function App() {
               <Route
                 key={v4()}
                 element={
-                  Object.keys(user).length>0&& user?.role.some(x=>x.roleCode=="USER") ? (
-                    <Layout>
-                      <Page />
-                    </Layout>
-                  ) : (
-                    <NotFound />
-                  )
+                  // Object.keys(user).length>0&& user?.role.some(x=>x.roleCode=="USER") ? (
+                  //   <Layout>
+                  //     <Page />
+                  //   </Layout>
+                  // ) : (
+                  //   <NotFound />
+                  // )
+                  <Layout>
+                  <Page />
+                </Layout>
                 }
                 path={route.path}
               ></Route>

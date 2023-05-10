@@ -98,8 +98,6 @@ const DanhMucSlice = createSlice({
     });
     builder.addCase(fetchCategoryAll.pending, (state, action) => {
       state.loading = true;
-      state.items=[];
-      state.itemsArr=[];
     });
     builder.addCase(fetchCategoryAll.fulfilled, (state, action) => {
       
