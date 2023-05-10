@@ -20,20 +20,17 @@ import {
 } from "antd";
 import React, { useCallback, useEffect, useMemo, useTransition } from "react";
 import { useState } from "react";
-import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
 import convertVND from "~/components/utils/ConvertVND";
 import "./TrangTaoDonNhap.scss";
 import * as NCCAPI from "~/redux/slices/NCC/index";
-import * as SanPhamAPI from "~/redux/slices/SanPham/index";
+
 import FormCreateNCC from "~/components/Forms/CreateNCCForm";
 import { useDispatch, useSelector } from "react-redux";
 import List from "~/components/commomComponents/List";
 import ItemResult from "~/components/commomComponents/List/compoenents/ItemResult";
 import { useFormik } from "formik";
-import ThemSanPham from "../../../QuanTriSanPham/pages/ThemSanPham";
 import ProductsTable from "./components/ProductsTable";
-import convertNumberToWords from "~/components/utils/NumberToWord";
 import * as BranchAPI from "~/redux/slices/Branch/BranchSlice";
 import * as KhoHangAPI from "~/redux/slices/KhoHang/KhoHangSlice";
 import * as PhieuNhapAPI from "~/redux/slices/PhieuNhap/PhieuNhap";
@@ -633,9 +630,6 @@ const TrangTaoDonNhap = (props) => {
           </Row>
         </div>
         <FormCreateNCC open={openAddNCC} onCancel={setOpenAddNCC} />
-        {/* <Modal style={{width:"100%"}} open={true}>
-      <ThemSanPham/>
-    </Modal> */}
       </div>
     </>
   );

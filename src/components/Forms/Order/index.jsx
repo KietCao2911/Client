@@ -2,13 +2,9 @@ import { useFormik } from "formik";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as Yup from "yup";
 import InputText from "~/components/commomComponents/InputText";
-import { SelectInput } from "~/components/commomComponents/SelectInput";
 import * as GiaoHangNhanhApi from "~/redux/slices/GioHang/GioHangSlice";
 import { useDispatch, useSelector } from "react-redux";
 import MyButton from "~/components/commomComponents/Button";
-import { Link } from "react-router-dom";
-import { CarOutlined } from "@ant-design/icons";
-import ThanhToanSlice, { AddressInfo } from "~/redux/slices/ThanhToanSlice";
 import "./OrderForm.scss";
 import {
   Alert,

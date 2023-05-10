@@ -4,22 +4,16 @@ import React, { memo, useCallback, useContext, useEffect, useState } from "react
 import InputText from "~/components/commomComponents/InputText";
 import * as Yup from "yup";
 import { SelectInput } from "~/components/commomComponents/SelectInput";
-import * as ThanhToanApi from "~/redux/slices/ThanhToanSlice";
 import { useDispatch, useSelector } from "react-redux";
 import * as GiaoHangNhanhApi from "~/redux/slices/GioHang/GioHangSlice";
-import {
-  getFeeGHN,
-  fetchGetProvince,
-  fetchGetDistrict,
-  fetchGetWard,
-} from "~/redux/slices/GHNAPI/GhnApi";
+
 import SelectCustom,{Option} from "~/components/commomComponents/SelectCustom";
 const AddressForm = (props) => {
 
   const dispatch = useDispatch();
   const { ghnAPI, chiTietNhapXuats, thanhTien, tongSoLuong, phiShip } =
     useSelector((state) => state.GioHang);
- const { Provinces, Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
+ const { Provinces, Districts, Wards, Loading } = ghnAPI;
   const { setLoading,orderForm, isUpdated, isReadOnly, isCreated } = props;
   const handleChangeProvince = (id, name) => {
     orderForm.setFieldValue("diaChiNavigation.ProvinceName", name);

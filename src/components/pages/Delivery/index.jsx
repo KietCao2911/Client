@@ -8,7 +8,6 @@ import HaveUserComponent from "../../commomComponents/HaveUserAddressComponent";
 import { Card, Col, notification, Radio, Row, Space } from "antd";
 import OrderForm from "~/components/Forms/Order";
 import convertVND from "~/components/utils/ConvertVND";
-import * as  ghnAPI  from "~/redux/slices/GHNAPI/GhnSlice";
 import * as ThanhToanApi from "~/redux/slices/ThanhToanSlice";
 import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
@@ -20,6 +19,7 @@ const DeliveryPage = () => {
 
   const { user } = useSelector((state) => state.XacThuc);
   const { DiaChi, loading } = useSelector((state) => state.ThanhToan);
+  const { ghnAPI } = useSelector((state) => state.GioHang);
   const { Provinces, Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
   const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation } = useSelector(
     (state) => state.GioHang

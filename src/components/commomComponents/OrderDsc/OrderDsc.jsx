@@ -15,7 +15,7 @@ const OrderDsc = (props) => {
   const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip } = useSelector(
     (state) => state.GioHang
   );
-  const { FeeInfo } = useSelector((state) => state.GiaoHangNhanh);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(ViewCart());
