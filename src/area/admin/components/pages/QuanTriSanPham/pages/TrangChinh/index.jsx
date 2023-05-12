@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
-import { Col, FloatButton, Input, Row, Select, Space, Table } from "antd";
+import { Button, Col, FloatButton, Input, Row, Select, Space, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import * as SanPhamAPI from "~/redux/slices/SanPham";
 import { useEffect } from "react";
@@ -16,6 +16,7 @@ import "./TrangChinh.scss";
 import * as TypeAPI from "~/redux/slices/Type/TypeSlice";
 import * as BrandAPI from "~/redux/slices/Brand/BrandSlice";
 import { Plus } from "react-feather";
+import StickyActions from "~/components/commomComponents/stickyActions";
 const expandedRowRender = (props) => {
   const { data } = props;
   const columns = [
@@ -171,12 +172,12 @@ const TrangChinh = () => {
   {
     dispatch(SanPhamAPI.fetchGetAllProducts({brand:id}))
   }
+  const Actionsbtn=(
+    <Link to="tao-moi"> <Button type="primary">Thêm mới</Button></Link>
+  )
   return (
     <div className="TrangChinhQLSP">
-      <div className="filesActions">
-        <div className="printDocs"></div>
-        <FloatButton onClick={()=>nav("tao-moi")} icon={<Plus/>} tooltip="Thêm mới sản phẩm"></FloatButton>
-      </div>
+        <StickyActions IconBack={<></>} Actionsbtn={Actionsbtn}/>
       <Space direction="vertical" className="productsTable">
         <div className="filterActions">
           <Row gutter={[10,10]} align={"middle"}>
@@ -214,6 +215,7 @@ const TrangChinh = () => {
             </div>
           )}
           <Table
+          scroll={{ x: 400 }}
             loading={loading}
             rowSelection={rowSelection}
             dataSource={data}

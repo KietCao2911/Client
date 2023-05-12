@@ -62,7 +62,6 @@ const TrangChinh = () => {
   const { boSuuTaps, boSuuTap, loading } = useSelector(
     (state) => state.BoSuuTap
   );
-  console.log({ boSuuTaps, boSuuTap, loading });
   useEffect(() => {
     dispatch(fetchAllBST({}));
   }, []);

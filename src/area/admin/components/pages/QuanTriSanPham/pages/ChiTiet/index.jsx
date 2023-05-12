@@ -18,7 +18,6 @@ const ChiTiet = () => {
   const dispatch = useDispatch();
 
   const params = useParams();
-  console.log({ items });
   useEffect(() => {
     dispatch(SanPhamAPI.fetchGetProduct({ maSanPham: params.maSP }));
   }, [params.maSP]);

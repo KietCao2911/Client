@@ -40,6 +40,14 @@ export const adminRoute = [
     icon:<Box/>
   },
   {
+    path: "/admin/trang-quan-tri-nhap-hang/*",
+    element: TrangQuanTriNhapHang,
+    name:"Quản trị nhập hàng",
+    slug: "/admin/trang-quan-tri-nhap-hang/",
+    role:["ADMIN"],
+    icon:<Truck/>
+  },
+  {
     path: "/admin/quan-tri-kho-hang/*",
     element: QuanTriKhoHang,
     name:"Quản trị kho hàng",
@@ -105,14 +113,6 @@ export const adminRoute = [
     icon:<Menu/>
   },
 
-  {
-    path: "/admin/trang-quan-tri-nhap-hang/*",
-    element: TrangQuanTriNhapHang,
-    name:"Quản trị nhập hàng",
-    slug: "/admin/trang-quan-tri-nhap-hang/",
-    role:["ADMIN"],
-    icon:<Truck/>
-  },
   {
   path: "/admin/phan-quyen/*",
     element: QuanTriQuyen,

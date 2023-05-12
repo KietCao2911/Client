@@ -24,11 +24,11 @@
             }
 
             .dsc {
-
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
+                height: calc(1.2em * 3); /* chiều cao tương đương 3 dòng */
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-line; /* sử dụng pre-line để giữ nguyên các khoảng trắng */
             }
         }
     }

@@ -7,6 +7,7 @@ import {
   SaveOutlined,
 } from "@ant-design/icons";
 import {
+  Button,
   Card,
   Col,
   FloatButton,
@@ -45,6 +46,7 @@ import * as SanPhamAPI from "~/redux/slices/SanPham";
 import * as VatAPI from "~/redux/slices/Vat/VatSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "react-feather";
+import StickyActions from "~/components/commomComponents/stickyActions";
 const CreateProduct = () => {
   const [khoiTaoKho, setKhoiTaoKho] = useState(false);
   const [initStyles, setInitStyle] = useState(false);
@@ -69,7 +71,6 @@ const CreateProduct = () => {
     value: "",
   });
   const nav = useNavigate();
-  console.log({ branchs });
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(KichCoAPI.fetchALLSize());
@@ -115,7 +116,6 @@ const CreateProduct = () => {
     giaVon: form.values.product.giaVon,
     tenSanPham: form.values.product.tenSanPham,
   };
-  console.log({ modalAddNewBrand, modalAddNewType });
   const handleAddNewType = () => {
     const body = {
       name: modalAddNewType.value,
@@ -180,7 +180,6 @@ const CreateProduct = () => {
     };
     if (form.values.product.tenSanPham) {
       try {
-        console.log({ body: params });
         dispatch(SanPhamAPI.fetchPostProduct({ body: params }));
       } catch (error) {}
     }
@@ -220,25 +219,21 @@ const CreateProduct = () => {
       ],
     ]);
   };
+  const Actionsbtn=(
+    <Space>
+      <Button onClick={handleSubmt} type="primary">Tạo mới</Button>
+    </Space>
+  )
   return (
     <Form>
       <Row gutter={[10, 20]}>
-      <Col span={24}>
-           <Row justify={"space-between"}>
-           <Col >
-               <Link to="/admin/trang-quan-tri-san-pham">
-               <Row  align={"middle"} justify={"center"}>
-               <ArrowLeft/><p>Trở về trang sản phẩm</p>
-               </Row>
-               </Link>
-            </Col>
-            <Col ></Col>
-           </Row>
-        </Col>
-        <Col xl={16} md={{ span: 24, order: 1 }} xs={{ span: 24, order: 2 }}>
-          <div className="left">
-            <Row gutter={[0, 20]}>
-              <Col md={24}>
+        <StickyActions Actionsbtn={Actionsbtn} link={"/admin/trang-quan-tri-san-pham"} label="Trở về trang sản phẩm">
+
+        </StickyActions>
+      
+        <Col span={24}>
+            <Row gutter={[20, 20]}>
+              <Col md={16} xs={24}>
                 <Card title="Thông tin sản phẩm" style={{ width: "100%" }}>
                   <Row gutter={[20, 20]}>
                     <Col md={12} xs={24}>
@@ -322,77 +317,9 @@ const CreateProduct = () => {
                   </Row>
                 </Card>
               </Col>
-              {/* <Col md={24} xs={24}>
-                <Card
-                  style={{ width: "100%" }}
-                  title="Khởi tạo kho hàng"
-                  extra={<Switch onChange={(e) => onSwitchKho(e)} />}
-                >
-                  <p>Ghi nhận số lượng tồn ban đầu</p>
-                  {khoiTaoKho && (
-                    <Row gutter={[20, 20]}>
-                      <Col md={12} xs={24}>
-                        <InputText
-                          label="Tồn kho ban đầu"
-                          value={form.values.product.soLuongTon}
-                          onChange={(e) =>
-                            handleChangePrice({ e, fieldName: "soLuongTon" })
-                          }
-                        ></InputText>
-                      </Col>
-                      <Col md={12} xs={24}>
-                        <InputText
-                          label="Giá vốn"
-                          placeHolder="Giá vốn"
-                          value={form.values.product.giaVon}
-                          onChange={(e) =>
-                            handleChangePrice({ e, fieldName: "giaVon" })
-                          }
-                        ></InputText>
-                      </Col>
-                    </Row>
-                  )}
-                </Card>
-              </Col> */}
-              <Col xs={24} md={24}>
-                <Card
-                  style={{ width: "100%" }}
-                  title="Khởi tạo phiên bản"
-                  extra={<Switch onChange={(e) => setInitStyle(e)} />}
-                >
-                  <p>Thêm các phiên bản cho sản phẩm</p>
-                  <Row gutter={[0, 40]}>
-                    {" "}
-                    {initStyles &&
-                      versions.map((i, index) => (
-                        <ItemVersion
-                          colors={colors}
-                          sizes={sizes}
-                          item={i}
-                          branchs={branchs}
-                          {...paramsQty}
-                          index={index}
-                          versions={versions}
-                          setVersions={setVersions}
-                        />
-                      ))}
-                  </Row>
-                  {initStyles && (
-                    <MyButton
-                      style={{ width: "20rem" }}
-                      onClick={() => handleClickAddFieldChild()}
-                    >
-                      Thêm trường
-                    </MyButton>
-                  )}
-                </Card>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-        <Col xl={8} md={{ span: 24, order: 2 }} xs={{ span: 24, order: 1 }}>
-          <div className="right">
-            <Row gutter={[0, 20]}>
+           
+           <Col md={8} xs={24}>
+           <Row gutter={[0, 20]}>
               <Col span={24}>
                 <Card
                   title="Loại hàng"
@@ -473,59 +400,49 @@ const CreateProduct = () => {
                   phẩm này.
                 </Card>
               </Col>
-              {/* <Col md={24} xs={24}>
+             
+            </Row>
+           </Col> 
+
+            </Row>
+        </Col>
+                              <Col span={24}>
                 <Card
                   style={{ width: "100%" }}
-                  title="Thuế"
-                  extra={
-                    <Switch
-                      defaultChecked={Vat}
-                      onChange={(s) => setVat(s)}
-                    ></Switch>
-                  }
+                  title="Khởi tạo phiên bản"
+                  extra={<Switch onChange={(e) => setInitStyle(e)} />}
                 >
-                  {Vat && (
-                    <>
-                      <Select
-                        style={{ width: "100%" }}
-                        value={form.values.product.IDVat}
-                      >
-                        <Select.Option value={null}>
-                          Chọn thuế đầu vào
-                        </Select.Option>
-                        {vats &&
-                          vats.map((vat) => {
-                            return (
-                              <Select.Option
-                                value={vat.id || null}
-                              >{`${vat.name} - thuế đầu vào ${vat?.giaTriThueDauVao}%`}</Select.Option>
-                            );
-                          })}
-                      </Select>
-                      <Select
-                        style={{ width: "100%" }}
-                        value={form.values.product.IDVat}
-                      >
-                        <Select.Option value={null}>
-                          Chọn thuế đầu ra
-                        </Select.Option>
-                        {vats &&
-                          vats.map((vat) => {
-                            return (
-                              <Select.Option
-                                value={vat.id || null}
-                              >{`${vat.name} - thuế đầu ra ${vat?.giaTriThueDauRa}%`}</Select.Option>
-                            );
-                          })}
-                      </Select>
-                    </>
+                  <Space direction="vertical" style={{width:"100%"}} >
+                  <p>Thêm các phiên bản cho sản phẩm</p>
+                  <Row gutter={[0, 40]}>
+                    {" "}
+                    {initStyles &&
+                      versions.map((i, index) => (
+                        <ItemVersion
+                          colors={colors}
+                          sizes={sizes}
+                          item={i}
+                          branchs={branchs}
+                          {...paramsQty}
+                          index={index}
+                          versions={versions}
+                          setVersions={setVersions}
+                        />
+                      ))}
+                  </Row>
+                  {initStyles && (
+                    <MyButton
+                      style={{ width: "20rem" }}
+                      onClick={() => handleClickAddFieldChild()}
+                    >
+                      Thêm trường
+                    </MyButton>
                   )}
+                  </Space>
                 </Card>
-              </Col> */}
-            </Row>
-          </div>
-        </Col>
-        <Col md={{ span: 24, order: 3 }}>
+              </Col>
+        {/* PHIÊN BẢN */}
+        <Col span={24} >
           {versions.length > 0 && (
             <Card title="Phiên bản">
               <Row gutter={[0, 20]}>
@@ -607,9 +524,6 @@ const CreateProduct = () => {
           ></Input>
         </Form.Item>
       </Modal>
-      <FloatButton.Group>
-        <FloatButton tooltip="Xác nhận tạo" onClick={handleSubmt}></FloatButton>
-      </FloatButton.Group>
     </Form>
   );
 };

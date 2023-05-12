@@ -102,25 +102,25 @@ const ItemVersion = (props) => {
     }
   }
   return (
-    <Col xl={24}>
+    <Col span={24}>
         <Row className='ItemVersion' justify={"space-between"} align={"middle"} gutter={20}>
-        <Col xl={8}>
+        <Col span={10}>
           <Select defaultValue={versions[index][0].IDColor} value={versions[index][0].IDColor} onChange={(e)=>onChangeSelect(e)} style={{ width: "100%" }}>
-                <Option value={null}>Chọn màu sác</Option>
+                <Option value={null}>Chọn màu sắc</Option>
                 {colors&&colors.map(color=><Option value={color.maMau.trim()}>{color.tenMau}</Option>)}
           </Select>
         </Col>
-        <Col xl={8}>
+        <Col span={10}>
           <Checkbox.Group  value={checked} onChange={onChangeCheckbox}>
           <Row>
-      {sizes&&sizes.map(size=><Col key={v4()} span={8}>
+      {sizes&&sizes.map(size=><Col key={v4()} md={8} xs={12}>
         <Checkbox value={size.value}>{size.label}</Checkbox>
       </Col>)}
       
     </Row>
           </Checkbox.Group>
         </Col>
-        <Col xl={8}>
+        <Col span={4}>
           <Trash2 className='icon deteleHover' onClick={handleDeleteItem}></Trash2>
         </Col>
     </Row>

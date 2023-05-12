@@ -60,13 +60,13 @@ const PhoneForm = () => {
         setVerify(true)
       })
       .catch((error) => {
-        console.log({ error });
+        // console.log({ error });
       });
     }
   };
   if(verify)
   {
-    return <Verify/>
+    return <Verify  phone={Form.values.phone}/>
   }
   else{
     return (

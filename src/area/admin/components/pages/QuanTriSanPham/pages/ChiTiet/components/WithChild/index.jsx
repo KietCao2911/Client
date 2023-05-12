@@ -47,7 +47,8 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import ShowMore from "~/components/commomComponents/ShowMore";
-import { ArrowLeft, Delete, Edit, Save, Trash2, X } from "react-feather";
+import { ArrowLeft, Delete, Edit, Plus, Save, Trash2, X } from "react-feather";
+import StickyActions from "~/components/commomComponents/stickyActions";
 const VersionDetailPage = lazy(() => import("./pages/VersionDetailPage"));
 const FooterTable = () => {
   return (
@@ -94,7 +95,6 @@ const WithChild = (props) => {
   });
   const [data, setData] = useState();
   const [isEdit, setIsEdit] = useState(false);
-  console.log({ childParams: prams111 });
   const nav = useNavigate();
   const dispatch = useDispatch();
   const form = useFormik({
@@ -143,7 +143,6 @@ const WithChild = (props) => {
   }, [deleteState]);
   const handleSave = async () => {
     try {
-      console.log({ body: form.values });
       dispatch(SanPhamAPI.fetchPutProduct({ body: form.values }));
       setIsEdit(false);
     } catch (error) {}
@@ -208,30 +207,38 @@ const WithChild = (props) => {
     });
     form.setFieldValue("danhMucDetails", temp);
   };
+  const Actionsbtn=(
+    <>
+    {
+      isEdit&&<Space>
+      <Button onClick={handleSave} type="primary">
+          Lưu
+        </Button>   
+      <Button onClick={handleCancel}>
+          Hủy
+        </Button>   
+    </Space>
+    }
+    {
+      !isEdit&&<Space>
+      <Button onClick={()=>setIsEdit(true)}>
+          Sửa
+        </Button>   
+      <Button danger onClick={handleDeleteProduct}>
+          Xóa
+        </Button>   
+    </Space>
+    }
+    </>
+    
+)
   return (
     <>
-    {isEdit&&<FloatButton.Group>
-      <FloatButton icon={<Save/>}  onClick={handleSave} tooltip="Lưu"></FloatButton>
-      <FloatButton icon={<X/>}  onClick={handleCancel} tooltip="Hủy"></FloatButton>
-    </FloatButton.Group>}
-    {!isEdit&&<FloatButton.Group>
-      <FloatButton icon={<Edit/>} onClick={()=>setIsEdit(true)} tooltip="Sửa"></FloatButton>
-      <FloatButton icon={<Trash2/>} onClick={handleDeleteProduct} tooltip="Xóa"></FloatButton>
-    </FloatButton.Group>}
-
       <Row gutter={[20, 20]}>
-      <Col span={24}>
-           <Row justify={"space-between"}>
-           <Col >
-               <Link to="/admin/trang-quan-tri-san-pham">
-               <Row  align={"middle"} justify={"center"}>
-               <ArrowLeft/><p>Trở về trang sản phẩm</p>
-               </Row>
-               </Link>
-            </Col>
-            <Col ></Col>
-           </Row>
+        <Col span={24}>
+          <StickyActions link="/admin/trang-quan-tri-san-pham/" label="Trở về trang sản phẩm" Actionsbtn={Actionsbtn} IconBack={<></>}/>
         </Col>
+
         <Col span={24}>
           <Card title="Thông tin sản phẩm">
             <Space>
@@ -409,11 +416,14 @@ const WithChild = (props) => {
               <Card
                 title="Phiên bản"
                 extra={
-                  <Select style={{ width: "100%" }} defaultValue={null}>
+                  <Space style={{ width: "100%" }} defaultValue={null}>
+                    <Select defaultValue={null}>
                     <Select.Option value={null}>Hành động</Select.Option>
                     <Select.Option value="1">In mã vạch</Select.Option>
                     <Select.Option value="2">Xóa phiên bản này</Select.Option>
-                  </Select>
+                    </Select>
+                    <Plus className="icon"/>
+                  </Space>
                 }
               >
                 <ShowMore height={"50rem"}>
@@ -423,11 +433,7 @@ const WithChild = (props) => {
                     style={{ width: "100%" }}
                     columns={columns}
                     dataSource={data}
-                    footer={() => (
-                      <>
-                        <FooterTable />
-                      </>
-                    )}
+                   
                   ></Table>
                 </ShowMore>
               </Card>

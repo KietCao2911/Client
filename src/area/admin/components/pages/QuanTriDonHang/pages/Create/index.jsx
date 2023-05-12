@@ -199,7 +199,7 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
       if (Object.keys(OrderForm.errors).length <= 0) {
        
         const params = { ...OrderForm.values };
-        // dispatch(ThanhToanAPI.fetchPostWithGuess(params));
+        dispatch(ThanhToanAPI.OrderWithCOD(params));
       } else {
         console.log({erros:OrderForm.errors})
         alert("Submit invalid");

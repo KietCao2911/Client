@@ -9,27 +9,26 @@ const columns = [
     },
   },
   {
-    title: "Só lượng tồn",
+    title: "Số lượng tồn",
     dataIndex: "soLuongTon",
   },
   {
-    title: "Só lượng có thể bán",
+    title: "Số lượng có thể bán",
     dataIndex: "soLuongCoTheban",
   },
   {
-    title: "Só lượng hàng đang về",
+    title: "Số lượng hàng đang về",
     dataIndex: "soLuongHangDangVe",
   },
   {
-    title: "Só lượng hàng đang giao",
+    title: "Số lượng hàng đang giao",
     dataIndex: "soLuongHangDangGiao",
   },
 ];
 
 const TonKho = (props) => {
   const { khohangs } = props;
-  console.log({ khohangs });
-  return <Table columns={columns} dataSource={khohangs}></Table>;
+  return <Table scroll={{ x: 400 }} columns={columns} dataSource={khohangs}></Table>;
 };
 
 export default TonKho;

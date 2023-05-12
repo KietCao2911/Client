@@ -213,7 +213,6 @@ const OrderDetailForm = (props) => {
      
       const params = { ...OrderForm.values };
       if (isCreated) {
-        console.log({params})
         dispatch(ThanhToanAPI.OrderWithCOD(params));
       } else if (isUpdated) {
         dispatch(HoaDonApi.fetchPUTHoaDon({body:params}));

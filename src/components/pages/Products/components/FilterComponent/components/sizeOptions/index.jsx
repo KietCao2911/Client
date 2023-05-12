@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import "./sizeOptions.scss";
+import { useCallback } from "react";
 const Radio = (props) => {
   const { value, checked, onChange } = props;
   const handleChange = (e) => {
@@ -29,8 +30,6 @@ const SizeOptions = () => {
   const color = searchParams.get("color") || "";
   const sort = searchParams.get("sort") || "";
   const category = searchParams.get("category") || "";
-  console.log([...searchParams]);
-  console.log({ category });
   const handleChange = (e) => {
     const params = {};
     for (let [key, value] of searchParams.entries()) {
@@ -39,29 +38,25 @@ const SizeOptions = () => {
     params.size = e;
     setSearchParams({ ...params });
   };
-
+  const constSizeNumber=useCallback(()=>
+  {
+    let arrEles = []
+    for(let i =24;i<=47;i++)
+    {
+      arrEles.push( <Col xs={6} md={4}>
+        <Radio value={i} checked={size} onChange={handleChange} />
+      </Col>)
+    }
+    return arrEles
+  },[size])
   return (
     <div className="SizeOptions">
       <MyCollapse label="Kích cỡ">
         <Row>
-          <Col xs={6} md={4}>
-            <Radio value={40} checked={size} onChange={handleChange} />
-          </Col>
-          <Col xs={6} md={4}>
-            <Radio value={41} checked={size} onChange={handleChange} />
-          </Col>
-          <Col xs={6} md={4}>
-            <Radio value={42} checked={size} onChange={handleChange} />
-          </Col>
-          <Col xs={6} md={4}>
-            <Radio value={43} checked={size} onChange={handleChange} />
-          </Col>
-          <Col xs={6} md={4}>
-            <Radio value={44} checked={size} onChange={handleChange} />
-          </Col>
-          <Col xs={6} md={4}>
-            <Radio value={45} checked={size} onChange={handleChange} />
-          </Col>
+          {constSizeNumber().map(size=>
+            {
+              return size;
+            })}         
           <Col xs={6} md={4}>
             <Radio value={"S"} checked={size} onChange={handleChange} />
           </Col>
@@ -71,6 +66,19 @@ const SizeOptions = () => {
           <Col xs={6} md={4}>
             <Radio value={"L"} checked={size} onChange={handleChange} />
           </Col>
+          <Col xs={6} md={4}>
+            <Radio value={"XL"} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={"2XL"} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={"3XL"} checked={size} onChange={handleChange} />
+          </Col>
+          <Col xs={6} md={4}>
+            <Radio value={"4XL"} checked={size} onChange={handleChange} />
+          </Col>
+          
         </Row>
       </MyCollapse>
     </div>

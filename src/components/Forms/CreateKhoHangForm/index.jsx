@@ -47,7 +47,7 @@ const CreateKhoHangForm = (props) => {
     }
   return (
 <>
-<Modal confirmLoading={loading} onOk={handleSubmit} open={open} onCancel={()=>setOpen(false)}>
+<Modal okText="Xác nhận" cancelText="Hủy" confirmLoading={loading} onOk={handleSubmit} open={open} onCancel={()=>setOpen(false)}>
     <Form.Item required label="Mã chi nhánh">
   <Input placeholder='Mã chi nhánh' name="maChiNhanh" values={FormBranch.values.maChiNhanh}  onChange={FormBranch.handleChange}/>
   </Form.Item>

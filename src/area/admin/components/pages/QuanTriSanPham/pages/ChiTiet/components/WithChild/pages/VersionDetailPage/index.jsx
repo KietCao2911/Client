@@ -35,7 +35,6 @@ const VersionDetailPage = (props) => {
   const { product,ctnxs } = useSelector((state) => state.SanPham);
   const { isEdit, version, form } = props;
   const [isPending, startTransition] = useTransition();
-  console.log({ params });
   const [fileList, setFileList] = useState(() => {
     let imgs =
       product?.colorGrouped?.filter(
@@ -170,8 +169,6 @@ const VersionDetailPage = (props) => {
                     </Space>
                     <Space>{version?.idSize}</Space>
                   </Space>
-                  <Space></Space>
-                  <Space></Space>
                 </Space>
               </Col>
               <Col xl={12}></Col>

@@ -15,7 +15,7 @@ const columns = [
     },
   },
   {
-    title: "Só lượng thay đổi",
+    title: "Số lượng thay đổi",
     render: (_, record) => {
       return (
         <p>
@@ -38,6 +38,7 @@ const LichSuKho = (props) => {
  
   return (
     <Table
+    scroll={{ x: 400 }}
       columns={columns}
       dataSource={
        khohangs|| []

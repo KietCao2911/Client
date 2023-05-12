@@ -47,7 +47,6 @@ const ColorOptions = () => {
   const [items, setItems] = useState([]);
   const params = useParams();
   const query = useSearchParams();
-  console.log({ colors });
   const dispatch = useDispatch();
   useEffect(() => {
     const Fetch = async () => {
@@ -71,7 +70,7 @@ const ColorOptions = () => {
           {colors &&
             colors.map((color) => {
               return (
-                <Col md={6} key={v4()}>
+                <Col span={4} key={v4()}>
                   <Item
                     value={color?.maMau?.trim()}
                     label={color?.maMau?.trim()}

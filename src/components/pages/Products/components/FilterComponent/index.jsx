@@ -101,7 +101,8 @@ const Filter = (props) => {
         setOpen={setOpenDrawer}
         onClose={() => setOpenDrawer(false)}
       >
-        <h3>LỌC VÀ SẮP XẾP</h3>
+       <Space style={{width:"100%"}} direction="vertical">
+       <h3>LỌC VÀ SẮP XẾP</h3>
         <MyCollapse label="Sắp xếp" defaultOpen={true}>
           <Space direction="vertical">
             <h4
@@ -134,17 +135,9 @@ const Filter = (props) => {
         </MyCollapse>
         <ColorOptions />
         <SizeOptions />
-        <MyCollapse label="Giới tính">
-          <h4 key={uuidv4()} onClick={() => handleClickSort("popular")}>
-            {" "}
-            Bán chạy nhất
-          </h4>
-          <h4 key={uuidv4()} onClick={() => handleClickSort("popular")}>
-            {" "}
-            Bán chạy nhất
-          </h4>
-        </MyCollapse>
-      </CustomDrawer>
+
+        </Space>
+              </CustomDrawer>
     </div>
   );
 };

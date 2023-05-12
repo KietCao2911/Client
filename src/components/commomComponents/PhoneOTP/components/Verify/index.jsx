@@ -5,7 +5,7 @@ import CustomSpin from '~/components/CustomSpin'
 import XacThucSlice, * as ApiXacThuc from "~/redux/slices/XacThuc";
 import { useDispatch } from 'react-redux';
 import MyButton from '~/components/commomComponents/Button';
-const Verify = () => {
+const Verify = ({phone}) => {
     const dispatch = useDispatch();
     const codeRef = useRef([])
     const [otp,setOtp] = useState("");
@@ -20,9 +20,9 @@ const Verify = () => {
               const user = result.user;
               dispatch(
                 ApiXacThuc.fetchPostSignUser({
-                  UserName: "0325560344",
+                  UserName: phone,
                   info: {
-                    TenKhachHang: "0325560344",
+                    TenKhachHang: phone,
                   },
                 })
               );
@@ -85,9 +85,7 @@ const Verify = () => {
         }
   return (
     <div className='Verify'>
-       {
-        loading&& <CustomSpin/>
-       }
+      
         <Space className="container" direction='vertical'>
             <h2> Nhập mã xác nhận (OTP) </h2>
             <p>Chúng tôi đã gửi mã xác nhận vào điện thoại của bạn, vui lòng nhập 6 chữ số nhận được</p>
@@ -99,7 +97,7 @@ const Verify = () => {
                 <input   ref={(e)=>codeRef.current[4]=e} placeholder='0' className="code" required min={0} type='number' max={9}></input>
                 <input   ref={(e)=>codeRef.current[5]=e} placeholder='0' className="code" required min={0} type='number' max={9}></input>
             </Space>
-            <MyButton className="button" onClick={()=>onSubmit()}>Xác nhận</MyButton>
+            <MyButton loading={loading} onClick={()=>onSubmit()}>Xác nhận</MyButton>
             <small>Nếu bạn chưa nhận được tin nhắn, vui lòng nhấn <b>gửi lại</b></small>
             <small></small>
         </Space>

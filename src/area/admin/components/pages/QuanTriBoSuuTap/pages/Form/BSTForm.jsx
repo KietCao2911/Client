@@ -156,7 +156,6 @@ const BSTForm = (props) => {
     else if(isUpdated)
     {
       dispatch(BstAPI.fetchPutBST({body:params,id}))
-      console.log({params});
     }
     else{
       return ;

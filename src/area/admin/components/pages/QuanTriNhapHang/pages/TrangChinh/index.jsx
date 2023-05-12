@@ -6,6 +6,7 @@ import * as PhieuNhapAPI from "~/redux/slices/PhieuNhap/PhieuNhap";
 import convertVND from "~/components/utils/ConvertVND";
 import MyButton from "~/components/commomComponents/Button";
 import { FilePlus } from "react-feather";
+import StickyActions from "~/components/commomComponents/stickyActions";
 const columns = [
   {
     title: "Mã phiếu nhập",
@@ -75,13 +76,13 @@ const TrangChinh = () => {
   const { items } = useSelector((state) => state.PhieuNhap);
   const nav = useNavigate();
   const [tableParams, setTableParams] = useState({});
+  
   useEffect(() => {
     dispatch(PhieuNhapAPI.fetchGetPhieuNhaps({...tableParams}));
   }, [tableParams]);
   
   const handleTableChange=(pagination,filters,sorter)=>
   {
-    console.log({filters,sorter})
     const daThanhToan = filters["daThanhToan"];
     const status = filters["status"];
     
@@ -89,16 +90,19 @@ const TrangChinh = () => {
       status:status[0]??"",
     });
   }
-  return (
+  const Actionsbtn=(
     <>
-    <FloatButton onClick={()=>nav("tao-moi")} icon={<FilePlus/>} tooltip="Thêm mới phiếu nhập">
-     
-    </FloatButton>
-      <Table rowClassName={"icon"} onRow={(record,index)=>
+      <Link to="tao-moi"><Button type="primary">Thêm mới phiếu nhập</Button></Link>
+    </>
+  )
+  return (
+    <Space direction="vertical" style={{width:"100%"}}>
+      <StickyActions  IconBack={<></>} Actionsbtn={Actionsbtn}></StickyActions>
+      <Table scroll={{ x: 400 }} rowClassName={"icon"} onRow={(record,index)=>
       {
         return {onClick:(e)=> nav(`${record.id}`)}
       }} onChange={handleTableChange} columns={columns} dataSource={items}></Table>
-    </>
+    </Space>
   );
 };
 
