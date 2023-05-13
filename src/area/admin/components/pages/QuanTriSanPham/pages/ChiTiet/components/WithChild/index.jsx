@@ -49,6 +49,7 @@ import MyCollapse from "~/components/commomComponents/Collapse";
 import ShowMore from "~/components/commomComponents/ShowMore";
 import { ArrowLeft, Delete, Edit, Plus, Save, Trash2, X } from "react-feather";
 import StickyActions from "~/components/commomComponents/stickyActions";
+import { v4 } from "uuid";
 const VersionDetailPage = lazy(() => import("./pages/VersionDetailPage"));
 const FooterTable = () => {
   return (
@@ -84,7 +85,7 @@ const WithChild = (props) => {
   const { branchs } = useSelector((state) => state.Branch);
   const { types } = useSelector((state) => state.Type);
   const { brands } = useSelector((state) => state.Brand);
-  const { product, deleteState } = useSelector((state) => state.SanPham);
+  const { product, deleteState,loading } = useSelector((state) => state.SanPham);
   const [modalDeleteProduct, setModalDeleteProduct] = useState(false);
   const [pending, startTransition] = useTransition();
   const [selectedRowKeys, setSelectedRowKeys] = useState(() => {
@@ -176,6 +177,7 @@ const WithChild = (props) => {
       <Routes>
         {form.values.sanPhams?.map((e) => (
           <Route
+          key={v4()}
             path={`versions/${e.maSanPham.trim()}`}
             element={
               <VersionDetailPage form={form} version={e} isEdit={isEdit} />
@@ -211,7 +213,7 @@ const WithChild = (props) => {
     <>
     {
       isEdit&&<Space>
-      <Button onClick={handleSave} type="primary">
+      <Button loading={loading} onClick={handleSave} type="primary">
           Lưu
         </Button>   
       <Button onClick={handleCancel}>
@@ -224,7 +226,7 @@ const WithChild = (props) => {
       <Button onClick={()=>setIsEdit(true)}>
           Sửa
         </Button>   
-      <Button danger onClick={handleDeleteProduct}>
+      <Button danger loading={loading} onClick={handleDeleteProduct}>
           Xóa
         </Button>   
     </Space>

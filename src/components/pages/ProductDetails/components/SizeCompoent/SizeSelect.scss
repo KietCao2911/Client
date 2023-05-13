@@ -8,13 +8,13 @@
         position: absolute;
         visibility: hidden;
         opacity: .5;
+        z-index: 99;
     }
     &:hover .disableMess
     {
         visibility: visible;
         transition: .1s ease;
         color: white;
-       
         left: 50%;
         top: -100%;
         transform: translateX(-50%);
@@ -31,7 +31,7 @@
             border: 1.5rem solid ;
             border-color: #000 #0000 #0000 #0000;
         }
-
+        
     }
     &.disable
     {

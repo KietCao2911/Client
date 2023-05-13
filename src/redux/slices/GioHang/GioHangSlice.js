@@ -75,9 +75,11 @@ const GioHangSlice = createSlice({
         {
             state.couponCode="";
             state.couponNavigation=null;
-            if(state.tienDaGiam)
+          
+            if(state?.tienDaGiam>0)
             {
               state.thanhTien+=state.tienDaGiam;
+              state.tienDaGiam=0;
             }
             const addressString = JSON.stringify(state);
             window.localStorage.setItem("cart", addressString);
@@ -196,12 +198,10 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Wards = {};
       state.ghnAPI.Districts = {};
       state.ghnAPI.Provinces = {};
-      state.thanhTien -= state.phiShip;
-      state.phiShip = 0;
+
     });
     builder.addCase(fetchGetProvinces.fulfilled, (state, action) => {
       state.ghnAPI.Provinces = action.payload;
-      state.finalPrice = state.totalPrice;
       state.ghnAPI.Loading.Provinces = false;
       const addressString = JSON.stringify(state.ghnAPI);
       window.localStorage.setItem("address", addressString);
@@ -212,8 +212,8 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Districts = {};
       state.finalPrice = state.totalPrice;
       state.ghnAPI.Loading.Districts = true;
-      state.thanhTien -= state.phiShip;
-      state.phiShip = 0;
+      // state.thanhTien -= state.phiShip;
+      // state.phiShip = 0;
       const addressString = JSON.stringify(state.ghnAPI);
       window.localStorage.setItem("address", addressString);
     });
@@ -228,8 +228,8 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Wards = {};
       state.ghnAPI.FeeInfo = {};
       state.ghnAPI.Loading.Wards = true;
-      state.thanhTien -= state.phiShip;
-      state.phiShip = 0;
+      // state.thanhTien -= state.phiShip;
+      // state.phiShip = 0;
       const addressString = JSON.stringify(state.ghnAPI);
       window.localStorage.setItem("address", addressString);
     });
@@ -244,12 +244,12 @@ const GioHangSlice = createSlice({
       const phiShip = action.payload.data.total;
       state.ghnAPI.FeeInfo = action.payload;
       state.phiShip = phiShip || 0;
-      state.thanhTien += phiShip;
-      if(state.tienDaGiam)
-      {
-        state.thanhTien -= state.tienDaGiam;
+      // state.thanhTien += phiShip;
+      // if(state.tienDaGiam>0)
+      // {
+      //   state.thanhTien -= state.tienDaGiam;
 
-      }
+      // }
       // const CartString = JSON.stringify(state);
       // window.localStorage.setItem("cart", CartString);
     });

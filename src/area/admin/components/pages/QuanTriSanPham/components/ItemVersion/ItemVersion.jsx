@@ -14,7 +14,6 @@ const {Option} = Select
 const ItemVersion = (props) => {
   const {versions,branchs,setVersions, index,initValues,sizes,colors,soLuongTon,giaVon,giaBanSi,giaBanLe,tenSanPham,giaNhap} = props;
   const [checked,setChecked] = useState([]);
-  console.log({ItemBranchs:branchs});
   const handleDeleteItem =()=>
   {
     versions.splice(index,1);
@@ -107,7 +106,7 @@ const ItemVersion = (props) => {
         <Col span={10}>
           <Select defaultValue={versions[index][0].IDColor} value={versions[index][0].IDColor} onChange={(e)=>onChangeSelect(e)} style={{ width: "100%" }}>
                 <Option value={null}>Chọn màu sắc</Option>
-                {colors&&colors.map(color=><Option value={color.maMau.trim()}>{color.tenMau}</Option>)}
+                {colors&&colors.map(color=><Option value={color.maMau.trim()}>{color.maMau} <span className='color' style={{backgroundColor:`${color?.maMau}`}}></span>  </Option>)}
           </Select>
         </Col>
         <Col span={10}>

@@ -3,7 +3,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { authentication } from "~/firebaseConfig";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Input, Space, notification } from "antd";
+import { Button, Input, Space, notification } from "antd";
 import "./PhoneOTP.scss";
 import { useSelector, useDispatch } from "react-redux";
 import  * as Yup from "yup"
@@ -14,7 +14,7 @@ import { InputText } from "~/components/commomComponents/InputText";
 import MyButton from "~/components/commomComponents/Button";
 const { Search } = Input;
 const PhoneForm = () => {
-
+  const[loading ,setLoading] = useState(false);
   const [verify,setVerify] = useState(false);
   const dispatch = useDispatch();
   const regex = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -48,18 +48,21 @@ const PhoneForm = () => {
     // setUpCaptcha();
   }, []);
   const onSignInSubmit = () => {
-    setUpCaptcha();
     
     if(Form.values.phone.length>6)
     {
+      setUpCaptcha();
+      setLoading(true)
       let phoneNumber = "+84" + Form.values.phone;
       const appVerifier = window.recaptchaVerifier;
       signInWithPhoneNumber(authentication, phoneNumber, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
         setVerify(true)
+        setLoading(false)
       })
       .catch((error) => {
+        setLoading(false)
         // console.log({ error });
       });
     }
@@ -71,25 +74,14 @@ const PhoneForm = () => {
   else{
     return (
       <div className="PhoneOTP">
-        <div className="InputGroup OTPCODE">
-          <div className="InputRow">
-            <input
-            name="phone"
-              placeholder="enter your phone number"
-              className="OTP"
-              // disabled={disable.status}
-              value={Form.values.phone}
-              onChange={Form.handleChange}
-            />
-            <button
-              className={`btnAccept `}
-              onClick={()=>onSignInSubmit()}
-            >
-             SEND 
-            </button>
-          </div>
-        </div>
+        <Space direction="vertical">
+          <InputText className={`${Form.errors.phone?"error":""}`} name="phone"  value={Form.values.phone}
+              onChange={Form.handleChange} label="phone">
+          </InputText>
           {Form.errors.phone&&<span className="error"> {Form.errors.phone}</span>}
+          <MyButton  loading={loading}              onClick={()=>onSignInSubmit()}
+>SEND</MyButton>
+        </Space>
         <div id="recaptcha-container"></div>
       </div>
     );

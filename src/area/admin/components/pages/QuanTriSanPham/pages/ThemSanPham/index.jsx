@@ -221,7 +221,7 @@ const CreateProduct = () => {
   };
   const Actionsbtn=(
     <Space>
-      <Button onClick={handleSubmt} type="primary">Tạo mới</Button>
+      <Button onClick={handleSubmt} loading={loading} type="primary">Tạo mới</Button>
     </Space>
   )
   return (

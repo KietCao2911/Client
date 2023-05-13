@@ -122,7 +122,12 @@ const TrangTaoDonNhap = (props) => {
         content: "Vui lòng chọn ít nhất một sản phẩm",
         type: "error",
       });
-    } else {
+    } else if(!Form.values.maChiNhanh){
+      message.open({
+        content: "Vui lòng chọn ít chi nhánh",
+        type: "error",
+      });
+    }else {
       let formValueTemp = { ...Form.values, steps };
       let ctnxs = formValueTemp?.chiTietNhapXuats?.map((pn) => {
         return {
@@ -171,16 +176,25 @@ const TrangTaoDonNhap = (props) => {
     });
   };
   const handleChangeProductSearchText = (e) => {
-    startTransition(() => {
-      setproductSearchText(e.target.value);
-      dispatch(
-        KhoHangAPI.fetchGetProducts({
-          maChiNhanh: Form.values.maChiNhanh,
-           s: e.target.value ,
-           onlyVersion:true,
-        })
-      );
-    });
+    if(Form.values.maChiNhanh)
+    {
+      startTransition(() => {
+        setproductSearchText(e.target.value);
+        dispatch(
+          KhoHangAPI.fetchGetProducts({
+            maChiNhanh: Form.values.maChiNhanh,
+             s: e.target.value ,
+             onlyVersion:true,
+          })
+        );
+      });
+    }
+    else{
+      message.open({
+        content: "Vui lòng chọn ít chi nhánh",
+        type: "error",
+      });
+    }
   };
   const onClickProduct = (value,url) => {
     const fncCheck = (ele) => ele.maSanPham == value.maSanPham;
@@ -233,7 +247,7 @@ const TrangTaoDonNhap = (props) => {
   const Actionsbtn =(
     <Space style={{width:"100%"}}>
             {isReturn && (
-              <Button loading={loading} onClick={handleTraHang}>Xác nhận trả hàng</Button>
+              <Button loading={loading} onClick={handleTraHang} >Xác nhận trả hàng</Button>
       
       )}
       {(isUpdated || isCreated) && (

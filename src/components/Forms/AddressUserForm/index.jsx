@@ -6,9 +6,10 @@ import  *as GiaoHangNhanhApi from '~/redux/slices/GioHang/GioHangSlice'
 import { useDispatch,useSelector } from 'react-redux';
 import MyButton from '~/components/commomComponents/Button';
 import *as XacThucAPI from '~/redux/slices/XacThuc'
-import { Col, Row, Space } from 'antd';
+import { Col, Row, Space, message } from 'antd';
 import SelectCustom,{Option} from '~/components/commomComponents/SelectCustom';
 import CustomSpin from '~/components/CustomSpin';
+import { useEffect } from 'react';
 const AddressUserForm = () => {
     const dispatch = useDispatch();
     const {user,loading} = useSelector(state=>state.XacThuc)
@@ -31,13 +32,25 @@ const AddressUserForm = () => {
             Email: "",
             PaymendMethod: "COD",
           },
+          initialTouched:{
+            Name: false,
+            Phone: false,
+            ProvinceName: false,
+            DistrictName: false,
+            WardName: false,
+            ProvinceID: false,
+            DistrictID: false,
+            WardID: false,
+            AddressDsc: false,
+            Email: false,
+          },
           validationSchema:Yup.object({
             Name:Yup.string().required("Phải nhập trường này"),
             Phone:Yup.string().required("Phải nhập trường này").matches(phoneRegExp, 'Định dạng số điện thoại không đúng').min(10,"Số điện thoại phải hơn 10 chữ số").max(10,"Số điện thoại không quá 10 chữ số"),
             Email:Yup.string().required("Phải nhập trường này").matches(emailRegex,'Định dạng email không đúng'),
             ProvinceID:Yup.number().nullable(true).required("Phải chọn trường này"),
             DistrictID:Yup.number().nullable(true).required("Phải chọn trường này"),
-            WardId:Yup.number().nullable(true).required("Phải chọn trường này"),
+            // WardID:Yup.required("Phải chọn trường này"),
             PaymendMethod:Yup.string().required("Phải chọn trường này"),
             AddressDsc:Yup.string().required("Phải nhập trường này"),
           }),
@@ -70,8 +83,25 @@ const AddressUserForm = () => {
     const handleSave=()=>
     {
         const values = AddressUserForm.values;
-        dispatch(XacThucAPI.fetchAddAddress({body:{...values,tenTaiKhoan:user.userName.trim()}}))
+        
+        if(AddressUserForm.isValid)
+        {
+
+          dispatch(XacThucAPI.fetchAddAddress({body:{...values,tenTaiKhoan:user.userName.trim()}}))
+        }
+        else
+        {
+          console.log({errors:AddressUserForm.errors})
+          message.open({
+            content:"Chưa điền đủ thông tin",
+            type:"error" 
+          })
+        }
     }
+    useEffect(()=>
+    {
+      dispatch(GiaoHangNhanhApi.fetchGetProvinces())
+    },[])
   return (
     <Space style={{width:"100%"}}  direction='vertical'>
      {loading&& <CustomSpin/>}

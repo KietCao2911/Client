@@ -16,6 +16,7 @@
        }
        
         height: 5rem;
+        min-width: 6rem;
         padding:1rem 2rem;
         border: .1rem solid #BBBBBB;
         .icon{
@@ -31,7 +32,7 @@
         top: 100%;
         left: 0;
         right: 0;
-        max-height: 100vh;
+        max-height: 50rem;
         padding: 1rem;
         background-color: white;
         // max-height: 0;

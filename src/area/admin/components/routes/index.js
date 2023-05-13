@@ -6,6 +6,7 @@ import AdminAuthLayout from "~/components/layout/AdminAuthLayout";
 
 import { Archive, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
 import QuanTriCoupon from "../pages/QuanTriCoupon";
+import { v4 } from "uuid";
 
 const HomeAdmin = lazy(() => import("~/area/admin/components/pages/HomeAdmin"));
 const ThongKeDoanhThu = lazy(() =>
@@ -24,101 +25,135 @@ const QuanTriQuyen = lazy(() => import("../pages/RoleManager"));
 
 export const adminRoute = [
   {
+    key:v4(),
     path: "/admin",
     element: HomeAdmin,
-    role:["ADMIN"],
-    name:"Trang chính",
+    role:["HOMEADMIN"],
+    name:"Trang chính admin",
     slug: "/admin/",
     icon:<Home/>
   },
   {
+    key:v4(),
+
+    path: "/manager",
+    element: HomeAdmin,
+    role:["HOMEMANAGER"],
+    name:"Trang chính quản lý",
+    slug: "/manager/",
+    icon:<Home/>
+  },
+  {
+    key:v4(),
+
     path: "/admin/trang-quan-tri-san-pham/*",
     element: QuanTriSanPham,
-    role:["PRODUCT_CREATE","PRODUCT_DELETE","PRODUCT_UPDATE"],
+    role:["PRODMNG"],
     name:"Quản trị sản phẩm",
     slug: "/admin/trang-quan-tri-san-pham/",
     icon:<Box/>
   },
   {
+    key:v4(),
+
     path: "/admin/trang-quan-tri-nhap-hang/*",
     element: TrangQuanTriNhapHang,
     name:"Quản trị nhập hàng",
     slug: "/admin/trang-quan-tri-nhap-hang/",
-    role:["ADMIN"],
+    role:["PNMANAGER"],
     icon:<Truck/>
   },
   {
+    key:v4(),
+
     path: "/admin/quan-tri-kho-hang/*",
     element: QuanTriKhoHang,
     name:"Quản trị kho hàng",
     slug: "/admin/quan-tri-kho-hang/",
-    role:["KHO_MANAGER"],
+    role:["INVENTORYMNG"],
     icon:<Archive/>
   },
+
   {
+    key:v4(),
+
     path: "/admin/trang-quan-tri-don-hang/*",
     element: QuanTriDonHang,
     name:"Quản trị đơn hàng",
     slug: "/admin/trang-quan-tri-don-hang/",
-    role:["ORDER_CREATE","ORDER_UPDATE","ORDER_DELETE"],
+    role:["ORDERMNG"],
     icon:<ShoppingBag/>
   },
   {
+    key:v4(),
+
     path: "/admin/quan-tri-coupons/*",
     element: QuanTriCoupon,
     name:"Quản trị coupons",
     slug: "/admin/quan-tri-coupons/",
-    role:["ADMIN","SALE_MANAGER","STAFF"],
+    role:["COUPONMNG"],
     icon:<Tag/>
   },
   {
+    key:v4(),
+
     path: "/admin/quan-tri-khuyen_mai/*",
     element: QuanTriKhuyenMai,
     name:"Quản trị khuyến mãi",
     slug: "/admin/quan-tri-khuyen_mai/",
-    role:["ADMIN","SALE_MANAGER","STAFF"],
+    role:["SALEMNG"],
     icon:<Gift/>
   },
   {
+    key:v4(),
+
     path: "/admin/quan-tri-bo_suu_tap/*",
     element: QuanTriBoSuuTap,
     name:"Quản trị bộ sưu tập",
     slug: "/admin/quan-tri-bo_suu_tap/",
-    role:["ADMIN","STAFF"],
+    role:["BSTMNG"],
     icon:<Table/>,
   },
   {
+    key:v4(),
+
     path: "/admin/thong-ke-doanh-thu/*",
     element: ThongKeDoanhThu,
     name:"Thống kê doanh thu",
     slug: "/admin/thong-ke-doanh-thu/",
-    role:["ADMIN"],
+    role:["TKDTMNG"],
     icon:<DollarSign/>
   },
   {
+    key:v4(),
+
     path: "/admin/trang-quan-tri-khach-hang/*",
     element: QuanTriKhachHang,
     name:"Quản trị khách hàng",
     slug: "/admin/trang-quan-tri-khach-hang/",
-    role:["ADMIN","STAFF"],
+    role:["CUSTOMERMNG"],
     icon:<Users/>
   },
   {
+    key:v4(),
+
     path: "/admin/quan-tri-danh-muc/*",
     element: QuanTriDanhMuc,
     role:["ADMIN","CATEGORYMANAGER"],
     name:"Quản trị danh mục",
     slug: "/admin/quan-tri-danh-muc/",
-    role:["CATE_CREATE","CATE_DELETE","CATE_UPDATE"],
+    role:["CATMANAGER"],
     icon:<Menu/>
   },
 
   {
+    key:v4(),
+
   path: "/admin/phan-quyen/*",
     element: QuanTriQuyen,
     name:"Phân quyền người dùng",
     slug: "/admin/phan-quyen/",
-    role:["PERMISS_EDIT"],
+    role:["ROLEMNG"],
     icon:<Key/>
   },
 ];

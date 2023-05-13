@@ -183,15 +183,15 @@ const TrangChinh = () => {
           <Row gutter={[10,10]} align={"middle"}>
             <Col xl={12}>
               <Input value={searchText} onChange={(e)=>handleSearch(e)} placeholder="Tìm kiếm sản phẩm" type="search" addonAfter={ <Space>
-            <Select onChange={(e)=>handleChangeType(e)} defaultValue={null}>
-                <Select.Option value={null}>Loại sản phẩm</Select.Option>
+            <Select onChange={(e)=>handleChangeType(e)} defaultValue={""}>
+                <Select.Option value={""}>Loại sản phẩm</Select.Option>
                 {types&&types.length>0&&types.map(type=>
                   {
                     return <Select.Option value={type?.slug}>{type?.name}</Select.Option>
                   })}
               </Select>
-              <Select onChange={(e)=>handleChangeBrand(e)} defaultValue={null}>
-                <Select.Option value={null}>Thương hiệu</Select.Option>
+              <Select onChange={(e)=>handleChangeBrand(e)} defaultValue={""}>
+                <Select.Option value={""}>Thương hiệu</Select.Option>
                 {brands&&brands.length>0&&brands.map(brand=>
                   {
                     return <Select.Option value={brand?.slug}>{brand?.name}</Select.Option>

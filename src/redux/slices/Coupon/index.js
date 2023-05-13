@@ -97,6 +97,10 @@ const CouponSlice =createSlice({
             state.coupon = action.payload;
             state.loading=false;
         })
+        builder.addCase(GetCouponThunk.rejected,(state)=>
+        {
+            state.loading=false;
+        })
         //PostCouponThunk
         builder.addCase(PostCouponThunk.pending,(state)=>
         {
@@ -110,6 +114,12 @@ const CouponSlice =createSlice({
             state.loading=false;
             window.location.replace(`/admin/quan-tri-coupons/${action.payload.maCoupon}`)
         })
+        builder.addCase(PostCouponThunk.rejected,(state)=>
+        {
+            state.coupons=[];
+            state.coupon={};
+            state.loading=false;
+        })
         //PutCouponThunk
         builder.addCase(PutCouponThunk.pending,(state)=>
         {
@@ -120,6 +130,10 @@ const CouponSlice =createSlice({
         builder.addCase(PutCouponThunk.fulfilled,(state,action)=>
         {
             state.coupon = action.payload;
+            state.loading=false;
+        })
+        builder.addCase(PutCouponThunk.rejected,(state,action)=>
+        {
             state.loading=false;
         })
         //DeleteCouponThunk

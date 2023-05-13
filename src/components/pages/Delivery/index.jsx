@@ -24,7 +24,7 @@ const DeliveryPage = () => {
   const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation } = useSelector(
     (state) => state.GioHang
   );
-  const [error, setWrong] = useState(false);
+
   const [GuessInfo, setGuessInfo] = useState({
     Name: "",
     Phone: "",
@@ -69,7 +69,7 @@ const DeliveryPage = () => {
       if(address)
       {
         const cart = JSON.parse(window.localStorage.getItem("cart"));
-      cart.thanhTien = thanhTien;
+      cart.thanhTien = thanhTien+(phiShip||0);
       cart.phiShip = phiShip;
       const params = {
         ...cart,
@@ -130,7 +130,7 @@ const DeliveryPage = () => {
                         <Col span={12}>
                           Thành tiền:
                         </Col>
-                        <Col span={12}>{convertVND(thanhTien) || convertVND("0")}</Col>
+                        <Col span={12}>{convertVND(thanhTien+phiShip) || convertVND("0")}</Col>
                       </Row>
                     </Col>
                   </Row>
@@ -171,7 +171,7 @@ const DeliveryPage = () => {
                        ></InputText>
                  }
                  {couponCode&&<Promo/>}
-                  <MyButton onClick={()=>handleOrder("COD")}  loading={loading} type="submit">
+                  <MyButton style={{backgroundColor:"black",color:"white"}} onClick={()=>handleOrder("COD")}  loading={loading} type="submit">
            <strong> ORDER NOW</strong>
           </MyButton >
           <MyButton  onClick={()=>handleOrder("VNPAY")} style={{backgroundColor:"#E23E57",color:"white"}} loading={loading} type="submit">

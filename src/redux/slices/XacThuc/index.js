@@ -20,7 +20,7 @@ export const fetchGetCurrentUser = createAsyncThunk(
 export const fetchPostSignUser = createAsyncThunk(
   "fetchPostSignUser",
   async (params) => {
-    const res = await Api.UserSignIn(params);
+    const res = await Api.PhoneSignIn(params);
     return res;
   }
 );
@@ -77,10 +77,75 @@ export const EmailVerify = createAsyncThunk("EmailVerify",async(params)=>
   const res = Api.EmailVerify(token)
   return res;
 })
+//AdminLogin
+export const AdminLogin = createAsyncThunk("AdminLogin",async(params)=>
+{
+  const {body} = params;
+  const res = Api.AdminLogin(body)
+  return res;
+})
+//ManagerLogin
+export const ManagerLogin = createAsyncThunk("ManagerLogin",async(params)=>
+{
+  const {body} = params;
+  const res = Api.ManagerLogin(body)
+  return res;
+})
 const XacThucSlice = createSlice({
   name: "XacThuc",
   initialState,
+  reducers:{
+    Logout:()=>
+    {
+      localStorage.removeItem("access__token");
+      localStorage.removeItem("refresh__token");
+      window.location.replace("/")
+    }
+  },
   extraReducers: (builder) => {
+    //AdminLogin
+    builder.addCase(AdminLogin.pending,(state)=>
+    {
+      state.loading=true;
+    })
+    builder.addCase(AdminLogin.fulfilled,(state,action)=>
+    {
+      state.loading=false;
+      localStorage.setItem("access__token", action.payload.token);
+      localStorage.setItem("refresh__token", action.payload.refreshToken);
+      window.location.replace("/admin")
+    })
+    builder.addCase(AdminLogin.rejected,(state,action)=>
+    {
+      state.loading=false;
+      const message   = action.error.message;
+      notification.open({
+        message,
+        type:"error"
+      })
+    })
+
+    //ManagerLogin
+    builder.addCase(ManagerLogin.pending,(state)=>
+    {
+      state.loading=true;
+    })
+    builder.addCase(ManagerLogin.fulfilled,(state,action)=>
+    {
+      state.loading=false;
+      localStorage.setItem("access__token", action.payload.token);
+      localStorage.setItem("refresh__token", action.payload.refreshToken);     
+      window.location.replace("/admin")
+    })
+    builder.addCase(ManagerLogin.rejected,(state,action)=>
+    {
+      state.loading=false;
+      const message   = action.error.message;
+      notification.open({
+        message,
+        type:"error"
+      })
+    })
     //EmailRegister
     builder.addCase(EmailRegister.pending,(state)=>
     {
@@ -136,16 +201,15 @@ builder.addCase(EmailSignIn.rejected,(state,action)=>
 builder.addCase(EmailVerify.pending,(state)=>
 {
   state.loading=true;
-  state.emailValidateStatus=false
 })
 builder.addCase(EmailVerify.fulfilled,(state,action)=>
 {
-  state.loading=false;
   state.emailValidateStatus=true;
   notification.open({
     message:"Xác thực thành công",
     type:"success"
   })
+  state.loading=false;
 })
 builder.addCase(EmailVerify.rejected,(state)=>
 {
@@ -159,8 +223,8 @@ builder.addCase(EmailVerify.rejected,(state)=>
     })
     builder.addCase(fetchSetAvatar.fulfilled,(state,action)=>
     {
-      state.loading=false;
       state.user.avatar =action.payload.fileName;
+      state.loading=false;
     })
     //fetchDeleteAddress
     builder.addCase(fetchDeleteAddress.pending,(state,action)=>
@@ -198,13 +262,9 @@ builder.addCase(EmailVerify.rejected,(state)=>
     builder.addCase(fetchChangeAddressDefault.fulfilled,(state,action)=>
     {
       const {body} = action.meta.arg
-      console.log(action.meta.arg)
       state.user.addressDefault = body.addressDefault;
+      
       state.loading=false;
-      notification.open({
-        type:"success",
-        message:"Đã cập nhật địa chỉ giao hàng mặc định"
-      })
     })
     builder.addCase(fetchChangeAddressDefault.rejected,(state,action)=>
     {
@@ -259,5 +319,5 @@ builder.addCase(EmailVerify.rejected,(state)=>
     });
   },
 });
-
+export const {Logout} = XacThucSlice.actions
 export default XacThucSlice;

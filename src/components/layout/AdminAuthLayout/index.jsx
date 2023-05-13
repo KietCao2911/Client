@@ -4,7 +4,7 @@ import DangNhap from '~/area/admin/components/pages/AuthPage/pages/DangNhap/Dang
 const AdminAuthLayout = ({children}) => {
   return (
   <>
-    <div className='AdminAuthLayout'>
+    <div className='AdminAuthLayout layout'>
         {children}
     </div>
   </>

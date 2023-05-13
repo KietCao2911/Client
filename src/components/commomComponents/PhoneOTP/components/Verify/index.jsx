@@ -30,7 +30,11 @@ const Verify = ({phone}) => {
             })
             .catch((error) => {
                 setLoading(false);
-              console.log({ error });
+                notification.open({
+                  message: "Có lỗi xảy ra, vui lòng thử lại sau",
+                  type: "error",
+                });
+                window.location.reload();
             });
         } else {
           notification.open({

@@ -438,14 +438,14 @@ const SanPhamSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchPostProduct.fulfilled, (state, action) => {
-      state.loading = false;
       notification.open({
         message: "Thêm thành công",
         type: "success",
       });
       window.location.replace(
         `/admin/trang-quan-tri-san-pham/${action.payload?.maSanPham}/versions/${action.payload?.sanPhams[0]?.maSanPham}`
-      );
+        );
+        state.loading = false;
     });
     builder.addCase(fetchPostProduct.rejected, (state, action) => {
       state.loading = false;
@@ -462,7 +462,6 @@ const SanPhamSlice = createSlice({
       });
       state.loading = false;
       state.state = 1;
-      localStorage.clear("cart");
     });
     builder.addCase(fetchPutProduct.rejected, (state, action) => {
       state.loading = false;

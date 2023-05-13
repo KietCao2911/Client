@@ -79,6 +79,16 @@ const OrderForm = (props) => {
       phuongThucThanhToan: Yup.string().required("Phải chọn trường này"),
       AddressDsc: Yup.string().required("Phải nhập trường này"),
     }),
+
+    initialTouched:{
+      Name: false,
+      Phone:false,
+      Email: false,
+      ProvinceID: false,
+      DistrictID: false,
+      WardID: false,
+      phuongThucThanhToan: false,
+    },
     onSubmit: (values) => {
       handleOrder();
     },
@@ -125,7 +135,7 @@ const OrderForm = (props) => {
   const handleOrder = (method) => {
     const diaChiNavigation = orderForm.values;
     const cart = JSON.parse(window.localStorage.getItem("cart"));
-    cart.thanhTien = thanhTien;
+    cart.thanhTien = thanhTien+(phiShip||0);
     cart.phiShip = phiShip;
     const params = {
       ...cart,
@@ -140,7 +150,6 @@ const OrderForm = (props) => {
       // console.log({ order: params });
       if(method=="COD")
       {
-
         dispatch(ThanhToanApi.OrderWithCOD(params));
       }
       else if(method=="VNPAY")
@@ -389,6 +398,14 @@ const OrderForm = (props) => {
               ) || convertVND(0)}</Col>
                   </Row>
                 </Col>
+                <Col span={24}>
+                  <Row justify={"space-between"}>
+                    <Col><b> shipping:</b></Col>
+                    <Col>              {convertVND(
+                phiShip||0
+              ) || convertVND(0)}</Col>
+                  </Row>
+                </Col>
                 {couponCode&& <Col span={24}>
                   <Row justify={"space-between"}>
                     <Col><b>Promotion: ( {couponCode} ) </b></Col>
@@ -402,7 +419,7 @@ const OrderForm = (props) => {
                 <Col span={24}>
                   <Row justify={"space-between"}>
                     <Col><b>Total:</b></Col>
-                    <Col>{convertVND(thanhTien||0)}</Col>
+                    <Col>{convertVND(thanhTien+phiShip)}</Col>
                   </Row>
                 </Col>
 
@@ -420,7 +437,7 @@ const OrderForm = (props) => {
       <div className="actionsOrder">
         <Space direction="vertical" style={{ width: "100%" }}>
           <div className="OrderDsc"></div>
-          <MyButton onClick={()=>handleOrder("COD")}  loading={loading} type="submit">
+          <MyButton style={{backgroundColor:"black",color:"white"}} onClick={()=>handleOrder("COD")}  loading={loading} type="submit">
            <strong> ORDER NOW</strong>
           </MyButton >
           <MyButton  onClick={()=>handleOrder("VNPAY")} style={{backgroundColor:"#E23E57",color:"white"}} loading={loading} type="submit">

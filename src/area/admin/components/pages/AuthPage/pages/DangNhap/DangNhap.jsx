@@ -32,7 +32,7 @@ validationSchema:YUP.object({
     }
   );
   const dispatch = useDispatch();
-  const onSubmit=()=>
+  const onSubmit=(role)=>
   {
       const valid = Form.isValid
       const params = {
@@ -41,7 +41,14 @@ validationSchema:YUP.object({
       }
       if(valid)
       {
-        dispatch(XacThucAPI.fetchPostSignUser(params))
+        if(role=="admin")
+        {
+          dispatch(XacThucAPI.AdminLogin({body:params}))
+        }
+        else{
+          
+          dispatch(XacThucAPI.ManagerLogin({body:params}))
+        }
       }
       else
       {
@@ -68,7 +75,10 @@ validationSchema:YUP.object({
       {<span className='error'>{Form.touched.password&&Form.errors.password&&Form.errors.password}</span>}
    </Space>
     </form>
-      <MyButton onClick={onSubmit} >Đăng nhập</MyButton>
+      <Space>
+      <MyButton loading={loading} onClick={()=>onSubmit("admin")} >Đăng nhập với quyền admin</MyButton>
+      <MyButton loading={loading} onClick={()=>onSubmit("manager")} >Đăng nhập với quyền quản lý</MyButton>
+      </Space>
     </Space>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Button, Card, Checkbox, Col, Descriptions, Form, Input, Row, Select, Space, Table, Tag } from "antd";
+import { Button, Card, Checkbox, Col, Descriptions, Form, Input, Row, Select, Space, Table, Tag, message } from "antd";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useLayoutEffect, useState, useTransition } from "react";
 import { ArrowLeft, Edit2, HelpCircle, Home, PenTool, RefreshCcw, Search, Trash2 } from "react-feather";
@@ -196,6 +196,18 @@ const CouponForm = useFormik({
         ngayKetThuc:coupon?.ngayKetThuc||"",
         
     },
+    initialErrors:{
+        maCoupon:true,
+        loaiKhuyenMai:true,
+        ngayBatDau:true,
+        ngayKetThuc:true,
+    },
+    initialTouched:{
+        maCoupon:false,
+        loaiKhuyenMai:false,
+        ngayBatDau:false,
+        ngayKetThuc:false,
+    },
     validationSchema:YUP.object({
         maCoupon:YUP.string().required("Phải nhập trường này"),
         loaiKhuyenMai:YUP.number().required("Phải chọn trường này"),
@@ -212,7 +224,10 @@ const handleCreate=()=>
         dispatch(CouponAPI.PostCouponThunk({body}))
     }
     else{
-        console.log({errros : CouponForm.errors})
+        message.open({
+            content:"Chưa nhập đầy đủ thông tin",
+            type:"error"
+        })
     }
 }
 useEffect(()=>
@@ -275,7 +290,7 @@ useEffect(()=>
                                                 <b>Mã coupon</b>
                                             <Input
                                             onBlur={CouponForm.handleBlur}
-                                           status={(CouponForm.touched.maCoupon&&CouponForm.errors.maCoupon)?"error":""} 
+                                           status={(CouponForm.touched.maCoupon&&CouponForm.errors.maCoupon&&CouponForm.touched.maCoupon)?"error":""} 
                                          value={CouponForm.values.maCoupon} 
                                          name="maCoupon" 
                                          placeholder="Nhập mã coupon"
@@ -293,7 +308,7 @@ useEffect(()=>
                                         <Input
                                         placeholder="Nhập tên coupon"
                                             onBlur={CouponForm.handleBlur}
-                                           status={(CouponForm.touched.tenCoupon&&CouponForm.errors.tenCoupon)?"error":""} 
+                                           status={(CouponForm.touched.tenCoupon&&CouponForm.errors.tenCoupon&&CouponForm.touched.tenCoupon)?"error":""} 
                                          value={CouponForm.values.tenCoupon} 
                                          name="tenCoupon" 
                                          onChange={CouponForm.handleChange} 
@@ -308,7 +323,7 @@ useEffect(()=>
                                         <Col span={24}>
                                         <b>Loại khuyến mãi</b>
                                             <Select  onBlur={CouponForm.handleBlur} value={CouponForm.touched.loaiKhuyenMai} fieldNames={"loaiKhuyenMai"}
-                                             status={(CouponForm.touched.loaiKhuyenMai&&CouponForm.errors.loaiKhuyenMai)?"error":""}
+                                             status={(CouponForm.touched.loaiKhuyenMai&&CouponForm.errors.loaiKhuyenMai&&CouponForm.touched.loaiKhuyenMai)?"error":""}
                                                onChange={(e)=>{
                                                 CouponForm.setFieldValue("loaiKhuyenMai",e) 
                                         CouponForm.setFieldValue("chiTietCoupons",[])
@@ -334,11 +349,16 @@ useEffect(()=>
                             <Card title="Thời gian khuyến mãi">
                             <Space direction="vertical" style={{width:"100%"}}>
                                 <b>Ngày bắt đầu</b>
-                                <DatePicker showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }} name="ngayBatDau" defaultValue={CouponForm.values?.ngayBatDau? dayjs(CouponForm.values?.ngayBatDau, 'YYYY-MM-DD HH:mm:ss'):null}    format={"DD-MM-YYYY HH:mm:ss"} onBlur={CouponForm.handleBlur} status={(CouponForm.touched.ngayBatDau&&CouponForm.errors.ngayBatDau)?"error":""}  
+                                <DatePicker showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }} 
+                                name="ngayBatDau" defaultValue={CouponForm.values?.ngayBatDau? dayjs(CouponForm.values?.ngayBatDau, 'YYYY-MM-DD HH:mm:ss'):null}    
+                                format={"DD-MM-YYYY HH:mm:ss"} onBlur={CouponForm.handleBlur} 
+                                status={(CouponForm.touched.ngayBatDau&&CouponForm.errors.ngayBatDau&&CouponForm.touched.ngayBatDau)?"error":""}  
                                  onChange={(e)=>onChangeDate(e,"ngayBatDau")} placeholder="Chọn ngày bắt đầu" style={{width:"100%"}}/>
                                 <b>Ngày kết thúc</b>
                                 <DatePicker  showshowTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}Time name="ngayKetThuc" 
-                                defaultValue={CouponForm.values?.ngayKetThuc? dayjs(CouponForm.values?.ngayKetThuc, 'YYYY-MM-DD HH:mm:ss'):null}  format={"DD-MM-YYYY HH:mm:ss"} onBlur={CouponForm.handleBlur} status={(CouponForm.touched.ngayKetThuc&&CouponForm.errors.ngayKetThuc)?"error":""}
+                                defaultValue={CouponForm.values?.ngayKetThuc? dayjs(CouponForm.values?.ngayKetThuc, 'YYYY-MM-DD HH:mm:ss'):null} 
+                                 format={"DD-MM-YYYY HH:mm:ss"} onBlur={CouponForm.handleBlur} 
+                                 status={(CouponForm.touched.ngayKetThuc&&CouponForm.errors.ngayKetThuc&&CouponForm.touched.ngayKetThuc)?"error":""}
                                    onChange={(e)=>onChangeDate(e,"ngayKetThuc")} placeholder="Chọn ngày kết thúc" style={{width:"100%"}}/>
                             </Space>
                             </Card>

@@ -32,9 +32,25 @@ export const EmailVerify= async (token) => {
     throw error;
   }
 };
-export const UserSignIn = async (body) => {
+export const PhoneSignIn = async (body) => {
   try {
-    const res = await Method.Post("/api/admin/Auth/SignIn", body);
+    const res = await Method.Post("/api/admin/Auth/PhoneSignIn", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+export const AdminLogin = async (body) => {
+  try {
+    const res = await Method.Post("/api/admin/Auth/AdminLogin", body);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+export const ManagerLogin = async (body) => {
+  try {
+    const res = await Method.Post("/api/admin/Auth/ManagerLogin", body);
     return res;
   } catch (error) {
     throw error;

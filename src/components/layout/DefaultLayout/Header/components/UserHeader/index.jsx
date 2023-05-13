@@ -10,7 +10,7 @@ const UserHeader = () => {
   const { user } = useSelector((state) => state.XacThuc);
   return (
     < div>
-      {Object.keys(user).length > 0 ? (
+      {(Object.keys(user).length > 0&&user?.roleGroup?.trim()=="USER") ? (
         <Link to="/me" className="icon ">
          <UserCheck/>
         </Link>

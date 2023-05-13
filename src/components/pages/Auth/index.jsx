@@ -9,10 +9,12 @@ import { useSelector } from "react-redux";
 import { PhoneOTP } from "..";
 import Email from "./pages/Email";
 import Method from "./components/Method";
+import { ArrowLeft } from "react-feather";
 const AuthPage = () => {
   return (
     <>
     <div className="AuthPage">
+     
       <Outlet/>
       <Routes>
         <Route element={<PhoneOTP/> } path="phone/*"></Route>

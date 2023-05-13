@@ -17,12 +17,14 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
+    const originalRequest = error.config; 
+    if (error.response.status === 401&& !originalRequest._retry) {
       const refresh__token = localStorage.getItem("refresh__token");
       if (refresh__token) {
         localStorage.setItem("access__token", refresh__token);
         localStorage.removeItem("refresh__token");
         const config = error.response.config;
+        originalRequest._retry = true;
         config.headers["authorization"] = `Bearer ${refresh__token} `;
         config.baseURL = BASE_URL;
         return request(config);

@@ -45,7 +45,6 @@ const OrderPage = () => {
   const dispatch =useDispatch();
   const {myOrders} = useSelector(state=>state.Me);
   const {user} = useSelector(state=>state.XacThuc)
-  console.log({user});
   useEffect(()=>
   {
     dispatch(MeAPI.getMyOrders({tenTaiKhoan:user.userName}))

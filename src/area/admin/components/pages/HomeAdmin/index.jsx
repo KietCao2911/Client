@@ -1,6 +1,7 @@
-import { Card, Statistic ,Row, Col, Select, Form, DatePicker, Button, Table} from "antd";
+import { Card, Statistic ,Row, Col, Select, Form, DatePicker, Button, Table, FloatButton} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React,{useState} from "react";
+import {Logout as SignOut} from "~/redux/slices/XacThuc";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +13,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import convertVND from "~/components/utils/ConvertVND";
-import { ArrowUp } from "react-feather";
+import { ArrowUp, LogOut } from "react-feather";
+import { useDispatch } from "react-redux";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -53,7 +55,9 @@ export const data = {
   ],
 };
 function HomeAdmin() {
+  const dispatch = useDispatch();
 return <Row gutter={[10,10]}>
+   <FloatButton onClick={()=>dispatch(SignOut())} icon={<LogOut/>} tooltip={"Đăng xuất"}></FloatButton>
   <Col span={24}>
   </Col>
   <Col span={24}>

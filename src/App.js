@@ -20,18 +20,41 @@ import SelectCustom from "./components/commomComponents/SelectCustom";
 import AdminAuthLayout from "./components/layout/AdminAuthLayout";
 import DangNhap from "./area/admin/components/pages/AuthPage/pages/DangNhap/DangNhap";
 import AuthPage from "./area/admin/components/pages/AuthPage";
+import { BASE_URL } from "./const";
 function App() {
   SwiperCore.use([Autoplay]);
-  const [visiabe, setVisiable] = useState(() => {
-    const location = window.localStorage.getItem("location");
 
-    return location ? false : true;
-  });
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.XacThuc);
-  useLayoutEffect(() => {
-    dispatch(XacThucAPi.fetchGetCurrentUser());
+  useEffect(() => {
+    const access__token = window.localStorage.getItem("access__token")
+    if(access__token)
+    {
+
+      dispatch(XacThucAPi.fetchGetCurrentUser());
+    }
   }, []);
+  useEffect(()=>
+{
+  const protocol = window.location.protocol;
+const hostname = window.location.hostname;
+const port = window.location.port;
+
+const url = protocol + '//' + hostname + (port ? ':' + port : '');
+  const baseAuthHref= url+"/admin/auth/dang-nhap"
+  const defaultHref = window.location.href;
+  const isLocationChange = baseAuthHref == defaultHref
+  if(!isLocationChange)
+  {
+    // window.addEventListener("resize", function() {
+    //   if (window.outerWidth - window.innerWidth > 0) {
+    //     this.window.location.replace("/admin/auth/dang-nhap")
+    //   }
+    // });
+  
+  }
+},[])
+
   return (
     <Router>
       <div className="App">
@@ -44,23 +67,24 @@ function App() {
               <Route
                 key={v4()}
                 element={
-                  //  user&&Object.keys(user).length>0 ? (
-                  //   <Layout>
-                  //     <Suspense fallback={<CustomSpin />}>
-                  //       {
-                  //         user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim()))?  <Page />:<NotFound/>
-                  //       }
+                   user&&Object.keys(user).length>0&&(user.roleGroup?.trim()=="ADMIN"||user.roleGroup?.trim()=="MANAGER") ? (
+                    <Layout>
+                      <Suspense fallback={<CustomSpin />}>
+                        {
+                          
+                          user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim()))?  <Page  key={route.key}/>:<NotFound/>
+                        }
                       
-                  //     </Suspense>
-                  //   </Layout>
-                  // ) : (
-                  // <NotFound/>
-                  // )
-                  <Layout>
-                    <Suspense fallback={<CustomSpin />}>
-                     <Page/>
-                    </Suspense>
-                  </Layout>
+                      </Suspense>
+                    </Layout>
+                  ) : (
+                  <NotFound/>
+                  )
+                  // <Layout>
+                  //   <Suspense fallback={<CustomSpin />}>
+                  //    <Page/>
+                  //   </Suspense>
+                  // </Layout>
                 }
                 path={route.path}
               ></Route>
@@ -74,7 +98,6 @@ function App() {
                 key={v4()}
                 element={
                   <Layout >
-                    <Location visiabe={visiabe}/>
                     <Page />
                   </Layout>
                 }
@@ -89,16 +112,16 @@ function App() {
               <Route
                 key={v4()}
                 element={
-                  // Object.keys(user).length>0&& user?.role.some(x=>x.roleCode=="USER") ? (
-                  //   <Layout>
-                  //     <Page />
-                  //   </Layout>
-                  // ) : (
-                  //   <NotFound />
-                  // )
-                  <Layout>
-                  <Page />
-                </Layout>
+                  Object.keys(user).length>0&& user?.roleGroup?.trim()=="USER" ? (
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  ) : (
+                    <NotFound />
+                  )
+                //   <Layout>
+                //   <Page />
+                // </Layout>
                 }
                 path={route.path}
               ></Route>

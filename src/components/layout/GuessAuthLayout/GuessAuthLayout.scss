@@ -7,11 +7,18 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-   
+
     .mainAuthLayout
     {
 
-      
+        position: relative;
+        .back
+        {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1;
+        }
         width: 50rem;
         padding: 3rem 2rem;
         background-color: white;

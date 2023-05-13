@@ -5,6 +5,8 @@ import "./AccountPage.scss"
 import {LogoutOutlined, RightOutlined} from "@ant-design/icons"
 import InfoPage from './pages/InfoPage/InfoPage'
 import HaveUserAddressComponent from '~/components/commomComponents/HaveUserAddressComponent'
+import { useDispatch } from 'react-redux'
+import {Logout} from '~/redux/slices/XacThuc'
 export const Page1 = () => {
   return (
     <div>Page1</div>
@@ -13,6 +15,7 @@ export const Page1 = () => {
 
 
 const AccountPage = () => {
+  const dispatch  = useDispatch();
   const itemNav=[{
     href:"",
     label:"Thông tin cá nhân",
@@ -24,9 +27,7 @@ const AccountPage = () => {
   const key = params['*']
   const handleLogout =()=>
   {
-    localStorage.removeItem("access__token")
-    localStorage.removeItem("refresh_token")
-    window.location.replace("/")
+    dispatch(Logout())
   }
   return (
     <div className='AccountPage'>

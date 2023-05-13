@@ -184,7 +184,7 @@ const TrangChiTietSanPham = () => {
               <Col md={24}>
                 <Space style={{ width: "100%" }} direction="vertical">
                   <h1 style={{ textTransform: "uppercase" }}>
-                    Sản phẩm bạn vừa xem
+                  RECENTLY VIEWED ITEMS
                   </h1>
                   <ListProducts
                     type={"slider"}
@@ -245,7 +245,7 @@ const TrangChiTietSanPham = () => {
                   {/* {ReactHtmlParser(product?.motaChiTiet)} */}
                 </MyCollapse>
               )}
-                         <MyCollapse label="Đánh giá " Icon={ <Rate
+                         <MyCollapse label="REVIEWS " Icon={ <Rate
                   style={{ color: "black" }}
                   allowHalf
                   disabled
@@ -254,7 +254,7 @@ const TrangChiTietSanPham = () => {
 {product?.sanPhamNavigation?.starReviewNavigation?.starReviewDetails?.map(review=>
                     {
                       return <Space style={{width:"100%"}} direction="vertical">
-                        <Card bordered={false} role="article" extra={<Rate
+                        <Card  bordered={false} role="article" extra={<Rate
                         style={{ color: "black" }}
                         allowHalf
                         disabled
@@ -327,7 +327,7 @@ const TrangChiTietSanPham = () => {
           </Space>
 
           <button className="AddToCart" onClick={handleAddToCart}>
-            <strong>THÊM VÀO GIỎ HÀNG</strong>
+            <strong>ADD TO CART</strong>
             <ArrowRightOutlined />
           </button>
           {/* <MyButton  onClick={handleAddToCart} style={{border:".1rem solid black"}} icon={<PlusSquare/>}>Thêm vào giỏ hàng </MyButton> */}
@@ -341,7 +341,7 @@ const TrangChiTietSanPham = () => {
             <RollbackOutlined /> Không đúng kích cỡ hoặc màu sắc? Vui lòng truy
             cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết chi tiết
           </a>
-          <MyCollapse defaultOpen={true} id="ReviewPC" label="Đánh giá của người dùng" Icon={ <Rate
+          <MyCollapse defaultOpen={true} id="ReviewPC" label="REVIEWS" Icon={ <Rate
                   style={{ color: "#D21312" }}
                   allowHalf
                   disabled

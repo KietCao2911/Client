@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import ActionSideBar from "~/components/layout/AdminLayout/ActionSideBar";
 import MyHeader from "~/components/layout/AdminLayout/Header";
 import "./AdminLayout.scss";
-import { Avatar, Layout } from "antd";
+import { Avatar, FloatButton, Layout } from "antd";
 import HeaderMainHome from "../DefaultLayout/Header";
 import HeaderAdmin from "../AdminAuthLayout/components/Header";
+import { LogOut } from "react-feather";
+import { useDispatch } from "react-redux";
+import {Logout as SignOut} from "~/redux/slices/XacThuc";
 const { Header, Content, Sider } = Layout;
 const AdminAuthLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  return (
+ return (
     <Layout>
-
+     
 
       <Layout>
       <Sider

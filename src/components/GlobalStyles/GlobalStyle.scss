@@ -422,7 +422,6 @@ body {
 }
 
 a {
-  font-size: 1.4vh;
   color: black;
 
   &:hover {
@@ -651,7 +650,11 @@ textarea {
 
   }
 }
-
+.color{
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+}
 .my-custom-pagination-item {
   color: black;
 }

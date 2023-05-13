@@ -1,4 +1,4 @@
-import { Button, Col, FloatButton, Input, Row, Select, Space, Table } from "antd";
+import { Button, Col, FloatButton, Input, Row, Select, Space, Table, Tag } from "antd";
 import { useEffect } from "react";
 import { Plus, Search } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,12 @@ const columns =[
         render:(_,record)=>
         {
             return <p>{record?.maCoupon}</p>
+        }
+    },  {
+        title:"Trạng thái",
+        render:(_,record)=>
+        {
+            return  <p>{record?.trangThai?<Tag color="green">Đang áp dụng</Tag>:<Tag color="">Ngừng áp dụng</Tag>}</p>
         }
     }
 ]

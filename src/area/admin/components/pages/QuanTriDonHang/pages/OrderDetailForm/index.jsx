@@ -121,6 +121,14 @@ const OrderDetailForm = (props) => {
       chiTietNhapXuats: Yup.array().min(1, "Chọn ít nhất một sản phẩm"),
       phiship:Yup.number().required("Giá trị phí giao hàng không thể bỏ trống")
     }),
+    initialTouched:{
+      phone:false,
+      name:false,
+      email:false,
+      ProvinceID:false,
+      DistrictID:false,
+      WardID:false,
+    },
     onSubmit: (values) => {
       alert("SUBMIT");
     },

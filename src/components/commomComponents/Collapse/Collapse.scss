@@ -10,6 +10,7 @@
     background-color: transparent;
     cursor: pointer;
     overflow-y: scroll;
+   
     .labelGroup{
         display: flex;
         justify-content: space-between;
@@ -28,7 +29,7 @@
         text-align: left;
         overflow-y: scroll;
         &.active{
-            max-height:1000vh ;
+            max-height:1000vh;
         }
     }
 }

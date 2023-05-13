@@ -20,14 +20,11 @@ function ActionSideBar() {
   {
 const    eles = adminRoute.map(route=>
       {
-        //  if(user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim())))
-        //  {
-        //     return getItem(<Link to={route?.slug}>{route?.name}</Link>,v4(),null,route.icon)
-        //  }else
-        //  {
-        //   console.log("NOT ROLE")
-        //  }
-        return getItem(<Link to={route?.slug}>{route?.name}</Link>,v4(),null,route.icon)
+         if(user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim())))
+         {
+            return getItem(<Link to={route?.slug}>{route?.name}</Link>,v4(),null,route.icon)
+         }
+        // return getItem(<Link to={route?.slug}>{route?.name}</Link>,v4(),null,route.icon)
       })
       return eles
   }
