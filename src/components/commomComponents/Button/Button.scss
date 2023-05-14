@@ -16,7 +16,7 @@
     
     &:disabled{
        pointer-events: none;
-       background-color: #ccc;
+       background-color: #ccc !important;
     }
     .Icon {
         position: absolute;

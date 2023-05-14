@@ -20,7 +20,7 @@ const DeliveryPage = () => {
   const { user } = useSelector((state) => state.XacThuc);
   const { DiaChi, loading } = useSelector((state) => state.ThanhToan);
   const { ghnAPI } = useSelector((state) => state.GioHang);
-  const { Provinces, Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
+  const { Provinces, FeeCount,Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
   const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation } = useSelector(
     (state) => state.GioHang
   );
@@ -171,13 +171,16 @@ const DeliveryPage = () => {
                        ></InputText>
                  }
                  {couponCode&&<Promo/>}
-                  <MyButton style={{backgroundColor:"black",color:"white"}} onClick={()=>handleOrder("COD")}  loading={loading} type="submit">
+                  <MyButton style={{backgroundColor:"black",color:"white"}} onClick={()=>handleOrder("COD")}  
+                  loading={loading||Loading.FeeCount} type="submit">
            <strong> ORDER NOW</strong>
           </MyButton >
-          <MyButton  onClick={()=>handleOrder("VNPAY")} style={{backgroundColor:"#E23E57",color:"white"}} loading={loading} type="submit">
+          <MyButton  onClick={()=>handleOrder("VNPAY")} 
+          style={{backgroundColor:"#E23E57",color:"white"}} loading={loading||Loading.FeeCount} type="submit">
            <strong> ORDER/PAYMENT WITH VNPAY</strong>
           </MyButton >
-          <MyButton loading={loading} onClick={()=>handleOrder("PAYPAL")} style={{backgroundColor:"#002E80",color:"white"}} >
+          <MyButton loading={loading||Loading.FeeCount} onClick={()=>handleOrder("PAYPAL")}
+           style={{backgroundColor:"#002E80",color:"white"}} >
            <strong>ORDER/PAYMENT WITH PAYPAL</strong>
           </MyButton >
                   </Space>

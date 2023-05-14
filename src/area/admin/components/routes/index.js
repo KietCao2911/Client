@@ -4,7 +4,7 @@ import QuanTriBST from "../pages/QuanTriBoSuuTap";
 import { lazy } from "react";
 import AdminAuthLayout from "~/components/layout/AdminAuthLayout";
 
-import { Archive, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
+import { Archive, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, Settings, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
 import QuanTriCoupon from "../pages/QuanTriCoupon";
 import { v4 } from "uuid";
 
@@ -22,6 +22,7 @@ const QuanTriKhachHang = lazy(() => import("../pages/QuanTriKhachHang"));
 const QuanTriKhuyenMai = lazy(() => import("../pages/QuanTriKhuyenMai"));
 const QuanTriKhoHang = lazy(() => import("../pages/QuanTriKhoHang"));
 const QuanTriQuyen = lazy(() => import("../pages/RoleManager"));
+const AccountSettings = lazy(() => import("../pages/AccountSettings"));
 
 export const adminRoute = [
   {
@@ -155,5 +156,13 @@ export const adminRoute = [
     slug: "/admin/phan-quyen/",
     role:["ROLEMNG"],
     icon:<Key/>
+  },  {
+    key:v4(),
+    path: "/admin/settings/:id",
+    element: AccountSettings,
+    role:["COMMONS"],
+    name:"Cài đặt tài khoản",
+    slug: "/admin/settings",
+    icon:<Settings/>
   },
 ];

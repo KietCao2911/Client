@@ -31,6 +31,7 @@ const initialState = {
       Provinces: false,
       Districts: false,
       Wards: false,
+      FeeCount:false,
     },
   },
 };
@@ -240,24 +241,24 @@ const GioHangSlice = createSlice({
       window.localStorage.setItem("address", addressString);
       state.ghnAPI.Loading.Wards = false;
     });
+    //fetchPostCalFee
+    builder.addCase(fetchPostCalFee.pending, (state, action) => {
+      state.ghnAPI.Loading.FeeCount =true;
+    });
     builder.addCase(fetchPostCalFee.fulfilled, (state, action) => {
       const phiShip = action.payload.data.total;
       state.ghnAPI.FeeInfo = action.payload;
       state.phiShip = phiShip || 0;
-      // state.thanhTien += phiShip;
-      // if(state.tienDaGiam>0)
-      // {
-      //   state.thanhTien -= state.tienDaGiam;
-
-      // }
-      // const CartString = JSON.stringify(state);
-      // window.localStorage.setItem("cart", CartString);
+      const CartString = JSON.stringify(state);
+      window.localStorage.setItem("cart", CartString);
+      state.ghnAPI.Loading.FeeCount =false;
     });
     builder.addCase(fetchPostCalFee.rejected, (state, action) => {
       message.open({
         content: "Có lỗi xảy ra, vui lòng thử lại",
         type: "error",
       });
+      state.ghnAPI.Loading.FeeCount =false;
     });
   },
 });

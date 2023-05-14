@@ -71,8 +71,7 @@ const url = protocol + '//' + hostname + (port ? ':' + port : '');
                     <Layout>
                       <Suspense fallback={<CustomSpin />}>
                         {
-                          
-                          user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim()))?  <Page  key={route.key}/>:<NotFound/>
+                          user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim())||route?.role[0]=="COMMONS")?  <Page  key={route.key}/>:<NotFound/>
                         }
                       
                       </Suspense>

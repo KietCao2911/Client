@@ -13,7 +13,7 @@ const OrderResult=()=>
     const {orderID,token}= useParams();
     useEffect(()=>
     {
-        dispatch(HoaDonAPI.fetchGetStatusOrder({orderID:96 ,body:{token}}))
+        dispatch(HoaDonAPI.fetchGetStatusOrder({orderID:orderID ,body:{token}}))
     },[orderID,token])
     if(loading)
     {

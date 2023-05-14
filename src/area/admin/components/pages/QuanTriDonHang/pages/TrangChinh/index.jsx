@@ -55,6 +55,13 @@ const Columns = (props) => {
       },
     },
     {
+      title: "Phương thức thanh toán",
+      dataIndex: "phiship",
+      render: (_, record) => {
+        return <p>{`${record?.phuongThucThanhToan}`}</p>;
+      },
+    },
+    {
       title: "Thành tiền",
       dataIndex: "thanhtien",
       render: (_, record) => {
@@ -69,7 +76,7 @@ const Columns = (props) => {
       filters:[{
         text:"Đã thanh toán",value:true,
       },{
-        text:"Chưa thanh toán",value:false,
+        text:"Chờ thanh toán",value:false,
       }],
       render: (_, record) => (
         <>

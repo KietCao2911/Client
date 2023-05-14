@@ -559,8 +559,9 @@ const OrderDetailForm = (props) => {
         {
           isUpdated?<>
           <Col md={24} xs={24}>
-          {!OrderForm.values.daThanhToan&&!OrderForm.values.daHoanTien&&<Card title={`${OrderForm.values.phuongThucThanhToan=="COD"?"Thanh toán":"Xác nhận đã thanh toán bằng "+OrderForm.values?.phuongThucThanhToan}`} extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
-            {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
+          {!OrderForm.values.daThanhToan&&!OrderForm.values.daHoanTien&&<Card title={`${OrderForm.values.phuongThucThanhToan=="COD"?"Thanh toán":"Xác nhận đã thanh toán bằng "+OrderForm.values?.phuongThucThanhToan}`}
+           extra={<Button loading={loading} onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
+            {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button loading={loading}  onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
           </Col>
       
           </>:null
@@ -568,15 +569,16 @@ const OrderDetailForm = (props) => {
         {
           isReadOnly&&OrderForm.values?.status!=-1&&<>
                     <Col md={24} xs={24}>
-            {!OrderForm.values.daThanhToan&&<Card title="Thanh toán" extra={<Button onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
-            {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
+            {!OrderForm.values.daThanhToan&&<Card title="Thanh toán" extra={<Button loading={loading} onClick={handleThanhToan}>Thanh toán</Button>}></Card>}
+            {!OrderForm.values.daXuatKho&&<Card title="Xuất kho" extra={<Button loading={loading} onClick={handleXuatHangKhoiKho}>Xuất kho</Button>}></Card>}
           </Col>
           </>
         }
                 {
           isReturn?<>
           <Col md={24} xs={24}>
-            {OrderForm.values.status==-1&&OrderForm.values.daThanhToan&&!OrderForm.values?.daHoanTien&& <Card title="Hoàn tiền" extra={<Button onClick={handleHoanTien}>Hoàn tiền</Button>}></Card>}
+            {OrderForm.values.status==-1&&OrderForm.values.daThanhToan&&!OrderForm.values?.daHoanTien&& <Card title="Hoàn tiền" extra={<Button loading={loading}
+             onClick={handleHoanTien}>Hoàn tiền</Button>}></Card>}
           </Col>
           <FloatButton.Group>
                   <FloatButton tooltip={"Xác nhận trả hàng"}  onClick={handleTraHang}></FloatButton>

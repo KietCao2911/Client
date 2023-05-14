@@ -58,7 +58,7 @@ const SuccessPage=({hoadon})=>
             <Check color="black"/>
            </Col> 
            <Col span={24}>
-            <h1>đơn hàng đã được đặt</h1>
+            <strong >đơn hàng đã được đặt</strong    >
             <p>Chúng tôi đã tiếp nhận đơn hàng của bạn, vui lòng chờ email xác nhận. Chúc bạn một ngày tốt lành :) </p>
             </Col> 
            <Col span={24}>

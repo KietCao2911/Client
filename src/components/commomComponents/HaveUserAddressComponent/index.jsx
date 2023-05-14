@@ -79,10 +79,10 @@ const HaveUserAddressComponent = () => {
                 <Row gutter={[10,10]}>
             {user.info&&user.info.map(item=>
                 
-               <Col key={v4()} md={8} xs={24}>
+               item?.deletedAT==null&&<Col key={v4()} md={8} xs={24}>
                 
-                <Item user={user} data={item}/>  
-          </Col>
+               <Item user={user} data={item}/>  
+         </Col>
                 )}
                 <Col md={8} xs={24}>
                 <AddItem onClick={()=>setOpenModal(true)}/>
@@ -97,7 +97,7 @@ const HaveUserAddressComponent = () => {
         
         {openModal&&<Col span={24}>
                         
-                        <Card role="article" extra={<Space>
+                        <Card bordered={false} role="article" extra={<Space>
                          <Button onClick={()=>setOpenModal(false)}>Hủy</Button>
                         </Space>}>
                         <AddressUserForm/>
