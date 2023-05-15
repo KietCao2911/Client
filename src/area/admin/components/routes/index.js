@@ -140,7 +140,6 @@ export const adminRoute = [
 
     path: "/admin/quan-tri-danh-muc/*",
     element: QuanTriDanhMuc,
-    role:["ADMIN","CATEGORYMANAGER"],
     name:"Quản trị danh mục",
     slug: "/admin/quan-tri-danh-muc/",
     role:["CATMANAGER"],
