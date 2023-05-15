@@ -246,7 +246,7 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
         <Row  gutter={[, 20]}>
           {/* HEADER */}
           <Col span={24}>
-            <StickyActions link="/admin/trang-quan-tri-don-hang" label="Trở về trang đơn hàng" Actionsbtn={(<Button onClick={handleSubmit} type="primary"> Xác nhận</Button>)} ></StickyActions>
+            <StickyActions link="/admin/trang-quan-tri-don-hang" label="Trở về trang đơn hàng" Actionsbtn={(<Button loading={loading} onClick={handleSubmit} type="primary"> Xác nhận</Button>)} ></StickyActions>
           </Col>
           <Col span={24}>
             <StickyActions IconBack={<Fragment/>} Actionsbtn={              <Steps
@@ -349,7 +349,7 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
                   </List>
                   <List></List>
                   <ProductsTable
-                    isEdit={isCreated ? true : false}
+                    isEdit={true}
                     Form={OrderForm}
                   />
                   <span

@@ -5,13 +5,14 @@ import { useSearchParams } from "react-router-dom";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import "./sizeOptions.scss";
 import { useCallback } from "react";
+import { v4 } from "uuid";
 const Radio = (props) => {
   const { value, checked, onChange } = props;
   const handleChange = (e) => {
     onChange(e);
   };
   return (
-    <div className="Radio">
+    <div className="Radio" key={v4()}>
       <input
         onChange={(e) => handleChange(e.target.value)}
         checked={value == checked}
@@ -43,7 +44,7 @@ const SizeOptions = () => {
     let arrEles = []
     for(let i =24;i<=47;i++)
     {
-      arrEles.push( <Col xs={6} md={4}>
+      arrEles.push( <Col xs={6} md={4} key={v4()}>
         <Radio value={i} checked={size} onChange={handleChange} />
       </Col>)
     }

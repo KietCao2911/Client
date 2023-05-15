@@ -52,13 +52,13 @@ const CreateProduct = () => {
   const [initStyles, setInitStyle] = useState(false);
   const [versions, setVersions] = useState([]);
   const [openDes, setOpenDsc] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [pending, startTransition] = useTransition();
   const { sizes } = useSelector((state) => state.KichCo);
   const { colors } = useSelector((state) => state.MauSac);
   const { types } = useSelector((state) => state.Type);
   const { brands } = useSelector((state) => state.Brand);
   const { branchs } = useSelector((state) => state.Branch);
+  const { loading } = useSelector((state) => state.SanPham);
   const { vats } = useSelector((state) => state.Vat);
   const [Vat, setVat] = useState(false);
   const [modalAddNewBrand, setmodalAddNewBrand] = useState({

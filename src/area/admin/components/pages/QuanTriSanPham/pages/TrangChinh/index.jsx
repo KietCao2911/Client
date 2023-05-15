@@ -68,9 +68,10 @@ const columns = (props) => {
       key: "tenSanPham",
       render: (_, record) => {
         return (
-          <Link to={record.maSanPham.trim() + "/versions/"}>
-            {record.tenSanPham}
-          </Link>
+         <p>
+           {record.tenSanPham}
+         </p> 
+          
         );
       },
     },
@@ -217,7 +218,16 @@ const TrangChinh = () => {
           <Table
           scroll={{ x: 400 }}
             loading={loading}
+            className="icon"
             rowSelection={rowSelection}
+            onRow={(record)=>{
+              return {
+                onClick:(e)=>
+                {
+                 nav(record.maSanPham.trim() + "/versions/")
+                }
+              }
+            }}
             dataSource={data}
             expandable={{
               expandedRowRender: (record) =>

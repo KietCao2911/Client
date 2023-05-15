@@ -8,7 +8,7 @@ import convertVND from "~/components/utils/ConvertVND";
 import { useState } from "react";
 import { v4 } from "uuid";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Plus } from "react-feather";
+import { Plus, RefreshCcw } from "react-feather";
 import StickyActions from "~/components/commomComponents/stickyActions";
 const Columns = (props) => {
   const { setOpenModal } = props;
@@ -143,12 +143,15 @@ const TrangChinh = () => {
     dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}));
   }, [tableParams]);
   const action=(
-    <Link to="tao-moi"><Button type="primary">Thêm mới</Button></Link>
+    <Space>
+      <Link to="tao-moi"><Button type="primary">Thêm mới</Button></Link>
+     
+    </Space>
   )
   return (
     <div>
       <Space direction="vertical" style={{width:"100%"}}>
-        <StickyActions IconBack={<Fragment/>} Actionsbtn={action}></StickyActions>
+        <StickyActions IconBack={<RefreshCcw className="icon" onClick={()=>dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}))}/>} Actionsbtn={action}></StickyActions>
       <Table
       onRow={(record,index)=>
       {

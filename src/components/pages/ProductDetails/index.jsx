@@ -165,7 +165,7 @@ const TrangChiTietSanPham = () => {
 
           </Col>
           {/* Product Description */}
-          <Col xs={{ order: 1, span: 24 }} md={24}>
+          <Col md={24} xs={0}>
             <Col md={24}>
               {product?.related && product?.related.length > 0 && (
                 <Space style={{ width: "100%" }} direction="vertical">

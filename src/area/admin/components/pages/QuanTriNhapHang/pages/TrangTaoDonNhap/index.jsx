@@ -479,7 +479,7 @@ const TrangTaoDonNhap = (props) => {
                           })}
                       </List>
                     ) : null}
-                    <Card title="Thông tin sản phẩm">
+                    <Card title={`${isReturn?"Thông tin sản phẩm hoàn trả":"Thông tin sản phẩm nhập"}`}>
                       <ProductsTable
                         Form={Form}
                         isEdit={isCreated || isReturn ? true : false}

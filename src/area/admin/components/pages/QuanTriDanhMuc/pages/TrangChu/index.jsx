@@ -15,6 +15,7 @@ const TrangChu = () => {
       open:false,
       action:"create",
     })
+
     const ExpandedRowRender = (props) => {
       const { data } = props;
       const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const TrangChu = () => {
           {
               return <>
             <Space>
-            <Button onClick={()=>setCategoryParams({...categoryParams,open:true,parentCategoryID:record?.id})}>Thêm 1 danh mục</Button>
+            <Button onClick={()=>setCategoryParams({...categoryParams,id:0,action:"create",open:true,parentCategoryID:record?.id})}>Thêm 1 danh mục</Button>
               <Button>Cập nhật danh mục</Button>
               <Button>Xóa danh mục</Button>
             </Space>
@@ -65,7 +66,7 @@ const TrangChu = () => {
             {
                 return <>
                <Space>
-               <Button onClick={()=>setCategoryParams({...categoryParams,open:true,parentCategoryID:record?.id})}>Thêm 1 danh mục</Button>
+               <Button onClick={()=>setCategoryParams({...categoryParams,action:"create",id:0,open:true,parentCategoryID:record?.id})}>Thêm 1 danh mục</Button>
                 <Button onClick={()=>setCategoryParams({open:true,action:"update",...record})}>Cập nhật danh mục</Button>
                 <Button onClick={()=>dispatch(DanhMucAPI.fetchCategoryDelete(record.id))}>Xóa danh mục</Button>
                 <Button>Thêm sản phẩm vào danh mục này</Button>
@@ -84,10 +85,8 @@ const TrangChu = () => {
       console.log({categoryParams})
       if(categoryParams.action=="create")
       {
-        console.log({categoryParams});
         dispatch(DanhMucAPI.fetchCategoryAdd(categoryParams))
       }else{
-        console.log({categoryParams})
         dispatch(DanhMucAPI.fetchCategoryUpdate({id:categoryParams.id,body:categoryParams}))
       }
     }

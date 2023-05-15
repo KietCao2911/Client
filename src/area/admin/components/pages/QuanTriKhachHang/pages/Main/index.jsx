@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react'
 import * as KhachHangAPI from '~/redux/slices/KhachHang/KhachHangSlice'
-import { Button, Table } from 'antd'
+import { Button, Space, Table } from 'antd'
 import { useSelector,useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 const Columns=()=>
@@ -32,10 +32,10 @@ const Columns=()=>
             title:"Hành động",
             render:(_,record)=>
             {
-                return <>
+                return <Space>
                     <Link to={"chinh-sua/"+record.id}> <Button >Sửa</Button></Link>
                     <Button danger>Xóa</Button>
-                </>
+                </Space>
             }
           }
     ]

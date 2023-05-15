@@ -168,13 +168,16 @@ const ProductsTable = (props) => {
   };
   return (
     <>
-      <Table
-        bordered
-        scroll={{ x: 400 }}
-        columns={columns}
-        rowKey={()=>v4()}
-        dataSource={Form.values.chiTietNhapXuats&&Form.values.chiTietNhapXuats.length>0&&Form.values.chiTietNhapXuats?.filter(x=>x.deletedAT==null) || []}
-      ></Table>
+    {
+      Form.values.chiTietNhapXuats?.filter(x=>x.deletedAT==null).length>0? <Table
+      bordered
+      scroll={{ x: 400 }}
+      columns={columns}
+      rowKey={()=>v4()}
+      dataSource={Form.values.chiTietNhapXuats&&Form.values.chiTietNhapXuats.length>0&&Form.values.chiTietNhapXuats?.filter(x=>x.deletedAT==null) || []}
+    ></Table>:<strong>Không có sản phẩm hoặc đã hoàn trả hết.</strong>
+    }
+     
     </>
   );
 };

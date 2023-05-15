@@ -111,18 +111,21 @@ const HoaDonSlice = createSlice({
     });
     builder.addCase(fetchPutTraHang.fulfilled, (state, action) => {
       state.hoadon = action.payload;
-      state.loading = false;
       notification.open({
         message:"Đã trả hàng thành công",
         type:"success"
       })
+      state.loading = false;
     });
     builder.addCase(fetchPutTraHang.rejected, (state, action) => {
       state.loading = false;
+      notification.open({
+        message:action.error.message?? "Trả hàng thất bại",
+        type:"error"
+      })
     });
     //fetchPUTHoaDon
     builder.addCase(fetchPUTHoaDon.pending, (state, action) => {
-      state.hoadon = {};
       state.loading = true;
     });
     builder.addCase(fetchPUTHoaDon.fulfilled, (state, action) => {
@@ -143,7 +146,6 @@ const HoaDonSlice = createSlice({
     });
     //fetchPUTHoanTien
     builder.addCase(fetchPUTHoanTien.pending, (state, action) => {
-      state.hoadon = {};
       state.loading = true;
     });
     builder.addCase(fetchPUTHoanTien.fulfilled, (state, action) => {
@@ -152,7 +154,6 @@ const HoaDonSlice = createSlice({
     });
     //fetchPutXuatKho
     builder.addCase(fetchPutXuatKho.pending, (state, action) => {
-      state.hoadon = {};
       state.loading = true;
     });
     builder.addCase(fetchPutXuatKho.fulfilled, (state, action) => {

@@ -104,7 +104,6 @@ const PhieuNhapSlice = createSlice({
     //FetchPUTHoanTien
     //fetchTraHang
     builder.addCase(fetchPUTHoanTien.pending, (state, action) => {
-      state.item = {};
       state.loading = true;
     });
     builder.addCase(fetchPUTHoanTien.fulfilled, (state, action) => {
@@ -126,10 +125,10 @@ const PhieuNhapSlice = createSlice({
     });
     //fetchTraHang
     builder.addCase(fetchPUTTraHang.pending, (state, action) => {
-      state.item = {};
       state.loading = true;
     });
     builder.addCase(fetchPUTTraHang.fulfilled, (state, action) => {
+      state.loading=false;
       state.item = action.payload;
       notification.open({
         message: "Đã trả hàng",
@@ -141,12 +140,12 @@ const PhieuNhapSlice = createSlice({
     builder.addCase(fetchPUTTraHang.rejected, (state, action) => {
       notification.open({
         message: "Trả hàng thất bại",
-        type: "success",
+        type: "error",
       });
+      state.loading=false;
     });
     //fetchPuThanhToan
     builder.addCase(fetchPutThanhToan.pending, (state, action) => {
-      state.item = {};
       state.loading = true;
     });
     builder.addCase(fetchPutThanhToan.fulfilled, (state, action) => {
@@ -160,7 +159,6 @@ const PhieuNhapSlice = createSlice({
     });
     //fetchPutNhapKho
     builder.addCase(fetchPutNhapKho.pending, (state, action) => {
-      state.item = {};
       state.loading = true;
     });
     builder.addCase(fetchPutNhapKho.fulfilled, (state, action) => {
@@ -218,7 +216,14 @@ const PhieuNhapSlice = createSlice({
     });
     //fetchGetPhieuNhaps
     builder.addCase(fetchGetPhieuNhaps.pending, (state, action) => {
+      state.loading=true;
+    });
+    builder.addCase(fetchGetPhieuNhaps.fulfilled, (state, action) => {
       state.items = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(fetchGetPhieuNhaps.rejected, (state, action) => {
+      state.loading = false;
     });
     //fetchPostPhieuNhaps
     builder.addCase(fetchPostPhieuNhaps.pending, (state, action) => {

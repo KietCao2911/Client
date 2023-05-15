@@ -17,16 +17,12 @@ const AdminAuthLayout = ({ children }) => {
 
       <Layout>
       <Sider
-        
         style={{backgroundColor:"transparent"}}
       collapsible
       collapsed={collapsed} 
         width={280}
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
         onCollapse={(collapsed, type) => {
           setCollapsed(collapsed)
         }}

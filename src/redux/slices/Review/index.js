@@ -50,7 +50,7 @@ const ReviewSlice=createSlice({
             })
             setTimeout(()=>
             {
-                window.location.replace("/")
+                // window.location.replace("/")
             },1000)
             state.loading = false;
         })
@@ -61,10 +61,10 @@ const ReviewSlice=createSlice({
                 message:"Sản phẩm đã được đánh giá",
                 type:"info",
             })
-            setTimeout(()=>
-            {
-                window.location.replace("/")
-            },2000)
+            // setTimeout(()=>
+            // {
+            //     window.location.replace("/")
+            // },2000)
         })
     }
 })

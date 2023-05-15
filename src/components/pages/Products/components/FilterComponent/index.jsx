@@ -16,6 +16,7 @@ import MyCollapse from "~/components/commomComponents/Collapse";
 import CustomDrawer from "~/components/commomComponents/CustomDrawer";
 import { Filter as MyFilter } from "react-feather";
 import Breadcrumb from "~/components/commomComponents/Breadcrumb";
+import { useQueryString } from "~/hooks/useQueryParams";
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -63,6 +64,7 @@ const items = [
   ),
 ];
 const Filter = (props) => {
+  const {sort} = useQueryString();
   const [openDrawer, setOpenDrawer] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { slug, category } = useParams();
@@ -106,28 +108,38 @@ const Filter = (props) => {
         <MyCollapse label="Sắp xếp" defaultOpen={true}>
           <Space direction="vertical">
             <h4
-              key={uuidv4()}
+            className={`${sort&&sort=="price-hight-to-low"?"active":""}`}
+                         key={uuidv4()}
               onClick={() => handleClickSort("price-hight-to-low")}
             >
               {" "}
               Giá cao đến giá thấp
             </h4>
             <h4
+            className={`${sort&&sort=="price-low-to-hight"?"active":""}`}
+
               key={uuidv4()}
               onClick={() => handleClickSort("price-low-to-hight")}
             >
               {" "}
               Giá thấp đến giá cao
             </h4>
-            <h4 key={uuidv4()} onClick={() => handleClickSort("date-oldest")}>
+            <h4
+                        className={`${sort&&sort=="date-oldest"?"active":""}`}
+
+            key={uuidv4()} onClick={() => handleClickSort("date-oldest")}>
               {" "}
               Cũ nhất
             </h4>
-            <h4 key={uuidv4()} onClick={() => handleClickSort("date-newest")}>
+            <h4
+                                    className={`${sort&&sort=="date-newest"?"active":""}`}
+            key={uuidv4()} onClick={() => handleClickSort("date-newest")}>
               {" "}
               Mới nhất
             </h4>
-            <h4 key={uuidv4()} onClick={() => handleClickSort("popular")}>
+            <h4 
+                                                className={`${sort&&sort=="popular"?"active":""}`}
+            key={uuidv4()} onClick={() => handleClickSort("popular")}>
               {" "}
               Bán chạy nhất
             </h4>

@@ -46,7 +46,6 @@ const ThanhToanSlice =createSlice({
         })
         builder.addCase(OrderWithCOD.fulfilled,(state,action)=>
         {
-            state.loading=false;
             if(action.payload.redirect)
             {
                 localStorage.removeItem("cart");
@@ -60,15 +59,16 @@ const ThanhToanSlice =createSlice({
                 localStorage.removeItem("cart");
                 window.location.replace("../")
             }
+            state.loading=false;
 
         })
         builder.addCase(OrderWithCOD.rejected,(state)=>
         {
-            state.loading=false;
             notification.open({
                 message:"Đặt hàng thất bại.",
                 type:"error",
             })
+            state.loading=false;
         })
         //fetchPostWithUser
         builder.addCase(OrderWithVNPAY.pending,(state)=>
