@@ -73,9 +73,9 @@ const OrderForm = (props) => {
       Email: Yup.string()
         .required("Phải nhập trường này")
         .matches(emailRegex, "Định dạng email không đúng"),
-      ProvinceID: Yup.number().nullable(true).required("Phải chọn trường này"),
-      DistrictID: Yup.number().nullable(true).required("Phải chọn trường này"),
-      WardID: Yup.number().nullable(true).required("Phải chọn trường này"),
+      ProvinceID: Yup.string().required("Phải nhập trường này"),
+      DistrictID: Yup.string().required("Phải nhập trường này"),
+      WardID: Yup.string().required("Phải nhập trường này"),
       phuongThucThanhToan: Yup.string().required("Phải chọn trường này"),
       AddressDsc: Yup.string().required("Phải nhập trường này"),
     }),

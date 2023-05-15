@@ -109,13 +109,11 @@ const OrderDetailForm = (props) => {
           ?.trim()
           .required("Phải nhập trường này")
           .matches(emailRegex, "Định dạng email không đúng"),
-        ProvinceID: Yup.number()
-          .nullable(true)
+        ProvinceID: Yup.string()
           .required("Phải chọn trường này"),
-          DistrictID: Yup.number()
-          .nullable(true)
+          DistrictID: Yup.string()
           .required("Phải chọn trường này"),
-        WardID: Yup.number().nullable(true).required("Phải chọn trường này"),
+        WardID: Yup.string().required("Phải chọn trường này"),
       }),
       phuongThucThanhToan: Yup.string().required("Phải chọn trường này"),
       chiTietNhapXuats: Yup.array().min(1, "Chọn ít nhất một sản phẩm"),
