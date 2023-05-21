@@ -256,7 +256,6 @@ const TrangTaoDonNhap = (props) => {
       {(isUpdated || isCreated) && (
        <>
         <Button  loading={loading}onClick={() => handleSubmit(1)}>Đặt hàng</Button>
-        <Button  >Xuất hóa đơn</Button>
         <Button type="primary" loading={loading}  onClick={() => handleSubmit(2)}>{isCreated ? "Đặt hàng và duyệt" : "Xác nhận sửa"}</Button>
        </>
       

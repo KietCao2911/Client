@@ -79,7 +79,7 @@ const PhieuXuatHang =({hoadon,open,setOpen})=>
     </Col>
     <Col>
     <Space style={{textAlign:"left",width:"100%"}} direction="vertical">
-        
+        <p>Người đặt hàng:{hoadon?.diaChiNavigation?.name}</p>
         <p>Xuất hàng tại kho: {hoadon?.maChiNhanh} đến địa điểm:{`${hoadon?.diaChiNavigation?.addressDsc}, ${hoadon?.diaChiNavigation?.wardName},
          ${hoadon?.diaChiNavigation?.districtName}, ${hoadon?.diaChiNavigation?.provinceName}`}</p>
     </Space>
