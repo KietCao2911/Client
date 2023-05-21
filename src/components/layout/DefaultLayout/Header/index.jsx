@@ -25,6 +25,8 @@ import {
 } from "react-feather";
 import CustomDrawer from "~/components/commomComponents/CustomDrawer";
 import Location from "~/components/commomComponents/LocationSelect";
+import LoadingElement from "~/components/commomComponents/LoadingElement";
+import { v4 } from "uuid";
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -41,7 +43,7 @@ function HeaderMainHome() {
   const [menuMobileOpen, setMenuMobileOpen] = useState(false);
   const { tongSoLuong } = useSelector((state) => state.GioHang);
   const headerRef = useRef();
-  const { items } = useSelector((state) => state.DanhMuc);
+  const { loading,items } = useSelector((state) => state.DanhMuc);
   const [data, setData] = useState([]);
   const [searchTexts,setSeachTexts] = useState("")
   const nav = useNavigate();
@@ -52,12 +54,13 @@ function HeaderMainHome() {
       arr.map((item) => {
         return getItem(
           <Link to={`/category/${item.slug.trim()}`}>{item?.tenDanhMuc}</Link>,
-          item.id,
+         v4(),
           null,
           handleRenderItems(item.children || []),
           null
         );
       });
+      console.log({temp})
     return temp;
   };
   const handleOpenMenuDrawer = () => {
@@ -144,7 +147,7 @@ function HeaderMainHome() {
         setOpen={setMenuMobileOpen}
         onClose={() => setMenuMobileOpen(false)}
       >
-        <Menu items={handleRenderItems(items) || []} mode={"inline"} />
+     {loading?<LoadingElement/>:   <Menu items={handleRenderItems(items) || []} mode={"inline"} />}
       </CustomDrawer>
       <CustomDrawer
         open={searchModal}

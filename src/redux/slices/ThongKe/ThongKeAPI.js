@@ -1,9 +1,9 @@
 import * as Method from "~/axiosRequest/request"
 
-export const fetchDoanhSo=async(id,body)=>
+export const fetchDoanhSo=async(body)=>
 {
 try {
-    const res = await Method.Post("/api/ThongKe/"+id,body);
+    const res = await Method.Post("/api/BaoCao",body);
     return res;
 } catch (error) {
     throw error

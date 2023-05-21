@@ -186,12 +186,24 @@ const HoaDonSlice = createSlice({
       });
     });
     //Thanh Toán
+    builder.addCase(fetchThanhToan.pending, (state, action) => {
+      state.loading=true;
+    });
     builder.addCase(fetchThanhToan.fulfilled, (state, action) => {
       state.hoadon = action.payload;
       notification.open({
         message: "Thanh toán thành công",
         type: "success",
       });
+      state.loading=false;
+    });
+    builder.addCase(fetchThanhToan.rejected, (state, action) => {
+      state.hoadon = action.payload;
+      notification.open({
+        message: "Thanh toán thành công",
+        type: "success",
+      });
+      state.loading=false;
     });
     //Lấy tất cả
     builder.addCase(fetchGetAllOrder.pending, (state, action) => {

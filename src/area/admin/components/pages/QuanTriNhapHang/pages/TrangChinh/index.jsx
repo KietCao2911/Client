@@ -76,7 +76,7 @@ const TrangChinh = () => {
   const { items } = useSelector((state) => state.PhieuNhap);
   const nav = useNavigate();
   const [tableParams, setTableParams] = useState({});
-  
+
   useEffect(() => {
     dispatch(PhieuNhapAPI.fetchGetPhieuNhaps({...tableParams}));
   }, [tableParams]);

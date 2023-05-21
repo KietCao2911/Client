@@ -44,6 +44,7 @@ import {
   Truck,
   DollarSign,
   Settings,
+  Printer,
 } from "react-feather";
 import { SaveTwoTone } from "@ant-design/icons";
 import CustomSpin from "~/components/CustomSpin";
@@ -52,6 +53,7 @@ import ShowMore from "~/components/commomComponents/ShowMore";
 import { getValue } from "@testing-library/user-event/dist/utils";
 import StickyActions from "~/components/commomComponents/stickyActions";
 import { v4 } from "uuid";
+import PhieuNhapHang from "~/components/commomComponents/PhieuNhapHang";
 const TrangTaoDonNhap = (props) => {
 
   const [step, setStep] = useState(0);
@@ -66,6 +68,7 @@ const TrangTaoDonNhap = (props) => {
   const [nccSearchText, setNccSearchText] = useState("");
   const [productSearchText, setproductSearchText] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [open,setOpen]=  useState(false);
   const { id } = useParams();
   document.title= isCreated
     ? "Trang tạo đơn nhập hàng"
@@ -253,19 +256,19 @@ const TrangTaoDonNhap = (props) => {
       {(isUpdated || isCreated) && (
        <>
         <Button  loading={loading}onClick={() => handleSubmit(1)}>Đặt hàng</Button>
+        <Button  >Xuất hóa đơn</Button>
         <Button type="primary" loading={loading}  onClick={() => handleSubmit(2)}>{isCreated ? "Đặt hàng và duyệt" : "Xác nhận sửa"}</Button>
        </>
       
       )}
+     {isReadOnly&& <Button icon={<Printer/>} onClick={()=>setOpen(true)} >Xuất hóa đơn</Button>  }
     </Space>
   )
   return loading ? (
     <CustomSpin />
   ) : (
     <>
-    
-
-
+ <PhieuNhapHang open={open} setOpen={setOpen} hoadon={item||{}}/>
       <div className="TrangTaoDonNhap">
         <div className="mainContent">
           <Row gutter={[20, 20]}>

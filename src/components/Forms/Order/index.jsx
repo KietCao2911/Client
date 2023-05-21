@@ -150,11 +150,13 @@ const OrderForm = (props) => {
       // console.log({ order: params });
       if(method=="COD")
       {
+        // alert("COD success request")
         dispatch(ThanhToanApi.OrderWithCOD(params));
       }
       else if(method=="VNPAY")
       {
         
+        // alert("VNPAY success request")
         dispatch(ThanhToanApi.OrderWithVNPAY(params));
       }
       else{

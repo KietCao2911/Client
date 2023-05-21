@@ -13,8 +13,8 @@ const  initialState={
 }
 export const fetchGetDoanhThu = createAsyncThunk("fetchGetDoanhThu",async(params)=>
 {
-    const {id,body} = params;
-    const res=  await ThongKeAPI.fetchDoanhSo(id,body);
+    const {body} = params;
+    const res=  await ThongKeAPI.fetchDoanhSo(body);
     return res;
 })
 export const fetchXuatNhapTon = createAsyncThunk("fetchXuatNhapTon",async(params)=>
@@ -30,19 +30,7 @@ const ThongKeSlice =createSlice({
     {
         builder.addCase(fetchGetDoanhThu.fulfilled,(state,action)=>
         {
-            console.log(action.payload)
-                state.DoanhThu.labels = [...action.payload.labels];
-                state.DoanhThu.values = [...action.payload.values];
-                let data=[];  
-  action.payload.details&&action.payload.details.forEach(item=>
-    {
-        item.forEach(gg=>
-          {
-            data.push(gg);
-          })
-    })
-    console.log({data})
-    state.DoanhThu.details =data;
+           state.DoanhThu.values = action.payload;
 })
 builder.addCase(fetchXuatNhapTon.fulfilled,(state,action)=>
 {

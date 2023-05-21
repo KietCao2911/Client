@@ -43,6 +43,7 @@ import * as ThanhToanAPI from "~/redux/slices/ThanhToanSlice";
 import CustomSpin from "~/components/CustomSpin";
 import StickyActions from "~/components/commomComponents/stickyActions";
 import ReactHtmlParser from "react-html-parser"
+import PhieuXuatHang from "~/components/commomComponents/PhieuXuatHang";
 const OrderDetailForm = (props) => {
   const { isUpdated, isEdit, isCreated, isReadOnly ,isReturn} = props;
   const { id } = useParams();
@@ -54,6 +55,7 @@ const OrderDetailForm = (props) => {
   const { branchs } = useSelector((state) => state.Branch);
   const [productSearchText, setproductSearchText] = useState("");
   const [expandProductTable,setExpandProductTable] = useState(false);
+  const [open,setOpen] = useState(false);
   document.title = isUpdated
     ? "Quản lý đơn hàng - Chỉnh sửa"
     : isCreated
@@ -317,11 +319,13 @@ const OrderDetailForm = (props) => {
           </Space>
         </>}
         {isReturn&&         <Button loading={loading} onClick={handleTraHang}>Xác nhận trả hàng</Button>}
+        {isReadOnly&&OrderForm.values.steps>2&&OrderForm.values?.status!=-1&&<Button onClick={()=>setOpen(true)}>In hóa đơn</Button>}
     </>
   
   )
   return (
     <div value={OrderForm}>
+      <PhieuXuatHang open={open} setOpen={setOpen}  hoadon={hoadon}/>
       {/* {loading&&<CustomSpin/>} */}
       <Row  gutter={[, 20]}>
         {/* HEADER */}
@@ -404,7 +408,7 @@ const OrderDetailForm = (props) => {
                     onChange={(e) => handleChangeProductSearchText(e)}
                   />
                 )}
-                <List onItemClick={(e) => console.log(e)}>
+                <List >
                   {productSearchText &&
                     sanPhamTrongKho.length > 0 &&
                     sanPhamTrongKho.map((item) => {

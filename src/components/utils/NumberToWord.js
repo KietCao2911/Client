@@ -4,7 +4,7 @@ function convertNumberToWords(number) {
   const teens = ['', 'mươi một', 'mười hai', 'mười ba', 'mười bốn', 'mười lăm', 'mười sáu', 'mười bảy', 'mười tám', 'mười chín'];
 
   if (number == 0) {
-    return 'zero';
+    return 'không';
   }
 
   if (number < 0) {

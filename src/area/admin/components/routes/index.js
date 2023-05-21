@@ -4,9 +4,10 @@ import QuanTriBST from "../pages/QuanTriBoSuuTap";
 import { lazy } from "react";
 import AdminAuthLayout from "~/components/layout/AdminAuthLayout";
 
-import { Archive, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, Settings, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
+import { Archive, BarChart2, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, Settings, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
 import QuanTriCoupon from "../pages/QuanTriCoupon";
 import { v4 } from "uuid";
+import { Chart } from "react-chartjs-2";
 
 const HomeAdmin = lazy(() => import("~/area/admin/components/pages/HomeAdmin"));
 const ThongKeDoanhThu = lazy(() =>
@@ -120,10 +121,10 @@ export const adminRoute = [
 
     path: "/admin/thong-ke-doanh-thu/*",
     element: ThongKeDoanhThu,
-    name:"Thống kê doanh thu",
+    name:"Báo cáo bán hàng",
     slug: "/admin/thong-ke-doanh-thu/",
     role:["TKDTMNG"],
-    icon:<DollarSign/>
+    icon:<BarChart2/>
   },
   {
     key:v4(),
