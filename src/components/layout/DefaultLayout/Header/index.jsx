@@ -60,7 +60,6 @@ function HeaderMainHome() {
           null
         );
       });
-      console.log({temp})
     return temp;
   };
   const handleOpenMenuDrawer = () => {
