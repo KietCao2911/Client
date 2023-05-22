@@ -97,7 +97,7 @@ const TrangChiTietSanPham = () => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(SanPhamAPI.fetchGetProdctUser({ slug }));
+    dispatch(SanPhamAPI.fetchGetProductUser({ slug }));
   }, [slug]);
   return loading ? (
     <CustomSpin />
