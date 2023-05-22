@@ -6,6 +6,7 @@ import { BASE_URL } from "~/const/index";
 import { useDispatch, useSelector } from "react-redux";
 import BSTSlice, { fetchAllBST, fetchDeleteBST } from "~/redux/slices/BoSuuTap";
 import { Plus } from "react-feather";
+import StickyActions from "~/components/commomComponents/stickyActions";
 
 const columns = (dispatch) => {
   const handleDelete = (record) => {
@@ -65,9 +66,17 @@ const TrangChinh = () => {
   useEffect(() => {
     dispatch(fetchAllBST({}));
   }, []);
+  const Actionsbtn=(
+    <>
+    <Space>
+    <Link to="tao-moi">      <Button type="primary">Thêm bộ sưu tập</Button>
+</Link>
+    </Space>
+    </>
+  )
   return (
-    <div>
-      <FloatButton icon={<Plus/>} tooltip="Thêm bộ sưu tập" onClick={()=>nav("tao-moi")}></FloatButton>
+    <Space direction="vertical" style={{width:"100%"}}>
+      <StickyActions IconBack={<></>}  Actionsbtn={Actionsbtn}></StickyActions>
       <Table
         loading={loading}
         key={uuidv4()}
@@ -75,7 +84,7 @@ const TrangChinh = () => {
         columns={columns(dispatch)}
         dataSource={boSuuTaps}
       ></Table>
-    </div>
+    </Space>
   );
 };
 

@@ -180,8 +180,16 @@ const BSTSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchPostBST.fulfilled, (state, action) => {
-      state.loading = false;
       state.boSuuTaps = [...state.boSuuTaps, action.payload];
+      state.loading = false;
+      notification.open({
+        message: "Thêm thành công!",
+        type: "success",
+      });
+      setTimeout(()=>
+      {
+        window.location.replace("/admin/quan-tri-bo_suu_tap/")
+      },2000  )
     });
     builder.addCase(fetchPostBST.rejected, (state) => {
       state.loading = false;

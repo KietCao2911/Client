@@ -35,6 +35,8 @@ import { DeleteOutlined } from "@ant-design/icons";
 import * as BstAPI from "~/redux/slices/BoSuuTap";
 import { Link, useLocation, useParams } from "react-router-dom";
 import CustomSpin from "~/components/CustomSpin";
+import StickyActions from "~/components/commomComponents/stickyActions";
+import * as Yup from "yup"
 const isEdit = false;
 const columns = [
   {
@@ -97,7 +99,19 @@ const BSTForm = (props) => {
       chiTietBSTs: boSuuTap?.chiTietBSTs || [],
       img: url || "",
       type: boSuuTap?.type ||"Banner",
+
     },
+    validationSchema:Yup.object({
+        tenBoSuuTap:Yup.string().required("Phải nhập trường này"),
+    }),
+    initialErrors:{
+      tenBoSuuTap:"Không bỏ trống trường này",
+      chiTietBSTs:"Phải có ít nhất 1 sản phẩm",
+    },
+    initialTouched:{
+      tenBoSuuTap:false,
+      chiTietBSTs:false,
+    }
   });
 
   // const reSetBST = useMemo(() => {
@@ -144,22 +158,32 @@ const BSTForm = (props) => {
     }
   };
   const handleSubmit = () => {
-    const params = {
-      ...FormBst.values,
-      img:boSuuTap?.fileList?.length>0&&boSuuTap?.fileList[0]&&boSuuTap?.fileList[0]?.name||"",
-    };
-    if(isCreated)
+    FormBst.submitForm()
+    if(FormBst.isValid)
     {
-      dispatch(BstAPI.fetchPostBST({body:params}))
-
+      const params = {
+        ...FormBst.values,
+        img:boSuuTap?.fileList?.length>0&&boSuuTap?.fileList[0]&&boSuuTap?.fileList[0]?.name||"",
+      };
+      if(isCreated)
+      {
+        dispatch(BstAPI.fetchPostBST({body:params}))
+  
+      }
+      else if(isUpdated)
+      {
+        dispatch(BstAPI.fetchPutBST({body:params,id}))
+      }
+      else{
+        return ;
+      }
+    }else{
+      message.open({
+        content:"Vui lòng điền đủ thông tin",
+        type:"error"
+      })
     }
-    else if(isUpdated)
-    {
-      dispatch(BstAPI.fetchPutBST({body:params,id}))
-    }
-    else{
-      return ;
-    }
+ 
   };
   const onUpload = (file) => {
     dispatch(BstAPI.fetchUploadImgBST({ id, body: file, config: null }));
@@ -168,15 +192,24 @@ const BSTForm = (props) => {
     dispatch(BstAPI.fetchRemoveImgBST({ id, fileName: fileObj?.name }));
   };
   document.title =isCreated?"Quản trị bộ sưu tập - tạo mới":isUpdated?"Quản trị bộ sưu tập - cập nhật":isReadOnly?"Quản trị bộ sưu tập - chi tiết":"";
+  const Actionsbtn=(
+    <Space>
+      {isUpdated&&<Button type="primary" loading={loading} onClick={handleSubmit}>Xác nhận sửa</Button>}
+      {isCreated&&<Button type="primary" loading={loading} onClick={handleSubmit}>Xác nhận thêm</Button>}
+    </Space>
+  )
   return (
     <form >
+      <StickyActions Actionsbtn={Actionsbtn}></StickyActions>
       {loading&&<CustomSpin/>}
       <Row gutter={[20,20]}>
         <h1>{isCreated?"Quản trị bộ sưu tập - tạo mới":isUpdated?"Quản trị bộ sưu tập - cập nhật":isReadOnly?"Quản trị bộ sưu tập - chi tiết":""}</h1>
         <Col span={24}>
           <Space style={{ width: "100%" }} direction="vertical">
             <InputText
+            onBlur={FormBst.handleBlur}
               disabled={isCreated||isUpdated?false:true}
+              className={`${FormBst.touched.tenBoSuuTap&&FormBst.errors.tenBoSuuTap&&"error"}`}
               label="Nhập tên bộ sưu tập"
               name="tenBoSuuTap"
               value={FormBst.values.tenBoSuuTap}
@@ -254,7 +287,6 @@ const BSTForm = (props) => {
                 columns={columns || []}
               />
             </Space>
-            {(isUpdated||isCreated)&&<FloatButton tooltip="Xác nhận" onClick={() => handleSubmit()}></FloatButton>}
           </Space>
         </Col>
         <Col></Col>
