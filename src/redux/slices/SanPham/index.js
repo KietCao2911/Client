@@ -286,7 +286,7 @@ const SanPhamSlice = createSlice({
       }
       state.loading = false;
     });
-    builder.addCase(fetchGetProductUser.pending, (state) => {
+    builder.addCase(fetchGetProductUser.rejected, (state) => {
       state.loading = false;
     });
     //GetCPNXs 
