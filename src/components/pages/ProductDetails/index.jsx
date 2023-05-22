@@ -97,7 +97,7 @@ const TrangChiTietSanPham = () => {
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(SanPhamAPI.fetchGetProductUser({ slug }));
+    dispatch(SanPhamAPI.fetchGetProdctUser({ slug }));
   }, [slug]);
   return loading ? (
     <CustomSpin />
@@ -170,7 +170,7 @@ const TrangChiTietSanPham = () => {
               {product?.related && product?.related.length > 0 && (
                 <Space style={{ width: "100%" }} direction="vertical">
                   <h1 style={{ textTransform: "uppercase" }}>
-                    Có thể bạn sẽ thích
+                    YOU MAY LIKE
                   </h1>
                   <ListProducts
                     type={"slider"}
@@ -180,7 +180,7 @@ const TrangChiTietSanPham = () => {
               )}
             </Col>
 
-            {productsRecentlyView && productsRecentlyView.length > 0 && (
+            {/* {productsRecentlyView && productsRecentlyView.length > 0 && (
               <Col md={24}>
                 <Space style={{ width: "100%" }} direction="vertical">
                   <h1 style={{ textTransform: "uppercase" }}>
@@ -193,7 +193,7 @@ const TrangChiTietSanPham = () => {
                 </Space>
 
               </Col>
-            )}
+            )} */}
           </Col>
           {/* Product Checkout forMB*/}
           <Col md={0} className="ProductInfo">

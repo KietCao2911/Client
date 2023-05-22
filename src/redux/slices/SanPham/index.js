@@ -268,22 +268,22 @@ const SanPhamSlice = createSlice({
         ...(groupedArray[0][0].chiTietHinhAnhs || []),
       ];
       state.product.sanPhamNavigation.giaBanDisplay = giaBanDisplay;
-      if (recentlyView && recentlyView.length > 0) {
-        var obj = recentlyView.find(
-          (x) =>
-            x.sanPhamNavigation.maSanPham ==
-            state.product.sanPhamNavigation.maSanPham
-        );
-        if (!obj) {
-          recentlyView.push(state.product);
-          var recentlyViewString = JSON.stringify(recentlyView);
-          window.localStorage.setItem("recentlyView", recentlyViewString);
-        }
-      } else {
-        recentlyView.push(state.product);
-        var recentlyViewString = JSON.stringify(recentlyView);
-        window.localStorage.setItem("recentlyView", recentlyViewString);
-      }
+      // if (recentlyView && recentlyView.length > 0) {
+      //   var obj = recentlyView.find(
+      //     (x) =>
+      //       x.sanPhamNavigation.maSanPham ==
+      //       state.product.sanPhamNavigation.maSanPham
+      //   );
+      //   if (!obj) {
+      //     recentlyView.push(state.product);
+      //     var recentlyViewString = JSON.stringify(recentlyView);
+      //     window.localStorage.setItem("recentlyView", recentlyViewString);
+      //   }
+      // } else {
+      //   recentlyView.push(state.product);
+      //   var recentlyViewString = JSON.stringify(recentlyView);
+      //   window.localStorage.setItem("recentlyView", recentlyViewString);
+      // }
       state.loading = false;
     });
     builder.addCase(fetchGetProductUser.rejected, (state) => {
