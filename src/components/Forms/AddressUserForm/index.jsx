@@ -52,11 +52,18 @@ const AddressUserForm = () => {
             DistrictID:Yup.string().required("Phải nhập trường này"),
             WardID:Yup.string().required("Phải nhập trường này"),
             PaymendMethod:Yup.string().required("Phải chọn trường này"),
-            AddressDsc:Yup.string().required("Phải nhập trường này"),
           }),
+          initialErrors:{
+              Name:"Phải nhập trường này",
+              Phone:"Phải nhập trường này",
+              Email:"Phải nhập trường này",
+              ProvinceID:"Phải nhập trường này",
+              DistrictID:"Phải nhập trường này",
+              WardID:"Phải nhập trường này",
+          },
           onSubmit:(values)=>
           {
-            console.log({values});
+            dispatch(XacThucAPI.fetchAddAddress({body:{...values,tenTaiKhoan:user.userName.trim()}}))
           },
     })
     const handleChangeProvince = (id, name) => {
@@ -66,6 +73,7 @@ const AddressUserForm = () => {
       AddressUserForm.setFieldValue("DistrictID", null);
       AddressUserForm.setFieldValue("WardName", "");
       AddressUserForm.setFieldValue("WardID", null);
+      AddressUserForm.setTouched("ProvinceID",true)
       dispatch(GiaoHangNhanhApi.fetchGetDistrict(id));
     };
     const handleChangeDistrict = (id, name) => {
@@ -73,51 +81,42 @@ const AddressUserForm = () => {
       AddressUserForm.setFieldValue("DistrictID", id);
       AddressUserForm.setFieldValue("WardName", "");
       AddressUserForm.setFieldValue("WardID", null);
+      AddressUserForm.setTouched("DistrictID",true)
+
       dispatch(GiaoHangNhanhApi.fetchGetWard(id));
     };
     const handleChangeWard=(id,name)=>
     {
       AddressUserForm.setFieldValue("WardName", name);
-      AddressUserForm.setFieldValue("WardID", id);
-    }
-    const handleSave=()=>
-    {
-        const values = AddressUserForm.values;
-        
-        if(AddressUserForm.isValid)
-        {
 
-          dispatch(XacThucAPI.fetchAddAddress({body:{...values,tenTaiKhoan:user.userName.trim()}}))
-        }
-        else
-        {
-          message.open({
-            content:"Chưa điền đủ thông tin",
-            type:"error" 
-          })
-        }
+      AddressUserForm.setFieldValue("WardID", id);
+      AddressUserForm.setTouched("WardID",true)
+
     }
+
     useEffect(()=>
     {
       dispatch(GiaoHangNhanhApi.fetchGetProvinces())
     },[])
   return (
+    <form onSubmit={AddressUserForm.handleSubmit}>
+
     <Space style={{width:"100%"}}  direction='vertical'>
      {loading&& <CustomSpin/>}
       <strong>Thêm địa chỉ mới</strong>
-    <InputText  label="Tên" name="Name" value={AddressUserForm.values.Name} onChange={AddressUserForm.handleChange}/>
-    {AddressUserForm.errors.Name&&<span className='error'>{AddressUserForm.errors.Name}</span>}
-    <InputText  name="AddressDsc" label="Chi tiết địa chỉ" value={AddressUserForm.values.AddressDsc} onChange={AddressUserForm.handleChange}/>
-    {AddressUserForm.errors.AddressDsc&&<span className='error'>{AddressUserForm.errors.AddressDsc}</span>}
-
-    <InputText   name="Phone" value={AddressUserForm.values.Phone} label="Số điện thoại" onChange={AddressUserForm.handleChange}/>
-    {AddressUserForm.errors.Phone&&<span className='error'>{AddressUserForm.errors.Phone}</span>}
-<   InputText  value={AddressUserForm.values.Email} name="Email" label="Email" onChange={AddressUserForm.handleChange}/>
-    {AddressUserForm.errors.Email&&<span className='error'>{AddressUserForm.errors.Email}</span>}
+    <InputText onBlur={AddressUserForm.handleBlur}  className={`${AddressUserForm.touched.Name&&AddressUserForm.errors.Name&&"error"}`}  label="Tên" name="Name" 
+    value={AddressUserForm.values.Name} onChange={AddressUserForm.handleChange}/>
+    {AddressUserForm.touched.Name&&AddressUserForm.errors.Name&&<span className='error'>{AddressUserForm.errors.Name}</span>}
+    <InputText    name="AddressDsc" label="Chi tiết địa chỉ" value={AddressUserForm.values.AddressDsc} onChange={AddressUserForm.handleChange}/>
+    <InputText  onBlur={AddressUserForm.handleBlur}  className={`${AddressUserForm.touched.Phone&&AddressUserForm.errors.Phone&&"error"}`}  name="Phone" value={AddressUserForm.values.Phone} label="Số điện thoại" onChange={AddressUserForm.handleChange}/>
+    {AddressUserForm.touched.Phone&&AddressUserForm.errors.Phone&&<span className='error'>{AddressUserForm.errors.Phone}</span>}
+<   InputText onBlur={AddressUserForm.handleBlur}  className={`${AddressUserForm.touched.Email&& AddressUserForm.errors.Email&&"error"}`}  value={AddressUserForm.values.Email} name="Email" label="Email" onChange={AddressUserForm.handleChange}/>
+    {AddressUserForm.touched.Email&& AddressUserForm.errors.Email&&<span className='error'>{AddressUserForm.errors.Email}</span>}
     <Row gutter={[20, 20]}>
 
               <Col span={24}>
                 <SelectCustom
+                className={`${AddressUserForm.touched.ProvinceID&&AddressUserForm.errors.ProvinceID&&"error"}`}
                   value={AddressUserForm.values.ProvinceID || ""}
                   name={"ProvinceID"}
                 >
@@ -134,20 +133,21 @@ const AddressUserForm = () => {
                           }
                           key={item.ProvinceID}
                           value={item.ProvinceID}
-                        >
+                          >
                           {item.ProvinceName}
                         </Option>
                       );
                     })}
                 </SelectCustom>
-                {AddressUserForm.errors.ProvinceID && (
+                {AddressUserForm.touched.ProvinceID&&AddressUserForm.errors.ProvinceID && (
                   <span className="error">{AddressUserForm.errors.ProvinceID}</span>
                 )}
               </Col>
               <Col span={24}>
                 <SelectCustom
-                  value={AddressUserForm.values.DistrictID || ""}
-                  loading={Loading.Districts}
+                className={`${AddressUserForm.touched.DistrictID&&AddressUserForm.errors.DistrictID &&"error"}`}
+                value={AddressUserForm.values.DistrictID || ""}
+                loading={Loading.Districts}
                   name="DistrictID"
                   defaultLabel="Quận/Huyện"
                 >
@@ -156,7 +156,7 @@ const AddressUserForm = () => {
                     Districts?.data?.map((item) => {
                       return (
                         <Option
-
+                        
                           onClick={() =>
                             handleChangeDistrict(
                               item.DistrictID,
@@ -171,12 +171,13 @@ const AddressUserForm = () => {
                       );
                     })}
                 </SelectCustom>
-                {AddressUserForm.errors.DistrictID && (
+                {AddressUserForm.touched.DistrictID&&AddressUserForm.errors.DistrictID && (
                   <span className="error">{AddressUserForm.errors.DistrictID}</span>
-                )}
+                  )}
               </Col>
               <Col span={24}>
                 <SelectCustom
+                className={`${AddressUserForm.touched.WardID&& AddressUserForm.errors.WardID &&"error"}`}
                   value={AddressUserForm.values.WardID || ""}
                   onChange={(e) => handleChangeWard(e)}
                   loading={Loading.Wards}
@@ -196,7 +197,7 @@ const AddressUserForm = () => {
                       );
                     })}
                 </SelectCustom>
-                {AddressUserForm.errors.WardID && (
+                {AddressUserForm.touched.WardID&& AddressUserForm.errors.WardID && (
                   <span className="error">{AddressUserForm.errors.WardID}</span>
                 )}
               </Col>
@@ -204,13 +205,15 @@ const AddressUserForm = () => {
                 <Row justify={"end"}>
                   <Col span={6}>
                   <MyButton 
+                  type="submit"
 loading={loading}
-onClick={()=>handleSave()}>LƯU</MyButton >
+>LƯU</MyButton >
                   </Col>
                 </Row>
               </Col>
             </Row>
 </Space>
+                  </form>
   )
 }
 

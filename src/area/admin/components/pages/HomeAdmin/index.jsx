@@ -14,7 +14,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import convertVND from "~/components/utils/ConvertVND";
 import { ArrowUp, LogOut } from "react-feather";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -55,9 +55,7 @@ export const data = {
   ],
 };
 function HomeAdmin() {
-  const dispatch = useDispatch();
 return <Row gutter={[10,10]}>
-   <FloatButton onClick={()=>dispatch(SignOut())} icon={<LogOut/>} tooltip={"Đăng xuất"}></FloatButton>
   <Col span={24}>
   </Col>
   <Col span={24}>

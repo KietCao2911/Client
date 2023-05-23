@@ -25,6 +25,7 @@ import RoleSlice from "../slices/RoleManager";
 import TaiKhoanSlice from "../slices/TaiKhoan";
 import ReviewSlice from "../slices/Review";
 export const store = configureStore({
+
   reducer: {
     DanhMuc: DanhMucSlice.reducer,
     BoSuuTap: BSTSlice.reducer,
@@ -52,4 +53,8 @@ export const store = configureStore({
     TaiKhoan:TaiKhoanSlice.reducer,
     Review:ReviewSlice.reducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+  }),
 });

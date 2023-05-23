@@ -213,7 +213,14 @@ const CouponForm = useFormik({
         loaiKhuyenMai:YUP.number().required("Phải chọn trường này"),
         ngayBatDau:YUP.date().required("Phải chọn trường này"),
         ngayKetThuc:YUP.date().required("Phải chọn trường này"),
-    })
+    }),
+    onSubmit:(values)=>
+    {
+        const body = {...values,mota:CouponDsc(CouponForm.values)}
+
+        dispatch(CouponAPI.PostCouponThunk({body}))
+    },
+    
 })
 const handleCreate=()=>
 {
@@ -247,7 +254,7 @@ useEffect(()=>
 const ActionsBtn=(
 
      <Space>
-      {isCreate&&  <Button type="primary" loading={loading} onClick={handleCreate}>Xác nhận</Button>}
+      {isCreate&&  <Button type="primary" loading={loading} >Xác nhận</Button>}
       {isReadOnly&& <>
        {CouponForm.values.trangThai? <Button onClick={()=>dispatch(CouponAPI.PauseCoupon(id))} type="default" >Tạm ngưng</Button>
         :<Button type="default" onClick={()=>dispatch(CouponAPI.StartCoupon(id))}>Áp dụng</Button>}
@@ -270,7 +277,7 @@ useEffect(()=>
     document.title=isCreate&&"Tạo Coupons"||isUpdate&&"Cập nhật Coupons"||isApply&&"Xác nhận Coupons"||isCancel&&"Hủy áp dụng coupons"||isReadOnly&&"Chế độ xem";
 },[])
 {
-    return<>
+    return<form onSubmit={CouponForm.handleSubmit}>
    {<Row gutter={[0,10]}>
         {/* HEADER ACTIONS */}
         <StickyActions  Actionsbtn={ActionsBtn} breadcrumbsrc={"Admin/Quản trị coupons/"+title} label={"Trở về trang Coupons"} link="/admin/quan-tri-coupons"></StickyActions>
@@ -298,6 +305,7 @@ useEffect(()=>
                                          addonAfter={<RefreshCcw className="icon" onClick={()=>{
                                             CouponForm.setFieldValue("maCoupon",generateRandomCode(10))
                                          }}/>}/>
+                                         {CouponForm.touched.maCoupon&&CouponForm.errors.maCoupon&&<span className="error">{CouponForm.errors.maCoupon}</span>}
                                             </Space>
                                         
                                        
@@ -389,8 +397,8 @@ useEffect(()=>
                         <Col span={24}>
                         <Card bordered={false} title="Điều kiện">
                         <Space direction="vertical" style={{width:"100%"}}>
-                        <Form layout="vertical">
-                            <Form.Item label="Số lượng sản phẩm tối thiểu">
+                                            <Space direction="vertical">
+                                            <Form.Item label="Số lượng sản phẩm tối thiểu">
                             <Input min={0} onChange={(e)=>CouponForm.setFieldValue("soLuongSPToiThieu",Number(e.target.value))} defaultValue={0} type="number"/>
                             </Form.Item>
                             <Form.Item  label="Giá trị tối thiểu">
@@ -402,7 +410,7 @@ useEffect(()=>
                             <Form.Item   label="Số lượng">
                             <Input min={1} onChange={(e)=>CouponForm.setFieldValue("soLuong",Number(e.target.value))}  defaultValue={1} type="number"/>
                             </Form.Item >
-                        </Form>
+                                            </Space>
                         <Space direction="vertical" style={{width:"100%"}}
                         >
                         </Space>
@@ -478,7 +486,7 @@ useEffect(()=>
         </Col>}                          
     </Row>}
   
-    </>
+    </form>
 }
 }
 export default CouponForm

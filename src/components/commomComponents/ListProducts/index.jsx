@@ -9,8 +9,8 @@ import * as Api from "~/redux/slices/SanPham";
 import { Col, Empty, Row, Skeleton } from "antd";
 import { v4 } from "uuid";
 import Skeletons from "../Skeleton";
+import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 const ListProducts = ({ items, loading, type, itemResponsive }) => {
   const [products, setProducts] = useState(items || []);
@@ -76,16 +76,17 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
                 },
                 1600: {
                   // width: 1600,
-                  slidesPerView: 4,
+                  slidesPerView: 3,
                 },
               }}
+               navigation={true}
               style={{ padding: "1rem" }}
-              pagination={{
-                clickable: true,
-                bulletClass: "my-custom-pagination-item",
-              }}
+              // pagination={{
+              //   clickable: true,
+              //   bulletClass: "my-custom-pagination-item",
+              // }}
               spaceBetween={10}
-              modules={[Pagination, FreeMode, Navigation]}
+              modules={[ Navigation]}
               className="mySwiper"
             >
               {products.length > 0 ? (

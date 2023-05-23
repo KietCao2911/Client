@@ -72,7 +72,7 @@ const Filter = (props) => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.SanPham);
   const { fetchFnc } = props;
-
+  const SeachQuery = useQueryString();
   useEffect(() => {
     const params = {};
     for (let [key, value] of searchParams.entries()) {
@@ -97,7 +97,7 @@ const Filter = (props) => {
           onClick={() => setOpenDrawer(!openDrawer)}
         />
       </div>
-      <CustomDrawer
+      <Drawer
         placement="left"
         open={openDrawer}
         setOpen={setOpenDrawer}
@@ -107,7 +107,7 @@ const Filter = (props) => {
        <h3>LỌC VÀ SẮP XẾP</h3>
         <MyCollapse label="Sắp xếp" defaultOpen={true}>
           <Space direction="vertical">
-            <h4
+            <h4 
             className={`${sort&&sort=="price-hight-to-low"?"active":""}`}
                          key={uuidv4()}
               onClick={() => handleClickSort("price-hight-to-low")}
@@ -149,7 +149,7 @@ const Filter = (props) => {
         <SizeOptions />
 
         </Space>
-              </CustomDrawer>
+              </Drawer>
     </div>
   );
 };

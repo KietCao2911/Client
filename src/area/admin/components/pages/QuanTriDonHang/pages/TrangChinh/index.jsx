@@ -7,9 +7,10 @@ import { Button, FloatButton, Modal, Space, Table, Tag } from "antd";
 import convertVND from "~/components/utils/ConvertVND";
 import { useState } from "react";
 import { v4 } from "uuid";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Plus, RefreshCcw } from "react-feather";
 import StickyActions from "~/components/commomComponents/stickyActions";
+import { useQueryString } from "~/hooks/useQueryParams";
 const Columns = (props) => {
   const { setOpenModal } = props;
   const dispatch = useDispatch();
@@ -128,20 +129,21 @@ const TrangChinh = () => {
   const [openModal, setOpenModal] = useState(false);
   const nav = useNavigate();
   const [tableParams, setTableParams] = useState({});
-
+  const [searchParams,setSearchParams] = useSearchParams();
+  const querySearch = useQueryString()
   const handleTableChange=(pagination,filters,sorter)=>
   {
     const daThanhToan = filters["daThanhToan"];
     const status = filters["status"];
-    
-    setTableParams({
-      daThanhToan:daThanhToan[0]??"",
-      status:status[0]??"",
-    });
+    const paginationParams ={
+      ...pagination,page:pagination.current
+    }
+    setSearchParams({...paginationParams})
+    dispatch(HoaDonApi.fetchGetAllOrder(paginationParams));
   }
   useEffect(() => {
-    dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}));
-  }, [tableParams]);
+    dispatch(HoaDonApi.fetchGetAllOrder(querySearch));
+  }, []);
   const action=(
     <Space>
       <Link to="tao-moi"><Button type="primary">Thêm mới</Button></Link>
@@ -153,6 +155,9 @@ const TrangChinh = () => {
       <Space direction="vertical" style={{width:"100%"}}>
         <StickyActions IconBack={<RefreshCcw className="icon" onClick={()=>dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}))}/>} Actionsbtn={action}></StickyActions>
       <Table
+      pagination={{
+        pageSize:1
+      }}
       onRow={(record,index)=>
       {
         return{
@@ -162,6 +167,7 @@ const TrangChinh = () => {
           }
         }
       }}
+      
       loading={loading}
       rowClassName={"icon"}
       onChange={handleTableChange}

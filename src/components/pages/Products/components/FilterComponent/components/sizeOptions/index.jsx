@@ -28,9 +28,6 @@ const Radio = (props) => {
 const SizeOptions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const size = searchParams.get("size");
-  const color = searchParams.get("color") || "";
-  const sort = searchParams.get("sort") || "";
-  const category = searchParams.get("category") || "";
   const handleChange = (e) => {
     const params = {};
     for (let [key, value] of searchParams.entries()) {

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import React from "react";
 import { Button, Col, FloatButton, Input, Row, Select, Space, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import * as TypeAPI from "~/redux/slices/Type/TypeSlice";
 import * as BrandAPI from "~/redux/slices/Brand/BrandSlice";
 import { Plus } from "react-feather";
 import StickyActions from "~/components/commomComponents/stickyActions";
+import { useQueryString } from "~/hooks/useQueryParams";
 const expandedRowRender = (props) => {
   const { data } = props;
   const columns = [
@@ -130,7 +131,8 @@ const columns = (props) => {
 };
 const TrangChinh = () => {
   const dispatch = useDispatch();
-  const { products, loading } = useSelector((state) => state.SanPham);
+  const [Query,setQuery] = useSearchParams();
+  const { products, loading ,totalRow} = useSelector((state) => state.SanPham);
   const { types} = useSelector((state) => state.Type);
   const { brands } = useSelector((state) => state.Brand);
   const [searchText,setSearchText] = useState("")
@@ -139,7 +141,6 @@ const TrangChinh = () => {
   const nav = useNavigate()
   const onSelectChange = (key) => {
     setSelectedRowKeys(key);
-    // setSelectedRowKeys([...selectedRowKeys,...key])
   };
   const rowSelection = {
     selectedRowKeys,
@@ -172,6 +173,13 @@ const TrangChinh = () => {
   const handleChangeBrand=(id)=>
   {
     dispatch(SanPhamAPI.fetchGetAllProducts({brand:id}))
+  }
+  const handleTableChange=(pagination)=>
+  { 
+  
+    setQuery({...pagination})
+    
+    dispatch(SanPhamAPI.fetchGetAllProducts({...pagination,page:pagination.current}));
   }
   const Actionsbtn=(
     <Link to="tao-moi"> <Button type="primary">Thêm mới</Button></Link>
@@ -216,6 +224,11 @@ const TrangChinh = () => {
             </div>
           )}
           <Table
+          pagination={
+            {pageSize:10,
+            total:totalRow}
+          }
+          onChange={handleTableChange}
           scroll={{ x: 400 }}
             loading={loading}
             className="icon"

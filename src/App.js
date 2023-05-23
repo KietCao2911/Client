@@ -56,10 +56,12 @@ const url = protocol + '//' + hostname + (port ? ':' + port : '');
 },[])
 
   return (
-    <Router>
+    <Suspense fallback={<CustomSpin/>}>
+       <Router>
       <div className="App">
         <Routes>
-          <Route element={<NotFound />} path={"*"}></Route>
+          <Route element={<NotFound />} path={"*"}>
+          </Route>
           {adminRoute.map((route, index) => {
             const Page = route.element;
             const Layout = route?.layout || AdminLayout;
@@ -129,6 +131,7 @@ const url = protocol + '//' + hostname + (port ? ':' + port : '');
         </Routes>
       </div>
     </Router>
+    </Suspense>
   );
 }
 

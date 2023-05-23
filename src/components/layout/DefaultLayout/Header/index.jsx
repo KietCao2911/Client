@@ -141,14 +141,16 @@ function HeaderMainHome() {
           </Row>
         </Col>
       </Row>
-      <CustomDrawer
+      <Drawer
+      placement="left"
         open={menuMobileOpen}
         setOpen={setMenuMobileOpen}
         onClose={() => setMenuMobileOpen(false)}
       >
      {loading?<LoadingElement/>:   <Menu items={handleRenderItems(items) || []} mode={"inline"} />}
-      </CustomDrawer>
-      <CustomDrawer
+      </Drawer>
+      <Drawer
+      placement="right"
         open={searchModal}
         setOpen={setSearchModal}
         onClose={() => setSearchModal(false)}
@@ -176,7 +178,7 @@ function HeaderMainHome() {
             }}
           ></List>
         </div>
-      </CustomDrawer>
+      </Drawer>
     </div>
   );
 }

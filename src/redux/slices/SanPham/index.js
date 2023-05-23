@@ -397,7 +397,6 @@ const SanPhamSlice = createSlice({
     //fetchGetAllProducts
     builder.addCase(fetchGetAllProducts.pending, (state) => {
       state.loading = true;
-      state.products = [];
     });
     builder.addCase(fetchGetAllProducts.fulfilled, (state, action) => {
       state.loading = false;
@@ -407,8 +406,6 @@ const SanPhamSlice = createSlice({
     });
     builder.addCase(fetchGetAllProducts.rejected, (state) => {
       state.loading = false;
-      state.products = [];
-      state.totalRow = 0;
     });
 
     //fetchGetProduct

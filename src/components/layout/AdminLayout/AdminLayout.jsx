@@ -13,13 +13,13 @@ const AdminAuthLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
  return (
     <Layout>
-     
-
+        <Header>
+          <HeaderAdmin/>
+        </Header>
       <Layout>
       <Sider
-        style={{backgroundColor:"transparent"}}
-      collapsible
-      collapsed={collapsed} 
+        collapsible
+        collapsed={collapsed} 
         width={280}
         breakpoint="lg"
         collapsedWidth="0"
@@ -27,8 +27,7 @@ const AdminAuthLayout = ({ children }) => {
           setCollapsed(collapsed)
         }}
         
-      >
-        {/* <div className="logo">header</div> */}
+        >
         <ActionSideBar />
       </Sider>
       <Content> {children}</Content>
