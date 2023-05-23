@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useMemo} from 'react'
 import { Link } from 'react-router-dom'
 import "./HaveUserComponent.scss"
 import { Button, Card, Col, Input, Modal, Row, Space } from 'antd'
@@ -57,13 +57,20 @@ const AddItem=(props)=>
     )
 }
 const HaveUserAddressComponent = () => {
-    const {user,loading} = useSelector(state=>state.XacThuc)
+    const {user,loading,state} = useSelector(state=>state.XacThuc)
     const {ghnAPI,totalPrice} = useSelector(state=>state.GioHang);
     const {Provinces,Districts,Wards,FeeInfo,DistrictID,Loading} = ghnAPI;
     const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip } = useSelector(
       (state) => state.GioHang
     );
     const [openModal,setOpenModal] = useState(false);
+    const onAddedAddress=useMemo(()=>
+    {
+      if(state.created)
+      {
+        setOpenModal(false)
+      }
+    },[state.created])
     const dispatch = useDispatch();
     const handleSave=()=>
     {
@@ -95,18 +102,10 @@ const HaveUserAddressComponent = () => {
         </div>
         </Col>}
         
-        {openModal&&<Col span={24}>
-                        
-                        <Card bordered={false} role="article" extra={<Space>
-                         <Button onClick={()=>setOpenModal(false)}>Hủy</Button>
-                        </Space>}>
-                        <AddressUserForm/>
-                        </Card>
-                               </Col>}
              
       </Row>
 
-        {/* <Modal okButtonProps={{style:{
+        <Modal okButtonProps={{style:{
           display:"none"
         }}} 
         cancelButtonProps={{
@@ -116,7 +115,7 @@ const HaveUserAddressComponent = () => {
         }}
         open={openModal} onCancel={()=>setOpenModal(false)}>
             <AddressUserForm/>
-        </Modal> */}
+        </Modal>
       {/* <CustomSpin></CustomSpin> */}
     </div>
   )

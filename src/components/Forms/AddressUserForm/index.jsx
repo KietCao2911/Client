@@ -91,7 +91,6 @@ const AddressUserForm = () => {
         }
         else
         {
-          console.log({errors:AddressUserForm.errors})
           message.open({
             content:"Chưa điền đủ thông tin",
             type:"error" 
@@ -157,6 +156,7 @@ const AddressUserForm = () => {
                     Districts?.data?.map((item) => {
                       return (
                         <Option
+
                           onClick={() =>
                             handleChangeDistrict(
                               item.DistrictID,
@@ -200,12 +200,17 @@ const AddressUserForm = () => {
                   <span className="error">{AddressUserForm.errors.WardID}</span>
                 )}
               </Col>
-            </Row>
-<div className="Actions">
-<MyButton 
+              <Col span={24}>
+                <Row justify={"end"}>
+                  <Col span={6}>
+                  <MyButton 
 loading={loading}
 onClick={()=>handleSave()}>LƯU</MyButton >
-</div></Space>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+</Space>
   )
 }
 

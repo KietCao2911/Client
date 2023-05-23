@@ -7,6 +7,11 @@ const initialState = {
   token: "",
   emailValidateStatus:false,
   loading:false,
+  state:{
+    created:false,
+    deleted:false,
+    updated:false,
+  }
 };
 
 export const fetchGetCurrentUser = createAsyncThunk(
@@ -273,18 +278,18 @@ builder.addCase(EmailVerify.rejected,(state)=>
     //fetchAddAddress
     builder.addCase(fetchAddAddress.pending,(state,action)=>
     {
-     
+      state.state.created=false;
       state.loading=true;
     })
     builder.addCase(fetchAddAddress.fulfilled,(state,action)=>
     {
-      console.log({payload:action.payload})
+      state.state.created=true;
       state.user.info=[...state.user.info,action.payload];
       state.loading=false;
     })
     builder.addCase(fetchAddAddress.rejected,(state,action)=>
     {
-     
+      state.state.created=false;
       state.loading=false;
     })
     builder.addCase(fetchGetCurrentUser.fulfilled, (state, action) => {

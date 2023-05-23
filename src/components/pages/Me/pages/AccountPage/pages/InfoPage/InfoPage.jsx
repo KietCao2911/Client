@@ -1,14 +1,14 @@
-import React,{useState} from 'react'
+import React,{useMemo, useState} from 'react'
 import "./InfoPage.scss"
 import { useDispatch,useSelector } from 'react-redux'
-import {Modal, Space} from "antd"
+import {Col, Modal, Row, Space} from "antd"
 import ModalCustom from '~/components/commomComponents/ModalCustom'
 import { InputText } from '~/components/commomComponents/InputText'
 import MyButton from '~/components/commomComponents/Button'
 import InfoForm from '~/components/Forms/InfoForm'
 const InfoPage = () => {
     const dispatch = useDispatch();
-    const {user} = useSelector(state=>state.XacThuc)
+    const {user,state} = useSelector(state=>state.XacThuc)
     const [modalInfo,setModalInfo] = useState(false);
     const [userName,setUserName] = useState(user.info.tenKhachHang||"")
     const [wrong,setWrong] = useState(false)
@@ -27,6 +27,13 @@ const InfoPage = () => {
         }
     })
     const [sex,setSex] = useState(user.info.gioitinh||null);
+    const onStateUpdatedChange=useMemo(()=>
+    {
+        if(state.updated)
+        {
+            setModalInfo(false);
+        }
+    },[state.updated])
     const handleToggleModalInfo=()=>
     {
         setModalInfo(true)
@@ -88,7 +95,11 @@ const InfoPage = () => {
        <Space direction='vertical'>
        <strong>CHỈNH SỬA THÔNG TIN CỦA BẠN</strong>
             <InfoForm/>
-            <MyButton style={{width:"100%"}}>CẬP NHẬT</MyButton>
+            <Row justify={"end"}>
+                <Col span={8}>
+                <MyButton style={{width:"100%"}}>CẬP NHẬT</MyButton>
+                </Col>
+            </Row>
        </Space>
        </Modal>
     </div>
