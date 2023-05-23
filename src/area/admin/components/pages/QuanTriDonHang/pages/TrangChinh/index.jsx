@@ -156,7 +156,7 @@ const TrangChinh = () => {
         <StickyActions IconBack={<RefreshCcw className="icon" onClick={()=>dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}))}/>} Actionsbtn={action}></StickyActions>
       <Table
       pagination={{
-        pageSize:1
+        pageSize:10
       }}
       onRow={(record,index)=>
       {
