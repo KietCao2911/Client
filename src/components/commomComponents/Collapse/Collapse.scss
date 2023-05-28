@@ -10,7 +10,11 @@
     background-color: transparent;
     cursor: pointer;
     overflow-y: scroll;
-   
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar{
+        display: none;
+    }
     .labelGroup{
         display: flex;
         justify-content: space-between;
@@ -28,6 +32,11 @@
         transition: max-height .2s  ease;
         text-align: left;
         overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar{
+        display: none;
+    }
         &.active{
             max-height:1000vh;
         }

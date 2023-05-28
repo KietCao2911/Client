@@ -52,6 +52,7 @@ const ThanhToanSlice =createSlice({
                 window.location.replace(action.payload.redirect)
             }
             else{
+                state.loading=false;
                 notification.open({
                     message:"Đặt hàng thành công.",
                     type:"success",
@@ -59,7 +60,7 @@ const ThanhToanSlice =createSlice({
                 localStorage.removeItem("cart");
                 window.location.replace("../")
             }
-            state.loading=false;
+            
 
         })
         builder.addCase(OrderWithCOD.rejected,(state)=>

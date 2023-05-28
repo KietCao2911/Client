@@ -56,7 +56,7 @@ const Home = () => {
         style={{ width: "100%" }}
         className="PageContainer"
       >
-        <Card title="BRANCHS" bordered={false}>
+        <Card role="article" title="BRANCHS" bordered={false}>
           <Row gutter={[20, 20]}>
           <Col md={24} xs={0}>
          <Row gutter={[10, 10]}>
@@ -112,7 +112,7 @@ const Home = () => {
           </Col>
           </Row>
         </Card>
-        <Card title="LASTED UPDATE" bordered={false}>
+        <Card title="LASTED UPDATE" role="article" bordered={false}>
           <ListProducts
                     // type={"slider"}
 
@@ -129,7 +129,7 @@ const Home = () => {
             miniProducts={true}
           />
         </Card>
-        <Card title="HOT PRODUCTS">
+        <Card role="article" title="HOT PRODUCTS">
           <TrendingProducts />
         </Card>
      {
@@ -137,7 +137,7 @@ const Home = () => {
       <Discover />
     </Card>
      }
-        <Card title="NOW POPULAR CATEGORY">
+        <Card role="article" title="NOW POPULAR CATEGORY">
           <CategoryTag />
         </Card>
       </Space>

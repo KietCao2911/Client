@@ -79,11 +79,12 @@ const GioHangSlice = createSlice({
           
             if(state?.tienDaGiam>0)
             {
-              state.thanhTien+=state.tienDaGiam;
+              state.thanhTien+=state.tienDaGiam-(state.phiShip||0);
               state.tienDaGiam=0;
             }
-            const addressString = JSON.stringify(state);
-            window.localStorage.setItem("cart", addressString);
+            // const addressString = JSON.stringify(state);
+            // window.localStorage.setItem("cart", addressString);
+            state.loadingCoupon=false;
         },
         
     ViewCart(state, action) {
@@ -178,20 +179,29 @@ const GioHangSlice = createSlice({
     })
     builder.addCase(fetchPostApplyCoupon.fulfilled,(state,action)=>
     {
+        if(state.phiShip<=0)
+        {
+          message.open({
+            type:"error",
+            content:"Phí giao hàng chưa được tính",
+          })
+          state.loadingCoupon=false
+          return;
+        }
         state.thanhTien =action.payload.thanhTien;
         state.couponNavigation = action.payload.couponNavigation;
         state.tienDaGiam = action.payload.tienDaGiam;
         state.couponCode = action.payload.couponCode;
-        const addressString = JSON.stringify(state);
-        window.localStorage.setItem("cart", addressString);
-        state.loadingCoupon=false
+        // const addressString = JSON.stringify(state);
+        // window.localStorage.setItem("cart", addressString);
+        // state.loadingCoupon=false
     })
     builder.addCase(fetchPostApplyCoupon.rejected,(state,action)=>
     {
         state.loadingCoupon=false
         message.open({
           type:"error",
-          content:"promo code invalid"
+          content:action.error.message||"promo code invalid"
         })
     })
     builder.addCase(fetchGetProvinces.pending, (state) => {
@@ -204,8 +214,8 @@ const GioHangSlice = createSlice({
     builder.addCase(fetchGetProvinces.fulfilled, (state, action) => {
       state.ghnAPI.Provinces = action.payload;
       state.ghnAPI.Loading.Provinces = false;
-      const addressString = JSON.stringify(state.ghnAPI);
-      window.localStorage.setItem("address", addressString);
+      // const addressString = JSON.stringify(state.ghnAPI);
+      // window.localStorage.setItem("address", addressString);
     });
     builder.addCase(fetchGetDistrict.pending, (state, action) => {
       state.ghnAPI.Wards = {};
@@ -215,14 +225,14 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Loading.Districts = true;
       // state.thanhTien -= state.phiShip;
       // state.phiShip = 0;
-      const addressString = JSON.stringify(state.ghnAPI);
-      window.localStorage.setItem("address", addressString);
+      // const addressString = JSON.stringify(state.ghnAPI);
+      // window.localStorage.setItem("address", addressString);
     });
     builder.addCase(fetchGetDistrict.fulfilled, (state, action) => {
       state.ghnAPI.Districts = action.payload;
       state.ghnAPI.Wards = {};
-      const addressString = JSON.stringify(state.ghnAPI);
-      window.localStorage.setItem("address", addressString);
+      // const addressString = JSON.stringify(state.ghnAPI);
+      // window.localStorage.setItem("address", addressString);
       state.ghnAPI.Loading.Districts = false;
     });
     builder.addCase(fetchGetWard.pending, (state, action) => {
@@ -231,26 +241,37 @@ const GioHangSlice = createSlice({
       state.ghnAPI.Loading.Wards = true;
       // state.thanhTien -= state.phiShip;
       // state.phiShip = 0;
-      const addressString = JSON.stringify(state.ghnAPI);
-      window.localStorage.setItem("address", addressString);
+      // const addressString = JSON.stringify(state.ghnAPI);
+      // window.localStorage.setItem("address", addressString);
     });
     builder.addCase(fetchGetWard.fulfilled, (state, action) => {
       // state.ghnAPI.DistrictID = action.payload.data.DistrictID
       state.ghnAPI.Wards = action.payload;
-      const addressString = JSON.stringify(state.ghnAPI);
-      window.localStorage.setItem("address", addressString);
+      // const addressString = JSON.stringify(state.ghnAPI);
+      // window.localStorage.setItem("address", addressString);
       state.ghnAPI.Loading.Wards = false;
     });
     //fetchPostCalFee
     builder.addCase(fetchPostCalFee.pending, (state, action) => {
       state.ghnAPI.Loading.FeeCount =true;
+      if(state.couponCode&&state.tienDaGiam>0)
+      {
+        state.couponCode="";
+        state.couponNavigation=null;
+        if(state?.tienDaGiam>0)
+        {
+          state.thanhTien+=state.tienDaGiam-(state.phiShip||0);
+          state.tienDaGiam=0;
+        }
+        state.loadingCoupon=false; 
+      }
     });
     builder.addCase(fetchPostCalFee.fulfilled, (state, action) => {
       const phiShip = action.payload.data.total;
       state.ghnAPI.FeeInfo = action.payload;
       state.phiShip = phiShip || 0;
-      const CartString = JSON.stringify(state);
-      window.localStorage.setItem("cart", CartString);
+      
+     
       state.ghnAPI.Loading.FeeCount =false;
     });
     builder.addCase(fetchPostCalFee.rejected, (state, action) => {

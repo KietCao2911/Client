@@ -268,7 +268,6 @@ builder.addCase(EmailVerify.rejected,(state)=>
     {
       const {body} = action.meta.arg
       state.user.addressDefault = body.addressDefault;
-      
       state.loading=false;
     })
     builder.addCase(fetchChangeAddressDefault.rejected,(state,action)=>

@@ -217,7 +217,6 @@ const BSTSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchGetProductByBST.fulfilled, (state, action) => {
-      state.loading = false;
       state.boSuuTaps = action.payload;
       let productsTemp = [...action.payload];
       productsTemp.forEach((product) => {
@@ -228,10 +227,11 @@ const BSTSlice = createSlice({
           Object.values(GroupBy(product.sanPhams, "idColor"))[0][0]
             ?.chiTietHinhAnhs || [],
           product.maSanPham
-        );
+          );
       });
-
+      
       state.products = [...productsTemp];
+      state.loading = false;
     });
     builder.addCase(fetchGetProductByBST.rejected, (state, action) => {
       state.loading = false;

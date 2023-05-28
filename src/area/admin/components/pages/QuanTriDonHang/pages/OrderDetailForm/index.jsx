@@ -476,14 +476,23 @@ const OrderDetailForm = (props) => {
                     <div>Phí giao hàng:</div>
                     <div> {convertVND(OrderForm.values?.phiship) || 0}</div>
                   </Space>
-                  <Space className="summaryItem">
+                  {
+                    OrderForm.values?.tienDaGiam>0&&     <Space className="summaryItem">
+                    <div>Giảm giá:</div>
+                    <div> -{convertVND(OrderForm.values?.tienDaGiam) || 0}</div>
+                  </Space>
+                  }
+                  {
+                    OrderForm.values?.couponCode&&<Space className="summaryItem">
                     <div>Mã giảm giá <b>{OrderForm.values.couponCode}</b> </div>
                   </Space>
+                  }
+                  
                   <Space className="summaryItem">
                     <div>
                       <b>Tiền cần trả:</b>
                     </div>
-                    <div> {convertVND(OrderForm.values?.thanhTien)}</div>
+                    <div> {convertVND(OrderForm.values?.thanhTien )}</div>
                   </Space>
                 </Space>
                </Space>

@@ -1,4 +1,4 @@
-import { Card, Col, Row, Space,DatePicker, FloatButton, message } from 'antd';
+import { Card, Col, Row, Space,DatePicker, FloatButton, message, Button } from 'antd';
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
 import TableProductKN from '../components/TableProductKN';
@@ -11,6 +11,7 @@ import MyCollapse from '~/components/commomComponents/Collapse';
 import * as KhuyenMaiAPI from '~/redux/slices/KhuyenMai';
 import { useParams } from 'react-router-dom';
 import CustomSpin from '~/components/CustomSpin';
+import StickyActions from '~/components/commomComponents/stickyActions';
 const { RangePicker } = DatePicker;
 const KhuyenMaiForm = (props) => {
   const {isCreated,isUpdate,isReadOnly} = props;
@@ -97,10 +98,19 @@ const KhuyenMaiForm = (props) => {
   {
     dispatch(KhuyenMaiAPI.PutCancelKhuyenMai({body:Form.values}))
   }
+  const Actionsbtn=(
+    <Space>
+        {isCreated&&        <Button  onClick={handleSubmit}> Xác nhận thêm</Button>}
+            {isUpdate&&        <Button  onClick={handleSubmit}>Xác nhận sửa</Button>}
+                    {(isReadOnly||isUpdate)&&(Form.values.trangThai==0?<Button  onClick={handleApply}>Áp dụng khuyến mãi</Button>:Form.values.trangThai==1?<Button  onClick={handleCancel}>Hủy áp dụng</Button>:null)}
+    </Space>
+  )
   return (
     <Row gutter={[20,20]}>
-      {loading&&<CustomSpin/>}
-      <Col md={24}> </Col>
+        
+      <Col md={24}>
+        <StickyActions Actionsbtn={Actionsbtn}/>
+         </Col>
       <Col md={24}>
         <Row gutter={[20,20]}>
           <Col md={18}>
@@ -141,12 +151,7 @@ const KhuyenMaiForm = (props) => {
         <TableProductKN form={Form} isEdit={isCreated||isUpdate?true:false} source={Form.values?.chiTietKhuyenMais||[]}/>
         </Space>
       </Col>
-      <FloatButton.Group>
-            {isCreated&&        <FloatButton tooltip="Xác nhận thêm" onClick={handleSubmit}></FloatButton>}
-            {isUpdate&&        <FloatButton tooltip="Xác nhận sửa" onClick={handleSubmit}></FloatButton>}
-                    {(isReadOnly||isUpdate)&&(Form.values.trangThai==0?<FloatButton tooltip="Áp dụng khuyến mãi" onClick={handleApply}></FloatButton>:Form.values.trangThai==1?<FloatButton tooltip="Hủy áp dụng" onClick={handleCancel}></FloatButton>:null)}
-
-      </FloatButton.Group>
+     
     </Row>
   )
 }

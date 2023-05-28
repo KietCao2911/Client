@@ -22,7 +22,7 @@ import * as ThanhToanApi from "~/redux/slices/ThanhToanSlice";
 import CustomSpin from "~/components/CustomSpin";
 import OrderDsc from "~/components/commomComponents/OrderDsc/OrderDsc";
 import ProductInfoItem from "~/components/pages/Cart/components/ProductInfoItem";
-import { CreditCard, DollarSign, Gift, List, Phone, Plus, Tag, Truck } from "react-feather";
+import { CreditCard, DollarSign, Gift, List, Phone, Plus, Search, Tag, Truck } from "react-feather";
 import SelectCustom, {
   Option,
 } from "~/components/commomComponents/SelectCustom";
@@ -141,6 +141,7 @@ const OrderForm = (props) => {
       ...cart,
       diaChiNavigation,
     };
+    
     if(!phiShip||!thanhTien)
     {
       alert("Phí giao hàng chưa được tính, vui lòng thao tác lại");
@@ -169,6 +170,22 @@ const OrderForm = (props) => {
       });
     }
   };
+  const handleAddPromo=()=>
+  {
+  if(promo)
+  {
+    const diaChiNavigation = orderForm.values;
+    const cart = JSON.parse(window.localStorage.getItem("cart"));
+    cart.thanhTien = thanhTien+(phiShip||0);
+    cart.phiShip = phiShip;
+    cart.couponCode = promo;
+    const params = {
+      ...cart,
+      diaChiNavigation,
+    };
+    dispatch(GiaoHangNhanhApi.fetchPostApplyCoupon(params))
+  }
+  }
   const handlePaymentMethod = (value) => {
     let cart = JSON.parse(window.localStorage.getItem("cart"));
     cart.phuongThucThanhToan = value;
@@ -183,7 +200,6 @@ const OrderForm = (props) => {
     orderForm.values?.WardID &&
       dispatch(GiaoHangNhanhApi.fetchGetWard(orderForm.values?.DistrictID));
   };
-
   useEffect(() => {
     const address = JSON.parse(window.localStorage.getItem("address"));
 
@@ -341,23 +357,11 @@ const OrderForm = (props) => {
                 loading={loadingCoupon}
                   value={promo}
                   onChange={(e)=>setPromo(e.target.value)}
-                    icon={<Plus onClick={()=>
-                      {
-                      if(promo)
-                      {
-                        const diaChiNavigation = orderForm.values;
-                        const cart = JSON.parse(window.localStorage.getItem("cart"));
-                        cart.thanhTien = thanhTien;
-                        cart.phiShip = phiShip;
-                        cart.couponCode = promo;
-                        const params = {
-                          ...cart,
-                          diaChiNavigation,
-                        };
-                        dispatch(GiaoHangNhanhApi.fetchPostApplyCoupon(params))
-                      }
-                      }
-                      }/>}
+                    icon={<Space>
+                      <Plus onClick={handleAddPromo
+                      }/>
+                      <Search/>
+                    </Space>}
                       label={`Enter your promo code `}
                     ></InputText>
               }
@@ -421,7 +425,7 @@ const OrderForm = (props) => {
                 <Col span={24}>
                   <Row justify={"space-between"}>
                     <Col><b>Total:</b></Col>
-                    <Col>{convertVND(thanhTien+phiShip)}</Col>
+                  <Col>{convertVND(tienDaGiam?thanhTien:thanhTien+phiShip)}</Col>
                   </Row>
                 </Col>
 

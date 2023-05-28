@@ -61,7 +61,7 @@ const CardProduct = (props, ref) => {
           {
             props?.ribbonTooltip||value?.isSale?  <div className="CardRibbon">
             <span>{props?.ribbonTooltip||(
-             `- ${ (((value?.giaBanLe+value?.tienDaGiam)-value?.tienDaGiam)/(value?.giaBanLe+value?.tienDaGiam)*100)||0}%`
+             `- ${ (100-((((value?.giaBanLe+value?.tienDaGiam)-(value?.tienDaGiam))/(value?.giaBanLe+value?.tienDaGiam))*100))||0}%`
             )}</span>
           </div>:null
           }

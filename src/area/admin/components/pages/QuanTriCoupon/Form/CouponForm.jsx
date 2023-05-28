@@ -216,6 +216,7 @@ const CouponForm = useFormik({
     }),
     onSubmit:(values)=>
     {
+        alert("submit")
         const body = {...values,mota:CouponDsc(CouponForm.values)}
 
         dispatch(CouponAPI.PostCouponThunk({body}))
@@ -254,7 +255,7 @@ useEffect(()=>
 const ActionsBtn=(
 
      <Space>
-      {isCreate&&  <Button type="primary" loading={loading} >Xác nhận</Button>}
+      {isCreate&&  <Button type="primary" onClick={()=>handleCreate()} loading={loading} >Xác nhận</Button>}
       {isReadOnly&& <>
        {CouponForm.values.trangThai? <Button onClick={()=>dispatch(CouponAPI.PauseCoupon(id))} type="default" >Tạm ngưng</Button>
         :<Button type="default" onClick={()=>dispatch(CouponAPI.StartCoupon(id))}>Áp dụng</Button>}
@@ -301,9 +302,11 @@ useEffect(()=>
                                          value={CouponForm.values.maCoupon} 
                                          name="maCoupon" 
                                          placeholder="Nhập mã coupon"
-                                         onChange={CouponForm.handleChange} 
+                                        //  onChange={CouponForm.handleChange} 
                                          addonAfter={<RefreshCcw className="icon" onClick={()=>{
+
                                             CouponForm.setFieldValue("maCoupon",generateRandomCode(10))
+                                            CouponForm.setFieldTouched("maCoupon",true)
                                          }}/>}/>
                                          {CouponForm.touched.maCoupon&&CouponForm.errors.maCoupon&&<span className="error">{CouponForm.errors.maCoupon}</span>}
                                             </Space>
@@ -314,9 +317,7 @@ useEffect(()=>
                                       <Space direction="vertical" style={{width:"100%"}}>
                                       <b>Tên coupon</b>
                                         <Input
-                                        placeholder="Nhập tên coupon"
-                                            onBlur={CouponForm.handleBlur}
-                                           status={(CouponForm.touched.tenCoupon&&CouponForm.errors.tenCoupon&&CouponForm.touched.tenCoupon)?"error":""} 
+                                        placeholder="Nhập tên coupon"                                           status={(CouponForm.touched.tenCoupon&&CouponForm.errors.tenCoupon&&CouponForm.touched.tenCoupon)?"error":""} 
                                          value={CouponForm.values.tenCoupon} 
                                          name="tenCoupon" 
                                          onChange={CouponForm.handleChange} 
@@ -330,11 +331,15 @@ useEffect(()=>
                                     <Row gutter={[10,10]}>
                                         <Col span={24}>
                                         <b>Loại khuyến mãi</b>
-                                            <Select  onBlur={CouponForm.handleBlur} value={CouponForm.touched.loaiKhuyenMai} fieldNames={"loaiKhuyenMai"}
+                                            <Select   value={CouponForm.values.loaiKhuyenMai}
+
+                                             fieldNames={"loaiKhuyenMai"}
                                              status={(CouponForm.touched.loaiKhuyenMai&&CouponForm.errors.loaiKhuyenMai&&CouponForm.touched.loaiKhuyenMai)?"error":""}
                                                onChange={(e)=>{
+
                                                 CouponForm.setFieldValue("loaiKhuyenMai",e) 
-                                        CouponForm.setFieldValue("chiTietCoupons",[])
+                                                CouponForm.setFieldTouched("loaiKhuyenMai",true) 
+                                                CouponForm.setFieldValue("chiTietCoupons",[])
                                         }} defaultValue={[""]} style={{width:"100%"}}>
                                             <Select.Option key={v4()} value={""}>Chọn phương thức khuyến mãi</Select.Option>
                                             {

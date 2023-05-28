@@ -11,7 +11,7 @@ import convertVND from "~/components/utils/ConvertVND";
 import * as ThanhToanApi from "~/redux/slices/ThanhToanSlice";
 import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
-import { Plus } from "react-feather";
+import { Plus, Search } from "react-feather";
 import Promo from "~/components/Forms/Order/Promo";
 const DeliveryPage = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const DeliveryPage = () => {
   const { DiaChi, loading } = useSelector((state) => state.ThanhToan);
   const { ghnAPI } = useSelector((state) => state.GioHang);
   const { Provinces, FeeCount,Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
-  const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation } = useSelector(
+  const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation,tienDaGiam } = useSelector(
     (state) => state.GioHang
   );
 
@@ -52,7 +52,7 @@ const DeliveryPage = () => {
             length: 20,
             weight: 200,
             width: 20,
-            insurance_value: thanhTien||0,
+            insurance_value: parseInt( thanhTien+((tienDaGiam||0))) ||0,
             coupon: null,
           })
         );
@@ -90,6 +90,33 @@ const DeliveryPage = () => {
     }
 
     
+  }
+  const handleAddPromo=()=>
+  {
+  if(promo)
+  {
+   if (user.info && user.info.length > 0) {
+     const address = user.info.find(
+       (item) => item.id == user.addressDefault
+     );
+     if(address)
+     {
+       const cart = JSON.parse(window.localStorage.getItem("cart"));
+       cart.thanhTien = thanhTien+(phiShip||0);
+       cart.phiShip = phiShip;
+       cart.couponCode = promo;
+       const params = {
+         ...cart,
+         idTaiKhoan: user.userName.trim(),
+         idDiaChi: address.id,
+       };
+      
+
+        dispatch(GiaoHangNhanhApi.fetchPostApplyCoupon(params))
+     }
+   }
+   
+  }
   }
   return (
     <Row gutter={[10,10]}>
@@ -130,7 +157,7 @@ const DeliveryPage = () => {
                         <Col span={12}>
                           Thành tiền:
                         </Col>
-                        <Col span={12}>{convertVND(thanhTien+phiShip) || convertVND("0")}</Col>
+                        <Col span={12}>{convertVND(tienDaGiam?thanhTien:thanhTien+phiShip) || convertVND("0")}</Col>
                       </Row>
                     </Col>
                   </Row>
@@ -139,34 +166,11 @@ const DeliveryPage = () => {
                    loading={loadingCoupon}
                      value={promo}
                      onChange={(e)=>setPromo(e.target.value)}
-                       icon={<Plus onClick={()=>
-                         {
-                         if(promo)
-                         {
-                          if (user.info && user.info.length > 0) {
-                            const address = user.info.find(
-                              (item) => item.id == user.addressDefault
-                            );
-                            if(address)
-                            {
-                              const cart = JSON.parse(window.localStorage.getItem("cart"));
-                              cart.thanhTien = thanhTien;
-                              cart.phiShip = phiShip;
-                              cart.couponCode = promo;
-                              const params = {
-                                ...cart,
-                                idTaiKhoan: user.userName.trim(),
-                                idDiaChi: address.id,
-                              };
-                             
-    
-                               dispatch(GiaoHangNhanhApi.fetchPostApplyCoupon(params))
-                            }
-                          }
-                          
-                         }
-                         }
-                         }/>}
+                       icon={<Space>
+                        <Plus onClick={handleAddPromo
+                         }/>
+                         <Search/>
+                       </Space>}
                          label={`Enter your promo code `}
                        ></InputText>
                  }

@@ -179,21 +179,6 @@ const TrangChiTietSanPham = () => {
                 </Space>
               )}
             </Col>
-
-            {/* {productsRecentlyView && productsRecentlyView.length > 0 && (
-              <Col md={24}>
-                <Space style={{ width: "100%" }} direction="vertical">
-                  <h1 style={{ textTransform: "uppercase" }}>
-                  RECENTLY VIEWED ITEMS
-                  </h1>
-                  <ListProducts
-                    type={"slider"}
-                    items={productsRecentlyView}
-                  ></ListProducts>
-                </Space>
-
-              </Col>
-            )} */}
           </Col>
           {/* Product Checkout forMB*/}
           <Col md={0} className="ProductInfo">
@@ -298,11 +283,15 @@ const TrangChiTietSanPham = () => {
               <p className="InfoPrice">
                 {convertVND(product?.productCurrent?.giaBanLe || 0)}
               </p>
-              <p>
+              <p>Đơn hàng được xác nhận sau khi xác nhận thanh toán. 
+                Không đổi hàng, trả hàng hay hoàn tiền trừ trường hợp pháp luật có quy định khác.
+                 Sản phẩm này không áp dụng bất kỳ chương trình ưu đãi và khuyến mãi nào. 
+                 Giới hạn số lượng 1 sản phẩm trên mỗi đơn hàng.</p>
+              <b>
                 Mã SKU:{" "}
                 {product?.productCurrent?.maSanPham ||
                   product?.sanPhamNavigation?.maSanPham}
-              </p>
+              </b>
             </div>
           </Space>
 

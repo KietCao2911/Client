@@ -1,11 +1,12 @@
 import { Select, Checkbox, Menu, Row, Col } from "antd";
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import MyCollapse from "~/components/commomComponents/Collapse";
 import "./sizeOptions.scss";
 import { useCallback } from "react";
 import { v4 } from "uuid";
+import { useQueryString } from "~/hooks/useQueryParams";
 const Radio = (props) => {
   const { value, checked, onChange } = props;
   const handleChange = (e) => {
@@ -28,11 +29,10 @@ const Radio = (props) => {
 const SizeOptions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const size = searchParams.get("size");
+  const seachQuery = useQueryString();
+  
   const handleChange = (e) => {
-    const params = {};
-    for (let [key, value] of searchParams.entries()) {
-      params[key] = value;
-    }
+    const params = {...seachQuery};
     params.size = e;
     setSearchParams({ ...params });
   };
@@ -46,7 +46,7 @@ const SizeOptions = () => {
       </Col>)
     }
     return arrEles
-  },[size])
+  },[seachQuery])
   return (
     <div className="SizeOptions">
       <MyCollapse label="Kích cỡ">

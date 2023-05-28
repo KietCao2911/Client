@@ -69,7 +69,7 @@ const SizeSelect = ({ items, setSize }) => {
     <Row>
       {sort()?.map((item) => {
         return (
-          <Col key={uuidv4()} span={6}>
+          <Col key={uuidv4()} span={4}>
             {" "}
             <SizeRadio
               key={uuidv4()}

@@ -13,10 +13,14 @@ import { v4 } from 'uuid'
 import AddressUserForm from '~/components/Forms/AddressUserForm'
 import convertVND from '~/components/utils/ConvertVND'
 import { Plus } from 'react-feather'
+import { removeCoupon } from '~/redux/slices/GioHang/GioHangSlice'
 const Item=(props)=>
 {
-    const {data,user} = props;
+    const {data,user,setModalDeleteCouponOpen} = props;
     const dispatch = useDispatch();
+    const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation,tienDaGiam } = useSelector(
+      (state) => state.GioHang
+    );
     const handleChangeAddressDefault=(id)=>
     {
       if(user.addressDefault==id)
@@ -63,6 +67,7 @@ const HaveUserAddressComponent = () => {
     const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip } = useSelector(
       (state) => state.GioHang
     );
+    const [modalDeleteCouponOpen,setModalDeleteCouponOpen]= useState(false);
     const [openModal,setOpenModal] = useState(false);
     const onAddedAddress=useMemo(()=>
     {
@@ -88,7 +93,7 @@ const HaveUserAddressComponent = () => {
                 
                item?.deletedAT==null&&<Col key={v4()} md={8} xs={24}>
                 
-               <Item user={user} data={item}/>  
+               <Item setModalDeleteCouponOpen={setModalDeleteCouponOpen} user={user} data={item}/>  
          </Col>
                 )}
                 <Col md={8} xs={24}>
@@ -104,7 +109,9 @@ const HaveUserAddressComponent = () => {
         
              
       </Row>
+        <Modal open={modalDeleteCouponOpen}  onOk={()=>dispatch(removeCoupon())} title="Bạn có chắc muốn chuyển địa chỉ">
 
+        </Modal>
         <Modal okButtonProps={{style:{
           display:"none"
         }}} 

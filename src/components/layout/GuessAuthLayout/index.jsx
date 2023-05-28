@@ -16,7 +16,7 @@ const GuessAuthLayout = ({ children }) => {
         <Link className="back" to="../auth">
           <strong>select method</strong>
         </Link>
-        <h1 className="Logo">LOGO <span>.</span></h1>
+       <Link to="/"> <h1 className="Logo">LOGO <span>.</span></h1></Link>
         {children}
       </div>
     </div>}

@@ -4,59 +4,101 @@ import { useDispatch, useSelector } from 'react-redux'
 import "./OrderPage.scss"
 import  * as MeAPI from '~/redux/slices/MeSlice/MeSlice'
 import convertVND from '~/components/utils/ConvertVND'
-const Item=(props)=>
-{
-  const {cthd,hd} = props;
-  return <div className='ItemMyOrder'>
-      <div className="infoProduct">
-        <img src={cthd.img} alt="" />
-        <div className="content">
-          <div className="name">
-            <span>{cthd?.sanPhamNavigation?.tenSanPham}</span>
-          </div>
-          <div className="size">
-            <span>Kích thước: {cthd?.sanPhamNavigation?.idSize}</span>
-          </div>
-          <div className="color">
-            <span>Màu sắc: <span style={{display:"inline-block", backgroundColor:`${cthd?.sanPhamNavigation?.idColor}`,width:"2rem",height:"2rem"}}></span></span>
-          </div>
-        </div>
-      </div>
-      <div className="infoDelivery">
-          <div className="content">
-            <div className="orderID"><span><b>Mã hóa đơn: </b>#{hd?.id}</span></div>
-            <div className="nameOrder"><span><b>Tên: </b>{hd.diaChiNavigation?.name} </span></div>
-            <div className="address"><span><b>Địa chỉ: </b> {`${hd.diaChiNavigation?.addressDsc+","}
-             ${hd.diaChiNavigation?.wardName},
-              ${hd.diaChiNavigation?.districtName},
-              ${hd.diaChiNavigation?.provinceName}`} </span></div>
-              <div className="totalMoney"><span><b>Phí giao hàng:</b> {convertVND(hd?.phiship)}</span></div>
-            <div className="totalMoney"><span><b>Tổng tiền:</b> {convertVND(hd?.thanhTien)}</span></div>
-            <div className="paymentInfo"><span><b>Phương thức thanh toán: </b>{hd?.phuongThucThanhToan}</span></div>
-            <div className="paymentStatus"><span><b>Trạng thái thanh toán: </b> {!hd?.daThanhToan?"Chưa thanh toán":"Đã thanh toán"}</span></div>
-            <div className="deliveryStatus"><span><b>Trạng thái đơn hàng: </b>{hd?.status==0?"Đang chuẩn bị hàng":hd?.status==1?"Đã duyệt":"Đã hủy"}</span></div>
-          </div>
-      </div>
-      {/* <div className="infoDelivery">
-        Giao đến
-      </div> */}
-  </div>
-}
+import { Button, Card, Col, Row, Space, Tabs } from 'antd'
+import { v4 } from 'uuid'
+import { Truck } from 'react-feather'
 const OrderPage = () => {
   const dispatch =useDispatch();
   const {myOrders} = useSelector(state=>state.Me);
-  const {user} = useSelector(state=>state.XacThuc)
+  const {user} = useSelector(state=>state.XacThuc);
+  
+  const OrdersItem=({orders})=>
+  {
+    if(orders.length<=0)
+    {
+      return <h1>Chưa có đơn hàng nào.</h1>
+    }
+
+    return <Row gutter={[10,10]}>
+      
+        {orders&&orders.map(item=>
+            {
+return   <Col span={24}>
+  <Card  role='article' title={`#${item?.id}`} extra={<Space>
+    {/* <Button>Mua lại</Button> */}
+    <Button>Xem chi tiết</Button>
+  </Space>}>
+                {item?.chiTietNhapXuats.map(ctnx=>
+                  {
+                    return <ProductsOrder value={ctnx}/>
+                  })}
+                  <strong>Thành tiền: {convertVND(item?.thanhTien)}</strong>
+          </Card>
+          </Col>
+            })}
+          
+        
+      </Row>
+  }
+  const ProductsOrder=({value})=>
+  {
+    return<Row  justify={"space-between"}>
+      <Col md={18} xs={24}>
+        <Space align='start'>
+        <img style={{width:"150px",height:"150px"}} src={value?.img||""}/>
+        <div className="content">
+          <Space direction='vertical'>
+            <div className="name">
+              <strong>{value?.sanPhamNavigation?.tenSanPham}</strong>
+            </div>
+            <Space className="phanLoai" style={{color:"#8288A1"}}>
+            <p>Phân loại hàng: </p>Color: <span style={{padding:"1.5rem",display:"inline-block",backgroundColor:value?.sanPhamNavigation?.idColor}}></span>
+            Size: {value?.sanPhamNavigation?.idSize}
+            </Space>
+            <div className="qty">
+              <b>x{value?.soLuong}</b>
+            </div>
+          </Space>
+        </div>
+        </Space>
+      </Col>
+      <Col xs={24} md={6}>
+      <strong>{convertVND(value?.thanhTien)}</strong>
+      </Col>
+    </Row>
+  }
   useEffect(()=>
   {
     dispatch(MeAPI.getMyOrders({tenTaiKhoan:user.userName}))
   },[])
+  const items=[{
+    key:v4(),
+    label:"Chưa thanh toán",
+    children:<OrdersItem orders={myOrders.filter(x=>!x.daThanhToan)||[]}/>
+  },
+  {
+    key:v4(),
+    label:"Chờ vận chuyển",
+    children:<OrdersItem orders={myOrders.filter(x=>x.steps>=2&&x.steps<3)||[]}/>
+  },
+  {
+    key:v4(),
+    label:"Đã hủy",
+    children:<OrdersItem orders={myOrders.filter(x=>x.status==-1)||[]}/>
+  }
+  ,
+  {
+    key:v4(),
+    label:"Đã vận chuyển",
+    children:<OrdersItem orders={myOrders.filter(x=>x.steps>=3)||[]}/>
+  },
+  
+]
   return (
     <div className='OrderPage'>
-      {myOrders&&myOrders.length>0?myOrders.map(item=>
-        {
-          return item.chiTietNhapXuats&& item.chiTietNhapXuats.map(cthd=>
-            <Item cthd={cthd} hd={item}></Item>)
-        }):<strong>Bạn chưa đặt đơn hàng nào</strong>}
+      <Tabs centered items={items}>
+
+      </Tabs>
     </div>
   )
 }

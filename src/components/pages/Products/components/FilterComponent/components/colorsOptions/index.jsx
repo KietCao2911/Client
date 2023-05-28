@@ -8,15 +8,14 @@ import { fetchALLColors } from "~/redux/slices/MauSacSlice";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MyCollapse from "~/components/commomComponents/Collapse";
+import { useQueryString } from "~/hooks/useQueryParams";
 export const Item = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const defaultValue = searchParams.get("color");
+  const searchQuery = useQueryString()
   const { checked, value, label } = props;
   const handleChange = (e) => {
-    const params = {};
-    for (let [key, value] of searchParams.entries()) {
-      params[key] = value;
-    }
+    const params = {...searchQuery};
     params.color = e.target.value;
     setSearchParams({ ...params });
   };

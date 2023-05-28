@@ -81,10 +81,7 @@ const Filter = (props) => {
     fetchFnc(params);
   }, [searchParams, slug, category]);
   const handleClickSort = (e) => {
-    const params = {};
-    for (let [key, value] of searchParams.entries()) {
-      params[key] = value;
-    }
+    const params = {...SeachQuery};
     params.sort = e;
     setSearchParams({ ...params });
   };
@@ -98,6 +95,7 @@ const Filter = (props) => {
         />
       </div>
       <Drawer
+        className="drawer"
         placement="left"
         open={openDrawer}
         setOpen={setOpenDrawer}
@@ -108,7 +106,7 @@ const Filter = (props) => {
         <MyCollapse label="Sắp xếp" defaultOpen={true}>
           <Space direction="vertical">
             <h4 
-            className={`${sort&&sort=="price-hight-to-low"?"active":""}`}
+            className={`${sort&&sort=="price-hight-to-low"?"item active":""}`}
                          key={uuidv4()}
               onClick={() => handleClickSort("price-hight-to-low")}
             >
