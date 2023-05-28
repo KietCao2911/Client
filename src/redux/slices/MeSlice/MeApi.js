@@ -27,6 +27,15 @@ export const GetOrders = async (userName)=>
         throw error;
     }
 }
+export const GetOrder = async (id)=>
+{
+    try {
+        const res = await Method.Get("/api/HoaDon/GetOrderByID/"+id);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+}
 export const setAvatar =async(id,body)=>
 {
   try{

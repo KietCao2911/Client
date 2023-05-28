@@ -402,23 +402,13 @@ useEffect(()=>
                         <Col span={24}>
                         <Card bordered={false} title="Điều kiện">
                         <Space direction="vertical" style={{width:"100%"}}>
-                                            <Space direction="vertical">
-                                            <Form.Item label="Số lượng sản phẩm tối thiểu">
+                            <b>Số lượng sản phẩm tối thiểu</b>
                             <Input min={0} onChange={(e)=>CouponForm.setFieldValue("soLuongSPToiThieu",Number(e.target.value))} defaultValue={0} type="number"/>
-                            </Form.Item>
-                            <Form.Item  label="Giá trị tối thiểu">
+                            <b>Giá trị đơn hàng tối thiểu</b>
                             <Input min={0} defaultValue={0} type="number" onChange={(e)=>CouponForm.setFieldValue("giaTriDonHangToiThieu",Number(e.target.value))} />
-                            </Form.Item >
-                            <Form.Item   label="Số lần dùng cho mỗi đơn hàng">
-                            <Input min={1} onChange={(e)=>CouponForm.setFieldValue("soLanDung",Number(e.target.value))}  defaultValue={1} type="number"/>
-                            </Form.Item >
-                            <Form.Item   label="Số lượng">
+                            <b>Số lượng Coupon</b>
                             <Input min={1} onChange={(e)=>CouponForm.setFieldValue("soLuong",Number(e.target.value))}  defaultValue={1} type="number"/>
-                            </Form.Item >
-                                            </Space>
-                        <Space direction="vertical" style={{width:"100%"}}
-                        >
-                        </Space>
+
                         </Space>
                    
                     </Card>

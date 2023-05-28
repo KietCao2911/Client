@@ -109,9 +109,6 @@ const HaveUserAddressComponent = () => {
         
              
       </Row>
-        <Modal open={modalDeleteCouponOpen}  onOk={()=>dispatch(removeCoupon())} title="Bạn có chắc muốn chuyển địa chỉ">
-
-        </Modal>
         <Modal okButtonProps={{style:{
           display:"none"
         }}} 

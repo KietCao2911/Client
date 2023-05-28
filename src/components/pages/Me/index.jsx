@@ -6,6 +6,7 @@ import AccountPage from "./pages/AccountPage";
 import NewPage from "./pages/NewsPage";
 import OrderPage from "./pages/OrderPage";
 import { useSelector } from "react-redux";
+import OrderDetailPage from "./pages/OrderDetailPage";
 
 const MePage = () => {
   const [itemsNav,setItemsNav]= useState([{
@@ -59,7 +60,8 @@ const MePage = () => {
 <div className="Content">
     <Routes>
       <Route path="" element={<NewPage/>}></Route>
-      <Route path="don-hang" element={<OrderPage/>}></Route>
+      <Route path="don-hang/*" element={<OrderPage/>}></Route>
+      <Route path="don-hang/:id" element={<OrderDetailPage/>}></Route>
       <Route path="tai-khoan/*" element={<AccountPage/>}></Route>
     </Routes>
     </div>
