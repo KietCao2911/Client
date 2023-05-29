@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import "./OrderPage.scss"
 import  * as MeAPI from '~/redux/slices/MeSlice/MeSlice'
 import convertVND from '~/components/utils/ConvertVND'
-import { Button, Card, Col, Row, Space, Tabs, Typography } from 'antd'
+import { Button, Card, Col, Row, Space, Tabs, Tag, Typography } from 'antd'
 import { v4 } from 'uuid'
 import { Truck } from 'react-feather'
 import { Link } from 'react-router-dom'
 const { Paragraph, Text } = Typography;
 export const ProductsOrder=({value})=>
 {
+
   return<Row  justify={"space-between"}>
     <Col md={18} xs={24}>
       <Row gutter={[10,10]}>
@@ -37,7 +38,10 @@ export const ProductsOrder=({value})=>
       </Row>
     </Col>
     <Col xs={24} md={6}>
-    <strong>{convertVND(value?.thanhTien)}</strong>
+    <strong>Đơn giá: {value?.sanPhamNavigation?.tienDaGiam>0?<Space>
+                <del>{convertVND(value?.sanPhamNavigation?.tienDaGiam)}</del>
+                <span>{convertVND(value?.sanPhamNavigation?.giaBanLe)}</span>
+    </Space>:convertVND(value?.sanPhamNavigation?.giaBanLe)}</strong>
     </Col>
   </Row>
 }
@@ -45,7 +49,19 @@ const OrderPage = () => {
   const dispatch =useDispatch();
   const {myOrders} = useSelector(state=>state.Me);
   const {user} = useSelector(state=>state.XacThuc);
-  
+  const getStepsOrder=(steps)=>
+  {
+    if(steps<0)
+    {
+      return <Tag color="red">Đơn hàng đã hủy</Tag>
+    }
+    else if(steps<2)
+    {
+      
+      return <Tag >Đơn hàng chờ xử lý</Tag>
+    }
+    else return <Tag color="green">Đơn hàng hoàn tất</Tag>
+  }
   const OrdersItem=({orders})=>
   {
     if(orders.length<=0)
@@ -59,9 +75,8 @@ const OrderPage = () => {
             {
 return   <Col span={24}>
             <Link to={`${item?.id}`}>
-            <Card  role='article' title={`#${item?.id}`} extra={<Space>
-    {/* <Button>Mua lại</Button> */}
-    <Button>Xem chi tiết</Button>
+            <Card  role='article' title={`Mã đơn hàng: #${item?.id}`} extra={<Space>
+           {getStepsOrder(item?.steps)}
   </Space>}>
                 {item?.chiTietNhapXuats.map(ctnx=>
                   {
@@ -84,23 +99,23 @@ return   <Col span={24}>
   const items=[{
     key:v4(),
     label:"Chưa thanh toán",
-    children:<OrdersItem orders={myOrders.filter(x=>!x?.daThanhToan)||[]}/>
+    children:<OrdersItem orders={myOrders?.filter(x=>!x?.daThanhToan)||[]}/>
   },
   {
     key:v4(),
     label:"Chờ vận chuyển",
-    children:<OrdersItem orders={myOrders.filter(x=>x?.steps>=2&&x?.steps<3)||[]}/>
+    children:<OrdersItem orders={myOrders?.filter(x=>x?.steps>=2&&x?.steps<3)||[]}/>
   },
   {
     key:v4(),
     label:"Đã hủy",
-    children:<OrdersItem orders={myOrders.filter(x=>x?.status==-1)||[]}/>
+    children:<OrdersItem orders={myOrders?.filter(x=>x?.status==-1)||[]}/>
   }
   ,
   {
     key:v4(),
     label:"Đã vận chuyển",
-    children:<OrdersItem orders={myOrders.filter(x=>x?.steps>=3)||[]}/>
+    children:<OrdersItem orders={myOrders?.filter(x=>x?.steps>=3&&x?.status!=-1)||[]}/>
   },
   
 ]

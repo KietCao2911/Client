@@ -81,7 +81,10 @@ function ProductInfoItem(props) {
                     "CAMPUS 80S SOUTH PARK TOWELIE"}
                 </h4>
               </div>
-              <p>{convertVND(sanPhamNavigation?.giaBanLe) || "---"}</p>
+             <Space>
+              {sanPhamNavigation?.tienDaGiam>0&&<del style={{color:"red"}}>{convertVND(sanPhamNavigation?.tienDaGiam+sanPhamNavigation?.giaBanLe)} </del>}
+             <p>{convertVND(sanPhamNavigation?.giaBanLe) || "---"}</p>
+             </Space>
             </Col>
             <Col span={24}>
               <Space direction="vertical" style={{width:"100%"}}>

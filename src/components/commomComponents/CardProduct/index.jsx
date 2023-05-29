@@ -126,7 +126,7 @@ const CardProduct = (props, ref) => {
                 !value?.isSale?<div className={`priceDetails`}>{price || " 400.000₫"}</div>:<div>
                   <div className="priceDetails sale"> 
                   <div>
-                  <del>{convertVND(value?.tienDaGiam+value?.giaBanLe)}</del>
+                  <del className="sale-value">{convertVND(value?.tienDaGiam+value?.giaBanLe)}</del>
                     </div>
                  <div>
                  {convertVND(value?.giaBanLe)}

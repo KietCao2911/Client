@@ -205,10 +205,12 @@ const SanPhamSlice = createSlice({
         state.productsHot = [...productsTemp];
       } else if (props?.params.sort && props?.params.sort == "most-view") {
         state.trendingsProduct = state.productsHot = [...productsTemp];
-      } else {
-        state.products = [...productsTemp];
-        state.totalRow = totalRow;
+      } else
+      {
+        state.productsLatest =  [...productsTemp];
       }
+      state.products = [...productsTemp];
+      state.totalRow = totalRow;
     });
     //fetchGETQTYUSER
     builder.addCase(fetchQTY.pending, (state) => {

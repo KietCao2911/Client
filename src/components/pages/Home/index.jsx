@@ -116,7 +116,7 @@ const Home = () => {
           <ListProducts
                     // type={"slider"}
 
-            items={products || []}
+            items={productsLatest || []}
             loading={loading}
             miniProducts={true}
           />

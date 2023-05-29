@@ -141,6 +141,12 @@ const Filter = (props) => {
               {" "}
               Bán chạy nhất
             </h4>
+            <h4 
+                                                className={`${sort&&sort=="popular"?"active":""}`}
+            key={uuidv4()} onClick={() => handleClickSort("sale")}>
+              {" "}
+              Có giảm giá
+            </h4>
           </Space>
         </MyCollapse>
         <ColorOptions />

@@ -112,7 +112,12 @@
             &.sale {
                 display: flex;
                 color: #FF0303;
-
+                .sale-value
+                {
+                    @include mobile{
+                        display: none;
+                    }
+                }
                 &>div {
                     margin: 0 .5rem;
                 }

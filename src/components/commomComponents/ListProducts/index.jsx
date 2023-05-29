@@ -50,7 +50,6 @@ const ListProducts = ({ items, loading, type, itemResponsive }) => {
                   }}
                 >
                   <Empty
-                    image="https://img.freepik.com/free-vector/empty-concept-illustration_114360-1253.jpg?w=826&t=st=1680529331~exp=1680529931~hmac=ddb8537ee8ef939e5a9db79ac7fa991ade6858172622aa12cbde1de8aa3f5b50"
                     description="Hiện chưa có sản phẩm nào"
                   />
                 </div>

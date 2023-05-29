@@ -162,7 +162,11 @@ const GioHangSlice = createSlice({
       const index = items.indexOf(obj);
       if (index > -1) {
         state.chiTietNhapXuats[index].soLuong = qty;
-        state.thanhTien = state.chiTietNhapXuats[index].donGia * qty;
+        const pricePrev =state.tongSoLuong = state.chiTietNhapXuats.reduce(
+          (x, y) => x + y.donGia*y.soLuong,
+          0
+        );
+        state.thanhTien = pricePrev;
         state.tongSoLuong = state.chiTietNhapXuats.reduce(
           (x, y) => x + y.soLuong,
           0

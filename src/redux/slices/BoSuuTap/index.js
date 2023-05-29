@@ -135,11 +135,16 @@ const BSTSlice = createSlice({
     });
     //fetchBySlugBST
     builder.addCase(fetchBySlugBST.pending, (state, action) => {
-      state.loading = true;
       state.boSuuTap = {};
+      state.loading = true;
     });
     builder.addCase(fetchBySlugBST.fulfilled, (state, action) => {
       state.boSuuTap = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(fetchBySlugBST.rejected, (state, action) => {
+      state.boSuuTap = {};
       state.loading = false;
     });
     //fetchAllBST
@@ -147,8 +152,8 @@ const BSTSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchAllBST.fulfilled, (state, action) => {
-      state.loading = false;
       state.boSuuTaps = action.payload;
+      state.loading = false;
     });
     builder.addCase(fetchAllBST.rejected, (state, action) => {
       state.loading = false;

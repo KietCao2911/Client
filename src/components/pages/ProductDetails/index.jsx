@@ -130,11 +130,16 @@ const TrangChiTietSanPham = () => {
                 {product?.sanPhamNavigation?.tenSanPham || "GIÀY SUPERSTAR TAEGEUKDANG"}
               </h1>
               <p className="InfoPrice">
+                <Space>
+                {product?.sanPhamNavigation?.tienDaGiam>0&& <del style={{color:"red"}}>{convertVND(product?.sanPhamNavigation?.tienDaGiam+product?.sanPhamNavigation?.giaBanLe)}</del>}
                 {convertVND(
                   product?.sanPhamNavigation?.productCurrent?.giaBanLe ||
                     product?.sanPhamNavigation?.giaBanLe ||
                     0
                 )}
+                </Space>
+
+               
               </p>
               <p>
                 Mã SKU:{" "}
@@ -281,7 +286,14 @@ const TrangChiTietSanPham = () => {
                   "GIÀY SUPERSTAR TAEGEUKDANG"}
               </h1>
               <p className="InfoPrice">
-                {convertVND(product?.productCurrent?.giaBanLe || 0)}
+              <Space>
+                {product?.sanPhamNavigation?.tienDaGiam>0&& <del style={{color:"red"}}>{convertVND(product?.sanPhamNavigation?.tienDaGiam+product?.sanPhamNavigation?.giaBanLe)}</del>}
+                {convertVND(
+                  product?.sanPhamNavigation?.productCurrent?.giaBanLe ||
+                    product?.sanPhamNavigation?.giaBanLe ||
+                    0
+                )}
+                </Space>
               </p>
               <p>Đơn hàng được xác nhận sau khi xác nhận thanh toán. 
                 Không đổi hàng, trả hàng hay hoàn tiền trừ trường hợp pháp luật có quy định khác.
