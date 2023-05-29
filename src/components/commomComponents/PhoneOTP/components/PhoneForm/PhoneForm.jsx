@@ -58,8 +58,8 @@ const PhoneForm = () => {
       signInWithPhoneNumber(authentication, phoneNumber, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
-        setVerify(true)
         setLoading(false)
+        setVerify(true)
       })
       .catch((error) => {
         setLoading(false)

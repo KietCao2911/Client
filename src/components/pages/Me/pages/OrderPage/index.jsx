@@ -99,23 +99,23 @@ return   <Col span={24}>
   const items=[{
     key:v4(),
     label:"Chưa thanh toán",
-    children:<OrdersItem orders={myOrders?.filter(x=>!x?.daThanhToan)||[]}/>
+    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>!x?.daThanhToan)||[]}/>
   },
   {
     key:v4(),
     label:"Chờ vận chuyển",
-    children:<OrdersItem orders={myOrders?.filter(x=>x?.steps>=2&&x?.steps<3)||[]}/>
+    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.steps>=2&&x?.steps<3)||[]}/>
   },
   {
     key:v4(),
     label:"Đã hủy",
-    children:<OrdersItem orders={myOrders?.filter(x=>x?.status==-1)||[]}/>
+    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.status==-1)||[]}/>
   }
   ,
   {
     key:v4(),
     label:"Đã vận chuyển",
-    children:<OrdersItem orders={myOrders?.filter(x=>x?.steps>=3&&x?.status!=-1)||[]}/>
+    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.steps>=3&&x?.status!=-1)||[]}/>
   },
   
 ]
