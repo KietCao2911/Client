@@ -1,0 +1,40 @@
+.ProductDetailSkeleton
+{
+    // height: 100vh;
+ .container{
+    height: 100%;
+    &*{
+        background:linear-gradient(120deg,#e5e5e5 30%, #f0f0f0 38%,#f0f0f0 40%,#e5e5e5 48%);
+        background-size: 200% 100%;
+        background-position: 100% 0;
+        animation: load 2s infinite;
+    }
+    @keyframes load {
+        100%{
+            background-position: -100% 0;
+        }
+    }
+    
+     .img,.name,.sku,.price,.line,.dsc,.btnAdd{
+        background-color: #e5e5e5;
+        padding: 1.5rem;
+    }
+    .img{
+        min-height: 300px;
+    }
+    .btnAdd{
+        padding: 4rem;
+    }
+    .name{
+        padding: 2rem;
+    }
+    .sizes{
+        background-color: white;
+        .size{
+            padding: 2rem 0;
+            background-color:#e5e5e5;
+
+        }
+    }
+ }   
+}

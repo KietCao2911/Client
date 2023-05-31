@@ -8,6 +8,7 @@ import { Button, Card, Col, Row, Space, Tabs, Tag, Typography } from 'antd'
 import { v4 } from 'uuid'
 import { Truck } from 'react-feather'
 import { Link } from 'react-router-dom'
+import OrderPageSkeleton from './Components/Skeleton'
 const { Paragraph, Text } = Typography;
 export const ProductsOrder=({value})=>
 {
@@ -17,7 +18,7 @@ export const ProductsOrder=({value})=>
       <Row gutter={[10,10]}>
       
       <Col xs={24} md={6}>
-      <img style={{height:"150px"}} src={value?.img||""}/>
+      <img style={{height:"150px",objectFit:"contain"}} src={value?.img||""}/>
       </Col>
       <Col xs={24} md={18}>
       <div className="content">
@@ -26,7 +27,7 @@ export const ProductsOrder=({value})=>
         {value?.sanPhamNavigation?.tenSanPham}
     </Paragraph>
           <Space className="phanLoai" style={{color:"#8288A1"}}>
-          <p>Phân loại hàng: </p>Color: <span style={{padding:"1.5rem",display:"inline-block",backgroundColor:value?.sanPhamNavigation?.idColor}}></span>
+          <p>Phân loại hàng: </p>Color: <span style={{padding:"1rem",display:"inline-block",backgroundColor:value?.sanPhamNavigation?.idColor}}></span>
           Size: {value?.sanPhamNavigation?.idSize}
           </Space>
           <div className="qty">
@@ -39,7 +40,7 @@ export const ProductsOrder=({value})=>
     </Col>
     <Col xs={24} md={6}>
     <strong>Đơn giá: {value?.sanPhamNavigation?.tienDaGiam>0?<Space>
-                <del>{convertVND(value?.sanPhamNavigation?.tienDaGiam)}</del>
+                <del style={{color:"red"}}>{convertVND(value?.sanPhamNavigation?.tienDaGiam+value?.sanPhamNavigation?.giaBanLe)}</del>
                 <span>{convertVND(value?.sanPhamNavigation?.giaBanLe)}</span>
     </Space>:convertVND(value?.sanPhamNavigation?.giaBanLe)}</strong>
     </Col>
@@ -47,7 +48,7 @@ export const ProductsOrder=({value})=>
 }
 const OrderPage = () => {
   const dispatch =useDispatch();
-  const {myOrders} = useSelector(state=>state.Me);
+  const {myOrders,loading} = useSelector(state=>state.Me);
   const {user} = useSelector(state=>state.XacThuc);
   const getStepsOrder=(steps)=>
   {
@@ -99,23 +100,25 @@ return   <Col span={24}>
   const items=[{
     key:v4(),
     label:"Chưa thanh toán",
-    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>!x?.daThanhToan)||[]}/>
+    children:loading?<OrderPageSkeleton/>:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>!x?.daThanhToan)||[]}/>
+    
+
   },
   {
     key:v4(),
     label:"Chờ vận chuyển",
-    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.steps>=2&&x?.steps<3)||[]}/>
+    children:loading?<OrderPageSkeleton/>:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.steps>=2&&x?.steps<3)||[]}/>
   },
   {
     key:v4(),
     label:"Đã hủy",
-    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.status==-1)||[]}/>
+    children:loading?<OrderPageSkeleton/>:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.status==-1)||[]}/>
   }
   ,
   {
     key:v4(),
     label:"Đã vận chuyển",
-    children:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.steps>=3&&x?.status!=-1)||[]}/>
+    children:loading?<OrderPageSkeleton/>:<OrdersItem orders={myOrders&&myOrders.length>0&& myOrders?.filter(x=>x?.steps>=3&&x?.status!=-1)||[]}/>
   },
   
 ]

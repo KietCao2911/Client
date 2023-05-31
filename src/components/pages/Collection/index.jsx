@@ -11,7 +11,7 @@ import Filter from "~/components/pages/Products/components/FilterComponent";
 const CollectionPage = () => {
   window.scrollTo(0, 0);
   const dispatch = useDispatch();
-  const { boSuuTaps, products, loading, boSuuTap } = useSelector(
+  const { boSuuTaps, products, loading,productsLoading, boSuuTap } = useSelector(
     (state) => state.BoSuuTap
   );
   const { slug } = useParams();
@@ -27,7 +27,7 @@ const CollectionPage = () => {
       <img src={BASE_URL + "wwwroot/res/BstImgs/" + boSuuTap?.img || ""} />
       <Space style={{ width: "100%" }} direction="vertical">
         <Filter fetchFnc={fetchFnc} />
-        <ListProducts loading={loading} items={products || []}></ListProducts>
+        <ListProducts loading={productsLoading} items={products || []}></ListProducts>
       </Space>
       <div style={{ textAlign: "center" }}>
         <h1 style={{ textTransform: "uppercase" }}>

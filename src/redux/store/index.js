@@ -24,6 +24,7 @@ import KhuyenMaiSlice from "../slices/KhuyenMai";
 import RoleSlice from "../slices/RoleManager";
 import TaiKhoanSlice from "../slices/TaiKhoan";
 import ReviewSlice from "../slices/Review";
+import MemberSlice from "../slices/Member";
 export const store = configureStore({
 
   reducer: {
@@ -51,7 +52,8 @@ export const store = configureStore({
     KhuyenMai:KhuyenMaiSlice.reducer,
     Role:RoleSlice.reducer,
     TaiKhoan:TaiKhoanSlice.reducer,
-    Review:ReviewSlice.reducer
+    Review:ReviewSlice.reducer,
+    Member:MemberSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     immutableCheck: false,

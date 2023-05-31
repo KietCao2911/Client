@@ -105,6 +105,7 @@ const initialState = {
   products: [],
   boSuuTap: {},
   loading: false,
+  productsLoading:false,
   types:{
     Banner:[],
     Products:[],
@@ -219,7 +220,7 @@ const BSTSlice = createSlice({
     });
     //fetchGetProductByBST
     builder.addCase(fetchGetProductByBST.pending, (state) => {
-      state.loading = true;
+      state.productsLoading = true;
     });
     builder.addCase(fetchGetProductByBST.fulfilled, (state, action) => {
       state.boSuuTaps = action.payload;
@@ -236,10 +237,10 @@ const BSTSlice = createSlice({
       });
       
       state.products = [...productsTemp];
-      state.loading = false;
+      state.productsLoading = false;
     });
     builder.addCase(fetchGetProductByBST.rejected, (state, action) => {
-      state.loading = false;
+      state.productsLoading = false;
     });
     //fetchDeleteBST
     builder.addCase(fetchDeleteBST.pending, (state) => {

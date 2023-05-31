@@ -227,8 +227,7 @@ const OrderDetailForm = (props) => {
       } else {
       }
     } else {
-      console.log({erros:OrderForm.errors})
-      alert("Submit invalid");
+     
     }
   };
   const handleOnChangeBranch = (e) => {
@@ -326,7 +325,6 @@ const OrderDetailForm = (props) => {
   return (
     <div value={OrderForm}>
       <PhieuXuatHang open={open} setOpen={setOpen}  hoadon={hoadon}/>
-      {/* {loading&&<CustomSpin/>} */}
       <Row  gutter={[, 20]}>
         {/* HEADER */}
         <Col span={24}>
@@ -599,7 +597,7 @@ const OrderDetailForm = (props) => {
         }
       
         {
-          (OrderForm.values.daXuatKho&&!isReturn)&&<>
+          (OrderForm.values.daXuatKho&&!isReturn)&&OrderForm.values.chiTietNhapXuats.every(x=>x.deletedAT==null)&&<>
             <Col md={24}>
             
            {<Card title="Hoàn trả/hủy đơn" extra={<Link to={"tra-hang"}> <Button>Trả hàng/hủy đơn</Button> </Link>}></Card>}

@@ -109,6 +109,13 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
         phuongThucThanhToan: Yup.string().required("Phải chọn trường này"),
         chiTietNhapXuats: Yup.array().min(1, "Chọn ít nhất một sản phẩm"),
       }),
+      initialErrors:{
+        phone:"Phải nhập trường này",
+        name:"Phải nhập trường naỳ",
+        ProvinceID:"Phải chọn trường này",
+        DistrictID:"Phải chọn trường này",
+      WardID:"Phải chọn trường này",
+      },
       onSubmit: (values) => {
         alert("SUBMIT");
       },
@@ -196,7 +203,7 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
       OrderForm.setFieldValue("thanhTien",OrderForm.values.thanhTien+phiShip)
     },[thanhTien,phiShip])
     const handleSubmit = () => {
-      if (Object.keys(OrderForm.errors).length <= 0) {
+      if (OrderForm.isValid) {
        
         const params = { ...OrderForm.values };
         dispatch(ThanhToanAPI.OrderWithCOD(params));
@@ -242,7 +249,6 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
     },[])
     return (
       <form ref={FormRef}>
-        {loading&&<CustomSpin/>}
         <Row  gutter={[, 20]}>
           {/* HEADER */}
           <Col span={24}>

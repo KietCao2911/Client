@@ -369,7 +369,6 @@ const OrderForm = (props) => {
             {couponCode&&<Promo/>}
               </Space>
         </Col>
-        {loading && <CustomSpin></CustomSpin>}
         <Col span={24}>
           <div className="InfoOrder"> 
             <div className="OrderDetails">

@@ -33,9 +33,18 @@ const MeSlice = createSlice({
     name:"MeSlice",
     extraReducers:builder=>
     {
+        builder.addCase(getMyOrders.pending,(state,action)=>
+        {
+            state.loading =true;
+        })
         builder.addCase(getMyOrders.fulfilled,(state,action)=>
         {
                 state.myOrders = action.payload;
+                state.loading =false;
+        })
+        builder.addCase(getMyOrders.rejected,(state,action)=>
+        {
+                state.loading =false;
         })
         //getMyOrder
         builder.addCase(getMyOrder.pending,(state,action)=>

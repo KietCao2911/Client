@@ -684,7 +684,11 @@ textarea {
     padding-inline: 24px !important;
   }
 }
-
+.dangerColor{
+  background-color: #ccc;
+  opacity: 0.5;
+  pointer-events: none;
+}
 .layout,
 .ant-layout-content,
 .GuessAuthLayout {

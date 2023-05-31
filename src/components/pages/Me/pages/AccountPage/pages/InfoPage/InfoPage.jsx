@@ -77,7 +77,12 @@ const InfoPage = () => {
                </div>
             </div>
             <div className="password">
-
+            <h3>Mật khẩu</h3>
+            <div className="action">
+               <span>
+                    Chỉnh sửa
+                </span>
+               </div>
             </div>
         </div>
        <Modal 
@@ -101,6 +106,7 @@ const InfoPage = () => {
                 </Col>
             </Row>
        </Space>
+       
        </Modal>
     </div>
   )

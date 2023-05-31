@@ -14,7 +14,7 @@ const ImgVersion = (props) => {
   const { src, key } = props;
   return (
     <div className="item" {...props}>
-      <img src={src} alt="" />
+      <img loading="lazy" src={src} alt="" />
     </div>
   );
 };
@@ -74,6 +74,7 @@ const CardProduct = (props, ref) => {
            
             <div className="ImgBox">
               <img
+              loading="lazy"
                 draggable={false}
                 className={`${type=="slider"?"slider":""}`}
                 src={

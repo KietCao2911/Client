@@ -169,13 +169,14 @@ const ProductsTable = (props) => {
   return (
     <>
     {
-      Form.values.chiTietNhapXuats?.filter(x=>x.deletedAT==null).length>0? <Table
+      <Table
+      rowClassName={(record)=>record?.deletedAT!=null?"dangerColor":""}
       bordered
       scroll={{ x: 400 }}
       columns={columns}
       rowKey={()=>v4()}
-      dataSource={Form.values.chiTietNhapXuats&&Form.values.chiTietNhapXuats.length>0&&Form.values.chiTietNhapXuats?.filter(x=>x.deletedAT==null) || []}
-    ></Table>:<strong>Không có sản phẩm hoặc đã hoàn trả hết.</strong>
+      dataSource={Form.values.chiTietNhapXuats || []}
+    ></Table>
     }
      
     </>

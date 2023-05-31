@@ -25,6 +25,7 @@ import { BASE_URL } from "~/const";
 import Breadcrumb from "~/components/commomComponents/Breadcrumb";
 import ListProducts from "~/components/commomComponents/ListProducts";
 import ShowMore from "~/components/commomComponents/ShowMore";
+import Skeleton from "./components/Skeleton";
 
 
 const handleCheckQtyProduct=async(product,productsArray)=>
@@ -100,7 +101,7 @@ const TrangChiTietSanPham = () => {
     dispatch(SanPhamAPI.fetchGetProductUser({ slug }));
   }, [slug]);
   return loading ? (
-    <CustomSpin />
+    <Skeleton />
   ) : (
     <Row gutter={{ md: 20 }} className="ProductDetail">
       <Col md={16}>

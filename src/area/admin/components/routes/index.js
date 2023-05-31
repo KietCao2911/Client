@@ -131,7 +131,7 @@ export const adminRoute = [
 
     path: "/admin/trang-quan-tri-khach-hang/*",
     element: QuanTriKhachHang,
-    name:"Quản trị khách hàng",
+    name:"Quản trị thành viên",
     slug: "/admin/trang-quan-tri-khach-hang/",
     role:["CUSTOMERMNG"],
     icon:<Users/>

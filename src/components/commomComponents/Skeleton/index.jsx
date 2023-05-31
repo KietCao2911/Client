@@ -4,12 +4,12 @@ import { v4 } from "uuid";
 import "./Skeleton.scss";
 const Skeleton = () => {
   return (
-    <div className="Skeleton">
-      <div className="container">
-        <div className="img"></div>
-        <div className="content">
-          <div className="title"></div>
-          <div className="brand"></div>
+    <div className="Skeleton skeleton">
+      <div className="container skeleton">
+        <div className="img skeleton"></div>
+        <div className="content skeleton">
+          <div className="title skeleton"></div>
+          <div className="brand skeleton"></div>
         </div>
       </div>
     </div>
