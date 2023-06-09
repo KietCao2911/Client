@@ -11,6 +11,8 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { Plus, RefreshCcw } from "react-feather";
 import StickyActions from "~/components/commomComponents/stickyActions";
 import { useQueryString } from "~/hooks/useQueryParams";
+import ExportToExcel from "~/components/commomComponents/ExportToExcel";
+import moment from "moment";
 const Columns = (props) => {
   const { setOpenModal } = props;
   const dispatch = useDispatch();
@@ -104,7 +106,7 @@ const Columns = (props) => {
       ),
     },
     {
-      title: "Trạng thái đơn ",
+    title: "Trạng thái đơn ",
       key: "status",
       dataIndex: "status",
       filters:[{
@@ -117,7 +119,7 @@ const Columns = (props) => {
       }],
       render: (_, record) => (
         <>
-            {record?.daXuatKho?<Tag color="green">Đã xuất kho</Tag>:<Tag >Chờ xuất kho</Tag>}
+            {record?.daTraHang?<Tag color="red">Đã hoàn kho</Tag>:record?.daXuatKho?<Tag color="green">Đã xuất kho</Tag>:<Tag >Chờ xuất kho</Tag>}
         </>
       ),
     },
@@ -144,10 +146,29 @@ const TrangChinh = () => {
   useEffect(() => {
     dispatch(HoaDonApi.fetchGetAllOrder(querySearch));
   }, []);
+  const excelRsc=()=>
+  {
+    return hoadons.map(hd=>{
+      return{
+        "#ID":hd?.id,
+        "Tên khách hàng":hd.diaChiNavigation?.name,
+        "Địa chỉ":`(${hd?.diaChiNavigation?.addressDsc || "--"}),${
+          hd?.diaChiNavigation?.wardName || "--"
+        }, ${hd?.diaChiNavigation?.districtName || "--"}, ${
+          hd?.diaChiNavigation?.provinceName || "--"
+        }`,
+        "Thành tiền":hd?.thanhTien,
+        "Phí giao hàng":hd?.phiship,
+        "Thanh toán":hd?.daThanhToan?"Đã thanh toán":"Chưa thanh toán",
+        "Trả hàng":hd?.daTraHang?"Đã trả hàng":"Chưa trả hàng",
+        "Phương thức thanh toán":hd?.phuongThucThanhToan
+      }
+    })
+  }
   const action=(
     <Space>
       <Link to="tao-moi"><Button type="primary">Thêm mới</Button></Link>
-     
+      <ExportToExcel name={`Bản tổng hợp đơn hàng `+moment().format("DD-MM-YYYY")} data={()=>excelRsc()}></ExportToExcel>
     </Space>
   )
   return (

@@ -32,6 +32,11 @@ export const OrderWithCOD =createAsyncThunk("ThanhToanSlice/fetchPostWithUser",a
     const res = await ThanhToanApi.OrderWithCOD(body);
     return res;
 })
+export const OrderWithStripe =createAsyncThunk("ThanhToanSlice/OrderWithStripe",async(body)=>
+{
+    const res = await ThanhToanApi.OrderWithStripe(body);
+    return res;
+})
 const ThanhToanSlice =createSlice({
     initialState,
     name:"ThanhToan",
@@ -40,6 +45,23 @@ const ThanhToanSlice =createSlice({
     },
     extraReducers:(builder)=>
     {
+        //OrderWithStripe
+        builder.addCase(OrderWithStripe.pending,(state)=>
+        {
+            state.loading=true
+        })
+        builder.addCase(OrderWithStripe.fulfilled,(state,action)=>
+        {
+            state.loading=false
+            window.location.replace(action.payload);
+        })
+        builder.addCase(OrderWithStripe.rejected,(state)=>
+        {
+            
+            state.loading=false
+            alert("Có lỗi xảy ra trong quá trình thanh toán, vui lòng thử lại sau.")
+        })
+        //OrderWithCOD
         builder.addCase(OrderWithCOD.pending,(state)=>
         {
             state.loading=true;

@@ -186,7 +186,7 @@ const columns=[{
                 <RangePicker onChange={(e)=>handleChangeDate(e)} picker={typeDate} />
                 <Button onClick={onClickSubmit}  type="primary">Lọc</Button>
                 <Button onClick={handleExport} icon={<Printer/>} >Xuất PDF</Button>
-                <ExportToExcel name="Báo cáo doanh thu" data={()=>excelResource()}/>
+                <ExportToExcel name={`Báo cáo doanh thu `+moment().format("DD-MM-YYYY")} data={()=>excelResource()}/>
             </Space>}>
            <Col span={24}>
            <Row gutter={[10,10]}>

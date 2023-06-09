@@ -96,6 +96,19 @@ export const ManagerLogin = createAsyncThunk("ManagerLogin",async(params)=>
   const res = Api.ManagerLogin(body)
   return res;
 })
+//    //RequestResetPassword
+  export const RequestResetPassword =createAsyncThunk("RequestResetPassword",async(email)=>
+  {
+    const res = Api.RequestResetPassword(email);
+    return res;
+  })
+//ResetPassword
+export const ResetPassword =createAsyncThunk("ResetPassword",async(email)=>
+{
+  const res = Api.ResetPassword(email);
+  return res;
+})
+export
 const XacThucSlice = createSlice({
   name: "XacThuc",
   initialState,
@@ -108,6 +121,41 @@ const XacThucSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    //RequestResetPassword
+    builder.addCase(RequestResetPassword.pending,state=>
+      {
+        state.loading= true;
+      })
+    builder.addCase(RequestResetPassword.fulfilled,(state,action)=>
+      {
+        console.log({action})
+        alert(`Một email xác nhận đã gửi vào email ${action.meta.arg} của bạn, vui lòng xác nhận`)
+        state.loading= false;
+      })
+    builder.addCase(RequestResetPassword.rejected,(state,action)=>
+      {
+        state.loading= false;
+        alert(`${action.error.message||""}`)
+      })
+      
+    //ResetPassword
+    builder.addCase(ResetPassword.pending,state=>
+      {
+        state.loading= true;
+      })
+    builder.addCase(ResetPassword.fulfilled,(state,action)=>
+      {
+        console.log({action})
+        alert(`Thay đổi password thành công`)
+        window.location.replace("/")
+        state.loading= false;
+      })
+    builder.addCase(ResetPassword.rejected,(state,action)=>
+      {
+        state.loading= false;
+        alert(`${action.error.message||""}`)
+      })
+      
     //AdminLogin
     builder.addCase(AdminLogin.pending,(state)=>
     {
@@ -299,7 +347,7 @@ builder.addCase(EmailVerify.rejected,(state)=>
      
         state.loading=true
     });
-
+    
     builder.addCase(fetchPostSignUser.fulfilled, (state, action) => {
       state.user = action.payload.info;
       state.token = action.payload.token;

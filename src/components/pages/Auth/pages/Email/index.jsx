@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 import EmailLoginForm from './Form/Login'
 import EmailRegisterForm from './Form/Register'
+import ForgotPassword from './Form/ForgotPassword'
 const Email = () => {
 
   return (
@@ -17,6 +18,7 @@ const Email = () => {
       <Routes>
         <Route element={<EmailLoginForm/>} path="dang-nhap"></Route>
         <Route element={<EmailRegisterForm/>} path="dang-ky"></Route>
+        <Route element={<ForgotPassword/>} path="quen-mat-khau"></Route>
       </Routes>
     </div>
   )

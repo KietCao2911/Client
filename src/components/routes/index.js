@@ -5,6 +5,11 @@ import AuthPage from "~/area/admin/components/pages/AuthPage";
 import NoneLayout from "../layout/NoneLayout";
 const publicRoute = [
   {
+    path: "reset_password/:token/:tenTaiKhoan",
+    element: Elements.ResetPasswordPage,
+    layout: NoneLayout,
+  },
+  {
     path: "/orderStatus/:orderID/:token",
     element: Elements.OrderResult,
     layout: NoneLayout,

@@ -82,3 +82,21 @@ export const DeleteAddress = async(id)=>
     throw error;
   }
 }
+export const RequestResetPassword=async(email)=>
+{
+  try {
+    const res = await Method.Get("/api/admin/Auth/RequestResetPassword/"+email)
+    return res;
+  } catch (error) {
+  throw error   
+  }
+}
+export const ResetPassword=async(body)=>
+{
+  try {
+      const res= await Method.Post("/api/admin/Auth/ResetPassword",body)
+      return res;
+  } catch (error) {
+      throw error;
+  }
+}

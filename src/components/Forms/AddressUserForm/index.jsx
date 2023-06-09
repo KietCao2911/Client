@@ -93,16 +93,18 @@ const AddressUserForm = () => {
       AddressUserForm.setTouched("WardID",true)
 
     }
-
+    console.log({errors:AddressUserForm.errors,touchs:AddressUserForm.touched})
     useEffect(()=>
     {
       dispatch(GiaoHangNhanhApi.fetchGetProvinces())
     },[])
   return (
-    <form onSubmit={AddressUserForm.handleSubmit}>
+    <form onSubmit={(e)=>{
+      e.preventDefault()
+      AddressUserForm.handleSubmit(e)
+    }}>
 
     <Space style={{width:"100%"}}  direction='vertical'>
-     {loading&& <CustomSpin/>}
       <strong>Thêm địa chỉ mới</strong>
     <InputText onBlur={AddressUserForm.handleBlur}  className={`${AddressUserForm.touched.Name&&AddressUserForm.errors.Name&&"error"}`}  label="Tên" name="Name" 
     value={AddressUserForm.values.Name} onChange={AddressUserForm.handleChange}/>

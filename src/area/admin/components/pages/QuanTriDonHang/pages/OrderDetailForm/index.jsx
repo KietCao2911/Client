@@ -490,7 +490,7 @@ const OrderDetailForm = (props) => {
                     <div>
                       <b>Tiền cần trả:</b>
                     </div>
-                    <div> {convertVND(OrderForm.values?.thanhTien )}</div>
+                    <div> {convertVND(OrderForm.values?.thanhTien)}</div>
                   </Space>
                 </Space>
                </Space>

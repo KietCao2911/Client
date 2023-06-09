@@ -74,7 +74,7 @@ const EmailLoginForm = () => {
       <small>Nếu chưa có tài khoản, <Link to={"../dang-ky"}>
         đăng ký tại đây
         </Link></small>
-        <small>Quên mật khẩu??, <Link to={"../dang-ky"}>
+        <small>Quên mật khẩu??, <Link to={"../quen-mat-khau"}>
         bấm vào đây
         </Link></small>
     </Space>

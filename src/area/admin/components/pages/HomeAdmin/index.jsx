@@ -15,6 +15,9 @@ import { Bar } from 'react-chartjs-2';
 import convertVND from "~/components/utils/ConvertVND";
 import { ArrowUp, LogOut } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
+import HomeAdminComponent from "./components/Home";
+import HotProductsAdminHome from "./components/HotProduct";
+import MostView from "./components/MostView/MostView";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,119 +27,29 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Bar Chart',
-    },
-  },
-};
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [],
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [],
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
 function HomeAdmin() {
 return <Row gutter={[10,10]}>
   <Col span={24}>
   </Col>
   <Col span={24}>
-    <Row gutter={[10,10]}>
-      <Col md={6}>
-        <Card  title="Doanh thu" bordered={false} >
-        <Statistic
-          title="Active"
-          value={convertVND(500000)}
-        />
-        <Statistic
-          title="Active"
-          value={11.28}
-          precision={2}
-          valueStyle={{ color: '#3f8600' }}
-          prefix={<ArrowUp />}
-          suffix="%"
-        />
-
-       
-        </Card>
-      </Col>
-      <Col md={6}>
-                <Card  title="Doanh thu" bordered={false} >
-        <Statistic
-          title="Active"
-          value={convertVND(500000)}
-        />
-        <Statistic
-          title="Active"
-          value={11.28}
-          precision={2}
-          valueStyle={{ color: '#3f8600' }}
-          prefix={<ArrowUp />}
-          suffix="%"
-        />
-
-       
-        </Card>
-      </Col>
-      <Col md={6}>
-               <Card  title="Doanh thu" bordered={false} >
-        <Statistic
-          title="Active"
-          value={convertVND(500000)}
-        />
-        <Statistic
-          title="Active"
-          value={11.28}
-          precision={2}
-          valueStyle={{ color: '#3f8600' }}
-          prefix={<ArrowUp />}
-          suffix="%"
-        />
-
-       
-        </Card>
-      </Col>
-      <Col md={6}>
-               <Card  title="Doanh thu" bordered={false} >
-        <Statistic
-          title="Active"
-          value={convertVND(500000)}
-        />
-        <Statistic
-          title="Active"
-          value={11.28}
-          precision={2}
-          valueStyle={{ color: '#3f8600' }}
-          prefix={<ArrowUp />}
-          suffix="%"
-        />
-
-       
-        </Card>
-      </Col>
-    
-    </Row>
+      <HomeAdminComponent/>
   </Col>
   <Col span={24}>
-    <Bar options={options} data={data}></Bar>
+    <Row gutter={[10,10]}>
+      <Col md={12 } xs={24}>
+        <Card title="Sản phẩm được xem nhiều nhất">
+
+        <MostView/>
+        </Card>
+      </Col>
+      <Col md={12} xs={24}>
+       <Card title="Sản phẩm bán chạy nhất">
+       <HotProductsAdminHome/>
+       </Card>
+      
+      </Col>
+    </Row>
   </Col>
   <Col span={24}>
     <Table></Table>

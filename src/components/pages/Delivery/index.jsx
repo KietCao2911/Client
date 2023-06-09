@@ -11,7 +11,7 @@ import convertVND from "~/components/utils/ConvertVND";
 import * as ThanhToanApi from "~/redux/slices/ThanhToanSlice";
 import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
-import { Plus, Search } from "react-feather";
+import { Box, DollarSign, Plus, Search, Truck } from "react-feather";
 import Promo from "~/components/Forms/Order/Promo";
 const DeliveryPage = () => {
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ const DeliveryPage = () => {
   const { user } = useSelector((state) => state.XacThuc);
   const { DiaChi, loading } = useSelector((state) => state.ThanhToan);
   const { ghnAPI } = useSelector((state) => state.GioHang);
+  const [disableBtn,setDisableBtn] = useState(true);
   const { Provinces, FeeCount,Districts, Wards, FeeInfo, DistrictID, Loading } = ghnAPI;
   const { thanhTien, tongSoLuong, chiTietNhapXuats, phiShip,couponCode,loadingCoupon,couponNavigation,tienDaGiam } = useSelector(
     (state) => state.GioHang
@@ -42,6 +43,7 @@ const DeliveryPage = () => {
     if (user.info && user.info.length > 0) {
       const address = user.info.find((item) => item.id == user.addressDefault);
       if (address) {
+        setDisableBtn(false);
         dispatch(
           GiaoHangNhanhApi.fetchPostCalFee({
             from_district_id: 1572,
@@ -85,6 +87,8 @@ const DeliveryPage = () => {
       {
         dispatch(ThanhToanApi.OrderWithVNPAY(params));
 
+      }else{
+        dispatch(ThanhToanApi.OrderWithStripe(params));
       }
     }
     }
@@ -175,7 +179,7 @@ const DeliveryPage = () => {
                        ></InputText>
                  }
                  {couponCode&&<Promo/>}
-                  <MyButton style={{backgroundColor:"black",color:"white"}} onClick={()=>handleOrder("COD")}  
+                  <MyButton icon={<Truck/>} style={{backgroundColor:"black",color:"white"}} onClick={()=>handleOrder("COD")}  
                   loading={loading||Loading.FeeCount} type="submit">
            <strong> ORDER NOW</strong>
           </MyButton >
@@ -183,7 +187,7 @@ const DeliveryPage = () => {
           style={{backgroundColor:"#E23E57",color:"white"}} loading={loading||Loading.FeeCount} type="submit">
            <strong> ORDER/PAYMENT WITH VNPAY</strong>
           </MyButton >
-          <MyButton loading={loading||Loading.FeeCount} onClick={()=>handleOrder("PAYPAL")}
+          <MyButton   loading={loading||Loading.FeeCount} onClick={()=>handleOrder("PAYPAL")}
            style={{backgroundColor:"#002E80",color:"white"}} >
            <strong>ORDER/PAYMENT WITH PAYPAL</strong>
           </MyButton >

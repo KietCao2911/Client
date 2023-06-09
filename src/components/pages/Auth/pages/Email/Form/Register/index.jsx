@@ -48,35 +48,14 @@ const EmailRegisterForm = () => {
       tenHienThi:YUP.string().required("Vui lòng nhập trường này"),
       tenTaiKhoan:YUP.string().required("Vui lòng nhập trường này").matches(regexEmail,"Email sai định dạng"),
       matKhau:YUP.string().required("Vui lòng nhập trường này").matches(/[A-Z]/,"Phải có ít nhất một từ viết hoa")
-      .matches( /[!@#$%^&*()_,.?":{}|<>]/,"Phải có ký tự đặc biệt (_,+,@,...").min(8,"Tối thiểu 8 kí tự").max(10,"Tối đa 10 kí tự."),
+      .matches( /[!@#$%^&*()_,.?":{}|<>]/,"Phải có ký tự đặc biệt (_,+,@,...").min(8,"Tối thiểu 8 kí tự").max(15,"Tối đa 15 kí tự."),
       
-      nhapLaiMatKhau: YUP.string()
+      nhapLaiMatKhau: YUP.string().required("Phải nhập trường này")
       .oneOf([YUP.ref('matKhau'), null], 'Mật khẩu nhập lại không khớp')
     }),
     
         }
       );
-      const onSubmit=()=>
-      {
-          const valid = Form.isValid
-          const params = {
-            tenHienThi:Form.values.tenHienThi,
-            tenTaiKhoan:Form.values.tenTaiKhoan,
-            matKhau:Form.values.matKhau,
-          }
-          if(valid)
-          {
-            console.log({params})
-            dispatch(XacThucAPI.EmailRegister({body:params}))
-          }
-          else
-          {
-            notification.open({
-              message:"Giá trị không hợp lệ",
-              type:"error"
-            })
-          }
-      }
   return (
     <div>
     <Space style={{width:"100%"}} direction='vertical'>

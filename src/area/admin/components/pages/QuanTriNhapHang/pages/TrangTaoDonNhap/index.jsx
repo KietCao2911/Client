@@ -499,18 +499,6 @@ const TrangTaoDonNhap = (props) => {
                                 <div>{Form.values.tongSoLuong}</div>
                               </div>
                               <div className="summaryItem">
-                                <div>Thành tiền:</div>
-                                <div>
-                                  {" "}
-                                  {convertVND(
-                                    Form.values.chiTietNhapXuats.reduce(
-                                      (x, y) => x + y.thanhTien,
-                                      0
-                                    )
-                                  ) || 0}
-                                </div>
-                              </div>
-                              <div className="summaryItem">
                                 {isCreated || isUpdated ? (
                                   <Popover
                                     trigger="click"

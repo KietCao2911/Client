@@ -105,6 +105,7 @@ const CreateProduct = () => {
       product: Yup.object().shape({
         tenSanPham: Yup.string().required("Trường này là bắt buộc"),
         giaNhap: Yup.number(),
+        giaBanLe:Yup.number().required("Trường này là bắt buộc"),
       }),
     }),
   });
@@ -266,6 +267,7 @@ const CreateProduct = () => {
                           handleChangePrice({ e, fieldName: "giaBanLe" })
                         }
                       ></InputText>
+
                     </Col>
                     <Col md={12} xs={24}>
                       <InputText

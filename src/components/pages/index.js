@@ -11,6 +11,7 @@ import CollectionsPage from "./Collection";
 import EmailVerifyPage from "./EmailVerify";
 import RatingPage from "./RatingPage";
 import OrderResult from "./OrderResultPage";
+import ResetPasswordPage from "./ResetPassword";
 export {
   Home,
   TrangChiTietSanPham,
@@ -25,4 +26,5 @@ export {
   EmailVerifyPage,
   RatingPage,
   OrderResult,
+  ResetPasswordPage
 };

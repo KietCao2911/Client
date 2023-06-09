@@ -161,7 +161,7 @@ const OrderForm = (props) => {
         dispatch(ThanhToanApi.OrderWithVNPAY(params));
       }
       else{
-
+        dispatch(ThanhToanApi.OrderWithStripe(params));
       }
     } else {
       message.open({
