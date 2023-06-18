@@ -31,9 +31,18 @@ const BranchSlice = createSlice({
     },
     extraReducers:builder=>
     {
+        builder.addCase(fetchGetBranch.pending,(state,action)=>
+        {
+            state.loading=true
+        })
         builder.addCase(fetchGetBranch.fulfilled,(state,action)=>
         {
             state.branchs = action.payload;
+            state.loading=false
+        })
+        builder.addCase(fetchGetBranch.rejected,(state,action)=>
+        {
+            state.loading=false
         })
         //PostBranch
         builder.addCase(PostBranch.pending,(state,action)=>

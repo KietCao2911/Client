@@ -6,7 +6,7 @@ import { SelectInput } from "../SelectInput";
 import { v4 } from "uuid";
 import SelectCustom, { Option } from "../SelectCustom";
 const Location = ({visiabe,setVisiable}) => {
-  const { branchs } = useSelector((state) => state.Branch);
+  const { branchs,loading } = useSelector((state) => state.Branch);
   const dispatch = useDispatch();
   const [Loc, setLoc] = useState(() => {
     return JSON.parse(window.localStorage.getItem("location")) || {};
@@ -38,7 +38,7 @@ const Location = ({visiabe,setVisiable}) => {
       open={visiabe}
       onCancel={()=>setVisiable(false)}
     >
-      <SelectCustom value={Loc?.maChiNhanh?.trim()||""} setValue={setLoc}>
+      <SelectCustom loading={loading} value={Loc?.maChiNhanh?.trim()||""} setValue={setLoc}>
         {branchs &&
           branchs.map((branch) => {
             return (

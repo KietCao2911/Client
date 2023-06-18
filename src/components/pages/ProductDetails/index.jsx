@@ -343,6 +343,8 @@ const TrangChiTietSanPham = () => {
             <RollbackOutlined /> Không đúng kích cỡ hoặc màu sắc? Vui lòng truy
             cập trang Trả lại hàng & Hoàn tiền của chúng tôi để biết chi tiết
           </a>
+          <a href="">
+            <RollbackOutlined />Hoàn tiền nếu phát hiện hàng không chính hãng          </a>
           <MyCollapse defaultOpen={true} id="ReviewPC" label="REVIEWS" Icon={ <Rate
                   style={{ color: "#D21312" }}
                   allowHalf

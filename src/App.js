@@ -69,23 +69,23 @@ const url = protocol + '//' + hostname + (port ? ':' + port : '');
               <Route
                 key={v4()}
                 element={
-                  //  user&&Object.keys(user).length>0&&(user.roleGroup?.trim()=="ADMIN"||user.roleGroup?.trim()=="MANAGER") ? (
-                  //   <Layout>
-                  //     <Suspense fallback={<CustomSpin />}>
-                  //       {
-                  //         user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim())||route?.role[0]=="COMMONS")?  <Page  key={route.key}/>:<NotFound/>
-                  //       }
+                   user&&Object.keys(user).length>0&&(user.roleGroup?.trim()=="ADMIN"||user.roleGroup?.trim()=="MANAGER") ? (
+                    <Layout>
+                      <Suspense fallback={<CustomSpin />}>
+                        {
+                          user&&user.role?.some(x=>route?.role?.includes(x?.roleCode?.trim())||route?.role[0]=="COMMONS")?  <Page  key={route.key}/>:<NotFound/>
+                        }
                       
-                  //     </Suspense>
-                  //   </Layout>
-                  // ) : (
-                  // <NotFound/>
-                  // )
-                  <Layout>
-                    <Suspense fallback={<CustomSpin />}>
-                     <Page/>
-                    </Suspense>
-                  </Layout>
+                      </Suspense>
+                    </Layout>
+                  ) : (
+                  <NotFound/>
+                  )
+                  // <Layout>
+                  //   <Suspense fallback={<CustomSpin />}>
+                  //    <Page/>
+                  //   </Suspense>
+                  // </Layout>
                 }
                 path={route.path}
               ></Route>

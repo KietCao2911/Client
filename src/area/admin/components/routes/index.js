@@ -4,11 +4,9 @@ import QuanTriBST from "../pages/QuanTriBoSuuTap";
 import { lazy } from "react";
 import AdminAuthLayout from "~/components/layout/AdminAuthLayout";
 
-import { Archive, BarChart2, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, Settings, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
+import { Archive, BarChart2, Box, DollarSign, File, FileText, Gift, Home, Key, Menu, PenTool, Settings, ShoppingBag, Table, Tag, Truck, User, Users } from "react-feather";
 import QuanTriCoupon from "../pages/QuanTriCoupon";
 import { v4 } from "uuid";
-import { Chart } from "react-chartjs-2";
-
 const HomeAdmin = lazy(() => import("~/area/admin/components/pages/HomeAdmin"));
 const ThongKeDoanhThu = lazy(() =>
   import("~/area/admin/components/pages/ThongKeDoanhThu")
@@ -18,12 +16,12 @@ const QuanTriDonHang = lazy(() => import("../pages/QuanTriDonHang/"));
 const TrangQuanTriNhapHang = lazy(() =>
   import("../pages/QuanTriNhapHang/index")
 );
-const BaoCaoNhapXuat = lazy(() => import("../pages/BaoCaoNhapXuat"));
 const QuanTriKhachHang = lazy(() => import("../pages/QuanTriKhachHang"));
 const QuanTriKhuyenMai = lazy(() => import("../pages/QuanTriKhuyenMai"));
 const QuanTriKhoHang = lazy(() => import("../pages/QuanTriKhoHang"));
 const QuanTriQuyen = lazy(() => import("../pages/RoleManager"));
 const AccountSettings = lazy(() => import("../pages/AccountSettings"));
+const QuanLyMauSac = lazy(() => import("../pages/QuanLyMauSac"));
 
 export const adminRoute = [
   {
@@ -164,5 +162,14 @@ export const adminRoute = [
     name:"Cài đặt tài khoản",
     slug: "/admin/settings",
     icon:<Settings/>
+  },
+  {
+    key:v4(),
+    path: "/admin/mau_sac",
+    element: QuanLyMauSac,
+    role:["PRODMNG"],
+    name:"Màu sản phẩm",
+    slug: "/admin/mau_sac/",
+    icon:<PenTool/>
   },
 ];

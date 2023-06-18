@@ -58,3 +58,30 @@ export const GetAllDanhMuc = async (params) => {
     throw err;
   }
 };
+export const PostCategoryDetail =async(body)=>
+{
+  try {
+    const res = await Method.Post("/api/DanhMucDetails/",body)
+    return res;
+  } catch (error) {
+    throw error
+  }
+}
+export const DeleteCategoryDetail=async(idCate,idSP)=>
+{
+  try {
+    const res = await Method.Delete(`/api/DanhMucDetails/${idCate}/${idSP}`)
+    return res;
+  } catch (error) {
+    throw error
+  }
+}
+export const GetDanhMucByProduct = async(maSP)=>
+{
+  try {
+    const res= await Method.Get("/api/DanhMucDetails/GetCategoryDetailByProduct/"+maSP)
+    return res;
+  } catch (error) {
+    throw error
+  }
+}

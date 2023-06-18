@@ -8,6 +8,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { BASE_URL } from "~/const/index";
 import TrangChinh from "./pages/TrangChinh";
 import BSTForm from "./pages/Form/BSTForm";
+import CreateBST from "./pages/CreateBST";
 const QuanTriBST = () => {
   document.title = "Quản lý  bộ sưu tập";
 
@@ -24,7 +25,7 @@ const QuanTriBST = () => {
       ></Route>
       <Route
         path="tao-moi"
-        element={<BSTForm isCreated={true} />}
+        element={<CreateBST />}
       ></Route>
     </Routes>
   );

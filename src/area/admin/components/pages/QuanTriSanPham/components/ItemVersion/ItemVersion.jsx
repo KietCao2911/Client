@@ -12,7 +12,8 @@ import { memo } from 'react'
 import { Trash2 } from 'react-feather'
 const {Option} = Select
 const ItemVersion = (props) => {
-  const {versions,branchs,setVersions, index,initValues,sizes,colors,soLuongTon,giaVon,giaBanSi,giaBanLe,tenSanPham,giaNhap} = props;
+  const {versions,branchs,setVersions,
+     index,sizes,colors,soLuongTon,giaVon,giaBanSi,giaBanLe,tenSanPham,giaNhap,parentID} = props;
   const [checked,setChecked] = useState([]);
   const handleDeleteItem =()=>
   {
@@ -76,7 +77,6 @@ const ItemVersion = (props) => {
               maChiNhanh:branch.maChiNhanh
             }
           })
-          console.log({versions});
         let temp = e.map(item=>{
           return {
             IDColor:versions[index][0].IDColor,
@@ -87,7 +87,8 @@ const ItemVersion = (props) => {
             giaVon:giaVon||0,
             giaNhap:giaNhap||0,
             tenSanPham:tenSanPham+"-"+versions[index][0].IDColor+"-"+item,
-            khohangs:khohangsTemp
+            khohangs:khohangsTemp,
+            parentID,
           }
         })
         versions[index]=  temp;

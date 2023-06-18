@@ -135,6 +135,16 @@ export const SearchProducts = createAsyncThunk(
     return res;
   }
 );
+export const PostChildProduct=createAsyncThunk("PostChildProduct",async(body)=>
+{
+  const res = await Api.PostChildProduct(body)
+  return res;
+})
+export const DeleteChildSanPham = createAsyncThunk("DeleteChildSanPham",async(id)=>
+{
+  const res=  await Api.DeleteChildSanPham(id)
+  return res;
+})
 const SanPhamSlice = createSlice({
   initialState,
   name: "SanPham",
@@ -249,8 +259,6 @@ const SanPhamSlice = createSlice({
         (a, b) => a.giaBanLe - b.giaBanLe
       );
       let giaBanDisplay = 0;
-      let recentlyView =
-        JSON.parse(window.localStorage.getItem("recentlyView")) || [];
       if (Prices[0]?.giaBanLe != (Prices[Prices.length - 1]?.giaBanLe || 0)) {
         giaBanDisplay =
           Prices[Prices.length - 1]?.giaBanLe - Prices[0]?.giaBanLe;
@@ -270,27 +278,52 @@ const SanPhamSlice = createSlice({
         ...(groupedArray[0][0].chiTietHinhAnhs || []),
       ];
       state.product.sanPhamNavigation.giaBanDisplay = giaBanDisplay;
-      // if (recentlyView && recentlyView.length > 0) {
-      //   var obj = recentlyView.find(
-      //     (x) =>
-      //       x.sanPhamNavigation.maSanPham ==
-      //       state.product.sanPhamNavigation.maSanPham
-      //   );
-      //   if (!obj) {
-      //     recentlyView.push(state.product);
-      //     var recentlyViewString = JSON.stringify(recentlyView);
-      //     window.localStorage.setItem("recentlyView", recentlyViewString);
-      //   }
-      // } else {
-      //   recentlyView.push(state.product);
-      //   var recentlyViewString = JSON.stringify(recentlyView);
-      //   window.localStorage.setItem("recentlyView", recentlyViewString);
-      // }
       state.loading = false;
     });
     builder.addCase(fetchGetProductUser.rejected, (state) => {
       state.loading = false;
     });
+    //PostChildProduct
+    builder.addCase(PostChildProduct.pending,(state)=>
+    {
+state.loading = true;
+    })
+    builder.addCase(PostChildProduct.fulfilled,(state,action)=>
+    {
+      state.product.sanPhams = [...state.product.sanPhams,...action.payload]
+      state.loading=false
+      window.location.reload();
+    })
+    builder.addCase(PostChildProduct.rejected,(state)=>
+    {
+      state.loading=false
+    })
+    //DeleteChildSanPham
+    builder.addCase(DeleteChildSanPham.pending,(state)=>
+    {
+state.loading = true;
+    })
+    builder.addCase(DeleteChildSanPham.fulfilled,(state,action)=>
+    {
+      let SanPhamChild = [...state.product.sanPhams];
+      const maSParg = action.meta.arg
+      var obj =SanPhamChild.find(x=>x.maSanPham.trim()==maSParg.trim())
+      if(obj)
+      {
+        const index = SanPhamChild.indexOf(obj)
+        if(index>-1)
+        {
+          SanPhamChild.splice(index,1);
+          state.product.sanPhams = [...SanPhamChild]
+        }
+      }
+
+state.loading = false;
+    })
+    builder.addCase(DeleteChildSanPham.rejected,(state)=>
+    {
+state.loading = false;
+    })
     //GetCPNXs 
     builder.addCase(fetchGetCTNXs.pending,(state,action)=>{
       state.loading=true;

@@ -689,6 +689,11 @@ textarea {
   opacity: 0.5;
   pointer-events: none;
 }
+.activeFilter{
+  background-color: black;
+  color:white;
+  padding: .4rem;
+}
 .layout,
 .ant-layout-content,
 .GuessAuthLayout {

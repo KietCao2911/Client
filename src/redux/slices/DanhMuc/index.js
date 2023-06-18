@@ -6,6 +6,7 @@ const initialState = {
   items: [],
   item: {},
   itemsArr: [],
+  Category_Products:[],
   loading: false,
 };
 export const fetchCategoryAllUI = createAsyncThunk(
@@ -60,10 +61,66 @@ export const fetchGetCategoryByParentId = createAsyncThunk(
     return res;
   }
 );
+export const GetCategoryDetailByProduct =createAsyncThunk("DanhMuc/GetCategoryDetailByProduct",async(maSP)=>
+{
+  const res = await request.GetDanhMucByProduct(maSP)
+  return res;
+})
+export const PostCategoryDetail=createAsyncThunk("DanhMuc/PostCategoryDetail",async(body)=>
+{
+  const res = await request.PostCategoryDetail(body);
+  return res;
+})
+export const DeleteCategoryDetail = createAsyncThunk("DanhMuc/DeleteCategoryDetail",async(params)=>
+{
+  const {idDM,idSP} = params
+  const res = await request.DeleteCategoryDetail(idDM,idSP);
+  return res;
+})
 const DanhMucSlice = createSlice({
   name: "DanhMuc",
   initialState,
   extraReducers: (builder) => {
+    //DeleteCategoryDetail
+    builder.addCase(DeleteCategoryDetail.pending,(state,action)=>
+    {
+      state.loading=true;
+    })
+    builder.addCase(DeleteCategoryDetail.fulfilled,(state,action)=>
+    {
+      state.loading=true;
+    })
+    builder.addCase(DeleteCategoryDetail.rejected,(state,action)=>
+    {
+      state.loading=true;
+    })
+    //PostCategoryDetail
+    builder.addCase(PostCategoryDetail.pending,(state,action)=>
+    {
+      state.loading=true;
+    })
+    builder.addCase(PostCategoryDetail.fulfilled,(state,action)=>
+    {
+      // state.Category_Products = action.payload;
+      state.loading=false;
+    })
+    builder.addCase(PostCategoryDetail.rejected,(state,action)=>
+    {
+      state.loading=false;
+    })
+    //DeleteCategoryDetail
+    //GetCategoryDetailByProduct
+    builder.addCase(GetCategoryDetailByProduct.pending, (state, action) => {
+      state.loading=true;
+      });
+      builder.addCase(GetCategoryDetailByProduct.fulfilled, (state, action) => {
+        state.Category_Products = action.payload;
+        state.loading=false;
+        });
+        builder.addCase(GetCategoryDetailByProduct.rejected, (state, action) => {
+          
+          state.loading=false;
+          });
     //fetchCategoryAdd
     builder.addCase(fetchCategoryAdd.pending, (state, action) => {
     state.loading=true;

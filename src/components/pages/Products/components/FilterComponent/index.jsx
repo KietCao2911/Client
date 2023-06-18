@@ -106,7 +106,7 @@ const Filter = (props) => {
         <MyCollapse label="Sắp xếp" defaultOpen={true}>
           <Space direction="vertical">
             <h4 
-            className={`${sort&&sort=="price-hight-to-low"?"item active":""}`}
+            className={`${sort&&sort=="price-hight-to-low"?"item activeFilter":""}`}
                          key={uuidv4()}
               onClick={() => handleClickSort("price-hight-to-low")}
             >
@@ -114,7 +114,7 @@ const Filter = (props) => {
               Giá cao đến giá thấp
             </h4>
             <h4
-            className={`${sort&&sort=="price-low-to-hight"?"active":""}`}
+            className={`${sort&&sort=="price-low-to-hight"?"activeFilter":""}`}
 
               key={uuidv4()}
               onClick={() => handleClickSort("price-low-to-hight")}
@@ -123,20 +123,20 @@ const Filter = (props) => {
               Giá thấp đến giá cao
             </h4>
             <h4
-                        className={`${sort&&sort=="date-oldest"?"active":""}`}
+                        className={`${sort&&sort=="date-oldest"?"activeFilter":""}`}
 
             key={uuidv4()} onClick={() => handleClickSort("date-oldest")}>
               {" "}
               Cũ nhất
             </h4>
             <h4
-                                    className={`${sort&&sort=="date-newest"?"active":""}`}
+                                    className={`${sort&&sort=="date-newest"?"activeFilter":""}`}
             key={uuidv4()} onClick={() => handleClickSort("date-newest")}>
               {" "}
               Mới nhất
             </h4>
             <h4 
-                                                className={`${sort&&sort=="popular"?"active":""}`}
+                                                className={`${sort&&sort=="popular"?"activeFilter":""}`}
             key={uuidv4()} onClick={() => handleClickSort("popular")}>
               {" "}
               Bán chạy nhất

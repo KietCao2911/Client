@@ -50,6 +50,8 @@ import ShowMore from "~/components/commomComponents/ShowMore";
 import { ArrowLeft, Delete, Edit, Plus, Save, Trash2, X } from "react-feather";
 import StickyActions from "~/components/commomComponents/stickyActions";
 import { v4 } from "uuid";
+import AddChildProduct from "../../../ThemSanPham/components/AddChildProduct";
+import AddCategoryDetail from "../AddCategoryDetail";
 const VersionDetailPage = lazy(() => import("./pages/VersionDetailPage"));
 const FooterTable = () => {
   return (
@@ -90,14 +92,13 @@ const WithChild = (props) => {
   const [pending, startTransition] = useTransition();
   const [selectedRowKeys, setSelectedRowKeys] = useState(() => {
     const maSP = prams111["*"].split("/")[1];
-    // const init = product.sanPhams[0]?.maSanPham?.trim();
-    // return [maSP?.trim() ? maSP.trim() : init];
     return [maSP || null];
   });
   const [data, setData] = useState();
   const [isEdit, setIsEdit] = useState(false);
   const nav = useNavigate();
   const dispatch = useDispatch();
+  const [openModalAddChild,setOpenModalChild]= useState(false)
   const form = useFormik({
     initialValues: { ...product } || {},
   });
@@ -120,8 +121,8 @@ const WithChild = (props) => {
         product?.sanPhams?.map((item) => {
           return {
             ...item,
-            key: item.maSanPham.trim(),
-            maSanPham: item.maSanPham.trim(),
+            key: item?.maSanPham?.trim(),
+            maSanPham: item?.maSanPham?.trim(),
           };
         })) ||
       [];
@@ -178,7 +179,7 @@ const WithChild = (props) => {
         {form.values.sanPhams?.map((e) => (
           <Route
           key={v4()}
-            path={`versions/${e.maSanPham.trim()}`}
+            path={`versions/${e?.maSanPham?.trim()}`}
             element={
               <VersionDetailPage form={form} version={e} isEdit={isEdit} />
             }
@@ -223,7 +224,7 @@ const WithChild = (props) => {
     }
     {
       !isEdit&&<Space>
-      <Button onClick={()=>setIsEdit(true)}>
+      <Button loading={loading} onClick={()=>setIsEdit(true)}>
           Sửa
         </Button>   
       <Button danger loading={loading} onClick={handleDeleteProduct}>
@@ -234,6 +235,15 @@ const WithChild = (props) => {
     </>
     
 )
+console.log({danhmucDetail:form.values.danhMucDetails})
+const handleDeleteProductChild=()=>
+{
+  const maSP = selectedRowKeys[0];
+  if(maSP)
+  {
+    dispatch(SanPhamAPI.DeleteChildSanPham(maSP))
+  }
+}
   return (
     <>
       <Row gutter={[20, 20]}>
@@ -353,37 +363,7 @@ const WithChild = (props) => {
                     </Space>
                   )}
                 </Space>
-                {isEdit ? (
-                  <Space>
-                    <Space>Danh mục:</Space>
-                    <Space>
-                      <Cascader
-                        defaultValue={
-                          form.values.danhMucDetails &&
-                          form.values.danhMucDetails.map((item) => {
-                            return item.danhMucId;
-                          })
-                        }
-                        onChange={(e) => handleChangeCascader(e)}
-                        options={handleCascader([...items] || [])}
-                      ></Cascader>
-                    </Space>
-                  </Space>
-                ) : (
-                  <Space>
-                    <Space>Danh mục:</Space>
-                    <Cascader
-                      value={
-                        form.values.danhMucDetails &&
-                        form.values.danhMucDetails.map((item) => {
-                          return item.danhMucId;
-                        })
-                      }
-                      options={handleCascader([...items] || [])}
-                      disabled={true}
-                    ></Cascader>
-                  </Space>
-                )}
+                          <span>Danh mục:</span>  <AddCategoryDetail isEdit={isEdit} setFieldValue={form.setFieldValue}></AddCategoryDetail>
               </Space>
             </Space>
           </Card>
@@ -419,12 +399,9 @@ const WithChild = (props) => {
                 title="Phiên bản"
                 extra={
                   <Space style={{ width: "100%" }} defaultValue={null}>
-                    <Select defaultValue={null}>
-                    <Select.Option value={null}>Hành động</Select.Option>
-                    <Select.Option value="1">In mã vạch</Select.Option>
-                    <Select.Option value="2">Xóa phiên bản này</Select.Option>
-                    </Select>
-                    <Plus className="icon"/>
+                   <Plus className="icon" onClick={()=>setOpenModalChild(true)}/>
+                   <Trash2 className="icon" onClick={handleDeleteProductChild}/>
+                    
                   </Space>
                 }
               >
@@ -459,6 +436,7 @@ const WithChild = (props) => {
       >
         Bạn có chắc muốn xóa? Tác vụ này không thể khôi phục.
       </Modal>
+        <AddChildProduct openModalAddChild={openModalAddChild} setOpenModalChild={setOpenModalChild}/>
     </>
   );
 };

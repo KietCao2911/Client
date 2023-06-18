@@ -27,6 +27,7 @@ import { useMemo } from "react";
 import CustomSpin from "~/components/CustomSpin";
 import { memo } from "react";
 import * as SanPhamAPI from "~/redux/slices/SanPham";
+import AddChildProduct from "../../../../../ThemSanPham/components/AddChildProduct";
 const { Dragger } = Upload;
 
 const VersionDetailPage = (props) => {
@@ -112,6 +113,7 @@ const VersionDetailPage = (props) => {
   if (!version) {
     return <CustomSpin />;
   }
+
   const itemsTab = [
     {
       key: "1",
@@ -280,6 +282,7 @@ const VersionDetailPage = (props) => {
           <Tabs defaultActiveKey="1" items={itemsTab}></Tabs>
         </Card>
       </Col>
+      
     </>
   );
 };

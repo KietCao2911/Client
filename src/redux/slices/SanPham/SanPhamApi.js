@@ -32,6 +32,14 @@ export const PostProduct = async (body, config) => {
     throw error;
   }
 };
+export const PostChildProduct = async (body, config) => {
+  try {
+    const res = await Method.Post("/api/admin/SanPham/PostChildSanPham", body, config);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const PutProduct = async (body, config) => {
   try {
@@ -50,6 +58,13 @@ export const DeleteProduct = async (id) => {
   }
 };
 
+export const DeleteChildSanPham = async (id) => {
+  try {
+    const res = await Method.Delete(`/api/admin/SanPham/DeleteChildSanPham/${id}`);
+  } catch (error) {
+    throw error;
+  }
+};
 export const GetAllLatestProducts = async () => {
   try {
     const res = await Method.Get("/api/Home/ProductsLatesUpdate");
