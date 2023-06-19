@@ -111,6 +111,8 @@ const ThanhToanSlice =createSlice({
                     type:"success",
                 })
             }
+            localStorage.removeItem("cart");
+                window.location.replace("../")
             state = {};
             //  window.location.replace("/")
         })

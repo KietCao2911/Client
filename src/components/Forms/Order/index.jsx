@@ -217,7 +217,7 @@ const OrderForm = (props) => {
                 <InputText
                   className={`${orderForm.errors.Name && "error"} `}
                   name={"Name"}
-                  label="name"
+                  label="Tên"
                   value={orderForm.values.Name}
                   onChange={orderForm.handleChange}
                 />
@@ -252,7 +252,7 @@ const OrderForm = (props) => {
               <Col span={24}>
                 <InputText
                   name={"AddressDsc"}
-                  label="address detail"
+                  label="Chi tiết địa chỉ"
                   value={orderForm.values.AddressDsc}
                   onChange={orderForm.handleChange}
                 />
@@ -365,7 +365,6 @@ const OrderForm = (props) => {
                       label={`Enter your promo code `}
                     ></InputText>
               }
-
             {couponCode&&<Promo/>}
               </Space>
         </Col>

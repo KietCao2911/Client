@@ -329,7 +329,7 @@ const TrangChiTietSanPham = () => {
           </Space>
 
           <button className="AddToCart" onClick={handleAddToCart}>
-            <strong>ADD TO CART</strong>
+            <strong>THÊM VÀO GIỎ HÀNG</strong>
             <ArrowRightOutlined />
           </button>
           {/* <MyButton  onClick={handleAddToCart} style={{border:".1rem solid black"}} icon={<PlusSquare/>}>Thêm vào giỏ hàng </MyButton> */}

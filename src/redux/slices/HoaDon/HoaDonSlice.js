@@ -100,6 +100,8 @@ const HoaDonSlice = createSlice({
       state.orderStatus=true;
       state.hoadon = action.payload
       state.loading=false;
+      localStorage.removeItem("cart");
+      window.location.replace("../")
     });
     builder.addCase(fetchGetStatusOrder.rejected, (state, action) => {
       state.orderStatus=false;

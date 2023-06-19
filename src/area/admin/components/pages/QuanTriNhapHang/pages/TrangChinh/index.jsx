@@ -27,6 +27,12 @@ const columns = [
     },
   },
   {
+    title: "Hoàn tiền",
+    render: (_, record) => {
+      return <p>{record.daHoanTien&&record?.status==-1 ? "Đã hoàn tiền" : "Chưa hoàn tiền"}</p>;
+    },
+  },
+  {
     title: "Số lượng nhập",
     render: (_, record) => {
       return <p>{record.tongSoLuong || 0}</p>;
