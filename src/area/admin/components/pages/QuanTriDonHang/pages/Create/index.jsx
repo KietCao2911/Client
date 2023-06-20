@@ -180,7 +180,7 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
       if(!OrderForm.values.maChiNhanh)
       {
         message.open({
-          content:"Vui lòng chọn nhà cung cấp",
+          content:"Vui lòng chọn chi nhánh",
           type:"error"
         })
         return ;
@@ -191,6 +191,7 @@ import AddressForm from "../OrderDetailForm/Form/AddressForm";
           KhoHangAPI.fetchGetProducts({
             maChiNhanh: OrderForm.values?.maChiNhanh?.trim() || "",
             onlyVersion:true,
+            s:e.target.value
           })
         );
       });

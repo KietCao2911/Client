@@ -88,11 +88,17 @@ const DanhMucSlice = createSlice({
     })
     builder.addCase(DeleteCategoryDetail.fulfilled,(state,action)=>
     {
-      state.loading=true;
+      state.loading=false;
+      notification.open({
+        message:"Xóa thành công",
+        type:"success",
+      })
+      window.location.reload()
     })
     builder.addCase(DeleteCategoryDetail.rejected,(state,action)=>
     {
-      state.loading=true;
+      state.loading=false;
+    
     })
     //PostCategoryDetail
     builder.addCase(PostCategoryDetail.pending,(state,action)=>

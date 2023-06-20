@@ -105,14 +105,6 @@ const ThanhToanSlice =createSlice({
             {
                 window.location.replace(action.payload.redirect)
             }
-            else{
-                notification.open({
-                    message:"Đặt hàng thành công.",
-                    type:"success",
-                })
-            }
-            localStorage.removeItem("cart");
-                window.location.replace("../")
             state = {};
             //  window.location.replace("/")
         })

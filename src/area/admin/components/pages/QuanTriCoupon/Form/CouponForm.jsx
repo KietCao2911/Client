@@ -226,7 +226,7 @@ const CouponForm = useFormik({
 const handleCreate=()=>
 {
     const body = {...CouponForm.values,mota:CouponDsc(CouponForm.values)}
-
+    console.log({errors:CouponForm.errors})
     if(CouponForm.isValid)
     {
         dispatch(CouponAPI.PostCouponThunk({body}))

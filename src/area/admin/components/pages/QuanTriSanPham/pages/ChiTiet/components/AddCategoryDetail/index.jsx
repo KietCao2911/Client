@@ -112,6 +112,11 @@ const List=()=>
           })
       
     }
+    const handleDelete=(DanhMucID,MaSP)=>
+    {
+      console.log({DanhMucID,MaSP})
+      dispatch(DanhMucAPI.DeleteCategoryDetail({idDM:DanhMucID,idSP:MaSP}))
+    }
    return <Row gutter={[10,10]}>
     <RefreshCcw className="icon" onClick={()=>dispatch(DanhMucAPI.GetCategoryDetailByProduct(product.maSanPham))}/>
     {handleRenderDefaultCascader(-1).map((cat,index)=>
@@ -129,7 +134,7 @@ const List=()=>
                                     // onChange={(e) => handleChangeCascader(e,index)}
                                     options={handleCascader([...items] || [])}
                                     ></Cascader>
-                  <Trash className="icon"/>
+                  <Trash onClick={()=>handleDelete(cat?.danhMucId,product.maSanPham)} className="icon"/>
                   </Space>
                     </Col>
                 })
