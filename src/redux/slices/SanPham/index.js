@@ -317,7 +317,10 @@ state.loading = true;
           state.product.sanPhams = [...SanPhamChild]
         }
       }
-
+      message.open({
+        content:"Đã xóa",
+        type:"success"
+      })
 state.loading = false;
     })
     builder.addCase(DeleteChildSanPham.rejected,(state)=>
@@ -331,6 +334,9 @@ state.loading = false;
     })
     builder.addCase(fetchGetCTNXs.fulfilled,(state,action)=>{
       state.ctnxs = action.payload;
+      state.loading=false;
+    })
+    builder.addCase(fetchGetCTNXs.rejected,(state,action)=>{
       state.loading=false;
     })
     //SearchProducts
@@ -449,7 +455,6 @@ state.loading = false;
     });
     builder.addCase(fetchGetProduct.fulfilled, (state, action) => {
       state.product = action.payload;
-
       const groupedArray = Object.values(
         GroupBy(state.product.sanPhams, "idColor")
       );

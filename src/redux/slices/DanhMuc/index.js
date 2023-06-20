@@ -73,8 +73,8 @@ export const PostCategoryDetail=createAsyncThunk("DanhMuc/PostCategoryDetail",as
 })
 export const DeleteCategoryDetail = createAsyncThunk("DanhMuc/DeleteCategoryDetail",async(params)=>
 {
-  const {idDM,idSP} = params
-  const res = await request.DeleteCategoryDetail(idDM,idSP);
+  const {body} = params
+  const res = await request.DeleteCategoryDetail(body);
   return res;
 })
 const DanhMucSlice = createSlice({
@@ -93,7 +93,7 @@ const DanhMucSlice = createSlice({
         message:"Xóa thành công",
         type:"success",
       })
-      window.location.reload()
+      // window.location.reload()
     })
     builder.addCase(DeleteCategoryDetail.rejected,(state,action)=>
     {

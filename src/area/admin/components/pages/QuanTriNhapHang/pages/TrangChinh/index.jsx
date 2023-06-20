@@ -41,7 +41,6 @@ const columns = [
   {
     title: "Nhập kho",
     render: (_, record) => {
-      console.log({ record });
       return <p>{record.daNhapHang ? "Đã Nhập kho" : "Chưa nhập kho"}</p>;
     },
   },

@@ -86,13 +86,15 @@ const VersionDetailPage = (props) => {
     };
     try {
       fmData.append("file", file);
+      const payload={
+        maSP: product.maSanPham.trim(),
+        maMau: version.idColor.trim(),
+        body: fmData,
+        config,
+      }
+      console.log({payload})
       dispatch(
-        UploadFile({
-          maSP: product.maSanPham.trim(),
-          maMau: version.idColor.trim(),
-          body: fmData,
-          config,
-        })
+        UploadFile(payload)
       );
       onSuccess("Ok");
     } catch (err) {

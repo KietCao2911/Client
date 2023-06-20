@@ -132,7 +132,7 @@ const WithChild = (props) => {
     dispatch(TypeAPI.fetchGetTypes());
     dispatch(BranchAPI.fetchGetBranch());
     dispatch(BrandAPI.fetchGetBrand());
-    dispatch(DanhMucAPI.fetchCategoryAll());
+    // dispatch(DanhMucAPI.fetchCategoryAll());
   }, []);
   const handleCancel = () => {
     setIsEdit(false);
@@ -235,7 +235,6 @@ const WithChild = (props) => {
     </>
     
 )
-console.log({danhmucDetail:form.values.danhMucDetails})
 const handleDeleteProductChild=()=>
 {
   const maSP = selectedRowKeys[0];

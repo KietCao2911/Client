@@ -1,4 +1,4 @@
-import { Button, Cascader, Col, Modal, Row, Space, Tabs, message } from "antd";
+import { Button, Cascader, Col, Modal, Row, Space, Tabs, Tree, message } from "antd";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshCcw, Trash } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +23,6 @@ const Add=({setFieldValue})=>
 // Lặp qua từng đối tượng trong mảng ban đầu
 for (let i = 0; i < arr.length; i++) {
   let isDuplicate = false;
-
   // Kiểm tra xem đối tượng đã tồn tại trong mảng mới hay chưa
   for (let j = 0; j < uniqueObjects.length; j++) {
     if (arr[i].danhMucId === uniqueObjects[j].danhMucId) {
@@ -87,6 +86,8 @@ if(uniqueObjects.length>0)
 }
 const List=()=>
 {
+    const [selectedTreeValue,setSelectedTreeValue] = useState([]);
+    const [checkedKeys,setCheckedKeys]=useState([]);
     const { Category_Products ,items, itemsArr} = useSelector((state) => state.DanhMuc);
     const { product} = useSelector((state) => state.SanPham);
     const dispatch=useDispatch();
@@ -104,42 +105,40 @@ const List=()=>
         return Category_Products.filter(({ idDanhMucNavigation})=> idDanhMucNavigation.parentCategoryID==root).map(parent=>
           {
               return{
-
-              ...parent,
-              key:v4(),
+              title:parent?.idDanhMucNavigation?.tenDanhMuc,
+              key:parent?.danhMucId,
               children:handleRenderDefaultCascader(parent.danhMucId)
             }
           })
       
     }
-    const handleDelete=(DanhMucID,MaSP)=>
+    const handleDelete=async(MaSP)=>
     {
-      console.log({DanhMucID,MaSP})
-      dispatch(DanhMucAPI.DeleteCategoryDetail({idDM:DanhMucID,idSP:MaSP}))
+      let arr = [...checkedKeys];
+      let temp = arr.map(item=>{
+        return {
+          maSanPham:MaSP,
+          danhMucId:item,
+        }
+      })
+      const res = await dispatch(DanhMucAPI.DeleteCategoryDetail({body:temp}))
+      dispatch(DanhMucAPI.GetCategoryDetailByProduct(product.maSanPham))
+    }
+    const handleChecked=(value)=>
+    {
+      setCheckedKeys(value);
+    }
+    const handleSelected=(values)=>
+    {
+      setSelectedTreeValue(values);
     }
    return <Row gutter={[10,10]}>
+    <Space direction="vertical" style={{width:"100%"}}>
     <RefreshCcw className="icon" onClick={()=>dispatch(DanhMucAPI.GetCategoryDetailByProduct(product.maSanPham))}/>
-    {handleRenderDefaultCascader(-1).map((cat,index)=>
-        {
-            return  cat.children.map(child=>
-                {
-                    return         <Col span={24}>
+    <Tree  checkedKeys={checkedKeys}  selectedKeys={selectedTreeValue} onSelect={handleSelected} checkable onCheck={handleChecked} treeData={handleRenderDefaultCascader(-1)}></Tree>
+      {checkedKeys.length>0&&<Button danger onClick={()=>handleDelete(product?.maSanPham)}>Xóa danh mục đã chọn</Button>}
 
-                  <Space>
-                  <Cascader
-                    disabled
-                                    defaultValue={
-                                      [cat?.danhMucId??null,child?.danhMucId??null,child?.children[0]?.danhMucId??null]
-                                    }
-                                    // onChange={(e) => handleChangeCascader(e,index)}
-                                    options={handleCascader([...items] || [])}
-                                    ></Cascader>
-                  <Trash onClick={()=>handleDelete(cat?.danhMucId,product.maSanPham)} className="icon"/>
-                  </Space>
-                    </Col>
-                })
-            
-        })}
+    </Space>
 </Row>
 }
 const AddCategoryDetail =(props)=>
@@ -179,12 +178,11 @@ const AddCategoryDetail =(props)=>
       useEffect(()=>
       {
         dispatch(DanhMucAPI.GetCategoryDetailByProduct(product.maSanPham))
-      },[])
+      },[product.maSanPham])
       const handleRenderDefaultCascader=(root)=>
       {
           return Category_Products.filter(({ idDanhMucNavigation})=> idDanhMucNavigation.parentCategoryID==root).map(parent=>
             {
-                console.log({parent})
                 return{
   
                 ...parent,
@@ -198,10 +196,13 @@ const AddCategoryDetail =(props)=>
       {
         setCategory(handleRenderDefaultCascader(-1))
       },[Category_Products])
-    
 return<>
 <Button disabled={isEdit?false:true} onClick={()=>setOpenModal(true)} >Quản lý danh mục</Button>
-<Modal  open={openModal} onCancel={()=>setOpenModal(false)}>
+<Modal okButtonProps={{
+  style:{
+    display:"none"
+  }
+}} open={openModal} onCancel={()=>setOpenModal(false)}>
       <Tabs items={[ {
     key: v4(),
     label: `Danh sách danh mục`,

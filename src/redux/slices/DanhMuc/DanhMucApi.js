@@ -67,10 +67,10 @@ export const PostCategoryDetail =async(body)=>
     throw error
   }
 }
-export const DeleteCategoryDetail=async(idCate,idSP)=>
+export const DeleteCategoryDetail=async(body)=>
 {
   try {
-    const res = await Method.Delete(`/api/DanhMucDetails/${idCate}/${idSP}`)
+    const res = await Method.Post(`/api/DanhMucDetails/DeleteDanhMucDetails`,body)
     return res;
   } catch (error) {
     throw error

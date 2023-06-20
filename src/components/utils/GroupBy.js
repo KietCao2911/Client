@@ -2,12 +2,12 @@ const GroupBy=(arr,con)=>
 {
  const temp=    arr.reduce((x,y)=>
     {
-        const id = y[con].trim();
+        const id = y[con]?.trim();
         if(!x[id])
         {
           x[id] = [];
         }
-        x[id].push(y)
+        x[id]?.push(y)
         return x;
     },{})
     return temp;
