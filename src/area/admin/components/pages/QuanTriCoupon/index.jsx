@@ -7,8 +7,7 @@ import { Plus } from "react-feather";
 const QuanTriCoupon=()=>
 {
     
-    return <>
-      
+    return <>      
     <Routes>
         <Route element={<TrangChu/>} path=""></Route>
         <Route element={<CouponForm isCreate={true}/>}  path="tao-moi"></Route>

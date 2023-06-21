@@ -297,9 +297,9 @@ useEffect(()=>
                                             <Space style={{width:"100%"}} direction="vertical">
                                                 <b>Mã coupon</b>
                                             <Input
-                                            onBlur={CouponForm.handleBlur}
+                                            onBlur={CouponForm.handleChange}
                                            status={(CouponForm.touched.maCoupon&&CouponForm.errors.maCoupon&&CouponForm.touched.maCoupon)?"error":""} 
-                                         value={CouponForm.values.maCoupon} 
+                                        //  value={CouponForm.values.maCoupon} 
                                          name="maCoupon" 
                                          placeholder="Nhập mã coupon"
                                         //  onChange={CouponForm.handleChange} 

@@ -33,7 +33,7 @@ const Columns = (props) => {
     {
       title: "Ngày đặt hàng",
       render: (_, record) => {
-        return <p>{moment(record?.createdAT).format("DD-MM-YYYY")}</p>;
+        return <p>{moment(record?.createdAt).format("DD-MM-YYYY")}</p>;
       },
     },
     {
