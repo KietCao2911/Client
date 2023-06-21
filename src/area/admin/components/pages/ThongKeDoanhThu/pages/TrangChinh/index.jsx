@@ -101,6 +101,9 @@ const columns=[{
     }
     const onClickSubmit = ()=>
     {
+        const StartDateUTC = new Date(dateValue[0]).toUTCString()
+        const EndDateUTC = new Date(dateValue[1]).toUTCString()
+        console.log({StartDateUTC,EndDateUTC})
         const body = {
             type:typeDate,
             start:dateValue[0]??null,

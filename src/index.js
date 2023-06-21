@@ -11,11 +11,17 @@ import { store } from "./redux/store";
 import connection, { start } from "./components/utils/SignalR";
 import Location from "./components/commomComponents/LocationSelect";
 import { useEffect } from "react";
+import { ConfigProvider } from "antd";
+
+import locale from "antd/locale/vi_VN";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <GlobalStyle>
     <Provider store={store}>
+      <ConfigProvider locale={locale}>
+
       <App />
+      </ConfigProvider>
     </Provider>
   </GlobalStyle>
 );

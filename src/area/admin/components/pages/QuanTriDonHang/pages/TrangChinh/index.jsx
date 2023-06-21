@@ -31,6 +31,12 @@ const Columns = (props) => {
       },
     },
     {
+      title: "Ngày đặt hàng",
+      render: (_, record) => {
+        return <p>{moment(record?.createdAT).format("DD-MM-YYYY")}</p>;
+      },
+    },
+    {
       title: "Số điện thoại",
       dataIndex: "diaChiNavigation",
       render: (_, record) => {
@@ -176,8 +182,11 @@ const TrangChinh = () => {
       <Space direction="vertical" style={{width:"100%"}}>
         <StickyActions IconBack={<RefreshCcw className="icon" onClick={()=>dispatch(HoaDonApi.fetchGetAllOrder({...tableParams}))}/>} Actionsbtn={action}></StickyActions>
       <Table
+      
       pagination={{
         pageSize:10
+        ,
+        total:50
       }}
       onRow={(record,index)=>
       {
@@ -195,6 +204,7 @@ const TrangChinh = () => {
         rowKey={(recort) => v4()}
         scroll={{ x: 400 }}
         columns={Columns({ setOpenModal })}
+        
         dataSource={hoadons}
       ></Table>
       </Space>

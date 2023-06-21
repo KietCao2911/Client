@@ -23,7 +23,7 @@ const PhoneForm = () => {
       phone:"",
     },
     validationSchema:Yup.object({
-      phone:Yup.string().trim().matches(regex,"Định dạng không chính xác")
+      phone:Yup.string().trim().matches(regex,"Định dạng không chính xác").max(10,"Không vượt quá 10 kí tự.")
     })
   })
   const setUpCaptcha = () => {
@@ -48,9 +48,11 @@ const PhoneForm = () => {
     // setUpCaptcha();
   }, []);
   const onSignInSubmit = () => {
-    
-    if(Form.values.phone.length>6)
+    if(!Form.isValid)
     {
+      return;
+    }
+
       setUpCaptcha();
       setLoading(true)
       let phoneNumber = "+84" + Form.values.phone;
@@ -65,7 +67,6 @@ const PhoneForm = () => {
         setLoading(false)
         // console.log({ error });
       });
-    }
   };
   if(verify)
   {
