@@ -1,0 +1,13 @@
+.QTYInput
+{
+    input[type="number"]{
+        font-size: 2.8rem;
+        display: inline;
+        text-align: center;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button{
+        -webkit-appearance: none;
+       
+    }
+}

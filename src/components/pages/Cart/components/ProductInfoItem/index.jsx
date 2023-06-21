@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import "./ProductInfoItem.scss";
 import { CloseOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as APIKichCo from "~/redux/slices/KichCoSlice";
 import convertVND from "~/components/utils/ConvertVND";
 import { useEffect, useState } from "react";
-import { Col, Form, Input, Row, Select, Space, notification } from "antd";
+import { Button, Col, Form, Input, Row, Select, Space, notification } from "antd";
 import { v4 } from "uuid";
 import { UpdateQtyItem } from "~/redux/slices/GioHang/GioHangSlice";
 import { X } from "react-feather";
@@ -15,42 +15,75 @@ import SelectCustom, {
   Option,
 } from "~/components/commomComponents/SelectCustom";
 import { GetQTY } from "~/redux/slices/SanPham/Users/SanPhamAPI";
+import InputText from "~/components/commomComponents/InputText";
+import MyButton from "~/components/commomComponents/Button";
+import QTYInput from "~/components/commomComponents/QTYInput";
+import LoadingElement from "~/components/commomComponents/LoadingElement";
 function ProductInfoItem(props) {
   const { donGia, soLuong, maSanPham, sanPhamNavigation, removeItemFnc } =
     props;
-  const [qtyInfo,setQtyInfo] = useState({});
+  const [loading,setLoading] = useState(false);
   const [qty, setQty] = useState(soLuong || 0);
-  const [options, setOptions] = useState([]);
+
   const dispatch = useDispatch();
+  const comRef = useRef();
   const handleRemoveItem = () => {
     if (removeItemFnc) removeItemFnc();
   };
-  const Render = useMemo(() => {
-    const t = [];
-    const onClickChangeQty = (qty) => {
-      dispatch(UpdateQtyItem({ maSP: maSanPham, qty }));
-    };
-    let qty =  qtyInfo.soLuongCoTheban>10?10: qtyInfo.soLuongCoTheban;
-    for (let i = 0; i <qty; i++) {
-      t.push(
-        <Option key={v4()} onClick={() => onClickChangeQty(i + 1)} value={i + 1}>
-          {i + 1}
-        </Option>
-      );
-    }
-    setOptions(t);
-  }, [qtyInfo]);
-
-  useEffect(() => {
-    const fetchQty=async()=>
+  const handleChangeQty=async(e)=>
+  {
+    
+    const value = e.target.value
+    setQty(value);
+    
+  }
+  const handleSubmitChange=async()=>
+  {
+    if(qty!=soLuong)
     {
+      setLoading(true)
       const res =await GetQTY(maSanPham);
-      setQtyInfo({...res})
+      setLoading(false)
+      if(res.soLuongTon>=qty)
+      {
+        dispatch(UpdateQtyItem({ maSP: maSanPham, qty:parseInt(qty) }));
     }
-    fetchQty();
-  }, []);
+    else{
+      alert("Số lượng yêu cầu vượt quá số lượng cho phép")
+    }
+    }
+  }
+  const handleMinus=async()=>
+  {
+
+    setLoading(true)
+      const res =await GetQTY(maSanPham);
+      setLoading(false)
+      if(res.soLuongTon>=qty-1)
+      {
+      setQty(qty-1);
+      dispatch(UpdateQtyItem({ maSP: maSanPham, qty:parseInt(qty-1) }));
+    }
+    else{
+      alert("Số lượng yêu cầu vượt quá số lượng cho phép")
+    }
+  }
+  const handlePlus=async()=>
+  {
+    setLoading(true)
+      const res =await GetQTY(maSanPham);
+      setLoading(false)
+      if(res.soLuongTon>=qty+1)
+      {
+      setQty(qty+1);
+      dispatch(UpdateQtyItem({ maSP: maSanPham, qty:parseInt(qty+1) }));
+    }
+    else{
+      alert("Số lượng yêu cầu vượt quá số lượng cho phép")
+    }
+  }
   return (
-    <Link to={"#"} className="PrductInfoItem" {...props}>
+    <Link ref={comRef} to={"#"} className="PrductInfoItem" {...props}>
       <X
         style={{ display: `${!removeItemFnc && "none"}`, zIndex: "99" }}
         className="closeIcon"
@@ -89,11 +122,11 @@ function ProductInfoItem(props) {
             <Col span={24}>
               <Space direction="vertical" style={{width:"100%"}}>
               <Space>
-                    <span>SIZE:</span>
+                    <span>Kích thước:</span>
                     <span>{sanPhamNavigation?.idSize}</span>
                   </Space>
                 <Space>
-                    <span>COLOR: </span>
+                    <span>Màu: </span>
                     <div
                       className="colorValue"
                       style={{
@@ -102,10 +135,9 @@ function ProductInfoItem(props) {
                     ></div>
                   </Space>
                 <Space style={{width:"100%"}}>
-                    <span>QUANTITY:</span>
-                     <SelectCustom value={soLuong} setValue={setQty} >
-                      {options&&options.map((item) => item)}
-                    </SelectCustom>
+                    <span>Số lượng:</span>
+                     {loading?<LoadingElement/>: <QTYInput handleMinus={handleMinus} handlePlus={handlePlus} value={qty} onBlur={handleSubmitChange} onChange={handleChangeQty}/>}
+                   {/* <MyButton onClick={handleSubmitChange}>Thay đổi</MyButton> */}
                   </Space>
               </Space>
             </Col>

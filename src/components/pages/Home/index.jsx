@@ -56,7 +56,7 @@ const Home = () => {
         style={{ width: "100%" }}
         className="PageContainer"
       >
-        <Card role="article" title="BRANCHS" bordered={false}>
+        <Card role="article" title="NHÃN HÀNG" bordered={false}>
           <Row gutter={[20, 20]}>
           <Col md={24} xs={0}>
          <Row gutter={[10, 10]}>
@@ -112,7 +112,7 @@ const Home = () => {
           </Col>
           </Row>
         </Card>
-        <Card title="LASTED UPDATE" role="article" bordered={false}>
+        <Card title="MỚI NHẤT" role="article" bordered={false}>
           <ListProducts
                     // type={"slider"}
 
@@ -121,7 +121,7 @@ const Home = () => {
             miniProducts={true}
           />
         </Card>
-        <Card title="MOST ORDER" bordered={false}>
+        <Card title="MUA NHIỀU NHẤT" bordered={false}>
           <ListProducts
           // type={"slider"}
             items={productsHot || []}
@@ -129,15 +129,15 @@ const Home = () => {
             miniProducts={true}
           />
         </Card>
-        <Card role="article" title="HOT PRODUCTS">
+        <Card role="article" title="SẢN PHẨM ĐƯỢC XEM NHIỀU">
           <TrendingProducts />
         </Card>
      {
-      boSuuTaps&&boSuuTaps.length>0&&   <Card title="TRENDING">
+      boSuuTaps&&boSuuTaps.length>0&&   <Card title="KHÁM PHÁ THÊM">
       <Discover />
     </Card>
      }
-        <Card role="article" title="NOW POPULAR CATEGORY">
+        <Card role="article" title="DANH MỤC PHỔ BIẾN">
           <CategoryTag />
         </Card>
       </Space>
