@@ -68,8 +68,8 @@ const AddressForm = (props) => {
             } `}
             name={"diaChiNavigation.name"}
             label="Tên"
-            value={orderForm.values.diaChiNavigation?.name}
-            onChange={(e) => {
+            // value={orderForm.values.diaChiNavigation?.name}
+            onBlur={(e) => {
               orderForm.setFieldValue("diaChiNavigation.name", e.target.value);
               orderForm.setFieldTouched("diaChiNavigation.name", true);
             }}
@@ -92,8 +92,8 @@ const AddressForm = (props) => {
             } `}
             name={"diaChiNavigation.phone"}
             label="Số điện thoại"
-            value={orderForm.values.diaChiNavigation?.phone}
-            onChange={(e) => {
+            // value={orderForm.values.diaChiNavigation?.phone}
+            onBlur={(e) => {
               orderForm.setFieldTouched("diaChiNavigation.phone", true);
               orderForm.setFieldValue("diaChiNavigation.phone", e.target.value);
             }}
@@ -115,8 +115,8 @@ const AddressForm = (props) => {
             } `}
             name={"diaChiNavigation.email"}
             label="email"
-            value={orderForm.values.diaChiNavigation?.email?.trim()}
-            onChange={(e) => {
+            // value={orderForm.values.diaChiNavigation?.email?.trim()}
+            onBlur={(e) => {
               orderForm.setFieldValue("diaChiNavigation.email", e.target.value);
               orderForm.setFieldTouched("diaChiNavigation.email", true);
             }}
@@ -133,13 +133,13 @@ const AddressForm = (props) => {
             disabled={isReadOnly ? true : false}
             name={"diaChiNavigation.addressDsc"}
             label="Chi tiết địa chỉ"
-            value={orderForm.values.diaChiNavigation?.addressDsc}
+            // value={orderForm.values.diaChiNavigation?.addressDsc}
             className={`${
               orderForm.touched.diaChiNavigation?.addressDsc &&
               orderForm.errors.diaChiNavigation?.addressDsc &&
               "error"
             } `}
-            onChange={(e) => {
+            onBlur={(e) => {
               orderForm.setFieldValue(
                 "diaChiNavigation.addressDsc",
                 e.target.value

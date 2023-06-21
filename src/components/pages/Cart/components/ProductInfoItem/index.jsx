@@ -34,11 +34,16 @@ function ProductInfoItem(props) {
   {
     
     const value = e.target.value
+    if(value<=0)
+    {
+      return ;
+    }
     setQty(value);
     
   }
   const handleSubmitChange=async()=>
   {
+    
     if(qty!=soLuong)
     {
       setLoading(true)
@@ -55,7 +60,10 @@ function ProductInfoItem(props) {
   }
   const handleMinus=async()=>
   {
-
+    if(qty-1<=0)
+    {
+      return;
+    }
     setLoading(true)
       const res =await GetQTY(maSanPham);
       setLoading(false)

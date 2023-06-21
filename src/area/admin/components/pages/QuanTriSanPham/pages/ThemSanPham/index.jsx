@@ -132,11 +132,25 @@ const CreateProduct = () => {
   function isNumeric(str) {
     return !isNaN(str);
   }
+  const handleChangeName=(e)=>
+  {
+    const value =e.target.value
+    const res = versions.map((item) => {
+      return item.map((child) => {
+        return {
+          ...child,
+          tenSanPham: value+"-"+child?.IDColor+"-"+child?.IDSize,
+        };
+      });
+    });
+    form.setFieldValue("product.tenSanPham",value)
+    setVersions([...res]);
+  }
   const handleChangePrice = (props) => {
     const { e, fieldName } = props;
     let value = e.target.value;
     if (value.length > 0 && !isNumeric(value)) {
-      //  alert("Wrog")
+      e.target.value=0
     } else {
       form.setFieldValue(`product.${fieldName}`, value);
       const res = versions.map((item) => {
@@ -249,8 +263,9 @@ const CreateProduct = () => {
                       <InputText
                         label="Tên sản phẩm "
                         name={"product.tenSanPham"}
-                        value={form.values.product.tenSanPham}
-                        onChange={form.handleChange}
+                        // value={form.values.product.tenSanPham}
+                        // onChange={form.handleChange}
+                        onBlur={(e)=>handleChangeName(e)}
                       />
                       {form.errors?.product?.tenSanPham && (
                         <span className="error">
@@ -262,10 +277,11 @@ const CreateProduct = () => {
                       <InputText
                         label="Giá bán lẻ"
                         name="product.giaBanLe"
-                        value={form.values.product.giaBanLe}
-                        onChange={(e) =>
-                          handleChangePrice({ e, fieldName: "giaBanLe" })
-                        }
+                        // value={form.values.product.giaBanLe}
+                        // onChange={(e) =>
+                          
+                        // }
+                        onBlur={(e)=>handleChangePrice({ e, fieldName: "giaBanLe" })}
                       ></InputText>
 
                     </Col>
@@ -273,20 +289,25 @@ const CreateProduct = () => {
                       <InputText
                         label="Giá nhập"
                         name="product.giaNhap"
-                        value={form.values.product.giaNhap}
-                        onChange={(e) =>
-                          handleChangePrice({ e, fieldName: "giaNhap" })
-                        }
+                        // value={form.values.product.giaNhap}
+                        // onChange={(e) =>
+                        //   handleChangePrice({ e, fieldName: "giaNhap" })
+                        // }
+                        onBlur={(e)=>handleChangePrice({ e, fieldName: "giaNhap" })}
                       ></InputText>
                     </Col>
                     <Col md={12} xs={24}>
                       <InputText
                         name="product.giaBanSi"
-                        value={form.values.product.giaBanSi}
+                        // value={form.values.product.giaBanSi}
                         label="Giá sỉ"
-                        onChange={(e) =>
-                          handleChangePrice({ e, fieldName: "giaBanSi" })
-                        }
+                        // onChange={(e) =>
+                        //   handleChangePrice({ e, fieldName: "giaBanSi" })
+                        // }
+                        // onChange={(e) =>
+                        //   handleChangePrice({ e, fieldName: "giaBanSi" })
+                        // }
+                        onBlur={(e)=>handleChangePrice({ e, fieldName: "giaBanSi" })}
                       ></InputText>
                     </Col>
                     <Col md={24} xs={24}>
@@ -303,7 +324,7 @@ const CreateProduct = () => {
                           "Thêm mô tả cho sản phẩm"
                         ) : (
                           <CKEditor
-                            onChange={(e, editor) =>
+                            onBlur={(e, editor) =>
                               form.setFieldValue(
                                 "product.mota",
                                 editor.getData()

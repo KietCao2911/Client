@@ -38,8 +38,9 @@ const ProductsTable = (props) => {
       render: (_, record) => {
         return isEdit ? (
           <Input
-            onChange={(e) => onChangeDonGia(record.maSanPham, e.target.value)}
-            value={record?.donGia || 0}
+            onBlur={(e) => onChangeDonGia(record.maSanPham, e.target.value)}
+            defaultValue={record?.donGia}
+            // value={record?.donGia || 0}
           />
         ) : (
           <p>{convertVND(record?.donGia || 0)} </p>
@@ -58,10 +59,9 @@ const ProductsTable = (props) => {
             type="number"
             min={1}
             max={max}
-            onChange={(e) =>
-              onChangeSoLuong(record.maSanPham, e.target.value, max)
-            }
-            value={record?.soLuong}
+            onBlur={(e)=>onChangeSoLuong(record.maSanPham, e.target.value, max)}
+            defaultValue={record?.soLuong}
+            // value={record?.soLuong}
           />
         ) : (
           <p>{record?.soLuong}</p>

@@ -56,8 +56,8 @@ const Home = () => {
         style={{ width: "100%" }}
         className="PageContainer"
       >
-        <Card role="article" title="NHÃN HÀNG" bordered={false}>
-          <Row gutter={[20, 20]}>
+        <Space style={{width:"100%"}} direction="vertical">
+        <Row gutter={[20, 20]}>
           <Col md={24} xs={0}>
          <Row gutter={[10, 10]}>
          {brands &&
@@ -111,35 +111,42 @@ const Home = () => {
             </Swiper>
           </Col>
           </Row>
-        </Card>
-        <Card title="MỚI NHẤT" role="article" bordered={false}>
-          <ListProducts
-                    // type={"slider"}
+        </Space>
+        <Space style={{width:"100%"}} direction="vertical">
+          <h1>Mới nhất</h1>
+        <ListProducts
 
             items={productsLatest || []}
             loading={loading}
             miniProducts={true}
           />
-        </Card>
-        <Card title="MUA NHIỀU NHẤT" bordered={false}>
-          <ListProducts
+        </Space>
+       
+        <Space style={{width:"100%"}} direction="vertical">
+          <h1>CHÁY HÀNG</h1>
+        <ListProducts
           // type={"slider"}
             items={productsHot || []}
             loading={loading}
             miniProducts={true}
           />
-        </Card>
-        <Card role="article" title="SẢN PHẨM ĐƯỢC XEM NHIỀU">
+        </Space>
+        
+        <Space style={{width:"100%"}} direction="vertical">
+        <h1>XU HƯỚNG</h1>
           <TrendingProducts />
-        </Card>
+          </Space>
+       
      {
-      boSuuTaps&&boSuuTaps.length>0&&   <Card title="KHÁM PHÁ THÊM">
+      boSuuTaps&&boSuuTaps.length>0&& <Space style={{width:"100%"}} direction="vertical">
+        <h1>KHÁM PHÁ</h1>
       <Discover />
-    </Card>
+      </Space>
      }
-        <Card role="article" title="DANH MỤC PHỔ BIẾN">
+        <Space style={{width:"100%"}} direction="vertical">
+        <h1>DANH MỤC NỔI BẬT</h1>
           <CategoryTag />
-        </Card>
+          </Space>
       </Space>
       {/* <Modal  open={true}>
         <img src="https://localhost:44328/wwwroot/res/BstImgs/WinterCollection.png" alt="" />

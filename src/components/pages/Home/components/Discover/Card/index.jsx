@@ -18,8 +18,8 @@ const CardCollection = (props) => {
                 <img src={url||""} alt="" />
             </div>
             <Space direction='vertical' style={{width:"100%"}} className="content">
-                <div className="name"> 
-                    {tenBoSuuTap||""}
+                <div style={{textTransform:"capitalize"}} className="name"> 
+                   <p> {tenBoSuuTap||""}</p>
                 </div>
                 <div className="dsc">
                 {ReactHtmlParser(mota||"")}

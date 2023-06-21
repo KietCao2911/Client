@@ -152,7 +152,7 @@ const OrderForm = (props) => {
       if(method=="COD")
       {
         // alert("COD success request")
-        dispatch(ThanhToanApi.OrderWithCOD(params));
+        // dispatch(ThanhToanApi.OrderWithCOD(params));
       }
       else if(method=="VNPAY")
       {
@@ -218,8 +218,9 @@ const OrderForm = (props) => {
                   className={`${orderForm.errors.Name && "error"} `}
                   name={"Name"}
                   label="Tên"
-                  value={orderForm.values.Name}
-                  onChange={orderForm.handleChange}
+                  // value={orderForm.values.Name}
+                  onBlur={(e)=>orderForm.setFieldValue("Name",e.target.value)}
+                  // onChange={orderForm.handleChange}
                 />
                 {orderForm.touched.Name && orderForm.errors.Name && (
                   <small className="error">{orderForm.errors.Name}</small>
@@ -229,9 +230,10 @@ const OrderForm = (props) => {
                 <InputText
                   className={`${orderForm.errors.Phone && "error"} `}
                   name={"Phone"}
-                  label="phone"
-                  value={orderForm.values.Phone}
-                  onChange={orderForm.handleChange}
+                  label="Số điện thoại"
+                  onBlur={(e)=>orderForm.setFieldValue("Phone",e.target.value)}
+                  // value={orderForm.values.Phone}
+                  // onChange={orderForm.handleChange}
                 />
                 {orderForm.errors.Phone && (
                   <small className="error">{orderForm.errors.Phone}</small>
@@ -242,8 +244,9 @@ const OrderForm = (props) => {
                   className={`${orderForm.errors.Email && "error"} `}
                   name={"Email"}
                   label="email"
-                  value={orderForm.values.Email}
-                  onChange={orderForm.handleChange}
+                  // value={orderForm.values.Email}
+                  onBlur={(e)=>orderForm.setFieldValue("Email",e.target.value)}
+                  // onChange={orderForm.handleChange}
                 />
                 {orderForm.errors.Email && (
                   <small className="error">{orderForm.errors.Email}</small>
@@ -253,8 +256,9 @@ const OrderForm = (props) => {
                 <InputText
                   name={"AddressDsc"}
                   label="Chi tiết địa chỉ"
-                  value={orderForm.values.AddressDsc}
-                  onChange={orderForm.handleChange}
+                  // value={orderForm.values.AddressDsc}
+                  onBlur={(e)=>orderForm.setFieldValue("AddressDsc",e.target.value)}
+                  // onChange={orderForm.handleChange}
                 />
                 {orderForm.errors.AddressDsc && (
                   <small className="error">{orderForm.errors.AddressDsc}</small>

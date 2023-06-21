@@ -127,7 +127,7 @@ const TrangTaoDonNhap = (props) => {
       });
     } else if(!Form.values.maChiNhanh){
       message.open({
-        content: "Vui lòng chọn ít chi nhánh",
+        content: "Vui lòng chọn ít nhất 1 chi nhánh",
         type: "error",
       });
     }else {

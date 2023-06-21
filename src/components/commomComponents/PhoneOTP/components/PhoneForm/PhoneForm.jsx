@@ -72,11 +72,12 @@ const PhoneForm = () => {
   {
     return <Verify  phone={Form.values.phone}/>
   }
+  
   else{
     return (
       <div className="PhoneOTP">
         <Space direction="vertical">
-          <InputText className={`${Form.errors.phone?"error":""}`} name="phone"  value={Form.values.phone}
+          <InputText  className={`${Form.errors.phone?"error":""}`} name="phone" 
               onChange={Form.handleChange} label="phone">
           </InputText>
           {Form.errors.phone&&<span className="error"> {Form.errors.phone}</span>}

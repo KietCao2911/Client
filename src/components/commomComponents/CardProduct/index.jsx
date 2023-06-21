@@ -135,9 +135,13 @@ const CardProduct = (props, ref) => {
                   </div>
                 </div>
               }
-              {value?.soLuongDaBan>0&&<div className="SLDaBan">
+              {value?.soLuongDaBan>0?<div className="SLDaBan">
                 <small>
                  Đã bán: {value?.soLuongDaBan}
+                </small>
+              </div>:<div className="SLDaBan">
+                <small style={{opacity:0}}>
+                Đã bán:0
                 </small>
               </div>}
               <div className="category">
