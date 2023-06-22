@@ -194,7 +194,7 @@ const TrangTaoDonNhap = (props) => {
     }
     else{
       message.open({
-        content: "Vui lòng chọn ít chi nhánh",
+        content: "Vui lòng chọn chi nhánh",
         type: "error",
       });
     }

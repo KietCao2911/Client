@@ -41,7 +41,7 @@ const MostView=()=>
     labels: mostviewProducts?.map(product=>product?.tenSanPham)||[],
     datasets: [
       {
-        label: 'SL đã bán',
+        label: 'Lượt xem',
         data: mostviewProducts?.map(product=>product?.viewCount)||[],
         backgroundColor: [
           '#2B2A4C',

@@ -126,7 +126,7 @@ const OrderForm = (props) => {
           length: 20,
           weight: 200,
           width: 20,
-          insurance_value: thanhTien,
+          insurance_value: parseInt(thanhTien)||0,
           coupon: null,
         })
       );
@@ -135,7 +135,7 @@ const OrderForm = (props) => {
   const handleOrder = (method) => {
     const diaChiNavigation = orderForm.values;
     const cart = JSON.parse(window.localStorage.getItem("cart"));
-    cart.thanhTien = thanhTien+(phiShip||0);
+    cart.thanhTien = thanhTien;
     cart.phiShip = phiShip;
     const params = {
       ...cart,
@@ -384,6 +384,7 @@ const OrderForm = (props) => {
                           <ProductInfoItem
                             style={{ border: "unset" }}
                             {...item}
+                            isDisabledQty={true}
                           />
                         </Col>
                       );

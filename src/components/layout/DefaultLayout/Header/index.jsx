@@ -27,6 +27,7 @@ import CustomDrawer from "~/components/commomComponents/CustomDrawer";
 import Location from "~/components/commomComponents/LocationSelect";
 import LoadingElement from "~/components/commomComponents/LoadingElement";
 import { v4 } from "uuid";
+import Logo from "~/assets/android-chrome-512x512.png"
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -78,7 +79,9 @@ function HeaderMainHome() {
           <Row align="middle" justify="space-between">
             {/* //LOGO */}
             <Link to="/">
-              <div className="Logo">LOGO.</div>
+              <div className="Logo">
+                <img src={Logo}/>
+              </div>
             </Link>
             {/* MENU */}
             <MenuComponent />
@@ -119,7 +122,9 @@ function HeaderMainHome() {
            
             </Space>
             <Link to="/">
-              <div className="Logo">LOGO.</div>
+              <div className="Logo">
+              <img src={Logo}/>
+              </div>
             </Link>
 
             <Space >

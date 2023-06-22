@@ -14,7 +14,7 @@ const HomeAdminComponent=()=>
     },[])
 
     return<Row gutter={[10,10]}>
-    <Col md={6}>
+    <Col md={12} xs={24}>
       <Card  title="Doanh thu ngày" bordered={false} >
       <Statistic
         title="Active"
@@ -25,7 +25,7 @@ const HomeAdminComponent=()=>
      
       </Card>
     </Col>
-    <Col md={6}>
+    <Col md={12} xs={24}>
               <Card  title="Đơn hàng chờ" bordered={false} >
       <Statistic
         title="Active"
@@ -34,27 +34,6 @@ const HomeAdminComponent=()=>
      
       </Card>
     </Col>
-    <Col md={6}>
-             <Card  title="Doanh thu thành công" bordered={false} >
-      <Statistic
-        title="Active"
-        value={homeAdmin?.donhangthanhcong}
-      />
-
-     
-      </Card>
-    </Col>
-    <Col md={6}>
-             <Card  title="Đơn hàng hủy" bordered={false} >
-             <Statistic
-        title="Active"
-        value={homeAdmin?.donhanghuy}
-      />
-
-     
-      </Card>
-    </Col>
-  
   </Row>
 }
 export default HomeAdminComponent;

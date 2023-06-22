@@ -82,8 +82,8 @@ const GioHangSlice = createSlice({
               state.thanhTien+=state.tienDaGiam-(state.phiShip||0);
               state.tienDaGiam=0;
             }
-            // const addressString = JSON.stringify(state);
-            // window.localStorage.setItem("cart", addressString);
+            const addressString = JSON.stringify(state);
+            window.localStorage.setItem("cart", addressString);
             state.loadingCoupon=false;
         },
         
@@ -153,13 +153,29 @@ const GioHangSlice = createSlice({
         }
       } else {
       }
-      
+      const addressString = JSON.stringify(state);
+      window.localStorage.setItem("cart", addressString);
+      state.loadingCoupon=false
     },
     UpdateQtyItem: (state, action) => {
       const { maSP, qty } = action.payload;
       let items = current(state.chiTietNhapXuats);
       const obj = items.find((x) => x.maSanPham.trim() == maSP.trim());
       const index = items.indexOf(obj);
+      if(state.couponCode)
+      {
+            state.couponCode="";
+            state.couponNavigation=null;
+          
+            if(state?.tienDaGiam>0)
+            {
+              state.thanhTien+=state.tienDaGiam-(state.phiShip||0);
+              state.tienDaGiam=0;
+            }
+            const addressString = JSON.stringify(state);
+            window.localStorage.setItem("cart", addressString);
+            state.loadingCoupon=false;
+      }
       if (index > -1) {
         state.chiTietNhapXuats[index].soLuong = qty;
         const pricePrev =state.tongSoLuong = state.chiTietNhapXuats.reduce(
@@ -196,9 +212,9 @@ const GioHangSlice = createSlice({
         state.couponNavigation = action.payload.couponNavigation;
         state.tienDaGiam = action.payload.tienDaGiam;
         state.couponCode = action.payload.couponCode;
-        // const addressString = JSON.stringify(state);
-        // window.localStorage.setItem("cart", addressString);
-        // state.loadingCoupon=false
+        const addressString = JSON.stringify(state);
+        window.localStorage.setItem("cart", addressString);
+        state.loadingCoupon=false
     })
     builder.addCase(fetchPostApplyCoupon.rejected,(state,action)=>
     {

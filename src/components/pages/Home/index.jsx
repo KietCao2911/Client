@@ -56,6 +56,7 @@ const Home = () => {
         className="PageContainer"
       >
         <Space style={{width:"100%"}} direction="vertical">
+          <h1>Nhãn HÀNG</h1>
         <Row gutter={[20, 20]}>
           <Col md={24} xs={0}>
          <Row gutter={[10, 10]}>
@@ -68,7 +69,7 @@ const Home = () => {
          </Row>
           </Col>
           <Col xs={24} md={0}>
-          
+
           <Swiper
               breakpoints={{
                 // when window width is >= 640px

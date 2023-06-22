@@ -20,7 +20,7 @@ import MyButton from "~/components/commomComponents/Button";
 import QTYInput from "~/components/commomComponents/QTYInput";
 import LoadingElement from "~/components/commomComponents/LoadingElement";
 function ProductInfoItem(props) {
-  const { donGia, soLuong, maSanPham, sanPhamNavigation, removeItemFnc } =
+  const { donGia, soLuong, maSanPham, sanPhamNavigation, removeItemFnc,isDisabledQty } =
     props;
   const [loading,setLoading] = useState(false);
   const [qty, setQty] = useState(soLuong || 0);
@@ -144,7 +144,7 @@ function ProductInfoItem(props) {
                   </Space>
                 <Space style={{width:"100%"}}>
                     <span>Số lượng:</span>
-                     {loading?<LoadingElement/>: <QTYInput handleMinus={handleMinus} handlePlus={handlePlus} value={qty} onBlur={handleSubmitChange} onChange={handleChangeQty}/>}
+                     {loading?<LoadingElement/>: <QTYInput disabled={isDisabledQty} handleMinus={isDisabledQty?null:handleMinus} handlePlus={isDisabledQty?null:handlePlus} value={qty} onBlur={handleSubmitChange} onChange={handleChangeQty}/>}
                    {/* <MyButton onClick={handleSubmitChange}>Thay đổi</MyButton> */}
                   </Space>
               </Space>

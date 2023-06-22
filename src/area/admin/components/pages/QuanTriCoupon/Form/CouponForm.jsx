@@ -297,12 +297,11 @@ useEffect(()=>
                                             <Space style={{width:"100%"}} direction="vertical">
                                                 <b>Mã coupon</b>
                                             <Input
-                                            onBlur={CouponForm.handleChange}
                                            status={(CouponForm.touched.maCoupon&&CouponForm.errors.maCoupon&&CouponForm.touched.maCoupon)?"error":""} 
-                                        //  value={CouponForm.values.maCoupon} 
+                                         value={CouponForm.values.maCoupon} 
                                          name="maCoupon" 
                                          placeholder="Nhập mã coupon"
-                                        //  onChange={CouponForm.handleChange} 
+                                         onChange={CouponForm.handleChange} 
                                          addonAfter={<RefreshCcw className="icon" onClick={()=>{
 
                                             CouponForm.setFieldValue("maCoupon",generateRandomCode(10))
