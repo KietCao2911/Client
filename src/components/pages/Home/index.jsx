@@ -25,7 +25,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ArrowUp, ArrowUpCircle, SkipBack } from "react-feather";
 const Home = () => {
-  document.title = "Trang chính";
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.XacThuc);
   const { boSuuTaps } = useSelector((state) => state.BoSuuTap);
