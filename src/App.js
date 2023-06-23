@@ -46,11 +46,11 @@ const url = protocol + '//' + hostname + (port ? ':' + port : '');
   const isLocationChange = baseAuthHref == defaultHref
   if(!isLocationChange)
   {
-    // window.addEventListener("resize", function() {
-    //   if (window.outerWidth - window.innerWidth > 0) {
-    //     this.window.location.replace("/admin/auth/dang-nhap")
-    //   }
-    // });
+    window.addEventListener("resize", function() {
+      if (window.outerWidth - window.innerWidth > 0) {
+        this.window.location.replace("/admin/auth/dang-nhap")
+      }
+    });
   
   }
 },[])
