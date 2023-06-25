@@ -1,6 +1,7 @@
 import { Input, Select, Table } from 'antd'
 import React, { memo } from 'react'
 import { Delete, Trash } from 'react-feather';
+import { v4 } from 'uuid';
 import convertVND from '~/components/utils/ConvertVND';
 
 
@@ -10,6 +11,7 @@ const TableProductKN = (props) => {
     const columns=[ {
         title: "Mã SKU",
         render: (_, record) => {
+          console.log({record})
           return <a>{record?.maSanPham}</a>;
         },
       },
@@ -28,7 +30,7 @@ const TableProductKN = (props) => {
       {
         title: "Giá trị",
         render: (_, record) => {
-          return isEdit?<Input value={record?.giaTriGiamGia||0} onChange={(e)=>onChangeGiaTri(record?.maSanPham||"",e)}  addonAfter={<Select value={record?.kieuGiaTri} onChange={(e)=>onChangeKieuGiaTri(record?.maSanPham||"",e)}>
+          return isEdit?<Input  defaultValue={record?.giaTriGiamGia} onBlur={(e)=>onChangeGiaTri(record?.maSanPham||"",e)}  addonAfter={<Select value={record?.kieuGiaTri} onChange={(e)=>onChangeKieuGiaTri(record?.maSanPham||"",e)}>
              <Select.Option value={0}>Phần trăm</Select.Option>
     <Select.Option value={1}>Giá trị</Select.Option>
           </Select>}  type='number'/>:<p>{convertVND(record?.giaTri||0)}</p>
@@ -37,19 +39,20 @@ const TableProductKN = (props) => {
       {
         title: "Thành tiền",
         render: (_, record) => {
-          return <p>{convertVND(((record?.sanPhamNavigation?.giaBan||record?.sanPhamNavigation?.giaBanLe)-record?.thanhTien)||0)}</p>
+          return <p>{convertVND(((record?.sanPhamNavigation?.giaBanLe)-record?.thanhTien)||0)}</p>
         },
       },
       {
         title: "",
         render: (_, record) => {
-          return <Trash onClick={()=>onDelete(record?.maSanPham||"")} className='icon'/>
+          return isEdit?<Trash  onClick={()=>onDelete(record?.maSanPham||"")} className='icon'/>:null 
         },
       }
     ]
     const onChangeGiaTri=(key,value)=>
     {
         const arrs = [...source];
+        console.log({source})
         const obj = arrs.find(x=>x.maSanPham ==key);
         const vls = value.target.value
         if(obj)
@@ -60,11 +63,11 @@ const TableProductKN = (props) => {
                 const kieuGiaTri = arrs[index].kieuGiaTri;
                 if(kieuGiaTri==1)
                 {
-                    if((obj?.sanPhamNavigation?.giaBan||0) - vls>=0)
+                    if((obj?.sanPhamNavigation?.giaBanLe||0) - vls>=0)
                     {
                         
-                        arrs[index].giaTriGiamGia =vls;
-                        arrs[index].thanhTien = (obj?.sanPhamNavigation?.giaBan||0) - vls
+                        arrs[index].giaTriGiamGia =parseInt(vls);
+                        arrs[index].thanhTien = (obj?.sanPhamNavigation?.giaBanLe||0) - vls
                     }
                 }
                 else
@@ -72,10 +75,11 @@ const TableProductKN = (props) => {
                     if(vls>0&&vls<=100)
                     {
                         arrs[index].giaTriGiamGia =vls;
-                        arrs[index].thanhTien = (obj?.sanPhamNavigation?.giaBan||0) *( vls/100);
+                        arrs[index].thanhTien = (obj?.sanPhamNavigation?.giaBanLe||0) *( vls/100);
                     }
                    
                 }
+                console.log({arrs});
                 form.setFieldValue("chiTietKhuyenMais",[...arrs])
             }
         }
@@ -109,7 +113,7 @@ const TableProductKN = (props) => {
         }
     }
   return (
-    <Table columns={columns} dataSource={source||[]}/>
+    <Table rowKey={()=>v4()} columns={columns} dataSource={source||[]}/>
   )
 }
 export default memo(TableProductKN)

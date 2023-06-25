@@ -13,6 +13,7 @@ import MyButton from "~/components/commomComponents/Button";
 import InputText from "~/components/commomComponents/InputText";
 import { Box, DollarSign, Plus, Search, Truck } from "react-feather";
 import Promo from "~/components/Forms/Order/Promo";
+import * as GioHangAPI from "~/redux/slices/GioHang/GioHangSlice";
 const DeliveryPage = () => {
   const dispatch = useDispatch();
   const [promo,setPromo] = useState("")
@@ -61,7 +62,14 @@ const DeliveryPage = () => {
       }
     }
   }, [user]);
-
+  useEffect(()=>
+  {
+    const cart = JSON.parse(window.localStorage.getItem("cart"))
+    if(cart)
+    {
+      dispatch(GioHangAPI.fetchPostCheckCart(cart))
+    }
+  },[])
   const handleOrder=(method)=>
   {
     if (user.info && user.info.length > 0) {
@@ -121,6 +129,10 @@ const DeliveryPage = () => {
    }
    
   }
+  }
+  if(chiTietNhapXuats&&chiTietNhapXuats.length<=0)
+  {
+   return  window.location.replace("/gio-hang")
   }
   return (
     <Row gutter={[10,10]}>

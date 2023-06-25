@@ -39,6 +39,7 @@ const BSTSlider = () => {
             <SwiperSlide key={v4()}>
               <Link to={"/collection/" + item.slug.trim()}>
                 <img
+                loading="lazy"
                   style={{
                     width: "100%",
                     objectFit: "cover"

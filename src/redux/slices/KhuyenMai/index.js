@@ -1,6 +1,15 @@
 import {createAsyncThunk,createSlice} from "@reduxjs/toolkit"
 import * as API from "./KhuyenMaiAPI"
 import { message } from "antd";
+export const GetProducts =createAsyncThunk("KhuyenMai/GetProducts",async(params)=>
+{
+    try {
+        const res= await API.GetProducts(params);
+        return res;
+    } catch (error) {
+        throw error;
+    }
+})
 export const GetKhuyenMaisThunk =createAsyncThunk("GetKhuyenMaisThunk",async()=>
 {
     try {
@@ -53,12 +62,28 @@ export const PutCancelKhuyenMai =createAsyncThunk("PutCancelKhuyenMai",async(par
 const KhuyenMaiSlice=createSlice({
     name:"KhuyenMai",
     initialState:{
+        products:[],
         khuyenmais:[],
         khuyenmai:{},
         loading:false,
     },
     extraReducers:builder=>
     {
+        //GetProducts
+        builder.addCase(GetProducts.pending,(state)=>
+        {
+            state.products=[]
+            state.loading = true;
+        })
+        builder.addCase(GetProducts.fulfilled,(state,action)=>
+        {
+            state.products = action.payload
+            state.loading=false;
+        })
+        builder.addCase(GetProducts.rejected,(state)=>
+        {
+            state.loading = false;
+        })
         //GetKhuyenMaisThunk
         builder.addCase(GetKhuyenMaisThunk.pending,(state)=>
         {

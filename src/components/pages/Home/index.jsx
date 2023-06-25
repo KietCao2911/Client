@@ -28,13 +28,16 @@ const Home = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.XacThuc);
   const { boSuuTaps } = useSelector((state) => state.BoSuuTap);
-  const { productsLatest, loading } = useSelector((state) => state.SanPham);
+  const { productsLatest, loading,saleProducts } = useSelector((state) => state.SanPham);
   const { productsHot, products } = useSelector((state) => state.SanPham);
   const { brands } = useSelector((state) => state.Brand);
   const profile = user?.info?.find((x) => user.addressDefault == x.id) || null;
   useEffect(() => {
     dispatch(
       SanPhamUserAPI.fetchGetAllProductsUser({ params: { sort: "popular" } })
+    );
+    dispatch(
+      SanPhamUserAPI.fetchGetAllProductsUser({ params: { sort: "sale" } })
     );
     dispatch(
       SanPhamUserAPI.fetchGetAllProductsUser({
@@ -113,6 +116,19 @@ const Home = () => {
           </Row>
         </Space>
         <Space style={{width:"100%"}} direction="vertical">
+          {
+            saleProducts&&saleProducts.length>0&&
+          <>
+            <h1>GIẢM GIÁ</h1>
+            <ListProducts  items={saleProducts || []}
+            loading={loading}
+            miniProducts={true}>
+            
+            
+          </ListProducts>
+          </>
+          }
+       
           <h1>Mới nhất</h1>
         <ListProducts
 

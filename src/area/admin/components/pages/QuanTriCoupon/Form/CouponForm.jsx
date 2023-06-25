@@ -361,13 +361,14 @@ useEffect(()=>
                             <Card title="Thời gian khuyến mãi">
                             <Space direction="vertical" style={{width:"100%"}}>
                                 <b>Ngày bắt đầu</b>
-                                <DatePicker showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }} 
+                                <DatePicker
+                                showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }} 
                                 name="ngayBatDau" defaultValue={CouponForm.values?.ngayBatDau? dayjs(CouponForm.values?.ngayBatDau, 'YYYY-MM-DD HH:mm:ss'):null}    
                                 format={"DD-MM-YYYY HH:mm:ss"} onBlur={CouponForm.handleBlur} 
                                 status={(CouponForm.touched.ngayBatDau&&CouponForm.errors.ngayBatDau&&CouponForm.touched.ngayBatDau)?"error":""}  
                                  onChange={(e)=>onChangeDate(e,"ngayBatDau")} placeholder="Chọn ngày bắt đầu" style={{width:"100%"}}/>
                                 <b>Ngày kết thúc</b>
-                                <DatePicker  showshowTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}Time name="ngayKetThuc" 
+                                <DatePicker     showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}Time name="ngayKetThuc" 
                                 defaultValue={CouponForm.values?.ngayKetThuc? dayjs(CouponForm.values?.ngayKetThuc, 'YYYY-MM-DD HH:mm:ss'):null} 
                                  format={"DD-MM-YYYY HH:mm:ss"} onBlur={CouponForm.handleBlur} 
                                  status={(CouponForm.touched.ngayKetThuc&&CouponForm.errors.ngayKetThuc&&CouponForm.touched.ngayKetThuc)?"error":""}

@@ -3,6 +3,7 @@ import { message } from "antd";
 import { X } from "react-feather";
 import * as GiaoHangNhanhApi from "~/redux/slices/GHNAPI/GhnApi";
 import * as ThanhToanAPI from "~/redux/slices/ThanhToanSlice/ThanhToanApi"
+import * as GioHangAPI from "./GioHangAPI"
 let cart = JSON.parse(localStorage.getItem("cart"));
 let address = JSON.parse(localStorage.getItem("address"));
 let location =
@@ -66,6 +67,11 @@ export const fetchPostCalFee = createAsyncThunk(
 export const fetchPostApplyCoupon =createAsyncThunk("fetchPostApplyCoupon",async(body)=>
 {
   const res= await ThanhToanAPI.fetchPostApplyCoupon(body);
+  return res;
+})
+export const fetchPostCheckCart =createAsyncThunk("fetchPostCheckCart",async(body)=>
+{
+  const res= await GioHangAPI.CheckCart(body);
   return res;
 })
 const GioHangSlice = createSlice({
@@ -192,6 +198,22 @@ const GioHangSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    //fetchPostCheckCart
+    builder.addCase(fetchPostCheckCart.pending,(state,action)=>
+    {
+        
+    })
+    builder.addCase(fetchPostCheckCart.fulfilled,(state,action)=>
+    {
+        state.chiTietNhapXuats = action.payload.chiTietNhapXuats;
+        state.thanhTien = action.payload.thanhTien;
+        state.tongSoLuong = action.payload.tongSoLuong;
+        localStorage.setItem("cart", JSON.stringify(action.payload));
+    })
+    builder.addCase(fetchPostCheckCart.rejected,(state,action)=>
+    {
+        state.loadingCoupon=true
+    })
     //fetchPostApplyCoupon
     builder.addCase(fetchPostApplyCoupon.pending,(state,action)=>
     {

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import "./Filter.scss";
 import { FilterOutlined } from "@ant-design/icons";
-import { Button, Collapse, Drawer, Menu, Row, Space } from "antd";
+import { Button, Collapse, Drawer, Menu, Row, Slider, Space } from "antd";
 import { Link, useSearchParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
@@ -151,7 +151,9 @@ const Filter = (props) => {
         </MyCollapse>
         <ColorOptions />
         <SizeOptions />
-
+      <MyCollapse label="Loại sản phẩm"> 
+      
+      </MyCollapse>
         </Space>
               </Drawer>
     </div>

@@ -1,4 +1,4 @@
-import { Card, Col, Row, Space,DatePicker, FloatButton, message, Button } from 'antd';
+import { Card, Col, Row, Space,DatePicker, FloatButton, message, Button, Input, Select } from 'antd';
 import { useFormik } from 'formik'
 import React, { useEffect, useMemo, useState } from 'react'
 import TableProductKN from '../components/TableProductKN';
@@ -12,10 +12,11 @@ import * as KhuyenMaiAPI from '~/redux/slices/KhuyenMai';
 import { useParams } from 'react-router-dom';
 import CustomSpin from '~/components/CustomSpin';
 import StickyActions from '~/components/commomComponents/stickyActions';
+import moment from 'moment';
+import dayjs from 'dayjs';
 const { RangePicker } = DatePicker;
 const KhuyenMaiForm = (props) => {
   const {isCreated,isUpdate,isReadOnly} = props;
-  const [productSearchText,setProductSearchText] = useState("");
   const dispatch = useDispatch()
   const {products} = useSelector(state=>state.SanPham)
   const {khuyenmai,loading} = useSelector(state=>state.KhuyenMai)
@@ -72,9 +73,12 @@ const KhuyenMaiForm = (props) => {
 
     const dateStart =date[0];
     const dateEnd = date[1]
-    console.log({dateStart:dateStart.toString(),dateEnd:dateEnd.toString()})
-    Form.setFieldValue("ngayBatDau",dateStart);
-    Form.setFieldValue("ngayKetThuc",dateEnd);
+    if(dateStart&&dateEnd)
+    {
+      console.log({dateStart:dateStart.toString(),dateEnd:dateEnd.toString()})
+      Form.setFieldValue("ngayBatDau",dateStart);
+      Form.setFieldValue("ngayKetThuc",dateEnd);
+    }
   }
   const handleSubmit=()=>
   {
@@ -105,6 +109,7 @@ const KhuyenMaiForm = (props) => {
                     {(isReadOnly||isUpdate)&&(Form.values.trangThai==0?<Button  onClick={handleApply}>Áp dụng khuyến mãi</Button>:Form.values.trangThai==1?<Button  onClick={handleCancel}>Hủy áp dụng</Button>:null)}
     </Space>
   )
+  console.log({values:Form.values})
   return (
     <Row gutter={[20,20]}>
         
@@ -118,27 +123,29 @@ const KhuyenMaiForm = (props) => {
             <Space style={{width:"100%"}} direction='vertical'>
             <Space >
               <div>Tên khuyến mãi:</div>
-              <InputText value={Form.values?.tenKhuyenMai} label="Tên khuyến mãi" onChange={e=>Form.setFieldValue("tenKhuyenMai",e.target.value)}/>
+              {isReadOnly? <b>{Form.values.tenKhuyenMai} </b> :<Input value={Form.values?.tenKhuyenMai} label="Tên khuyến mãi" onBlur={e=>Form.setFieldValue("tenKhuyenMai",e.target.value)}/>}
              </Space>
              <Space>
              <div>Thời gian khuyến mãi:</div>
-              <RangePicker onChange={(e)=>handleChangeDate(e)} format={"DD/MM/YYYY"}/>
+             
+              <RangePicker disabled={isReadOnly?true:false}  value={[dayjs(Form.values.ngayBatDau),dayjs(Form.values.ngayKetThuc)]} onBlur={(e)=>handleChangeDate(e)} format={"DD/MM/YYYY"}/>
              </Space>
-             <MyCollapse label="Mô tả chi tiết">
-
-</MyCollapse>
             </Space>
           
         </Card>
           </Col>
           <Col md={6}>
-            <Card title="Chi nhánh"></Card>
+            <Card title="Chi nhánh">
+            <Select disabled style={{width:"100%"}} defaultValue={""}>
+                            <Select.Option value="">Tất cả chi nhánh</Select.Option>
+                        </Select>
+            </Card>
           </Col>
         </Row>
       </Col>
       <Col md={24}>
         <Space direction='vertical' style={{width:"100%"}}>
-        <InputText label="Chọn sản phẩm giảm giá" onChange={(e)=>handleSearchProducts(e.target.value)}/>
+        {isReadOnly?null:<InputText label="Chọn sản phẩm giảm giá" onChange={(e)=>handleSearchProducts(e.target.value)}/>}
         <List >
           {products&&products.length>0&&products.map(product=>
             {
@@ -148,7 +155,7 @@ const KhuyenMaiForm = (props) => {
           }}/>
             })}
         </List>
-        <TableProductKN form={Form} isEdit={isCreated||isUpdate?true:false} source={Form.values?.chiTietKhuyenMais||[]}/>
+        <TableProductKN form={Form} isEdit={false} source={Form.values?.chiTietKhuyenMais||[]}/>
         </Space>
       </Col>
      

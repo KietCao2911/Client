@@ -10,15 +10,16 @@
     .CardRibbon {
         // background-color: red;
         position: absolute;
-        top: 0;
+        top: 1rem;
         left: 1rem;
         z-index: 1;
         padding: .4rem .2rem;
         background-color: white;
         span {
             display: block;
-            color:#FF0303;
-            font-weight: 400;
+            color:black;
+
+            font-weight:bolder;
         }
 
 
@@ -111,7 +112,7 @@
 
             &.sale {
                 display: flex;
-                color: #FF0303;
+                // color: #FF0303;
                 .sale-value
                 {
                     @include mobile{

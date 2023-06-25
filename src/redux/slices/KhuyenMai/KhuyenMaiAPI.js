@@ -8,6 +8,15 @@ export const GetKhuyenMais =async()=>
         throw error
     }
 }
+export const GetProducts=async(params)=>
+{
+    try {
+        const res = await Method.Get("/api/admin/KhuyenMai/SearchProducts",{params})
+        return res;
+    } catch (error) {
+        throw error
+    }
+}
 export const GetKhuyenMai =async(id)=>
 {
     try {

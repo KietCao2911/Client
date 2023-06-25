@@ -14,31 +14,23 @@ import { H1 } from "glamorous";
 import EmptyCart from "./components/EmtyCart";
 import { Card, Col, Row } from "antd";
 import { v4 } from "uuid";
+import * as GioHangAPI from "~/redux/slices/GioHang/GioHangSlice";
 function CartPage() {
   document.title = "Giỏ hàng";
   const props = useSelector((state) => state.GioHang);
   const { chiTietNhapXuats } = props;
   const dispatch = useDispatch();
-  console.log({ gg: props });
   const handleRemoveItemCart = (maSanPham) => {
     dispatch(RemoveItem(maSanPham));
   };
-  //   const data= ()=>
-  // {
-  //   const gg =  cartItems.map(item=>
-  //     {
-  //       return {
-  //         giaBan:item.giaBan
-  //         ,qty:item.qty
-  //         ,tensanpham:item.tenSanPham,
-  //         removeItemFnc:()=>handleRemoveItemCart({size:item.size,color:item.colorSelected,maSanPham:item.maSanPham}),
-  //       }
-  //     })
-  //     return gg;
-  // }
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(ViewCart());
+    const cart = JSON.parse(window.localStorage.getItem("cart"))
+  if(cart)
+  {
+    dispatch(GioHangAPI.fetchPostCheckCart(cart))
+  }
   }, []);
 
   return (

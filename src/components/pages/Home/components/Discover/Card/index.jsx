@@ -12,12 +12,9 @@ const CardCollection = (props) => {
     <Link  to={`/collection/${slug}`} className='CardCollection'>
         <div className="container">
             <div className="img">
-                {
-                    
-                }
-                <img src={url||""} alt="" />
+                <img loading='lazy' src={url||""} alt="" />
             </div>
-            <Space direction='vertical' style={{width:"100%"}} className="content">
+            <Space  direction='vertical' style={{width:"100%"}} className="content">
                 <div style={{textTransform:"capitalize"}} className="name"> 
                    <p> {tenBoSuuTap||""}</p>
                 </div>

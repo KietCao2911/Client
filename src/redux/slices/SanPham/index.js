@@ -24,6 +24,7 @@ const initialState = {
   productsLatest: [],
   trendingsProduct: [],
   loading: false,
+  saleProducts:[],
   totalRow: 0,
   state: -1,
 };
@@ -215,7 +216,12 @@ const SanPhamSlice = createSlice({
         state.productsHot = [...productsTemp];
       } else if (props?.params.sort && props?.params.sort == "most-view") {
         state.trendingsProduct = state.productsHot = [...productsTemp];
-      } else
+      }
+      else if(props?.params.sort && props?.params.sort == "sale")
+      {
+        state.saleProducts =  [...productsTemp]
+      }
+      else
       {
         state.productsLatest =  [...productsTemp];
       }
